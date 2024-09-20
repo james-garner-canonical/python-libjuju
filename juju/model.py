@@ -29,7 +29,6 @@ from .charmhub import CharmHub
 from .client import client, connector
 from .client.overrides import Caveat, Macaroon
 from .constraints import parse as parse_constraints
-from .constraints import parse_storage_constraint
 from .controller import Controller, ConnectedController
 from .delta import get_entity_class, get_entity_delta
 from .errors import JujuAPIError, JujuError, JujuModelConfigError, JujuBackupError
@@ -2116,7 +2115,7 @@ class Model:
                 devices=devices,
                 dryrun=False,
                 placement=placement,
-                storage={k: parse_storage_constraint(v) for k, v in (storage or dict()).items()},
+                storage=storage,
                 trust=trust,
                 base=charm_origin.base,
                 channel=channel,
@@ -2151,7 +2150,7 @@ class Model:
                 endpoint_bindings=endpoint_bindings,
                 num_units=num_units,
                 resources=resources,
-                storage={k: parse_storage_constraint(v) for k, v in (storage or dict()).items()},
+                storage=storage,
                 placement=placement,
                 devices=devices,
                 attach_storage=attach_storage,

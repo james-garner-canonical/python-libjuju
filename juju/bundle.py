@@ -16,6 +16,7 @@ from toposort import toposort_flatten
 
 from .client import client
 from .constraints import parse as parse_constraints
+from .constraints import parse_storage_constraint
 from .errors import JujuError
 from . import utils, jasyncio
 from .origin import Channel, Source
@@ -630,7 +631,7 @@ class AddApplicationChange(ChangeInfo):
             constraints=self.constraints,
             endpoint_bindings=self.endpoint_bindings,
             resources=resources,
-            storage=self.storage,
+            storage={k: parse_storage_constraint(v) for k, v in (self.storage or dict()).items()},
             channel=self.channel,
             devices=self.devices,
             num_units=self.num_units,
