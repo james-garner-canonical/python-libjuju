@@ -4,22 +4,21 @@
 from juju.client._definitions import *
 
 
-from juju.client import _client7, _client1, _client3, _client4, _client2, _client17, _client6, _client11, _client10, _client5, _client9, _client18, _client19
+from juju.client import _client7, _client3, _client4, _client2, _client17, _client6, _client11, _client1, _client10, _client9, _client5, _client19
 
 
 CLIENTS = {
     "7": _client7,
-    "1": _client1,
     "3": _client3,
     "4": _client4,
     "2": _client2,
     "17": _client17,
     "6": _client6,
     "11": _client11,
+    "1": _client1,
     "10": _client10,
-    "5": _client5,
     "9": _client9,
-    "18": _client18,
+    "5": _client5,
     "19": _client19
 }
 
@@ -86,23 +85,7 @@ class ActionFacade(TypeFactory):
     pass
 
 
-class ActionPrunerFacade(TypeFactory):
-    pass
-
-
 class AdminFacade(TypeFactory):
-    pass
-
-
-class AgentFacade(TypeFactory):
-    pass
-
-
-class AgentLifeFlagFacade(TypeFactory):
-    pass
-
-
-class AgentToolsFacade(TypeFactory):
     pass
 
 
@@ -126,10 +109,6 @@ class ApplicationOffersFacade(TypeFactory):
     pass
 
 
-class ApplicationScalerFacade(TypeFactory):
-    pass
-
-
 class BackupsFacade(TypeFactory):
     pass
 
@@ -142,67 +121,7 @@ class BundleFacade(TypeFactory):
     pass
 
 
-class CAASAdmissionFacade(TypeFactory):
-    pass
-
-
-class CAASAgentFacade(TypeFactory):
-    pass
-
-
-class CAASApplicationFacade(TypeFactory):
-    pass
-
-
-class CAASApplicationProvisionerFacade(TypeFactory):
-    pass
-
-
-class CAASFirewallerFacade(TypeFactory):
-    pass
-
-
-class CAASFirewallerSidecarFacade(TypeFactory):
-    pass
-
-
-class CAASModelConfigManagerFacade(TypeFactory):
-    pass
-
-
-class CAASModelOperatorFacade(TypeFactory):
-    pass
-
-
-class CAASOperatorFacade(TypeFactory):
-    pass
-
-
-class CAASOperatorProvisionerFacade(TypeFactory):
-    pass
-
-
-class CAASOperatorUpgraderFacade(TypeFactory):
-    pass
-
-
-class CAASUnitProvisionerFacade(TypeFactory):
-    pass
-
-
-class CharmDownloaderFacade(TypeFactory):
-    pass
-
-
-class CharmRevisionUpdaterFacade(TypeFactory):
-    pass
-
-
 class CharmsFacade(TypeFactory):
-    pass
-
-
-class CleanerFacade(TypeFactory):
     pass
 
 
@@ -222,51 +141,7 @@ class CredentialManagerFacade(TypeFactory):
     pass
 
 
-class CredentialValidatorFacade(TypeFactory):
-    pass
-
-
-class CrossControllerFacade(TypeFactory):
-    pass
-
-
-class CrossModelRelationsFacade(TypeFactory):
-    pass
-
-
-class CrossModelSecretsFacade(TypeFactory):
-    pass
-
-
-class DeployerFacade(TypeFactory):
-    pass
-
-
-class DiskManagerFacade(TypeFactory):
-    pass
-
-
-class EntityWatcherFacade(TypeFactory):
-    pass
-
-
-class EnvironUpgraderFacade(TypeFactory):
-    pass
-
-
-class ExternalControllerUpdaterFacade(TypeFactory):
-    pass
-
-
 class FacadeVersions(TypeFactory):
-    pass
-
-
-class FanConfigurerFacade(TypeFactory):
-    pass
-
-
-class FilesystemAttachmentsWatcherFacade(TypeFactory):
     pass
 
 
@@ -274,19 +149,7 @@ class FirewallRulesFacade(TypeFactory):
     pass
 
 
-class FirewallerFacade(TypeFactory):
-    pass
-
-
 class HighAvailabilityFacade(TypeFactory):
-    pass
-
-
-class HostKeyReporterFacade(TypeFactory):
-    pass
-
-
-class ImageMetadataFacade(TypeFactory):
     pass
 
 
@@ -294,39 +157,7 @@ class ImageMetadataManagerFacade(TypeFactory):
     pass
 
 
-class InstanceMutaterFacade(TypeFactory):
-    pass
-
-
-class InstancePollerFacade(TypeFactory):
-    pass
-
-
 class KeyManagerFacade(TypeFactory):
-    pass
-
-
-class KeyUpdaterFacade(TypeFactory):
-    pass
-
-
-class LeadershipServiceFacade(TypeFactory):
-    pass
-
-
-class LifeFlagFacade(TypeFactory):
-    pass
-
-
-class LogForwardingFacade(TypeFactory):
-    pass
-
-
-class LoggerFacade(TypeFactory):
-    pass
-
-
-class MachineActionsFacade(TypeFactory):
     pass
 
 
@@ -334,47 +165,7 @@ class MachineManagerFacade(TypeFactory):
     pass
 
 
-class MachineUndertakerFacade(TypeFactory):
-    pass
-
-
-class MachinerFacade(TypeFactory):
-    pass
-
-
-class MeterStatusFacade(TypeFactory):
-    pass
-
-
-class MetricsAdderFacade(TypeFactory):
-    pass
-
-
 class MetricsDebugFacade(TypeFactory):
-    pass
-
-
-class MetricsManagerFacade(TypeFactory):
-    pass
-
-
-class MigrationFlagFacade(TypeFactory):
-    pass
-
-
-class MigrationMasterFacade(TypeFactory):
-    pass
-
-
-class MigrationMinionFacade(TypeFactory):
-    pass
-
-
-class MigrationStatusWatcherFacade(TypeFactory):
-    pass
-
-
-class MigrationTargetFacade(TypeFactory):
     pass
 
 
@@ -390,19 +181,7 @@ class ModelManagerFacade(TypeFactory):
     pass
 
 
-class ModelSummaryWatcherFacade(TypeFactory):
-    pass
-
-
 class ModelUpgraderFacade(TypeFactory):
-    pass
-
-
-class NotifyWatcherFacade(TypeFactory):
-    pass
-
-
-class OfferStatusWatcherFacade(TypeFactory):
     pass
 
 
@@ -410,55 +189,11 @@ class PayloadsFacade(TypeFactory):
     pass
 
 
-class PayloadsHookContextFacade(TypeFactory):
-    pass
-
-
 class PingerFacade(TypeFactory):
     pass
 
 
-class ProvisionerFacade(TypeFactory):
-    pass
-
-
-class ProxyUpdaterFacade(TypeFactory):
-    pass
-
-
-class RaftLeaseFacade(TypeFactory):
-    pass
-
-
-class RebootFacade(TypeFactory):
-    pass
-
-
-class RelationStatusWatcherFacade(TypeFactory):
-    pass
-
-
-class RelationUnitsWatcherFacade(TypeFactory):
-    pass
-
-
-class RemoteRelationWatcherFacade(TypeFactory):
-    pass
-
-
-class RemoteRelationsFacade(TypeFactory):
-    pass
-
-
 class ResourcesFacade(TypeFactory):
-    pass
-
-
-class ResourcesHookContextFacade(TypeFactory):
-    pass
-
-
-class RetryStrategyFacade(TypeFactory):
     pass
 
 
@@ -470,35 +205,7 @@ class SecretBackendsFacade(TypeFactory):
     pass
 
 
-class SecretBackendsManagerFacade(TypeFactory):
-    pass
-
-
-class SecretBackendsRotateWatcherFacade(TypeFactory):
-    pass
-
-
-class SecretsDrainFacade(TypeFactory):
-    pass
-
-
 class SecretsFacade(TypeFactory):
-    pass
-
-
-class SecretsManagerFacade(TypeFactory):
-    pass
-
-
-class SecretsRevisionWatcherFacade(TypeFactory):
-    pass
-
-
-class SecretsTriggerWatcherFacade(TypeFactory):
-    pass
-
-
-class SingularFacade(TypeFactory):
     pass
 
 
@@ -506,19 +213,7 @@ class SpacesFacade(TypeFactory):
     pass
 
 
-class StatusHistoryFacade(TypeFactory):
-    pass
-
-
 class StorageFacade(TypeFactory):
-    pass
-
-
-class StorageProvisionerFacade(TypeFactory):
-    pass
-
-
-class StringsWatcherFacade(TypeFactory):
     pass
 
 
@@ -526,47 +221,7 @@ class SubnetsFacade(TypeFactory):
     pass
 
 
-class UndertakerFacade(TypeFactory):
-    pass
-
-
-class UnitAssignerFacade(TypeFactory):
-    pass
-
-
-class UniterFacade(TypeFactory):
-    pass
-
-
-class UpgradeSeriesFacade(TypeFactory):
-    pass
-
-
-class UpgradeStepsFacade(TypeFactory):
-    pass
-
-
-class UpgraderFacade(TypeFactory):
-    pass
-
-
 class UserManagerFacade(TypeFactory):
-    pass
-
-
-class UserSecretsDrainFacade(TypeFactory):
-    pass
-
-
-class UserSecretsManagerFacade(TypeFactory):
-    pass
-
-
-class VolumeAttachmentPlansWatcherFacade(TypeFactory):
-    pass
-
-
-class VolumeAttachmentsWatcherFacade(TypeFactory):
     pass
 
 
