@@ -860,9 +860,6 @@
                         "nonce": {
                             "type": "string"
                         },
-                        "token": {
-                            "type": "string"
-                        },
                         "user-data": {
                             "type": "string"
                         }
@@ -1505,160 +1502,6 @@
         }
     },
     {
-        "Name": "AgentLifeFlag",
-        "Description": "",
-        "Version": 1,
-        "AvailableTo": [
-            "controller-machine-agent",
-            "machine-agent",
-            "unit-agent",
-            "model-user"
-        ],
-        "Schema": {
-            "type": "object",
-            "properties": {
-                "Life": {
-                    "type": "object",
-                    "properties": {
-                        "Params": {
-                            "$ref": "#/definitions/Entities"
-                        },
-                        "Result": {
-                            "$ref": "#/definitions/LifeResults"
-                        }
-                    },
-                    "description": "Life returns the life status of every supplied entity, where available."
-                },
-                "Watch": {
-                    "type": "object",
-                    "properties": {
-                        "Params": {
-                            "$ref": "#/definitions/Entities"
-                        },
-                        "Result": {
-                            "$ref": "#/definitions/NotifyWatchResults"
-                        }
-                    },
-                    "description": "Watch starts an NotifyWatcher for each given entity."
-                }
-            },
-            "definitions": {
-                "Entities": {
-                    "type": "object",
-                    "properties": {
-                        "entities": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Entity"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "entities"
-                    ]
-                },
-                "Entity": {
-                    "type": "object",
-                    "properties": {
-                        "tag": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "tag"
-                    ]
-                },
-                "Error": {
-                    "type": "object",
-                    "properties": {
-                        "code": {
-                            "type": "string"
-                        },
-                        "info": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "type": "object",
-                                    "additionalProperties": true
-                                }
-                            }
-                        },
-                        "message": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "message",
-                        "code"
-                    ]
-                },
-                "LifeResult": {
-                    "type": "object",
-                    "properties": {
-                        "error": {
-                            "$ref": "#/definitions/Error"
-                        },
-                        "life": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "life"
-                    ]
-                },
-                "LifeResults": {
-                    "type": "object",
-                    "properties": {
-                        "results": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/LifeResult"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "results"
-                    ]
-                },
-                "NotifyWatchResult": {
-                    "type": "object",
-                    "properties": {
-                        "NotifyWatcherId": {
-                            "type": "string"
-                        },
-                        "error": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "NotifyWatcherId"
-                    ]
-                },
-                "NotifyWatchResults": {
-                    "type": "object",
-                    "properties": {
-                        "results": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/NotifyWatchResult"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "results"
-                    ]
-                }
-            }
-        }
-    },
-    {
         "Name": "AgentTools",
         "Description": "AgentToolsAPI implements the API used by the machine model worker.",
         "Version": 1,
@@ -1990,8 +1833,8 @@
     },
     {
         "Name": "Application",
-        "Description": "APIv19 provides the Application API facade for version 19.",
-        "Version": 19,
+        "Description": "APIv17 provides the Application API facade for version 17.",
+        "Version": 17,
         "AvailableTo": [
             "controller-machine-agent",
             "machine-agent",
@@ -2084,18 +1927,6 @@
                         }
                     },
                     "description": "Deploy fetches the charms from the charm store and deploys them\nusing the specified placement directives."
-                },
-                "DeployFromRepository": {
-                    "type": "object",
-                    "properties": {
-                        "Params": {
-                            "$ref": "#/definitions/DeployFromRepositoryArgs"
-                        },
-                        "Result": {
-                            "$ref": "#/definitions/DeployFromRepositoryResults"
-                        }
-                    },
-                    "description": "DeployFromRepository is a one-stop deployment method for repository\ncharms. Only a charm name is required to deploy. If argument validation\nfails, a list of all errors found in validation will be returned. If a\nlocal resource is provided, details required for uploading the validated\nresource will be returned."
                 },
                 "DestroyApplication": {
                     "type": "object",
@@ -2287,7 +2118,7 @@
                             "$ref": "#/definitions/ErrorResults"
                         }
                     },
-                    "description": "SetMetricCredentials sets credentials on the application.\nTODO (cderici) only used for metered charms in cmd MeteredDeployAPI,\nkept for client compatibility, remove in juju 4.0"
+                    "description": "SetMetricCredentials sets credentials on the application."
                 },
                 "SetRelationsSuspended": {
                     "type": "object",
@@ -3337,187 +3168,6 @@
                     },
                     "additionalProperties": false
                 },
-                "DeployFromRepositoryArg": {
-                    "type": "object",
-                    "properties": {
-                        "ApplicationName": {
-                            "type": "string"
-                        },
-                        "AttachStorage": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        "CharmName": {
-                            "type": "string"
-                        },
-                        "ConfigYAML": {
-                            "type": "string"
-                        },
-                        "Cons": {
-                            "$ref": "#/definitions/Value"
-                        },
-                        "Devices": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "$ref": "#/definitions/Constraints"
-                                }
-                            }
-                        },
-                        "DryRun": {
-                            "type": "boolean"
-                        },
-                        "Placement": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Placement"
-                            }
-                        },
-                        "Storage": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "$ref": "#/definitions/Constraints"
-                                }
-                            }
-                        },
-                        "Trust": {
-                            "type": "boolean"
-                        },
-                        "base": {
-                            "$ref": "#/definitions/Base"
-                        },
-                        "channel": {
-                            "type": "string"
-                        },
-                        "endpoint-bindings": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        "force": {
-                            "type": "boolean"
-                        },
-                        "num-units": {
-                            "type": "integer"
-                        },
-                        "resources": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        "revision": {
-                            "type": "integer"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "CharmName",
-                        "ApplicationName",
-                        "AttachStorage",
-                        "ConfigYAML",
-                        "Cons",
-                        "Devices",
-                        "DryRun",
-                        "Placement",
-                        "Storage",
-                        "Trust"
-                    ]
-                },
-                "DeployFromRepositoryArgs": {
-                    "type": "object",
-                    "properties": {
-                        "Args": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/DeployFromRepositoryArg"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "Args"
-                    ]
-                },
-                "DeployFromRepositoryInfo": {
-                    "type": "object",
-                    "properties": {
-                        "architecture": {
-                            "type": "string"
-                        },
-                        "base": {
-                            "$ref": "#/definitions/Base"
-                        },
-                        "channel": {
-                            "type": "string"
-                        },
-                        "effective-channel": {
-                            "type": "string"
-                        },
-                        "name": {
-                            "type": "string"
-                        },
-                        "revision": {
-                            "type": "integer"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "architecture",
-                        "channel",
-                        "name",
-                        "revision"
-                    ]
-                },
-                "DeployFromRepositoryResult": {
-                    "type": "object",
-                    "properties": {
-                        "Errors": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Error"
-                            }
-                        },
-                        "Info": {
-                            "$ref": "#/definitions/DeployFromRepositoryInfo"
-                        },
-                        "PendingResourceUploads": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/PendingResourceUpload"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "Errors",
-                        "Info",
-                        "PendingResourceUploads"
-                    ]
-                },
-                "DeployFromRepositoryResults": {
-                    "type": "object",
-                    "properties": {
-                        "Results": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/DeployFromRepositoryResult"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "Results"
-                    ]
-                },
                 "DestroyApplicationInfo": {
                     "type": "object",
                     "properties": {
@@ -3930,26 +3580,6 @@
                         "user",
                         "display-name",
                         "access"
-                    ]
-                },
-                "PendingResourceUpload": {
-                    "type": "object",
-                    "properties": {
-                        "Filename": {
-                            "type": "string"
-                        },
-                        "Name": {
-                            "type": "string"
-                        },
-                        "Type": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "Name",
-                        "Filename",
-                        "Type"
                     ]
                 },
                 "Placement": {
@@ -4394,9 +4024,6 @@
                         },
                         "cpu-power": {
                             "type": "integer"
-                        },
-                        "image-id": {
-                            "type": "string"
                         },
                         "instance-role": {
                             "type": "string"
@@ -5966,9 +5593,6 @@
                     "properties": {
                         "include-charm-defaults": {
                             "type": "boolean"
-                        },
-                        "include-series": {
-                            "type": "boolean"
                         }
                     },
                     "additionalProperties": false
@@ -6659,6 +6283,18 @@
                     },
                     "description": "ApplicationOCIResources returns the OCI image resources for an application."
                 },
+                "CAASApplicationGarbageCollect": {
+                    "type": "object",
+                    "properties": {
+                        "Params": {
+                            "$ref": "#/definitions/CAASApplicationGarbageCollectArgs"
+                        },
+                        "Result": {
+                            "$ref": "#/definitions/ErrorResults"
+                        }
+                    },
+                    "description": "CAASApplicationGarbageCollect cleans up units that have gone away permanently.\nOnly observed units will be deleted as new units could have surfaced between\nthe capturing of kuberentes pod state/application state and this call."
+                },
                 "CharmInfo": {
                     "type": "object",
                     "properties": {
@@ -6683,18 +6319,6 @@
                     },
                     "description": "ClearApplicationsResources clears the flags which indicate\napplications still have resources in the cluster."
                 },
-                "DestroyUnits": {
-                    "type": "object",
-                    "properties": {
-                        "Params": {
-                            "$ref": "#/definitions/DestroyUnitsParams"
-                        },
-                        "Result": {
-                            "$ref": "#/definitions/DestroyUnitResults"
-                        }
-                    },
-                    "description": "DestroyUnits is responsible for scaling down a set of units on the this\nApplication."
-                },
                 "Life": {
                     "type": "object",
                     "properties": {
@@ -6707,15 +6331,6 @@
                     },
                     "description": "Life returns the life status of every supplied entity, where available."
                 },
-                "ProvisionerConfig": {
-                    "type": "object",
-                    "properties": {
-                        "Result": {
-                            "$ref": "#/definitions/CAASApplicationProvisionerConfigResult"
-                        }
-                    },
-                    "description": "ProvisionerConfig returns the provisioner's configuration."
-                },
                 "ProvisioningInfo": {
                     "type": "object",
                     "properties": {
@@ -6727,18 +6342,6 @@
                         }
                     },
                     "description": "ProvisioningInfo returns the info needed to provision a caas application."
-                },
-                "ProvisioningState": {
-                    "type": "object",
-                    "properties": {
-                        "Params": {
-                            "$ref": "#/definitions/Entity"
-                        },
-                        "Result": {
-                            "$ref": "#/definitions/CAASApplicationProvisioningStateResult"
-                        }
-                    },
-                    "description": "ProvisioningState returns the provisioning state for the application."
                 },
                 "Remove": {
                     "type": "object",
@@ -6775,18 +6378,6 @@
                         }
                     },
                     "description": "SetPasswords sets the given password for each supplied entity, if possible."
-                },
-                "SetProvisioningState": {
-                    "type": "object",
-                    "properties": {
-                        "Params": {
-                            "$ref": "#/definitions/CAASApplicationProvisioningStateArg"
-                        },
-                        "Result": {
-                            "$ref": "#/definitions/ErrorResult"
-                        }
-                    },
-                    "description": "SetProvisioningState sets the provisioning state for the application."
                 },
                 "Units": {
                     "type": "object",
@@ -6944,6 +6535,52 @@
                         "channel"
                     ]
                 },
+                "CAASApplicationGarbageCollectArg": {
+                    "type": "object",
+                    "properties": {
+                        "active-pod-names": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "application": {
+                            "$ref": "#/definitions/Entity"
+                        },
+                        "desired-replicas": {
+                            "type": "integer"
+                        },
+                        "force": {
+                            "type": "boolean"
+                        },
+                        "observed-units": {
+                            "$ref": "#/definitions/Entities"
+                        }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                        "application",
+                        "observed-units",
+                        "desired-replicas",
+                        "active-pod-names",
+                        "force"
+                    ]
+                },
+                "CAASApplicationGarbageCollectArgs": {
+                    "type": "object",
+                    "properties": {
+                        "args": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/CAASApplicationGarbageCollectArg"
+                            }
+                        }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                        "args"
+                    ]
+                },
                 "CAASApplicationOCIResourceResult": {
                     "type": "object",
                     "properties": {
@@ -6987,27 +6624,6 @@
                     "required": [
                         "images"
                     ]
-                },
-                "CAASApplicationProvisionerConfig": {
-                    "type": "object",
-                    "properties": {
-                        "unmanaged-applications": {
-                            "$ref": "#/definitions/Entities"
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                "CAASApplicationProvisionerConfigResult": {
-                    "type": "object",
-                    "properties": {
-                        "error": {
-                            "$ref": "#/definitions/Error"
-                        },
-                        "provisioner-config": {
-                            "$ref": "#/definitions/CAASApplicationProvisionerConfig"
-                        }
-                    },
-                    "additionalProperties": false
                 },
                 "CAASApplicationProvisioningInfo": {
                     "type": "object",
@@ -7097,50 +6713,6 @@
                     "required": [
                         "results"
                     ]
-                },
-                "CAASApplicationProvisioningState": {
-                    "type": "object",
-                    "properties": {
-                        "scale-target": {
-                            "type": "integer"
-                        },
-                        "scaling": {
-                            "type": "boolean"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "scaling",
-                        "scale-target"
-                    ]
-                },
-                "CAASApplicationProvisioningStateArg": {
-                    "type": "object",
-                    "properties": {
-                        "application": {
-                            "$ref": "#/definitions/Entity"
-                        },
-                        "provisioning-state": {
-                            "$ref": "#/definitions/CAASApplicationProvisioningState"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "application",
-                        "provisioning-state"
-                    ]
-                },
-                "CAASApplicationProvisioningStateResult": {
-                    "type": "object",
-                    "properties": {
-                        "error": {
-                            "$ref": "#/definitions/Error"
-                        },
-                        "provisioning-state": {
-                            "$ref": "#/definitions/CAASApplicationProvisioningState"
-                        }
-                    },
-                    "additionalProperties": false
                 },
                 "CAASUnitInfo": {
                     "type": "object",
@@ -7735,87 +7307,6 @@
                     "additionalProperties": false,
                     "required": [
                         "url"
-                    ]
-                },
-                "DestroyUnitInfo": {
-                    "type": "object",
-                    "properties": {
-                        "destroyed-storage": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Entity"
-                            }
-                        },
-                        "detached-storage": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Entity"
-                            }
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                "DestroyUnitParams": {
-                    "type": "object",
-                    "properties": {
-                        "destroy-storage": {
-                            "type": "boolean"
-                        },
-                        "dry-run": {
-                            "type": "boolean"
-                        },
-                        "force": {
-                            "type": "boolean"
-                        },
-                        "max-wait": {
-                            "type": "integer"
-                        },
-                        "unit-tag": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "unit-tag"
-                    ]
-                },
-                "DestroyUnitResult": {
-                    "type": "object",
-                    "properties": {
-                        "error": {
-                            "$ref": "#/definitions/Error"
-                        },
-                        "info": {
-                            "$ref": "#/definitions/DestroyUnitInfo"
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                "DestroyUnitResults": {
-                    "type": "object",
-                    "properties": {
-                        "results": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/DestroyUnitResult"
-                            }
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                "DestroyUnitsParams": {
-                    "type": "object",
-                    "properties": {
-                        "units": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/DestroyUnitParams"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "units"
                     ]
                 },
                 "DetailedStatus": {
@@ -8607,9 +8098,6 @@
                         },
                         "cpu-power": {
                             "type": "integer"
-                        },
-                        "image-id": {
-                            "type": "string"
                         },
                         "instance-role": {
                             "type": "string"
@@ -10497,14 +9985,6 @@
                             "$ref": "#/definitions/ControllerConfigResult"
                         }
                     }
-                },
-                "WatchControllerConfig": {
-                    "type": "object",
-                    "properties": {
-                        "Result": {
-                            "$ref": "#/definitions/NotifyWatchResult"
-                        }
-                    }
                 }
             },
             "definitions": {
@@ -10524,46 +10004,6 @@
                     "additionalProperties": false,
                     "required": [
                         "config"
-                    ]
-                },
-                "Error": {
-                    "type": "object",
-                    "properties": {
-                        "code": {
-                            "type": "string"
-                        },
-                        "info": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "type": "object",
-                                    "additionalProperties": true
-                                }
-                            }
-                        },
-                        "message": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "message",
-                        "code"
-                    ]
-                },
-                "NotifyWatchResult": {
-                    "type": "object",
-                    "properties": {
-                        "NotifyWatcherId": {
-                            "type": "string"
-                        },
-                        "error": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "NotifyWatcherId"
                     ]
                 }
             }
@@ -10638,15 +10078,6 @@
                         }
                     },
                     "description": "WatchAPIHostPorts watches the API server addresses."
-                },
-                "WatchModelOperatorProvisioningInfo": {
-                    "type": "object",
-                    "properties": {
-                        "Result": {
-                            "$ref": "#/definitions/NotifyWatchResult"
-                        }
-                    },
-                    "description": "WatchModelOperatorProvisioningInfo provides a watcher for changes that affect the\ninformation returned by ModelOperatorProvisioningInfo."
                 }
             },
             "definitions": {
@@ -14812,9 +14243,6 @@
                         "cpu-power": {
                             "type": "integer"
                         },
-                        "image-id": {
-                            "type": "string"
-                        },
                         "instance-role": {
                             "type": "string"
                         },
@@ -15053,8 +14481,8 @@
     },
     {
         "Name": "Charms",
-        "Description": "APIv7 provides the Charms API facade for version 7.\nv7 guarantees SupportedBases will be provided in ResolveCharms",
-        "Version": 7,
+        "Description": "APIv6 provides the Charms API facade for version 6.\nIt removes the AddCharmWithAuthorization function, as\nwe no longer support macaroons.",
+        "Version": 6,
         "AvailableTo": [
             "model-user"
         ],
@@ -15119,7 +14547,7 @@
                             "$ref": "#/definitions/IsMeteredResult"
                         }
                     },
-                    "description": "IsMetered returns whether or not the charm is metered.\nTODO (cderici) only used for metered charms in cmd MeteredDeployAPI,\nkept for client compatibility, remove in juju 4.0"
+                    "description": "IsMetered returns whether or not the charm is metered."
                 },
                 "List": {
                     "type": "object",
@@ -16149,10 +15577,10 @@
                         "error": {
                             "$ref": "#/definitions/Error"
                         },
-                        "supported-bases": {
+                        "supported-series": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/Base"
+                                "type": "string"
                             }
                         },
                         "url": {
@@ -16163,7 +15591,7 @@
                     "required": [
                         "url",
                         "charm-origin",
-                        "supported-bases"
+                        "supported-series"
                     ]
                 },
                 "ResolveCharmWithChannelResults": {
@@ -16273,7 +15701,7 @@
     {
         "Name": "Client",
         "Description": "Client serves client-specific API methods.",
-        "Version": 7,
+        "Version": 6,
         "AvailableTo": [
             "controller-machine-agent",
             "machine-agent",
@@ -16650,36 +16078,6 @@
                         "subordinate"
                     ]
                 },
-                "EntityStatus": {
-                    "type": "object",
-                    "properties": {
-                        "data": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "type": "object",
-                                    "additionalProperties": true
-                                }
-                            }
-                        },
-                        "info": {
-                            "type": "string"
-                        },
-                        "since": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
-                        "status": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "status",
-                        "info",
-                        "since"
-                    ]
-                },
                 "Error": {
                     "type": "object",
                     "properties": {
@@ -16722,104 +16120,6 @@
                         }
                     },
                     "additionalProperties": false
-                },
-                "FilesystemAttachmentDetails": {
-                    "type": "object",
-                    "properties": {
-                        "FilesystemAttachmentInfo": {
-                            "$ref": "#/definitions/FilesystemAttachmentInfo"
-                        },
-                        "life": {
-                            "type": "string"
-                        },
-                        "mount-point": {
-                            "type": "string"
-                        },
-                        "read-only": {
-                            "type": "boolean"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "FilesystemAttachmentInfo"
-                    ]
-                },
-                "FilesystemAttachmentInfo": {
-                    "type": "object",
-                    "properties": {
-                        "mount-point": {
-                            "type": "string"
-                        },
-                        "read-only": {
-                            "type": "boolean"
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                "FilesystemDetails": {
-                    "type": "object",
-                    "properties": {
-                        "filesystem-tag": {
-                            "type": "string"
-                        },
-                        "info": {
-                            "$ref": "#/definitions/FilesystemInfo"
-                        },
-                        "life": {
-                            "type": "string"
-                        },
-                        "machine-attachments": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "$ref": "#/definitions/FilesystemAttachmentDetails"
-                                }
-                            }
-                        },
-                        "status": {
-                            "$ref": "#/definitions/EntityStatus"
-                        },
-                        "storage": {
-                            "$ref": "#/definitions/StorageDetails"
-                        },
-                        "unit-attachments": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "$ref": "#/definitions/FilesystemAttachmentDetails"
-                                }
-                            }
-                        },
-                        "volume-tag": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "filesystem-tag",
-                        "info",
-                        "status"
-                    ]
-                },
-                "FilesystemInfo": {
-                    "type": "object",
-                    "properties": {
-                        "filesystem-id": {
-                            "type": "string"
-                        },
-                        "pool": {
-                            "type": "string"
-                        },
-                        "size": {
-                            "type": "integer"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "filesystem-id",
-                        "pool",
-                        "size"
-                    ]
                 },
                 "FindToolsParams": {
                     "type": "object",
@@ -16890,12 +16190,6 @@
                             "type": "string",
                             "format": "date-time"
                         },
-                        "filesystems": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/FilesystemDetails"
-                            }
-                        },
                         "machines": {
                             "type": "object",
                             "patternProperties": {
@@ -16927,18 +16221,6 @@
                                 ".*": {
                                     "$ref": "#/definitions/RemoteApplicationStatus"
                                 }
-                            }
-                        },
-                        "storage": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/StorageDetails"
-                            }
-                        },
-                        "volumes": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/VolumeDetails"
                             }
                         }
                     },
@@ -17434,9 +16716,6 @@
                 "StatusParams": {
                     "type": "object",
                     "properties": {
-                        "include-storage": {
-                            "type": "boolean"
-                        },
                         "patterns": {
                             "type": "array",
                             "items": {
@@ -17447,71 +16726,6 @@
                     "additionalProperties": false,
                     "required": [
                         "patterns"
-                    ]
-                },
-                "StorageAttachmentDetails": {
-                    "type": "object",
-                    "properties": {
-                        "life": {
-                            "type": "string"
-                        },
-                        "location": {
-                            "type": "string"
-                        },
-                        "machine-tag": {
-                            "type": "string"
-                        },
-                        "storage-tag": {
-                            "type": "string"
-                        },
-                        "unit-tag": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "storage-tag",
-                        "unit-tag",
-                        "machine-tag"
-                    ]
-                },
-                "StorageDetails": {
-                    "type": "object",
-                    "properties": {
-                        "attachments": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "$ref": "#/definitions/StorageAttachmentDetails"
-                                }
-                            }
-                        },
-                        "kind": {
-                            "type": "integer"
-                        },
-                        "life": {
-                            "type": "string"
-                        },
-                        "owner-tag": {
-                            "type": "string"
-                        },
-                        "persistent": {
-                            "type": "boolean"
-                        },
-                        "status": {
-                            "$ref": "#/definitions/EntityStatus"
-                        },
-                        "storage-tag": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "storage-tag",
-                        "owner-tag",
-                        "kind",
-                        "status",
-                        "persistent"
                     ]
                 },
                 "Tools": {
@@ -17592,145 +16806,6 @@
                         "public-address",
                         "charm",
                         "subordinates"
-                    ]
-                },
-                "VolumeAttachmentDetails": {
-                    "type": "object",
-                    "properties": {
-                        "VolumeAttachmentInfo": {
-                            "$ref": "#/definitions/VolumeAttachmentInfo"
-                        },
-                        "bus-address": {
-                            "type": "string"
-                        },
-                        "device-link": {
-                            "type": "string"
-                        },
-                        "device-name": {
-                            "type": "string"
-                        },
-                        "life": {
-                            "type": "string"
-                        },
-                        "plan-info": {
-                            "$ref": "#/definitions/VolumeAttachmentPlanInfo"
-                        },
-                        "read-only": {
-                            "type": "boolean"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "VolumeAttachmentInfo"
-                    ]
-                },
-                "VolumeAttachmentInfo": {
-                    "type": "object",
-                    "properties": {
-                        "bus-address": {
-                            "type": "string"
-                        },
-                        "device-link": {
-                            "type": "string"
-                        },
-                        "device-name": {
-                            "type": "string"
-                        },
-                        "plan-info": {
-                            "$ref": "#/definitions/VolumeAttachmentPlanInfo"
-                        },
-                        "read-only": {
-                            "type": "boolean"
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                "VolumeAttachmentPlanInfo": {
-                    "type": "object",
-                    "properties": {
-                        "device-attributes": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        "device-type": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                "VolumeDetails": {
-                    "type": "object",
-                    "properties": {
-                        "info": {
-                            "$ref": "#/definitions/VolumeInfo"
-                        },
-                        "life": {
-                            "type": "string"
-                        },
-                        "machine-attachments": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "$ref": "#/definitions/VolumeAttachmentDetails"
-                                }
-                            }
-                        },
-                        "status": {
-                            "$ref": "#/definitions/EntityStatus"
-                        },
-                        "storage": {
-                            "$ref": "#/definitions/StorageDetails"
-                        },
-                        "unit-attachments": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "$ref": "#/definitions/VolumeAttachmentDetails"
-                                }
-                            }
-                        },
-                        "volume-tag": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "volume-tag",
-                        "info",
-                        "status"
-                    ]
-                },
-                "VolumeInfo": {
-                    "type": "object",
-                    "properties": {
-                        "hardware-id": {
-                            "type": "string"
-                        },
-                        "persistent": {
-                            "type": "boolean"
-                        },
-                        "pool": {
-                            "type": "string"
-                        },
-                        "size": {
-                            "type": "integer"
-                        },
-                        "volume-id": {
-                            "type": "string"
-                        },
-                        "wwn": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "volume-id",
-                        "size",
-                        "persistent"
                     ]
                 }
             }
@@ -18464,6 +17539,9 @@
                         "cpu-cores": {
                             "type": "integer"
                         },
+                        "deprecated": {
+                            "type": "boolean"
+                        },
                         "memory": {
                             "type": "integer"
                         },
@@ -18855,9 +17933,6 @@
                         },
                         "cpu-power": {
                             "type": "integer"
-                        },
-                        "image-id": {
-                            "type": "string"
                         },
                         "instance-role": {
                             "type": "string"
@@ -20491,7 +19566,7 @@
     {
         "Name": "CrossModelRelations",
         "Description": "CrossModelRelationsAPI provides access to the CrossModelRelations API facade.",
-        "Version": 3,
+        "Version": 2,
         "AvailableTo": [
             "controller-machine-agent",
             "machine-agent",
@@ -20536,18 +19611,6 @@
                         }
                     },
                     "description": "RegisterRemoteRelations sets up the model to participate\nin the specified relations. This operation is idempotent."
-                },
-                "WatchConsumedSecretsChanges": {
-                    "type": "object",
-                    "properties": {
-                        "Params": {
-                            "$ref": "#/definitions/WatchRemoteSecretChangesArgs"
-                        },
-                        "Result": {
-                            "$ref": "#/definitions/SecretRevisionWatchResults"
-                        }
-                    },
-                    "description": "WatchConsumedSecretsChanges returns a watcher which notifies of changes to any secrets\nfor the specified remote consumers."
                 },
                 "WatchEgressAddressesForRelations": {
                     "type": "object",
@@ -20681,6 +19744,9 @@
                 "IngressNetworksChangeEvent": {
                     "type": "object",
                     "properties": {
+                        "application-token": {
+                            "type": "string"
+                        },
                         "bakery-version": {
                             "type": "integer"
                         },
@@ -20706,6 +19772,7 @@
                     "additionalProperties": false,
                     "required": [
                         "relation-token",
+                        "application-token",
                         "ingress-required"
                     ]
                 },
@@ -21207,59 +20274,6 @@
                         "subnets"
                     ]
                 },
-                "SecretRevisionChange": {
-                    "type": "object",
-                    "properties": {
-                        "revision": {
-                            "type": "integer"
-                        },
-                        "uri": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "uri",
-                        "revision"
-                    ]
-                },
-                "SecretRevisionWatchResult": {
-                    "type": "object",
-                    "properties": {
-                        "changes": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/SecretRevisionChange"
-                            }
-                        },
-                        "error": {
-                            "$ref": "#/definitions/Error"
-                        },
-                        "watcher-id": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "watcher-id",
-                        "changes"
-                    ]
-                },
-                "SecretRevisionWatchResults": {
-                    "type": "object",
-                    "properties": {
-                        "results": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/SecretRevisionWatchResult"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "results"
-                    ]
-                },
                 "StringsWatchResult": {
                     "type": "object",
                     "properties": {
@@ -21337,356 +20351,6 @@
                         "life",
                         "space-tag",
                         "zones"
-                    ]
-                },
-                "WatchRemoteSecretChangesArg": {
-                    "type": "object",
-                    "properties": {
-                        "application-token": {
-                            "type": "string"
-                        },
-                        "bakery-version": {
-                            "type": "integer"
-                        },
-                        "macaroons": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Macaroon"
-                            }
-                        },
-                        "relation-token": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "application-token",
-                        "relation-token"
-                    ]
-                },
-                "WatchRemoteSecretChangesArgs": {
-                    "type": "object",
-                    "properties": {
-                        "relations": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/WatchRemoteSecretChangesArg"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "relations"
-                    ]
-                }
-            }
-        }
-    },
-    {
-        "Name": "CrossModelSecrets",
-        "Description": "CrossModelSecretsAPI provides access to the CrossModelSecrets API facade.",
-        "Version": 1,
-        "AvailableTo": [
-            "controller-machine-agent",
-            "machine-agent",
-            "unit-agent",
-            "model-user"
-        ],
-        "Schema": {
-            "type": "object",
-            "properties": {
-                "GetSecretAccessScope": {
-                    "type": "object",
-                    "properties": {
-                        "Params": {
-                            "$ref": "#/definitions/GetRemoteSecretAccessArgs"
-                        },
-                        "Result": {
-                            "$ref": "#/definitions/StringResults"
-                        }
-                    },
-                    "description": "GetSecretAccessScope returns the tokens for the access scope of the specified secrets and consumers."
-                },
-                "GetSecretContentInfo": {
-                    "type": "object",
-                    "properties": {
-                        "Params": {
-                            "$ref": "#/definitions/GetRemoteSecretContentArgs"
-                        },
-                        "Result": {
-                            "$ref": "#/definitions/SecretContentResults"
-                        }
-                    },
-                    "description": "GetSecretContentInfo returns the secret values for the specified secrets."
-                }
-            },
-            "definitions": {
-                "Error": {
-                    "type": "object",
-                    "properties": {
-                        "code": {
-                            "type": "string"
-                        },
-                        "info": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "type": "object",
-                                    "additionalProperties": true
-                                }
-                            }
-                        },
-                        "message": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "message",
-                        "code"
-                    ]
-                },
-                "GetRemoteSecretAccessArg": {
-                    "type": "object",
-                    "properties": {
-                        "application-token": {
-                            "type": "string"
-                        },
-                        "unit-id": {
-                            "type": "integer"
-                        },
-                        "uri": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "application-token",
-                        "unit-id",
-                        "uri"
-                    ]
-                },
-                "GetRemoteSecretAccessArgs": {
-                    "type": "object",
-                    "properties": {
-                        "relations": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/GetRemoteSecretAccessArg"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "relations"
-                    ]
-                },
-                "GetRemoteSecretContentArg": {
-                    "type": "object",
-                    "properties": {
-                        "application-token": {
-                            "type": "string"
-                        },
-                        "bakery-version": {
-                            "type": "integer"
-                        },
-                        "macaroons": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Macaroon"
-                            }
-                        },
-                        "peek": {
-                            "type": "boolean"
-                        },
-                        "refresh": {
-                            "type": "boolean"
-                        },
-                        "revision": {
-                            "type": "integer"
-                        },
-                        "source-controller-uuid": {
-                            "type": "string"
-                        },
-                        "unit-id": {
-                            "type": "integer"
-                        },
-                        "uri": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "source-controller-uuid",
-                        "application-token",
-                        "unit-id",
-                        "uri"
-                    ]
-                },
-                "GetRemoteSecretContentArgs": {
-                    "type": "object",
-                    "properties": {
-                        "relations": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/GetRemoteSecretContentArg"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "relations"
-                    ]
-                },
-                "Macaroon": {
-                    "type": "object",
-                    "additionalProperties": false
-                },
-                "SecretBackendConfig": {
-                    "type": "object",
-                    "properties": {
-                        "params": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "type": "object",
-                                    "additionalProperties": true
-                                }
-                            }
-                        },
-                        "type": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "type"
-                    ]
-                },
-                "SecretBackendConfigResult": {
-                    "type": "object",
-                    "properties": {
-                        "config": {
-                            "$ref": "#/definitions/SecretBackendConfig"
-                        },
-                        "draining": {
-                            "type": "boolean"
-                        },
-                        "model-controller": {
-                            "type": "string"
-                        },
-                        "model-name": {
-                            "type": "string"
-                        },
-                        "model-uuid": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "model-controller",
-                        "model-uuid",
-                        "model-name",
-                        "draining"
-                    ]
-                },
-                "SecretContentParams": {
-                    "type": "object",
-                    "properties": {
-                        "data": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        "value-ref": {
-                            "$ref": "#/definitions/SecretValueRef"
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                "SecretContentResult": {
-                    "type": "object",
-                    "properties": {
-                        "backend-config": {
-                            "$ref": "#/definitions/SecretBackendConfigResult"
-                        },
-                        "content": {
-                            "$ref": "#/definitions/SecretContentParams"
-                        },
-                        "error": {
-                            "$ref": "#/definitions/Error"
-                        },
-                        "latest-revision": {
-                            "type": "integer"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "content"
-                    ]
-                },
-                "SecretContentResults": {
-                    "type": "object",
-                    "properties": {
-                        "results": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/SecretContentResult"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "results"
-                    ]
-                },
-                "SecretValueRef": {
-                    "type": "object",
-                    "properties": {
-                        "backend-id": {
-                            "type": "string"
-                        },
-                        "revision-id": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "backend-id",
-                        "revision-id"
-                    ]
-                },
-                "StringResult": {
-                    "type": "object",
-                    "properties": {
-                        "error": {
-                            "$ref": "#/definitions/Error"
-                        },
-                        "result": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "result"
-                    ]
-                },
-                "StringResults": {
-                    "type": "object",
-                    "properties": {
-                        "results": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/StringResult"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "results"
                     ]
                 }
             }
@@ -23163,6 +21827,142 @@
         }
     },
     {
+        "Name": "FirewallRules",
+        "Description": "API provides the firewallrules facade APIs for v1.",
+        "Version": 1,
+        "AvailableTo": [
+            "controller-machine-agent",
+            "machine-agent",
+            "unit-agent",
+            "model-user"
+        ],
+        "Schema": {
+            "type": "object",
+            "properties": {
+                "ListFirewallRules": {
+                    "type": "object",
+                    "properties": {
+                        "Result": {
+                            "$ref": "#/definitions/ListFirewallRulesResults"
+                        }
+                    },
+                    "description": "ListFirewallRules returns all the firewall rules."
+                },
+                "SetFirewallRules": {
+                    "type": "object",
+                    "properties": {
+                        "Params": {
+                            "$ref": "#/definitions/FirewallRuleArgs"
+                        },
+                        "Result": {
+                            "$ref": "#/definitions/ErrorResults"
+                        }
+                    },
+                    "description": "SetFirewallRules creates or updates the specified firewall rules."
+                }
+            },
+            "definitions": {
+                "Error": {
+                    "type": "object",
+                    "properties": {
+                        "code": {
+                            "type": "string"
+                        },
+                        "info": {
+                            "type": "object",
+                            "patternProperties": {
+                                ".*": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                        "message",
+                        "code"
+                    ]
+                },
+                "ErrorResult": {
+                    "type": "object",
+                    "properties": {
+                        "error": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "ErrorResults": {
+                    "type": "object",
+                    "properties": {
+                        "results": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ErrorResult"
+                            }
+                        }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                        "results"
+                    ]
+                },
+                "FirewallRule": {
+                    "type": "object",
+                    "properties": {
+                        "known-service": {
+                            "type": "string"
+                        },
+                        "whitelist-cidrs": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                        "known-service"
+                    ]
+                },
+                "FirewallRuleArgs": {
+                    "type": "object",
+                    "properties": {
+                        "args": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/FirewallRule"
+                            }
+                        }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                        "args"
+                    ]
+                },
+                "ListFirewallRulesResults": {
+                    "type": "object",
+                    "properties": {
+                        "Rules": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/FirewallRule"
+                            }
+                        }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                        "Rules"
+                    ]
+                }
+            }
+        }
+    },
+    {
         "Name": "Firewaller",
         "Description": "FirewallerAPI provides access to the Firewaller API facade.",
         "Version": 7,
@@ -23219,6 +22019,18 @@
                         }
                     },
                     "description": "ControllerConfig returns the controller's configuration."
+                },
+                "FirewallRules": {
+                    "type": "object",
+                    "properties": {
+                        "Params": {
+                            "$ref": "#/definitions/KnownServiceArgs"
+                        },
+                        "Result": {
+                            "$ref": "#/definitions/ListFirewallRulesResults"
+                        }
+                    },
+                    "description": "FirewallRules returns the firewall rules for the specified well known service types."
                 },
                 "GetAssignedMachine": {
                     "type": "object",
@@ -23300,15 +22112,6 @@
                         }
                     },
                     "description": "ModelConfig returns the current model's configuration."
-                },
-                "ModelFirewallRules": {
-                    "type": "object",
-                    "properties": {
-                        "Result": {
-                            "$ref": "#/definitions/IngressRulesResult"
-                        }
-                    },
-                    "description": "ModelFirewallRules returns the firewall rules that this model is\nconfigured to open"
                 },
                 "OpenedMachinePortRanges": {
                     "type": "object",
@@ -23402,15 +22205,6 @@
                         }
                     },
                     "description": "WatchIngressAddressesForRelations creates a watcher that returns the ingress networks\nthat have been recorded against the specified relations."
-                },
-                "WatchModelFirewallRules": {
-                    "type": "object",
-                    "properties": {
-                        "Result": {
-                            "$ref": "#/definitions/NotifyWatchResult"
-                        }
-                    },
-                    "description": "WatchModelFirewallRules returns a NotifyWatcher that notifies of\npotential changes to a model's configured firewall rules"
                 },
                 "WatchModelMachineStartTimes": {
                     "type": "object",
@@ -23821,13 +22615,13 @@
                         "overlay"
                     ]
                 },
-                "IngressRule": {
+                "FirewallRule": {
                     "type": "object",
                     "properties": {
-                        "port-range": {
-                            "$ref": "#/definitions/PortRange"
+                        "known-service": {
+                            "type": "string"
                         },
-                        "source-cidrs": {
+                        "whitelist-cidrs": {
                             "type": "array",
                             "items": {
                                 "type": "string"
@@ -23836,26 +22630,22 @@
                     },
                     "additionalProperties": false,
                     "required": [
-                        "port-range",
-                        "source-cidrs"
+                        "known-service"
                     ]
                 },
-                "IngressRulesResult": {
+                "KnownServiceArgs": {
                     "type": "object",
                     "properties": {
-                        "error": {
-                            "$ref": "#/definitions/Error"
-                        },
-                        "rules": {
+                        "known-services": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/IngressRule"
+                                "type": "string"
                             }
                         }
                     },
                     "additionalProperties": false,
                     "required": [
-                        "rules"
+                        "known-services"
                     ]
                 },
                 "LifeResult": {
@@ -23886,6 +22676,21 @@
                     "additionalProperties": false,
                     "required": [
                         "results"
+                    ]
+                },
+                "ListFirewallRulesResults": {
+                    "type": "object",
+                    "properties": {
+                        "Rules": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/FirewallRule"
+                            }
+                        }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                        "Rules"
                     ]
                 },
                 "Macaroon": {
@@ -24508,9 +23313,6 @@
                         },
                         "cpu-power": {
                             "type": "integer"
-                        },
-                        "image-id": {
-                            "type": "string"
                         },
                         "instance-role": {
                             "type": "string"
@@ -28054,6 +26856,9 @@
                         "cpu-cores": {
                             "type": "integer"
                         },
+                        "deprecated": {
+                            "type": "boolean"
+                        },
                         "memory": {
                             "type": "integer"
                         },
@@ -28383,9 +27188,6 @@
                         },
                         "cpu-power": {
                             "type": "integer"
-                        },
-                        "image-id": {
-                            "type": "string"
                         },
                         "instance-role": {
                             "type": "string"
@@ -30505,17 +29307,6 @@
                         "controller-agent-version": {
                             "$ref": "#/definitions/Number"
                         },
-                        "facade-versions": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "integer"
-                                    }
-                                }
-                            }
-                        },
                         "name": {
                             "type": "string"
                         },
@@ -31068,7 +29859,7 @@
     {
         "Name": "MigrationTarget",
         "Description": "API implements the API required for the model migration\nmaster worker when communicating with the target controller.",
-        "Version": 3,
+        "Version": 2,
         "AvailableTo": [
             "controller-user"
         ],
@@ -31281,17 +30072,6 @@
                         },
                         "controller-agent-version": {
                             "$ref": "#/definitions/Number"
-                        },
-                        "facade-versions": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "integer"
-                                    }
-                                }
-                            }
                         },
                         "name": {
                             "type": "string"
@@ -31784,9 +30564,6 @@
                         },
                         "cpu-power": {
                             "type": "integer"
-                        },
-                        "image-id": {
-                            "type": "string"
                         },
                         "instance-role": {
                             "type": "string"
@@ -36667,9 +35444,6 @@
                         "cpu-power": {
                             "type": "integer"
                         },
-                        "image-id": {
-                            "type": "string"
-                        },
                         "instance-role": {
                             "type": "string"
                         },
@@ -37090,6 +35864,141 @@
                     "additionalProperties": false,
                     "required": [
                         "results"
+                    ]
+                }
+            }
+        }
+    },
+    {
+        "Name": "RaftLease",
+        "Description": "",
+        "Version": 2,
+        "AvailableTo": [
+            "controller-machine-agent",
+            "machine-agent",
+            "unit-agent",
+            "model-user"
+        ],
+        "Schema": {
+            "type": "object",
+            "properties": {
+                "ApplyLease": {
+                    "type": "object",
+                    "properties": {
+                        "Params": {
+                            "$ref": "#/definitions/LeaseOperationsV2"
+                        },
+                        "Result": {
+                            "$ref": "#/definitions/ErrorResults"
+                        }
+                    }
+                }
+            },
+            "definitions": {
+                "Error": {
+                    "type": "object",
+                    "properties": {
+                        "code": {
+                            "type": "string"
+                        },
+                        "info": {
+                            "type": "object",
+                            "patternProperties": {
+                                ".*": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                        "message",
+                        "code"
+                    ]
+                },
+                "ErrorResult": {
+                    "type": "object",
+                    "properties": {
+                        "error": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "ErrorResults": {
+                    "type": "object",
+                    "properties": {
+                        "results": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ErrorResult"
+                            }
+                        }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                        "results"
+                    ]
+                },
+                "LeaseOperationCommand": {
+                    "type": "object",
+                    "properties": {
+                        "duration": {
+                            "type": "integer"
+                        },
+                        "holder": {
+                            "type": "string"
+                        },
+                        "lease": {
+                            "type": "string"
+                        },
+                        "model-uuid": {
+                            "type": "string"
+                        },
+                        "namespace": {
+                            "type": "string"
+                        },
+                        "new-time": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "old-time": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "operation": {
+                            "type": "string"
+                        },
+                        "pin-entity": {
+                            "type": "string"
+                        },
+                        "version": {
+                            "type": "integer"
+                        }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                        "version",
+                        "operation"
+                    ]
+                },
+                "LeaseOperationsV2": {
+                    "type": "object",
+                    "properties": {
+                        "commands": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/LeaseOperationCommand"
+                            }
+                        }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                        "commands"
                     ]
                 }
             }
@@ -37678,18 +36587,6 @@
                     },
                     "description": "ConsumeRemoteRelationChanges consumes changes to settings originating\nfrom the remote/offering side of relations."
                 },
-                "ConsumeRemoteSecretChanges": {
-                    "type": "object",
-                    "properties": {
-                        "Params": {
-                            "$ref": "#/definitions/LatestSecretRevisionChanges"
-                        },
-                        "Result": {
-                            "$ref": "#/definitions/ErrorResults"
-                        }
-                    },
-                    "description": "ConsumeRemoteSecretChanges updates the local model with secret revision changes\noriginating from the remote/offering model."
-                },
                 "ControllerAPIInfoForModels": {
                     "type": "object",
                     "properties": {
@@ -38097,21 +36994,6 @@
                         "Args"
                     ]
                 },
-                "LatestSecretRevisionChanges": {
-                    "type": "object",
-                    "properties": {
-                        "changes": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/SecretRevisionChange"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "changes"
-                    ]
-                },
                 "Macaroon": {
                     "type": "object",
                     "additionalProperties": false
@@ -38434,22 +37316,6 @@
                         }
                     },
                     "additionalProperties": false
-                },
-                "SecretRevisionChange": {
-                    "type": "object",
-                    "properties": {
-                        "revision": {
-                            "type": "integer"
-                        },
-                        "uri": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "uri",
-                        "revision"
-                    ]
                 },
                 "SetStatus": {
                     "type": "object",
@@ -40315,37 +39181,13 @@
     {
         "Name": "Secrets",
         "Description": "SecretsAPI is the backend for the Secrets facade.",
-        "Version": 2,
+        "Version": 1,
         "AvailableTo": [
             "model-user"
         ],
         "Schema": {
             "type": "object",
             "properties": {
-                "CreateSecrets": {
-                    "type": "object",
-                    "properties": {
-                        "Params": {
-                            "$ref": "#/definitions/CreateSecretArgs"
-                        },
-                        "Result": {
-                            "$ref": "#/definitions/StringResults"
-                        }
-                    },
-                    "description": "CreateSecrets creates new secrets."
-                },
-                "GrantSecret": {
-                    "type": "object",
-                    "properties": {
-                        "Params": {
-                            "$ref": "#/definitions/GrantRevokeUserSecretArg"
-                        },
-                        "Result": {
-                            "$ref": "#/definitions/ErrorResults"
-                        }
-                    },
-                    "description": "GrantSecret grants access to a user secret."
-                },
                 "ListSecrets": {
                     "type": "object",
                     "properties": {
@@ -40357,161 +39199,9 @@
                         }
                     },
                     "description": "ListSecrets lists available secrets."
-                },
-                "RemoveSecrets": {
-                    "type": "object",
-                    "properties": {
-                        "Params": {
-                            "$ref": "#/definitions/DeleteSecretArgs"
-                        },
-                        "Result": {
-                            "$ref": "#/definitions/ErrorResults"
-                        }
-                    },
-                    "description": "RemoveSecrets remove user secret."
-                },
-                "RevokeSecret": {
-                    "type": "object",
-                    "properties": {
-                        "Params": {
-                            "$ref": "#/definitions/GrantRevokeUserSecretArg"
-                        },
-                        "Result": {
-                            "$ref": "#/definitions/ErrorResults"
-                        }
-                    },
-                    "description": "RevokeSecret revokes access to a user secret."
-                },
-                "UpdateSecrets": {
-                    "type": "object",
-                    "properties": {
-                        "Params": {
-                            "$ref": "#/definitions/UpdateUserSecretArgs"
-                        },
-                        "Result": {
-                            "$ref": "#/definitions/ErrorResults"
-                        }
-                    },
-                    "description": "UpdateSecrets creates new secrets."
                 }
             },
             "definitions": {
-                "AccessInfo": {
-                    "type": "object",
-                    "properties": {
-                        "role": {
-                            "type": "string"
-                        },
-                        "scope-tag": {
-                            "type": "string"
-                        },
-                        "target-tag": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "target-tag",
-                        "scope-tag",
-                        "role"
-                    ]
-                },
-                "CreateSecretArg": {
-                    "type": "object",
-                    "properties": {
-                        "UpsertSecretArg": {
-                            "$ref": "#/definitions/UpsertSecretArg"
-                        },
-                        "content": {
-                            "$ref": "#/definitions/SecretContentParams"
-                        },
-                        "description": {
-                            "type": "string"
-                        },
-                        "expire-time": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
-                        "label": {
-                            "type": "string"
-                        },
-                        "owner-tag": {
-                            "type": "string"
-                        },
-                        "params": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "type": "object",
-                                    "additionalProperties": true
-                                }
-                            }
-                        },
-                        "rotate-policy": {
-                            "type": "string"
-                        },
-                        "uri": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "UpsertSecretArg",
-                        "owner-tag"
-                    ]
-                },
-                "CreateSecretArgs": {
-                    "type": "object",
-                    "properties": {
-                        "args": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/CreateSecretArg"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "args"
-                    ]
-                },
-                "DeleteSecretArg": {
-                    "type": "object",
-                    "properties": {
-                        "label": {
-                            "type": "string"
-                        },
-                        "revisions": {
-                            "type": "array",
-                            "items": {
-                                "type": "integer"
-                            }
-                        },
-                        "uri": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "uri",
-                        "label"
-                    ]
-                },
-                "DeleteSecretArgs": {
-                    "type": "object",
-                    "properties": {
-                        "args": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/DeleteSecretArg"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "args"
-                    ]
-                },
                 "Error": {
                     "type": "object",
                     "properties": {
@@ -40537,62 +39227,9 @@
                         "code"
                     ]
                 },
-                "ErrorResult": {
-                    "type": "object",
-                    "properties": {
-                        "error": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                "ErrorResults": {
-                    "type": "object",
-                    "properties": {
-                        "results": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/ErrorResult"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "results"
-                    ]
-                },
-                "GrantRevokeUserSecretArg": {
-                    "type": "object",
-                    "properties": {
-                        "applications": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        "label": {
-                            "type": "string"
-                        },
-                        "uri": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "uri",
-                        "label",
-                        "applications"
-                    ]
-                },
                 "ListSecretResult": {
                     "type": "object",
                     "properties": {
-                        "access": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/AccessInfo"
-                            }
-                        },
                         "create-time": {
                             "type": "string",
                             "format": "date-time"
@@ -40682,23 +39319,6 @@
                         "filter"
                     ]
                 },
-                "SecretContentParams": {
-                    "type": "object",
-                    "properties": {
-                        "data": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        "value-ref": {
-                            "$ref": "#/definitions/SecretValueRef"
-                        }
-                    },
-                    "additionalProperties": false
-                },
                 "SecretRevision": {
                     "type": "object",
                     "properties": {
@@ -40765,9 +39385,6 @@
                 "SecretsFilter": {
                     "type": "object",
                     "properties": {
-                        "label": {
-                            "type": "string"
-                        },
                         "owner-tag": {
                             "type": "string"
                         },
@@ -40776,458 +39393,6 @@
                         },
                         "uri": {
                             "type": "string"
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                "StringResult": {
-                    "type": "object",
-                    "properties": {
-                        "error": {
-                            "$ref": "#/definitions/Error"
-                        },
-                        "result": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "result"
-                    ]
-                },
-                "StringResults": {
-                    "type": "object",
-                    "properties": {
-                        "results": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/StringResult"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "results"
-                    ]
-                },
-                "UpdateUserSecretArg": {
-                    "type": "object",
-                    "properties": {
-                        "UpsertSecretArg": {
-                            "$ref": "#/definitions/UpsertSecretArg"
-                        },
-                        "auto-prune": {
-                            "type": "boolean"
-                        },
-                        "content": {
-                            "$ref": "#/definitions/SecretContentParams"
-                        },
-                        "description": {
-                            "type": "string"
-                        },
-                        "existing-label": {
-                            "type": "string"
-                        },
-                        "expire-time": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
-                        "label": {
-                            "type": "string"
-                        },
-                        "params": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "type": "object",
-                                    "additionalProperties": true
-                                }
-                            }
-                        },
-                        "rotate-policy": {
-                            "type": "string"
-                        },
-                        "uri": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "UpsertSecretArg",
-                        "uri",
-                        "existing-label"
-                    ]
-                },
-                "UpdateUserSecretArgs": {
-                    "type": "object",
-                    "properties": {
-                        "args": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/UpdateUserSecretArg"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "args"
-                    ]
-                },
-                "UpsertSecretArg": {
-                    "type": "object",
-                    "properties": {
-                        "content": {
-                            "$ref": "#/definitions/SecretContentParams"
-                        },
-                        "description": {
-                            "type": "string"
-                        },
-                        "expire-time": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
-                        "label": {
-                            "type": "string"
-                        },
-                        "params": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "type": "object",
-                                    "additionalProperties": true
-                                }
-                            }
-                        },
-                        "rotate-policy": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false
-                }
-            }
-        }
-    },
-    {
-        "Name": "SecretsDrain",
-        "Description": "SecretsDrainAPI is the implementation for the SecretsDrain facade.",
-        "Version": 1,
-        "AvailableTo": [
-            "controller-machine-agent",
-            "machine-agent",
-            "unit-agent",
-            "model-user"
-        ],
-        "Schema": {
-            "type": "object",
-            "properties": {
-                "ChangeSecretBackend": {
-                    "type": "object",
-                    "properties": {
-                        "Params": {
-                            "$ref": "#/definitions/ChangeSecretBackendArgs"
-                        },
-                        "Result": {
-                            "$ref": "#/definitions/ErrorResults"
-                        }
-                    },
-                    "description": "ChangeSecretBackend updates the backend for the specified secret after migration done."
-                },
-                "GetSecretsToDrain": {
-                    "type": "object",
-                    "properties": {
-                        "Result": {
-                            "$ref": "#/definitions/ListSecretResults"
-                        }
-                    },
-                    "description": "GetSecretsToDrain returns metadata for the secrets that need to be drained."
-                },
-                "WatchSecretBackendChanged": {
-                    "type": "object",
-                    "properties": {
-                        "Result": {
-                            "$ref": "#/definitions/NotifyWatchResult"
-                        }
-                    },
-                    "description": "WatchSecretBackendChanged sets up a watcher to notify of changes to the secret backend."
-                }
-            },
-            "definitions": {
-                "AccessInfo": {
-                    "type": "object",
-                    "properties": {
-                        "role": {
-                            "type": "string"
-                        },
-                        "scope-tag": {
-                            "type": "string"
-                        },
-                        "target-tag": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "target-tag",
-                        "scope-tag",
-                        "role"
-                    ]
-                },
-                "ChangeSecretBackendArg": {
-                    "type": "object",
-                    "properties": {
-                        "content": {
-                            "$ref": "#/definitions/SecretContentParams"
-                        },
-                        "revision": {
-                            "type": "integer"
-                        },
-                        "uri": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "uri",
-                        "revision"
-                    ]
-                },
-                "ChangeSecretBackendArgs": {
-                    "type": "object",
-                    "properties": {
-                        "args": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/ChangeSecretBackendArg"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "args"
-                    ]
-                },
-                "Error": {
-                    "type": "object",
-                    "properties": {
-                        "code": {
-                            "type": "string"
-                        },
-                        "info": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "type": "object",
-                                    "additionalProperties": true
-                                }
-                            }
-                        },
-                        "message": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "message",
-                        "code"
-                    ]
-                },
-                "ErrorResult": {
-                    "type": "object",
-                    "properties": {
-                        "error": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                "ErrorResults": {
-                    "type": "object",
-                    "properties": {
-                        "results": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/ErrorResult"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "results"
-                    ]
-                },
-                "ListSecretResult": {
-                    "type": "object",
-                    "properties": {
-                        "access": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/AccessInfo"
-                            }
-                        },
-                        "create-time": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
-                        "description": {
-                            "type": "string"
-                        },
-                        "label": {
-                            "type": "string"
-                        },
-                        "latest-expire-time": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
-                        "latest-revision": {
-                            "type": "integer"
-                        },
-                        "next-rotate-time": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
-                        "owner-tag": {
-                            "type": "string"
-                        },
-                        "revisions": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/SecretRevision"
-                            }
-                        },
-                        "rotate-policy": {
-                            "type": "string"
-                        },
-                        "update-time": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
-                        "uri": {
-                            "type": "string"
-                        },
-                        "value": {
-                            "$ref": "#/definitions/SecretValueResult"
-                        },
-                        "version": {
-                            "type": "integer"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "uri",
-                        "version",
-                        "owner-tag",
-                        "latest-revision",
-                        "create-time",
-                        "update-time",
-                        "revisions"
-                    ]
-                },
-                "ListSecretResults": {
-                    "type": "object",
-                    "properties": {
-                        "results": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/ListSecretResult"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "results"
-                    ]
-                },
-                "NotifyWatchResult": {
-                    "type": "object",
-                    "properties": {
-                        "NotifyWatcherId": {
-                            "type": "string"
-                        },
-                        "error": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "NotifyWatcherId"
-                    ]
-                },
-                "SecretContentParams": {
-                    "type": "object",
-                    "properties": {
-                        "data": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        "value-ref": {
-                            "$ref": "#/definitions/SecretValueRef"
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                "SecretRevision": {
-                    "type": "object",
-                    "properties": {
-                        "backend-name": {
-                            "type": "string"
-                        },
-                        "create-time": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
-                        "expire-time": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
-                        "revision": {
-                            "type": "integer"
-                        },
-                        "update-time": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
-                        "value-ref": {
-                            "$ref": "#/definitions/SecretValueRef"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "revision"
-                    ]
-                },
-                "SecretValueRef": {
-                    "type": "object",
-                    "properties": {
-                        "backend-id": {
-                            "type": "string"
-                        },
-                        "revision-id": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "backend-id",
-                        "revision-id"
-                    ]
-                },
-                "SecretValueResult": {
-                    "type": "object",
-                    "properties": {
-                        "data": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        "error": {
-                            "$ref": "#/definitions/Error"
                         }
                     },
                     "additionalProperties": false
@@ -41238,7 +39403,7 @@
     {
         "Name": "SecretsManager",
         "Description": "SecretsManagerAPI is the implementation for the SecretsManager facade.",
-        "Version": 2,
+        "Version": 1,
         "AvailableTo": [
             "controller-machine-agent",
             "machine-agent",
@@ -41284,17 +39449,14 @@
                     },
                     "description": "GetConsumerSecretsRevisionInfo returns the latest secret revisions for the specified secrets.\nThis facade method is used for remote watcher to get the latest secret revisions and labels for a secret changed hook."
                 },
-                "GetSecretBackendConfigs": {
+                "GetSecretBackendConfig": {
                     "type": "object",
                     "properties": {
-                        "Params": {
-                            "$ref": "#/definitions/SecretBackendArgs"
-                        },
                         "Result": {
                             "$ref": "#/definitions/SecretBackendConfigResults"
                         }
                     },
-                    "description": "GetSecretBackendConfigs gets the config needed to create a client to secret backends."
+                    "description": "GetSecretBackendConfig gets the config needed to create a client to secret backends."
                 },
                 "GetSecretContentInfo": {
                     "type": "object",
@@ -41328,6 +39490,15 @@
                         }
                     },
                     "description": "GetSecretRevisionContentInfo returns the secret values for the specified secret revisions."
+                },
+                "GetSecretStoreConfig": {
+                    "type": "object",
+                    "properties": {
+                        "Result": {
+                            "$ref": "#/definitions/SecretBackendConfig"
+                        }
+                    },
+                    "description": "GetSecretStoreConfig is for 3.0.x agents.\nTODO(wallyworld) - remove when we auto upgrade migrated models."
                 },
                 "RemoveSecrets": {
                     "type": "object",
@@ -41439,26 +39610,6 @@
                 }
             },
             "definitions": {
-                "AccessInfo": {
-                    "type": "object",
-                    "properties": {
-                        "role": {
-                            "type": "string"
-                        },
-                        "scope-tag": {
-                            "type": "string"
-                        },
-                        "target-tag": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "target-tag",
-                        "scope-tag",
-                        "role"
-                    ]
-                },
                 "CreateSecretArg": {
                     "type": "object",
                     "properties": {
@@ -41533,9 +39684,6 @@
                 "DeleteSecretArg": {
                     "type": "object",
                     "properties": {
-                        "label": {
-                            "type": "string"
-                        },
                         "revisions": {
                             "type": "array",
                             "items": {
@@ -41548,8 +39696,7 @@
                     },
                     "additionalProperties": false,
                     "required": [
-                        "uri",
-                        "label"
+                        "uri"
                     ]
                 },
                 "DeleteSecretArgs": {
@@ -41743,12 +39890,6 @@
                 "ListSecretResult": {
                     "type": "object",
                     "properties": {
-                        "access": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/AccessInfo"
-                            }
-                        },
                         "create-time": {
                             "type": "string",
                             "format": "date-time"
@@ -41822,25 +39963,6 @@
                         "results"
                     ]
                 },
-                "SecretBackendArgs": {
-                    "type": "object",
-                    "properties": {
-                        "backend-ids": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        "for-drain": {
-                            "type": "boolean"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "for-drain",
-                        "backend-ids"
-                    ]
-                },
                 "SecretBackendConfig": {
                     "type": "object",
                     "properties": {
@@ -41862,14 +39984,19 @@
                         "type"
                     ]
                 },
-                "SecretBackendConfigResult": {
+                "SecretBackendConfigResults": {
                     "type": "object",
                     "properties": {
-                        "config": {
-                            "$ref": "#/definitions/SecretBackendConfig"
+                        "active-id": {
+                            "type": "string"
                         },
-                        "draining": {
-                            "type": "boolean"
+                        "configs": {
+                            "type": "object",
+                            "patternProperties": {
+                                ".*": {
+                                    "$ref": "#/definitions/SecretBackendConfig"
+                                }
+                            }
                         },
                         "model-controller": {
                             "type": "string"
@@ -41886,26 +40013,6 @@
                         "model-controller",
                         "model-uuid",
                         "model-name",
-                        "draining"
-                    ]
-                },
-                "SecretBackendConfigResults": {
-                    "type": "object",
-                    "properties": {
-                        "active-id": {
-                            "type": "string"
-                        },
-                        "results": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "$ref": "#/definitions/SecretBackendConfigResult"
-                                }
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
                         "active-id"
                     ]
                 },
@@ -41963,17 +40070,11 @@
                 "SecretContentResult": {
                     "type": "object",
                     "properties": {
-                        "backend-config": {
-                            "$ref": "#/definitions/SecretBackendConfigResult"
-                        },
                         "content": {
                             "$ref": "#/definitions/SecretContentParams"
                         },
                         "error": {
                             "$ref": "#/definitions/Error"
-                        },
-                        "latest-revision": {
-                            "type": "integer"
                         }
                     },
                     "additionalProperties": false,
@@ -42311,100 +40412,6 @@
                         }
                     },
                     "additionalProperties": false
-                }
-            }
-        }
-    },
-    {
-        "Name": "SecretsRevisionWatcher",
-        "Description": "srvSecretsRevisionWatcher defines the API wrapping a SecretsRevisionWatcher.",
-        "Version": 1,
-        "AvailableTo": [
-            "controller-machine-agent",
-            "machine-agent",
-            "unit-agent",
-            "model-user"
-        ],
-        "Schema": {
-            "type": "object",
-            "properties": {
-                "Next": {
-                    "type": "object",
-                    "properties": {
-                        "Result": {
-                            "$ref": "#/definitions/SecretRevisionWatchResult"
-                        }
-                    },
-                    "description": "Next returns when a change has occurred to an entity of the\ncollection being watched since the most recent call to Next\nor the Watch call that created the srvSecretRotationWatcher."
-                },
-                "Stop": {
-                    "type": "object",
-                    "description": "Stop stops the watcher."
-                }
-            },
-            "definitions": {
-                "Error": {
-                    "type": "object",
-                    "properties": {
-                        "code": {
-                            "type": "string"
-                        },
-                        "info": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "type": "object",
-                                    "additionalProperties": true
-                                }
-                            }
-                        },
-                        "message": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "message",
-                        "code"
-                    ]
-                },
-                "SecretRevisionChange": {
-                    "type": "object",
-                    "properties": {
-                        "revision": {
-                            "type": "integer"
-                        },
-                        "uri": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "uri",
-                        "revision"
-                    ]
-                },
-                "SecretRevisionWatchResult": {
-                    "type": "object",
-                    "properties": {
-                        "changes": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/SecretRevisionChange"
-                            }
-                        },
-                        "error": {
-                            "$ref": "#/definitions/Error"
-                        },
-                        "watcher-id": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "watcher-id",
-                        "changes"
-                    ]
                 }
             }
         }
@@ -46386,30 +44393,6 @@
         "Schema": {
             "type": "object",
             "properties": {
-                "CloudSpec": {
-                    "type": "object",
-                    "properties": {
-                        "Params": {
-                            "$ref": "#/definitions/Entities"
-                        },
-                        "Result": {
-                            "$ref": "#/definitions/CloudSpecResults"
-                        }
-                    },
-                    "description": "CloudSpec returns the model's cloud spec."
-                },
-                "GetCloudSpec": {
-                    "type": "object",
-                    "properties": {
-                        "Params": {
-                            "$ref": "#/definitions/ModelTag"
-                        },
-                        "Result": {
-                            "$ref": "#/definitions/CloudSpecResult"
-                        }
-                    },
-                    "description": "GetCloudSpec constructs the CloudSpec for a validated and authorized model."
-                },
                 "ModelConfig": {
                     "type": "object",
                     "properties": {
@@ -46417,7 +44400,7 @@
                             "$ref": "#/definitions/ModelConfigResult"
                         }
                     },
-                    "description": "ModelConfig returns the current model's configuration."
+                    "description": "ModelConfig returns the model's configuration."
                 },
                 "ModelInfo": {
                     "type": "object",
@@ -46448,36 +44431,6 @@
                     },
                     "description": "SetStatus sets the status of each given entity."
                 },
-                "WatchCloudSpecsChanges": {
-                    "type": "object",
-                    "properties": {
-                        "Params": {
-                            "$ref": "#/definitions/Entities"
-                        },
-                        "Result": {
-                            "$ref": "#/definitions/NotifyWatchResults"
-                        }
-                    },
-                    "description": "WatchCloudSpecsChanges returns a watcher for cloud spec changes."
-                },
-                "WatchForModelConfigChanges": {
-                    "type": "object",
-                    "properties": {
-                        "Result": {
-                            "$ref": "#/definitions/NotifyWatchResult"
-                        }
-                    },
-                    "description": "WatchForModelConfigChanges returns a NotifyWatcher that observes\nchanges to the model configuration.\nNote that although the NotifyWatchResult contains an Error field,\nit's not used because we are only returning a single watcher,\nso we use the regular error return."
-                },
-                "WatchModel": {
-                    "type": "object",
-                    "properties": {
-                        "Result": {
-                            "$ref": "#/definitions/NotifyWatchResults"
-                        }
-                    },
-                    "description": "WatchModel creates a watcher for the current model."
-                },
                 "WatchModelResources": {
                     "type": "object",
                     "properties": {
@@ -46489,126 +44442,6 @@
                 }
             },
             "definitions": {
-                "CloudCredential": {
-                    "type": "object",
-                    "properties": {
-                        "attrs": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        "auth-type": {
-                            "type": "string"
-                        },
-                        "redacted": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "auth-type"
-                    ]
-                },
-                "CloudSpec": {
-                    "type": "object",
-                    "properties": {
-                        "cacertificates": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        "credential": {
-                            "$ref": "#/definitions/CloudCredential"
-                        },
-                        "endpoint": {
-                            "type": "string"
-                        },
-                        "identity-endpoint": {
-                            "type": "string"
-                        },
-                        "is-controller-cloud": {
-                            "type": "boolean"
-                        },
-                        "name": {
-                            "type": "string"
-                        },
-                        "region": {
-                            "type": "string"
-                        },
-                        "skip-tls-verify": {
-                            "type": "boolean"
-                        },
-                        "storage-endpoint": {
-                            "type": "string"
-                        },
-                        "type": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "type",
-                        "name"
-                    ]
-                },
-                "CloudSpecResult": {
-                    "type": "object",
-                    "properties": {
-                        "error": {
-                            "$ref": "#/definitions/Error"
-                        },
-                        "result": {
-                            "$ref": "#/definitions/CloudSpec"
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                "CloudSpecResults": {
-                    "type": "object",
-                    "properties": {
-                        "results": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/CloudSpecResult"
-                            }
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                "Entities": {
-                    "type": "object",
-                    "properties": {
-                        "entities": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Entity"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "entities"
-                    ]
-                },
-                "Entity": {
-                    "type": "object",
-                    "properties": {
-                        "tag": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "tag"
-                    ]
-                },
                 "EntityStatusArgs": {
                     "type": "object",
                     "properties": {
@@ -46705,10 +44538,6 @@
                     "required": [
                         "config"
                     ]
-                },
-                "ModelTag": {
-                    "type": "object",
-                    "additionalProperties": false
                 },
                 "NotifyWatchResult": {
                     "type": "object",
@@ -47003,7 +44832,7 @@
     {
         "Name": "Uniter",
         "Description": "UniterAPI implements the latest version (v18) of the Uniter API.",
-        "Version": 19,
+        "Version": 18,
         "AvailableTo": [
             "controller-machine-agent",
             "machine-agent",
@@ -47381,17 +45210,14 @@
                     },
                     "description": "GetRawK8sSpec gets the raw k8s specs for a set of applications."
                 },
-                "GetSecretBackendConfigs": {
+                "GetSecretBackendConfig": {
                     "type": "object",
                     "properties": {
-                        "Params": {
-                            "$ref": "#/definitions/SecretBackendArgs"
-                        },
                         "Result": {
                             "$ref": "#/definitions/SecretBackendConfigResults"
                         }
                     },
-                    "description": "GetSecretBackendConfigs gets the config needed to create a client to secret backends."
+                    "description": "GetSecretBackendConfig gets the config needed to create a client to secret backends."
                 },
                 "GetSecretContentInfo": {
                     "type": "object",
@@ -47425,6 +45251,15 @@
                         }
                     },
                     "description": "GetSecretRevisionContentInfo returns the secret values for the specified secret revisions."
+                },
+                "GetSecretStoreConfig": {
+                    "type": "object",
+                    "properties": {
+                        "Result": {
+                            "$ref": "#/definitions/SecretBackendConfig"
+                        }
+                    },
+                    "description": "GetSecretStoreConfig is for 3.0.x agents.\nTODO(wallyworld) - remove when we auto upgrade migrated models."
                 },
                 "GoalStates": {
                     "type": "object",
@@ -47531,6 +45366,15 @@
                     },
                     "description": "ModelConfig returns the current model's configuration."
                 },
+                "ModelUUID": {
+                    "type": "object",
+                    "properties": {
+                        "Result": {
+                            "$ref": "#/definitions/StringResult"
+                        }
+                    },
+                    "description": "ModelUUID returns the model UUID that this unit resides in.\nIt is implemented here directly as a result of removing it from\nembedded APIAddresser *without* bumping the facade version.\nIt should be blanked when this facade version is next incremented."
+                },
                 "NetworkInfo": {
                     "type": "object",
                     "properties": {
@@ -47542,6 +45386,18 @@
                         }
                     },
                     "description": "NetworkInfo returns network interfaces/addresses for specified bindings."
+                },
+                "OpenedApplicationPortRangesByEndpoint": {
+                    "type": "object",
+                    "properties": {
+                        "Params": {
+                            "$ref": "#/definitions/Entity"
+                        },
+                        "Result": {
+                            "$ref": "#/definitions/ApplicationOpenedPortsResults"
+                        }
+                    },
+                    "description": "OpenedApplicationPortRangesByEndpoint returns the port ranges opened by each application."
                 },
                 "OpenedMachinePortRangesByEndpoint": {
                     "type": "object",
@@ -48243,26 +46099,6 @@
                         "servers"
                     ]
                 },
-                "AccessInfo": {
-                    "type": "object",
-                    "properties": {
-                        "role": {
-                            "type": "string"
-                        },
-                        "scope-tag": {
-                            "type": "string"
-                        },
-                        "target-tag": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "target-tag",
-                        "scope-tag",
-                        "role"
-                    ]
-                },
                 "Action": {
                     "type": "object",
                     "properties": {
@@ -48460,6 +46296,58 @@
                         "value",
                         "type",
                         "scope"
+                    ]
+                },
+                "ApplicationOpenedPorts": {
+                    "type": "object",
+                    "properties": {
+                        "endpoint": {
+                            "type": "string"
+                        },
+                        "port-ranges": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/PortRange"
+                            }
+                        }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                        "endpoint",
+                        "port-ranges"
+                    ]
+                },
+                "ApplicationOpenedPortsResult": {
+                    "type": "object",
+                    "properties": {
+                        "application-port-ranges": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ApplicationOpenedPorts"
+                            }
+                        },
+                        "error": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                        "application-port-ranges"
+                    ]
+                },
+                "ApplicationOpenedPortsResults": {
+                    "type": "object",
+                    "properties": {
+                        "results": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ApplicationOpenedPortsResult"
+                            }
+                        }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                        "results"
                     ]
                 },
                 "ApplicationStatusResult": {
@@ -48725,12 +46613,6 @@
                                 "$ref": "#/definitions/GrantRevokeSecretArg"
                             }
                         },
-                        "secret-track-latest": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
                         "secret-updates": {
                             "type": "array",
                             "items": {
@@ -48881,9 +46763,6 @@
                 "DeleteSecretArg": {
                     "type": "object",
                     "properties": {
-                        "label": {
-                            "type": "string"
-                        },
                         "revisions": {
                             "type": "array",
                             "items": {
@@ -48896,8 +46775,7 @@
                     },
                     "additionalProperties": false,
                     "required": [
-                        "uri",
-                        "label"
+                        "uri"
                     ]
                 },
                 "DeleteSecretArgs": {
@@ -49480,12 +47358,6 @@
                 "ListSecretResult": {
                     "type": "object",
                     "properties": {
-                        "access": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/AccessInfo"
-                            }
-                        },
                         "create-time": {
                             "type": "string",
                             "format": "date-time"
@@ -50321,25 +48193,6 @@
                         "results"
                     ]
                 },
-                "SecretBackendArgs": {
-                    "type": "object",
-                    "properties": {
-                        "backend-ids": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        "for-drain": {
-                            "type": "boolean"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "for-drain",
-                        "backend-ids"
-                    ]
-                },
                 "SecretBackendConfig": {
                     "type": "object",
                     "properties": {
@@ -50361,14 +48214,19 @@
                         "type"
                     ]
                 },
-                "SecretBackendConfigResult": {
+                "SecretBackendConfigResults": {
                     "type": "object",
                     "properties": {
-                        "config": {
-                            "$ref": "#/definitions/SecretBackendConfig"
+                        "active-id": {
+                            "type": "string"
                         },
-                        "draining": {
-                            "type": "boolean"
+                        "configs": {
+                            "type": "object",
+                            "patternProperties": {
+                                ".*": {
+                                    "$ref": "#/definitions/SecretBackendConfig"
+                                }
+                            }
                         },
                         "model-controller": {
                             "type": "string"
@@ -50385,26 +48243,6 @@
                         "model-controller",
                         "model-uuid",
                         "model-name",
-                        "draining"
-                    ]
-                },
-                "SecretBackendConfigResults": {
-                    "type": "object",
-                    "properties": {
-                        "active-id": {
-                            "type": "string"
-                        },
-                        "results": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "$ref": "#/definitions/SecretBackendConfigResult"
-                                }
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
                         "active-id"
                     ]
                 },
@@ -50462,17 +48300,11 @@
                 "SecretContentResult": {
                     "type": "object",
                     "properties": {
-                        "backend-config": {
-                            "$ref": "#/definitions/SecretBackendConfigResult"
-                        },
                         "content": {
                             "$ref": "#/definitions/SecretContentParams"
                         },
                         "error": {
                             "$ref": "#/definitions/Error"
-                        },
-                        "latest-revision": {
-                            "type": "integer"
                         }
                     },
                     "additionalProperties": false,
@@ -51729,9 +49561,6 @@
                 "PinnedLeadershipResult": {
                     "type": "object",
                     "properties": {
-                        "error": {
-                            "$ref": "#/definitions/Error"
-                        },
                         "result": {
                             "type": "object",
                             "patternProperties": {
@@ -52848,692 +50677,6 @@
                     "additionalProperties": false,
                     "required": [
                         "results"
-                    ]
-                }
-            }
-        }
-    },
-    {
-        "Name": "UserSecretsDrain",
-        "Description": "SecretsDrainAPI is the implementation for the SecretsDrain facade.",
-        "Version": 1,
-        "AvailableTo": [
-            "controller-machine-agent"
-        ],
-        "Schema": {
-            "type": "object",
-            "properties": {
-                "ChangeSecretBackend": {
-                    "type": "object",
-                    "properties": {
-                        "Params": {
-                            "$ref": "#/definitions/ChangeSecretBackendArgs"
-                        },
-                        "Result": {
-                            "$ref": "#/definitions/ErrorResults"
-                        }
-                    },
-                    "description": "ChangeSecretBackend updates the backend for the specified secret after migration done."
-                },
-                "GetSecretBackendConfigs": {
-                    "type": "object",
-                    "properties": {
-                        "Params": {
-                            "$ref": "#/definitions/SecretBackendArgs"
-                        },
-                        "Result": {
-                            "$ref": "#/definitions/SecretBackendConfigResults"
-                        }
-                    },
-                    "description": "GetSecretBackendConfigs gets the config needed to create a client to secret backends for the drain worker."
-                },
-                "GetSecretContentInfo": {
-                    "type": "object",
-                    "properties": {
-                        "Params": {
-                            "$ref": "#/definitions/GetSecretContentArgs"
-                        },
-                        "Result": {
-                            "$ref": "#/definitions/SecretContentResults"
-                        }
-                    },
-                    "description": "GetSecretContentInfo returns the secret values for the specified secrets."
-                },
-                "GetSecretRevisionContentInfo": {
-                    "type": "object",
-                    "properties": {
-                        "Params": {
-                            "$ref": "#/definitions/SecretRevisionArg"
-                        },
-                        "Result": {
-                            "$ref": "#/definitions/SecretContentResults"
-                        }
-                    },
-                    "description": "GetSecretRevisionContentInfo returns the secret values for the specified secret revisions."
-                },
-                "GetSecretsToDrain": {
-                    "type": "object",
-                    "properties": {
-                        "Result": {
-                            "$ref": "#/definitions/ListSecretResults"
-                        }
-                    },
-                    "description": "GetSecretsToDrain returns metadata for the secrets that need to be drained."
-                },
-                "WatchSecretBackendChanged": {
-                    "type": "object",
-                    "properties": {
-                        "Result": {
-                            "$ref": "#/definitions/NotifyWatchResult"
-                        }
-                    },
-                    "description": "WatchSecretBackendChanged sets up a watcher to notify of changes to the secret backend."
-                }
-            },
-            "definitions": {
-                "AccessInfo": {
-                    "type": "object",
-                    "properties": {
-                        "role": {
-                            "type": "string"
-                        },
-                        "scope-tag": {
-                            "type": "string"
-                        },
-                        "target-tag": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "target-tag",
-                        "scope-tag",
-                        "role"
-                    ]
-                },
-                "ChangeSecretBackendArg": {
-                    "type": "object",
-                    "properties": {
-                        "content": {
-                            "$ref": "#/definitions/SecretContentParams"
-                        },
-                        "revision": {
-                            "type": "integer"
-                        },
-                        "uri": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "uri",
-                        "revision"
-                    ]
-                },
-                "ChangeSecretBackendArgs": {
-                    "type": "object",
-                    "properties": {
-                        "args": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/ChangeSecretBackendArg"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "args"
-                    ]
-                },
-                "Error": {
-                    "type": "object",
-                    "properties": {
-                        "code": {
-                            "type": "string"
-                        },
-                        "info": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "type": "object",
-                                    "additionalProperties": true
-                                }
-                            }
-                        },
-                        "message": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "message",
-                        "code"
-                    ]
-                },
-                "ErrorResult": {
-                    "type": "object",
-                    "properties": {
-                        "error": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                "ErrorResults": {
-                    "type": "object",
-                    "properties": {
-                        "results": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/ErrorResult"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "results"
-                    ]
-                },
-                "GetSecretContentArg": {
-                    "type": "object",
-                    "properties": {
-                        "label": {
-                            "type": "string"
-                        },
-                        "peek": {
-                            "type": "boolean"
-                        },
-                        "refresh": {
-                            "type": "boolean"
-                        },
-                        "uri": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "uri"
-                    ]
-                },
-                "GetSecretContentArgs": {
-                    "type": "object",
-                    "properties": {
-                        "args": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/GetSecretContentArg"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "args"
-                    ]
-                },
-                "ListSecretResult": {
-                    "type": "object",
-                    "properties": {
-                        "access": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/AccessInfo"
-                            }
-                        },
-                        "create-time": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
-                        "description": {
-                            "type": "string"
-                        },
-                        "label": {
-                            "type": "string"
-                        },
-                        "latest-expire-time": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
-                        "latest-revision": {
-                            "type": "integer"
-                        },
-                        "next-rotate-time": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
-                        "owner-tag": {
-                            "type": "string"
-                        },
-                        "revisions": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/SecretRevision"
-                            }
-                        },
-                        "rotate-policy": {
-                            "type": "string"
-                        },
-                        "update-time": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
-                        "uri": {
-                            "type": "string"
-                        },
-                        "value": {
-                            "$ref": "#/definitions/SecretValueResult"
-                        },
-                        "version": {
-                            "type": "integer"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "uri",
-                        "version",
-                        "owner-tag",
-                        "latest-revision",
-                        "create-time",
-                        "update-time",
-                        "revisions"
-                    ]
-                },
-                "ListSecretResults": {
-                    "type": "object",
-                    "properties": {
-                        "results": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/ListSecretResult"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "results"
-                    ]
-                },
-                "NotifyWatchResult": {
-                    "type": "object",
-                    "properties": {
-                        "NotifyWatcherId": {
-                            "type": "string"
-                        },
-                        "error": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "NotifyWatcherId"
-                    ]
-                },
-                "SecretBackendArgs": {
-                    "type": "object",
-                    "properties": {
-                        "backend-ids": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        "for-drain": {
-                            "type": "boolean"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "for-drain",
-                        "backend-ids"
-                    ]
-                },
-                "SecretBackendConfig": {
-                    "type": "object",
-                    "properties": {
-                        "params": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "type": "object",
-                                    "additionalProperties": true
-                                }
-                            }
-                        },
-                        "type": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "type"
-                    ]
-                },
-                "SecretBackendConfigResult": {
-                    "type": "object",
-                    "properties": {
-                        "config": {
-                            "$ref": "#/definitions/SecretBackendConfig"
-                        },
-                        "draining": {
-                            "type": "boolean"
-                        },
-                        "model-controller": {
-                            "type": "string"
-                        },
-                        "model-name": {
-                            "type": "string"
-                        },
-                        "model-uuid": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "model-controller",
-                        "model-uuid",
-                        "model-name",
-                        "draining"
-                    ]
-                },
-                "SecretBackendConfigResults": {
-                    "type": "object",
-                    "properties": {
-                        "active-id": {
-                            "type": "string"
-                        },
-                        "results": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "$ref": "#/definitions/SecretBackendConfigResult"
-                                }
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "active-id"
-                    ]
-                },
-                "SecretContentParams": {
-                    "type": "object",
-                    "properties": {
-                        "data": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        "value-ref": {
-                            "$ref": "#/definitions/SecretValueRef"
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                "SecretContentResult": {
-                    "type": "object",
-                    "properties": {
-                        "backend-config": {
-                            "$ref": "#/definitions/SecretBackendConfigResult"
-                        },
-                        "content": {
-                            "$ref": "#/definitions/SecretContentParams"
-                        },
-                        "error": {
-                            "$ref": "#/definitions/Error"
-                        },
-                        "latest-revision": {
-                            "type": "integer"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "content"
-                    ]
-                },
-                "SecretContentResults": {
-                    "type": "object",
-                    "properties": {
-                        "results": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/SecretContentResult"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "results"
-                    ]
-                },
-                "SecretRevision": {
-                    "type": "object",
-                    "properties": {
-                        "backend-name": {
-                            "type": "string"
-                        },
-                        "create-time": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
-                        "expire-time": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
-                        "revision": {
-                            "type": "integer"
-                        },
-                        "update-time": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
-                        "value-ref": {
-                            "$ref": "#/definitions/SecretValueRef"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "revision"
-                    ]
-                },
-                "SecretRevisionArg": {
-                    "type": "object",
-                    "properties": {
-                        "pending-delete": {
-                            "type": "boolean"
-                        },
-                        "revisions": {
-                            "type": "array",
-                            "items": {
-                                "type": "integer"
-                            }
-                        },
-                        "uri": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "uri",
-                        "revisions",
-                        "pending-delete"
-                    ]
-                },
-                "SecretValueRef": {
-                    "type": "object",
-                    "properties": {
-                        "backend-id": {
-                            "type": "string"
-                        },
-                        "revision-id": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "backend-id",
-                        "revision-id"
-                    ]
-                },
-                "SecretValueResult": {
-                    "type": "object",
-                    "properties": {
-                        "data": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        "error": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    },
-                    "additionalProperties": false
-                }
-            }
-        }
-    },
-    {
-        "Name": "UserSecretsManager",
-        "Description": "UserSecretsManager is the implementation for the usersecrets facade.",
-        "Version": 1,
-        "AvailableTo": [
-            "controller-machine-agent"
-        ],
-        "Schema": {
-            "type": "object",
-            "properties": {
-                "DeleteRevisions": {
-                    "type": "object",
-                    "properties": {
-                        "Params": {
-                            "$ref": "#/definitions/DeleteSecretArgs"
-                        },
-                        "Result": {
-                            "$ref": "#/definitions/ErrorResults"
-                        }
-                    },
-                    "description": "DeleteRevisions deletes the specified revisions of the specified secret."
-                },
-                "WatchRevisionsToPrune": {
-                    "type": "object",
-                    "properties": {
-                        "Result": {
-                            "$ref": "#/definitions/StringsWatchResult"
-                        }
-                    },
-                    "description": "WatchRevisionsToPrune returns a watcher for notifying when:\n  - a secret revision owned by the model no longer\n    has any consumers and should be pruned."
-                }
-            },
-            "definitions": {
-                "DeleteSecretArg": {
-                    "type": "object",
-                    "properties": {
-                        "label": {
-                            "type": "string"
-                        },
-                        "revisions": {
-                            "type": "array",
-                            "items": {
-                                "type": "integer"
-                            }
-                        },
-                        "uri": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "uri",
-                        "label"
-                    ]
-                },
-                "DeleteSecretArgs": {
-                    "type": "object",
-                    "properties": {
-                        "args": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/DeleteSecretArg"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "args"
-                    ]
-                },
-                "Error": {
-                    "type": "object",
-                    "properties": {
-                        "code": {
-                            "type": "string"
-                        },
-                        "info": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "type": "object",
-                                    "additionalProperties": true
-                                }
-                            }
-                        },
-                        "message": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "message",
-                        "code"
-                    ]
-                },
-                "ErrorResult": {
-                    "type": "object",
-                    "properties": {
-                        "error": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                "ErrorResults": {
-                    "type": "object",
-                    "properties": {
-                        "results": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/ErrorResult"
-                            }
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "results"
-                    ]
-                },
-                "StringsWatchResult": {
-                    "type": "object",
-                    "properties": {
-                        "changes": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        "error": {
-                            "$ref": "#/definitions/Error"
-                        },
-                        "watcher-id": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                        "watcher-id"
                     ]
                 }
             }

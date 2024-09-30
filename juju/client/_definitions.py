@@ -22,36 +22,6 @@ class APIHostPortsResult(Type):
 
 
 
-class AccessInfo(Type):
-    _toSchema = {'role': 'role', 'scope_tag': 'scope-tag', 'target_tag': 'target-tag'}
-    _toPy = {'role': 'role', 'scope-tag': 'scope_tag', 'target-tag': 'target_tag'}
-    def __init__(self, role=None, scope_tag=None, target_tag=None, **unknown_fields):
-        '''
-        role : str
-        scope_tag : str
-        target_tag : str
-        '''
-        role_ = role
-        scope_tag_ = scope_tag
-        target_tag_ = target_tag
-
-        # Validate arguments against known Juju API types.
-        if role_ is not None and not isinstance(role_, (bytes, str)):
-            raise Exception("Expected role_ to be a str, received: {}".format(type(role_)))
-
-        if scope_tag_ is not None and not isinstance(scope_tag_, (bytes, str)):
-            raise Exception("Expected scope_tag_ to be a str, received: {}".format(type(scope_tag_)))
-
-        if target_tag_ is not None and not isinstance(target_tag_, (bytes, str)):
-            raise Exception("Expected target_tag_ to be a str, received: {}".format(type(target_tag_)))
-
-        self.role = role_
-        self.scope_tag = scope_tag_
-        self.target_tag = target_tag_
-        self.unknown_fields = unknown_fields
-
-
-
 class Action(Type):
     _toSchema = {'execution_group': 'execution-group', 'name': 'name', 'parallel': 'parallel', 'parameters': 'parameters', 'receiver': 'receiver', 'tag': 'tag'}
     _toPy = {'execution-group': 'execution_group', 'name': 'name', 'parallel': 'parallel', 'parameters': 'parameters', 'receiver': 'receiver', 'tag': 'tag'}
@@ -3706,6 +3676,66 @@ class BytesResult(Type):
 
 
 
+class CAASApplicationGarbageCollectArg(Type):
+    _toSchema = {'active_pod_names': 'active-pod-names', 'application': 'application', 'desired_replicas': 'desired-replicas', 'force': 'force', 'observed_units': 'observed-units'}
+    _toPy = {'active-pod-names': 'active_pod_names', 'application': 'application', 'desired-replicas': 'desired_replicas', 'force': 'force', 'observed-units': 'observed_units'}
+    def __init__(self, active_pod_names=None, application=None, desired_replicas=None, force=None, observed_units=None, **unknown_fields):
+        '''
+        active_pod_names : typing.Sequence[str]
+        application : Entity
+        desired_replicas : int
+        force : bool
+        observed_units : Entities
+        '''
+        active_pod_names_ = active_pod_names
+        application_ = Entity.from_json(application) if application else None
+        desired_replicas_ = desired_replicas
+        force_ = force
+        observed_units_ = Entities.from_json(observed_units) if observed_units else None
+
+        # Validate arguments against known Juju API types.
+        if active_pod_names_ is not None and not isinstance(active_pod_names_, (bytes, str, list)):
+            raise Exception("Expected active_pod_names_ to be a Sequence, received: {}".format(type(active_pod_names_)))
+
+        if application_ is not None and not isinstance(application_, (dict, Entity)):
+            raise Exception("Expected application_ to be a Entity, received: {}".format(type(application_)))
+
+        if desired_replicas_ is not None and not isinstance(desired_replicas_, int):
+            raise Exception("Expected desired_replicas_ to be a int, received: {}".format(type(desired_replicas_)))
+
+        if force_ is not None and not isinstance(force_, bool):
+            raise Exception("Expected force_ to be a bool, received: {}".format(type(force_)))
+
+        if observed_units_ is not None and not isinstance(observed_units_, (dict, Entities)):
+            raise Exception("Expected observed_units_ to be a Entities, received: {}".format(type(observed_units_)))
+
+        self.active_pod_names = active_pod_names_
+        self.application = application_
+        self.desired_replicas = desired_replicas_
+        self.force = force_
+        self.observed_units = observed_units_
+        self.unknown_fields = unknown_fields
+
+
+
+class CAASApplicationGarbageCollectArgs(Type):
+    _toSchema = {'args': 'args'}
+    _toPy = {'args': 'args'}
+    def __init__(self, args=None, **unknown_fields):
+        '''
+        args : typing.Sequence[~CAASApplicationGarbageCollectArg]
+        '''
+        args_ = [CAASApplicationGarbageCollectArg.from_json(o) for o in args or []]
+
+        # Validate arguments against known Juju API types.
+        if args_ is not None and not isinstance(args_, (bytes, str, list)):
+            raise Exception("Expected args_ to be a Sequence, received: {}".format(type(args_)))
+
+        self.args = args_
+        self.unknown_fields = unknown_fields
+
+
+
 class CAASApplicationOCIResourceResult(Type):
     _toSchema = {'error': 'error', 'result': 'result'}
     _toPy = {'error': 'error', 'result': 'result'}
@@ -4266,6 +4296,36 @@ class ChangeSecretBackendArgs(Type):
             raise Exception("Expected args_ to be a Sequence, received: {}".format(type(args_)))
 
         self.args = args_
+        self.unknown_fields = unknown_fields
+
+
+
+class Channel(Type):
+    _toSchema = {'branch': 'branch', 'risk': 'risk', 'track': 'track'}
+    _toPy = {'branch': 'branch', 'risk': 'risk', 'track': 'track'}
+    def __init__(self, branch=None, risk=None, track=None, **unknown_fields):
+        '''
+        branch : str
+        risk : str
+        track : str
+        '''
+        branch_ = branch
+        risk_ = risk
+        track_ = track
+
+        # Validate arguments against known Juju API types.
+        if branch_ is not None and not isinstance(branch_, (bytes, str)):
+            raise Exception("Expected branch_ to be a str, received: {}".format(type(branch_)))
+
+        if risk_ is not None and not isinstance(risk_, (bytes, str)):
+            raise Exception("Expected risk_ to be a str, received: {}".format(type(risk_)))
+
+        if track_ is not None and not isinstance(track_, (bytes, str)):
+            raise Exception("Expected track_ to be a str, received: {}".format(type(track_)))
+
+        self.branch = branch_
+        self.risk = risk_
+        self.track = track_
         self.unknown_fields = unknown_fields
 
 
@@ -6194,9 +6254,9 @@ class CloudsResult(Type):
 
 
 class CommitHookChangesArg(Type):
-    _toSchema = {'add_storage': 'add-storage', 'close_ports': 'close-ports', 'open_ports': 'open-ports', 'pod_spec': 'pod-spec', 'relation_unit_settings': 'relation-unit-settings', 'secret_creates': 'secret-creates', 'secret_deletes': 'secret-deletes', 'secret_grants': 'secret-grants', 'secret_revokes': 'secret-revokes', 'secret_track_latest': 'secret-track-latest', 'secret_updates': 'secret-updates', 'set_raw_k8s_spec': 'set-raw-k8s-spec', 'tag': 'tag', 'unit_state': 'unit-state', 'update_network_info': 'update-network-info'}
-    _toPy = {'add-storage': 'add_storage', 'close-ports': 'close_ports', 'open-ports': 'open_ports', 'pod-spec': 'pod_spec', 'relation-unit-settings': 'relation_unit_settings', 'secret-creates': 'secret_creates', 'secret-deletes': 'secret_deletes', 'secret-grants': 'secret_grants', 'secret-revokes': 'secret_revokes', 'secret-track-latest': 'secret_track_latest', 'secret-updates': 'secret_updates', 'set-raw-k8s-spec': 'set_raw_k8s_spec', 'tag': 'tag', 'unit-state': 'unit_state', 'update-network-info': 'update_network_info'}
-    def __init__(self, add_storage=None, close_ports=None, open_ports=None, pod_spec=None, relation_unit_settings=None, secret_creates=None, secret_deletes=None, secret_grants=None, secret_revokes=None, secret_track_latest=None, secret_updates=None, set_raw_k8s_spec=None, tag=None, unit_state=None, update_network_info=None, **unknown_fields):
+    _toSchema = {'add_storage': 'add-storage', 'close_ports': 'close-ports', 'open_ports': 'open-ports', 'pod_spec': 'pod-spec', 'relation_unit_settings': 'relation-unit-settings', 'secret_creates': 'secret-creates', 'secret_deletes': 'secret-deletes', 'secret_grants': 'secret-grants', 'secret_revokes': 'secret-revokes', 'secret_updates': 'secret-updates', 'set_raw_k8s_spec': 'set-raw-k8s-spec', 'tag': 'tag', 'unit_state': 'unit-state', 'update_network_info': 'update-network-info'}
+    _toPy = {'add-storage': 'add_storage', 'close-ports': 'close_ports', 'open-ports': 'open_ports', 'pod-spec': 'pod_spec', 'relation-unit-settings': 'relation_unit_settings', 'secret-creates': 'secret_creates', 'secret-deletes': 'secret_deletes', 'secret-grants': 'secret_grants', 'secret-revokes': 'secret_revokes', 'secret-updates': 'secret_updates', 'set-raw-k8s-spec': 'set_raw_k8s_spec', 'tag': 'tag', 'unit-state': 'unit_state', 'update-network-info': 'update_network_info'}
+    def __init__(self, add_storage=None, close_ports=None, open_ports=None, pod_spec=None, relation_unit_settings=None, secret_creates=None, secret_deletes=None, secret_grants=None, secret_revokes=None, secret_updates=None, set_raw_k8s_spec=None, tag=None, unit_state=None, update_network_info=None, **unknown_fields):
         '''
         add_storage : typing.Sequence[~StorageAddParams]
         close_ports : typing.Sequence[~EntityPortRange]
@@ -6207,7 +6267,6 @@ class CommitHookChangesArg(Type):
         secret_deletes : typing.Sequence[~DeleteSecretArg]
         secret_grants : typing.Sequence[~GrantRevokeSecretArg]
         secret_revokes : typing.Sequence[~GrantRevokeSecretArg]
-        secret_track_latest : typing.Sequence[str]
         secret_updates : typing.Sequence[~UpdateSecretArg]
         set_raw_k8s_spec : PodSpec
         tag : str
@@ -6223,7 +6282,6 @@ class CommitHookChangesArg(Type):
         secret_deletes_ = [DeleteSecretArg.from_json(o) for o in secret_deletes or []]
         secret_grants_ = [GrantRevokeSecretArg.from_json(o) for o in secret_grants or []]
         secret_revokes_ = [GrantRevokeSecretArg.from_json(o) for o in secret_revokes or []]
-        secret_track_latest_ = secret_track_latest
         secret_updates_ = [UpdateSecretArg.from_json(o) for o in secret_updates or []]
         set_raw_k8s_spec_ = PodSpec.from_json(set_raw_k8s_spec) if set_raw_k8s_spec else None
         tag_ = tag
@@ -6258,9 +6316,6 @@ class CommitHookChangesArg(Type):
         if secret_revokes_ is not None and not isinstance(secret_revokes_, (bytes, str, list)):
             raise Exception("Expected secret_revokes_ to be a Sequence, received: {}".format(type(secret_revokes_)))
 
-        if secret_track_latest_ is not None and not isinstance(secret_track_latest_, (bytes, str, list)):
-            raise Exception("Expected secret_track_latest_ to be a Sequence, received: {}".format(type(secret_track_latest_)))
-
         if secret_updates_ is not None and not isinstance(secret_updates_, (bytes, str, list)):
             raise Exception("Expected secret_updates_ to be a Sequence, received: {}".format(type(secret_updates_)))
 
@@ -6285,7 +6340,6 @@ class CommitHookChangesArg(Type):
         self.secret_deletes = secret_deletes_
         self.secret_grants = secret_grants_
         self.secret_revokes = secret_revokes_
-        self.secret_track_latest = secret_track_latest_
         self.secret_updates = secret_updates_
         self.set_raw_k8s_spec = set_raw_k8s_spec_
         self.tag = tag_
@@ -10703,9 +10757,9 @@ class GetRemoteSecretAccessArgs(Type):
 
 
 class GetRemoteSecretContentArg(Type):
-    _toSchema = {'application_token': 'application-token', 'bakery_version': 'bakery-version', 'macaroons': 'macaroons', 'peek': 'peek', 'refresh': 'refresh', 'revision': 'revision', 'source_controller_uuid': 'source-controller-uuid', 'unit_id': 'unit-id', 'uri': 'uri'}
-    _toPy = {'application-token': 'application_token', 'bakery-version': 'bakery_version', 'macaroons': 'macaroons', 'peek': 'peek', 'refresh': 'refresh', 'revision': 'revision', 'source-controller-uuid': 'source_controller_uuid', 'unit-id': 'unit_id', 'uri': 'uri'}
-    def __init__(self, application_token=None, bakery_version=None, macaroons=None, peek=None, refresh=None, revision=None, source_controller_uuid=None, unit_id=None, uri=None, **unknown_fields):
+    _toSchema = {'application_token': 'application-token', 'bakery_version': 'bakery-version', 'macaroons': 'macaroons', 'peek': 'peek', 'refresh': 'refresh', 'revision': 'revision', 'unit_id': 'unit-id', 'uri': 'uri'}
+    _toPy = {'application-token': 'application_token', 'bakery-version': 'bakery_version', 'macaroons': 'macaroons', 'peek': 'peek', 'refresh': 'refresh', 'revision': 'revision', 'unit-id': 'unit_id', 'uri': 'uri'}
+    def __init__(self, application_token=None, bakery_version=None, macaroons=None, peek=None, refresh=None, revision=None, unit_id=None, uri=None, **unknown_fields):
         '''
         application_token : str
         bakery_version : int
@@ -10713,7 +10767,6 @@ class GetRemoteSecretContentArg(Type):
         peek : bool
         refresh : bool
         revision : int
-        source_controller_uuid : str
         unit_id : int
         uri : str
         '''
@@ -10723,7 +10776,6 @@ class GetRemoteSecretContentArg(Type):
         peek_ = peek
         refresh_ = refresh
         revision_ = revision
-        source_controller_uuid_ = source_controller_uuid
         unit_id_ = unit_id
         uri_ = uri
 
@@ -10746,9 +10798,6 @@ class GetRemoteSecretContentArg(Type):
         if revision_ is not None and not isinstance(revision_, int):
             raise Exception("Expected revision_ to be a int, received: {}".format(type(revision_)))
 
-        if source_controller_uuid_ is not None and not isinstance(source_controller_uuid_, (bytes, str)):
-            raise Exception("Expected source_controller_uuid_ to be a str, received: {}".format(type(source_controller_uuid_)))
-
         if unit_id_ is not None and not isinstance(unit_id_, int):
             raise Exception("Expected unit_id_ to be a int, received: {}".format(type(unit_id_)))
 
@@ -10761,7 +10810,6 @@ class GetRemoteSecretContentArg(Type):
         self.peek = peek_
         self.refresh = refresh_
         self.revision = revision_
-        self.source_controller_uuid = source_controller_uuid_
         self.unit_id = unit_id_
         self.uri = uri_
         self.unknown_fields = unknown_fields
@@ -12959,11 +13007,10 @@ class ListSecretBackendsResults(Type):
 
 
 class ListSecretResult(Type):
-    _toSchema = {'access': 'access', 'create_time': 'create-time', 'description': 'description', 'label': 'label', 'latest_expire_time': 'latest-expire-time', 'latest_revision': 'latest-revision', 'next_rotate_time': 'next-rotate-time', 'owner_tag': 'owner-tag', 'revisions': 'revisions', 'rotate_policy': 'rotate-policy', 'update_time': 'update-time', 'uri': 'uri', 'value': 'value', 'version': 'version'}
-    _toPy = {'access': 'access', 'create-time': 'create_time', 'description': 'description', 'label': 'label', 'latest-expire-time': 'latest_expire_time', 'latest-revision': 'latest_revision', 'next-rotate-time': 'next_rotate_time', 'owner-tag': 'owner_tag', 'revisions': 'revisions', 'rotate-policy': 'rotate_policy', 'update-time': 'update_time', 'uri': 'uri', 'value': 'value', 'version': 'version'}
-    def __init__(self, access=None, create_time=None, description=None, label=None, latest_expire_time=None, latest_revision=None, next_rotate_time=None, owner_tag=None, revisions=None, rotate_policy=None, update_time=None, uri=None, value=None, version=None, **unknown_fields):
+    _toSchema = {'create_time': 'create-time', 'description': 'description', 'label': 'label', 'latest_expire_time': 'latest-expire-time', 'latest_revision': 'latest-revision', 'next_rotate_time': 'next-rotate-time', 'owner_tag': 'owner-tag', 'revisions': 'revisions', 'rotate_policy': 'rotate-policy', 'update_time': 'update-time', 'uri': 'uri', 'value': 'value', 'version': 'version'}
+    _toPy = {'create-time': 'create_time', 'description': 'description', 'label': 'label', 'latest-expire-time': 'latest_expire_time', 'latest-revision': 'latest_revision', 'next-rotate-time': 'next_rotate_time', 'owner-tag': 'owner_tag', 'revisions': 'revisions', 'rotate-policy': 'rotate_policy', 'update-time': 'update_time', 'uri': 'uri', 'value': 'value', 'version': 'version'}
+    def __init__(self, create_time=None, description=None, label=None, latest_expire_time=None, latest_revision=None, next_rotate_time=None, owner_tag=None, revisions=None, rotate_policy=None, update_time=None, uri=None, value=None, version=None, **unknown_fields):
         '''
-        access : typing.Sequence[~AccessInfo]
         create_time : str
         description : str
         label : str
@@ -12978,7 +13025,6 @@ class ListSecretResult(Type):
         value : SecretValueResult
         version : int
         '''
-        access_ = [AccessInfo.from_json(o) for o in access or []]
         create_time_ = create_time
         description_ = description
         label_ = label
@@ -12994,9 +13040,6 @@ class ListSecretResult(Type):
         version_ = version
 
         # Validate arguments against known Juju API types.
-        if access_ is not None and not isinstance(access_, (bytes, str, list)):
-            raise Exception("Expected access_ to be a Sequence, received: {}".format(type(access_)))
-
         if create_time_ is not None and not isinstance(create_time_, (bytes, str)):
             raise Exception("Expected create_time_ to be a str, received: {}".format(type(create_time_)))
 
@@ -13036,7 +13079,6 @@ class ListSecretResult(Type):
         if version_ is not None and not isinstance(version_, int):
             raise Exception("Expected version_ to be a int, received: {}".format(type(version_)))
 
-        self.access = access_
         self.create_time = create_time_
         self.description = description_
         self.label = label_
@@ -14488,20 +14530,18 @@ class MetricResults(Type):
 
 
 class MigrationModelInfo(Type):
-    _toSchema = {'agent_version': 'agent-version', 'controller_agent_version': 'controller-agent-version', 'facade_versions': 'facade-versions', 'name': 'name', 'owner_tag': 'owner-tag', 'uuid': 'uuid'}
-    _toPy = {'agent-version': 'agent_version', 'controller-agent-version': 'controller_agent_version', 'facade-versions': 'facade_versions', 'name': 'name', 'owner-tag': 'owner_tag', 'uuid': 'uuid'}
-    def __init__(self, agent_version=None, controller_agent_version=None, facade_versions=None, name=None, owner_tag=None, uuid=None, **unknown_fields):
+    _toSchema = {'agent_version': 'agent-version', 'controller_agent_version': 'controller-agent-version', 'name': 'name', 'owner_tag': 'owner-tag', 'uuid': 'uuid'}
+    _toPy = {'agent-version': 'agent_version', 'controller-agent-version': 'controller_agent_version', 'name': 'name', 'owner-tag': 'owner_tag', 'uuid': 'uuid'}
+    def __init__(self, agent_version=None, controller_agent_version=None, name=None, owner_tag=None, uuid=None, **unknown_fields):
         '''
         agent_version : Number
         controller_agent_version : Number
-        facade_versions : typing.Mapping[str, typing.Sequence[int]]
         name : str
         owner_tag : str
         uuid : str
         '''
         agent_version_ = Number.from_json(agent_version) if agent_version else None
         controller_agent_version_ = Number.from_json(controller_agent_version) if controller_agent_version else None
-        facade_versions_ = facade_versions
         name_ = name
         owner_tag_ = owner_tag
         uuid_ = uuid
@@ -14512,9 +14552,6 @@ class MigrationModelInfo(Type):
 
         if controller_agent_version_ is not None and not isinstance(controller_agent_version_, (dict, Number)):
             raise Exception("Expected controller_agent_version_ to be a Number, received: {}".format(type(controller_agent_version_)))
-
-        if facade_versions_ is not None and not isinstance(facade_versions_, dict):
-            raise Exception("Expected facade_versions_ to be a Mapping, received: {}".format(type(facade_versions_)))
 
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise Exception("Expected name_ to be a str, received: {}".format(type(name_)))
@@ -14527,7 +14564,6 @@ class MigrationModelInfo(Type):
 
         self.agent_version = agent_version_
         self.controller_agent_version = controller_agent_version_
-        self.facade_versions = facade_versions_
         self.name = name_
         self.owner_tag = owner_tag_
         self.uuid = uuid_
@@ -17524,6 +17560,48 @@ class OfferUserDetails(Type):
         self.access = access_
         self.display_name = display_name_
         self.user = user_
+        self.unknown_fields = unknown_fields
+
+
+
+class OpenMachinePortRangesByEndpointResult(Type):
+    _toSchema = {'error': 'error', 'unit_port_ranges': 'unit-port-ranges'}
+    _toPy = {'error': 'error', 'unit-port-ranges': 'unit_port_ranges'}
+    def __init__(self, error=None, unit_port_ranges=None, **unknown_fields):
+        '''
+        error : Error
+        unit_port_ranges : typing.Mapping[str, typing.Sequence[~OpenUnitPortRangesByEndpoint]]
+        '''
+        error_ = Error.from_json(error) if error else None
+        unit_port_ranges_ = {k: OpenUnitPortRangesByEndpoint.from_json(v) for k, v in (unit_port_ranges or dict()).items()}
+
+        # Validate arguments against known Juju API types.
+        if error_ is not None and not isinstance(error_, (dict, Error)):
+            raise Exception("Expected error_ to be a Error, received: {}".format(type(error_)))
+
+        if unit_port_ranges_ is not None and not isinstance(unit_port_ranges_, dict):
+            raise Exception("Expected unit_port_ranges_ to be a Mapping, received: {}".format(type(unit_port_ranges_)))
+
+        self.error = error_
+        self.unit_port_ranges = unit_port_ranges_
+        self.unknown_fields = unknown_fields
+
+
+
+class OpenMachinePortRangesByEndpointResults(Type):
+    _toSchema = {'results': 'results'}
+    _toPy = {'results': 'results'}
+    def __init__(self, results=None, **unknown_fields):
+        '''
+        results : typing.Sequence[~OpenMachinePortRangesByEndpointResult]
+        '''
+        results_ = [OpenMachinePortRangesByEndpointResult.from_json(o) for o in results or []]
+
+        # Validate arguments against known Juju API types.
+        if results_ is not None and not isinstance(results_, (bytes, str, list)):
+            raise Exception("Expected results_ to be a Sequence, received: {}".format(type(results_)))
+
+        self.results = results_
         self.unknown_fields = unknown_fields
 
 
