@@ -4054,25 +4054,7 @@ class RaftLeaseFacade(Type):
                                                                        'type': 'array'}},
                                            'required': ['commands'],
                                            'type': 'object'}},
-     'properties': {'ApplyLease': {'description': 'ApplyLease is a bulk API to '
-                                                  'allow applying lease operations '
-                                                  'to a raft\n'
-                                                  'context. If the current '
-                                                  'controller is not the leader, '
-                                                  'then a NotLeaderError\n'
-                                                  'is returned. Information about '
-                                                  'where they can locate the '
-                                                  'leader maybe\n'
-                                                  'supplied in the error message, '
-                                                  "but isn't guaranteed.\n"
-                                                  'If no information is supplied, '
-                                                  'it is expected that the client '
-                                                  'performs their\n'
-                                                  'own algorithm to locate the '
-                                                  'leader (roundrobin or listen to '
-                                                  'the apidetails\n'
-                                                  'topic).',
-                                   'properties': {'Params': {'$ref': '#/definitions/LeaseOperationsV2'},
+     'properties': {'ApplyLease': {'properties': {'Params': {'$ref': '#/definitions/LeaseOperationsV2'},
                                                   'Result': {'$ref': '#/definitions/ErrorResults'}},
                                    'type': 'object'}},
      'type': 'object'}
@@ -4081,14 +4063,6 @@ class RaftLeaseFacade(Type):
     @ReturnMapping(ErrorResults)
     async def ApplyLease(self, commands=None):
         '''
-        ApplyLease is a bulk API to allow applying lease operations to a raft
-        context. If the current controller is not the leader, then a NotLeaderError
-        is returned. Information about where they can locate the leader maybe
-        supplied in the error message, but isn't guaranteed.
-        If no information is supplied, it is expected that the client performs their
-        own algorithm to locate the leader (roundrobin or listen to the apidetails
-        topic).
-
         commands : typing.Sequence[~LeaseOperationCommand]
         Returns -> ErrorResults
         '''
