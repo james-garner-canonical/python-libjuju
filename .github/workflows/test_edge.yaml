@@ -62,7 +62,7 @@ jobs:
           python-version: ${{ matrix.python }}
       - name: Install dependencies
         if: ${{ env.next-test != 'NA' }}
-        run: pip install tox
+        run: apt install tox
       - name: Run integration
         if: ${{ env.next-test != 'NA' }}
         # Force one single concurrent test
