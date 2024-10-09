@@ -96,7 +96,7 @@ class TestFacades:
         return client_facades
 
     @staticmethod
-    def _try_import(module_name: str) -> ModuleType | None:
+    def _try_import(module_name: str) -> Optional[ModuleType]:
         try:
             return importlib.import_module(module_name)
         except NameError as e:
