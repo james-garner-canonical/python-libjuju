@@ -19,7 +19,7 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - name: Install dependencies
-        run: apt install tox
+        run: sudo apt install tox
       - name: Run linter
         run: |
           tox -e lint
@@ -60,7 +60,7 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - name: Install dependencies
-        run: apt install tox
+        run: sudo apt install tox
       - name: Run unit tests
         run: tox -e py3
 
@@ -117,7 +117,7 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - name: Install dependencies
-        run: apt install tox
+        run: sudo apt install tox
       - name: Run integration
         # Force one single concurrent test
         run: tox -e integration
@@ -144,6 +144,6 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - name: Install dependencies
-        run: apt install tox
+        run: sudo apt install tox
       - name: Run integration
         run: tox -e integration-quarantine
