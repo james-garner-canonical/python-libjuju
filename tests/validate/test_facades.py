@@ -1,6 +1,5 @@
 import importlib
 import re
-import sys
 import warnings
 from pathlib import Path
 from types import ModuleType
@@ -29,7 +28,7 @@ class TestFacades:
         client_facades = cast(ClientFacades, connection.client_facades)
 
         errors: List[Tuple[str, Optional[List[int]], Optional[List[int]]]] = []
-        all_names = sorted(set(connection.client_facades).union(good_facades))#, key=str.swapcase)
+        all_names = sorted(set(connection.client_facades).union(good_facades))
         for name in all_names:
             expected = self._versions_from_facades(good_facades, name)
             actual = self._versions_from_facades(client_facades, name)
@@ -81,7 +80,7 @@ class TestFacades:
         # client_facades in connection.py is sorted
         # so we sort facade names before constructing it
         first, *rest = facades_by_version.values()
-        sorted_facade_names: list[str] = sorted(first.union(*rest))  #, key=str.swapcase)
+        sorted_facade_names: list[str] = sorted(first.union(*rest))
 
         client_facades: ClientFacades = {}
         # {facade_name: {'versions': [1, 2, 3, ...]}, ...}
