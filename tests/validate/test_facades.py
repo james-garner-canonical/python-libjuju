@@ -3,14 +3,12 @@
 
 import importlib
 import re
-import warnings
 from pathlib import Path
-from types import ModuleType
-from typing import Dict, List, Optional, Set, Tuple, TypedDict, cast
+from typing import Dict, List, Set, Tuple, TypedDict, cast
 
 import pytest
 
-from juju.client import connection
+from juju.client import connection, _definitions
 
 
 class Versions(TypedDict, total=True):
@@ -26,9 +24,8 @@ def project_root(pytestconfig: pytest.Config) -> Path:
 
 
 def test_client_facades(project_root: Path) -> None:
-    good_facades = make_client_facades_from_generated_code(project_root)
     client_facades = cast(ClientFacades, connection.client_facades)
-
+    good_facades = make_client_facades_from_generated_code(project_root)
     assert {
         k: v['versions'] for k, v in client_facades.items()
     } == {
@@ -47,12 +44,12 @@ def make_client_facades_from_generated_code(project_root: Path) -> ClientFacades
 
     # _clientN.py files import * from _definitions
     # so we will ignore any names from there
-    ignore = dir(importlib.import_module('juju.client._definitions'))
+    ignore = dir(_definitions)
 
     facades_by_version: Dict[int, Set[str]] = {}
     # {facade_version: {facade_name, ...}, ...}
     for version, file in files_by_version:
-        module = _try_import(f'juju.client.{file.stem}')
+        module = importlib.import_module(f'juju.client.{file.stem}')
         facades = {
             name.removesuffix("Facade")
             for name in dir(module)
@@ -75,19 +72,8 @@ def make_client_facades_from_generated_code(project_root: Path) -> ClientFacades
         client_facades[name] = {'versions': versions}
     return client_facades
 
-def _try_import(module_name: str) -> Optional[ModuleType]:
-    try:
-        return importlib.import_module(module_name)
-    except NameError as e:
-        warnings.warn(f'error on importing {module_name}:\n{type(e).__name__}: {e}')
-        return None
 
 def _version_from_filename(path: Path) -> int:
     match = re.search('_client([0-9]+).py', path.name)
     assert match
     return int(match.group(1))
-
-def _versions_from_facades(facades: ClientFacades, name: str) -> Optional[List[int]]:
-    if name not in facades:
-        return None
-    return facades[name]['versions']
