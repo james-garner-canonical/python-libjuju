@@ -1921,7 +1921,10 @@ class Model:
         # TODO (cderici) : supported_bases
         print("#@# resp:", resp)
         print("#@@ result", result)
-        supported_series = result.get('supported_series', result.unknown_fields['supported-series'])
+        try:
+            supported_series = result.get('supported_series', result.unknown_fields['supported-series'])
+        except KeyError:
+            supported_series = result.supported_bases
         resolved_origin = result.charm_origin
         charm_url = URL.parse(result.url)
 
