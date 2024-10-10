@@ -9,6 +9,7 @@ import urllib.request
 import weakref
 from http.client import HTTPSConnection
 from dateutil.parser import parse
+from typing import Dict, List
 
 import macaroonbakery.bakery as bakery
 import macaroonbakery.httpbakery as httpbakery
@@ -20,7 +21,12 @@ from juju.version import CLIENT_VERSION
 
 log = logging.getLogger('juju.client.connection')
 
+# Manual list of facades present in schemas + codegen which python-libjuju does not yet support
+excluded_facades: Dict[str, List[int]] = {
+    'Charms': [7],
+}
 # Please keep in alphabetical order
+# in future this will likely be generated automatically (perhaps at runtime)
 client_facades = {
     'Action': {'versions': [7]},
     'ActionPruner': {'versions': [1]},
@@ -51,7 +57,7 @@ client_facades = {
     'CAASUnitProvisioner': {'versions': [2]},
     'CharmDownloader': {'versions': [1]},
     'CharmRevisionUpdater': {'versions': [2]},
-    'Charms': {'versions': [6, 7]},
+    'Charms': {'versions': [6]},
     'Cleaner': {'versions': [2]},
     'Client': {'versions': [6, 7]},
     'Cloud': {'versions': [7]},

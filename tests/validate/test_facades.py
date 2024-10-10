@@ -62,11 +62,14 @@ def make_client_facades_from_generated_code(project_root: Path) -> ClientFacades
     first, *rest = facades_by_version.values()
     sorted_facade_names: list[str] = sorted(first.union(*rest))
 
+    excluded_facades = connection.excluded_facades
     client_facades: ClientFacades = {}
     # {facade_name: {'versions': [1, 2, 3, ...]}, ...}
     for name in sorted_facade_names:
         versions: List[int] = []
         for version, facades in facades_by_version.items():
+            if version in excluded_facades.get(name, []):
+                continue
             if name in facades:
                 versions.append(version)
         client_facades[name] = {'versions': versions}
