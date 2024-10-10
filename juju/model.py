@@ -1919,6 +1919,8 @@ class Model:
             raise JujuError(f'resolving {url} : {result.error.message}')
 
         # TODO (cderici) : supported_bases
+        print("#@# resp:", resp)
+        print("#@@ result", result)
         supported_series = result.get('supported_series', result.unknown_fields['supported-series'])
         resolved_origin = result.charm_origin
         charm_url = URL.parse(result.url)
