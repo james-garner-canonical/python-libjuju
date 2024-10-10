@@ -967,7 +967,7 @@ class ApplicationFacade(Type):
                                                              'Result': {'$ref': '#/definitions/ErrorResults'}},
                                               'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(AddRelationResults)
     async def AddRelation(self, endpoints=None, via_cidrs=None):
@@ -1606,6 +1606,7 @@ class ApplicationFacade(Type):
         _params['generation'] = generation
         _params['resource-ids'] = resource_ids
         _params['storage-constraints'] = storage_constraints
+        print("#@# _client19.Application.SetCharms", msg)
         reply = await self.rpc(msg)
         return reply
 
@@ -3812,7 +3813,7 @@ class UniterFacade(Type):
                                                        'Result': {'$ref': '#/definitions/StringResults'}},
                                         'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(StringsResult)
     async def APIAddresses(self):
