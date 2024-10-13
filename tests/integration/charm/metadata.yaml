@@ -1,12 +1,3 @@
 name: charm
 summary: test
 description: test
-maintainers:
-  - test
-containers:
-  test:
-    bases:
-      - name: ubuntu
-        channel: '20.04/stable'
-        architectures:
-          - amd64
