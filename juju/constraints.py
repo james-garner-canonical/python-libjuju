@@ -151,7 +151,21 @@ def normalize_list_value(value: str) -> List[ParsedValue]:
 
 
 STORAGE = re.compile(
-    '(?:(?:^|(?<=,))(?:|(?P<pool>[a-zA-Z]+[-?a-zA-Z0-9]*)|(?P<count>-?[0-9]+)|(?:(?P<size>-?[0-9]+(?:\\.[0-9]+)?)(?P<size_exp>[MGTPEZY])(?:i?B)?))(?:$|,))')
+    # original regex:
+    # '(?:(?:^|(?<=,))(?:|(?P<pool>[a-zA-Z]+[-?a-zA-Z0-9]*)|(?P<count>-?[0-9]+)|(?:(?P<size>-?[0-9]+(?:\\.[0-9]+)?)(?P<size_exp>[MGTPEZY])(?:i?B)?))(?:$|,))'
+    # with formatting and explanation -- note that this regex is used with re.finditer:
+    '(?:(?:^|(?<=,))'                           # start of string or previous match ends with ','
+    '(?:'                                       # match one of the following:
+        '|(?P<pool>[a-zA-Z]+[-?a-zA-Z0-9]*)'    # pool: a sequence starting with a letter, ending with a letter or number,
+                                                # -- and including letters, numbers and hyphens (no more than one in a row)
+        '|(?P<count>-?[0-9]+)'                  # count: an optional minus sign followed by one or more digits
+        '|(?:'                                  # size (number) and size_exp (units):
+            '(?P<size>-?[0-9]+(?:\\.[0-9]+)?)'  # an optional minus sign followed by one or more digits, optionally with decimal point and more digits
+            '(?P<size_exp>[MGTPEZY])(?:i?B)?'   # one of MGTPEZY, optionally followed by iB or B, for example 1M or 2.0MB or -3.3MiB
+        ')'
+    ')'
+    '(?:$|,))'                                  # end of string or ','
+)
 
 
 class StorageConstraintDict(TypedDict):
@@ -179,7 +193,21 @@ def parse_storage_constraint(constraint: str) -> StorageConstraintDict:
 
 
 DEVICE = re.compile(
-    '^(?P<count>[0-9]+)?(?:^|,)(?P<type>[^,]+)(?:$|,(?!$))(?P<attrs>(?:[^=]+=[^;]+)+)*$')
+    # original regex:
+    # '^(?P<count>[0-9]+)?(?:^|,)(?P<type>[^,]+)(?:$|,(?!$))(?P<attrs>(?:[^=]+=[^;]+)+)*$'
+    # with formatting and explanation:
+    '^'                             # start of string
+    '(?P<count>[0-9]+)?'            # count is 1+ digits, and is optional
+    '(?:^|,)'                       # match start of string or a comma
+                                    # -- so type can be at the start or comma separated from count
+    '(?P<type>[^,]+)'               # type is 1+ anything not a comma (including digits), and is required
+    '(?:$|,(?!$))'                  # match end of string | or a non-trailing comma
+                                    # -- so type can be at the end or followed by attrs
+    '(?P<attrs>(?:[^=]+=[^;]+)+)*'  # attrs is any number of semicolon separated key=value items
+                                    # -- value can have spare '=' inside, possible not intended
+                                    # -- attrs will be matched with ATTR.finditer afterwards in parse_device_constraint
+    '$'                             # end of string
+)
 ATTR = re.compile(';?(?P<key>[^=]+)=(?P<value>[^;]+)')
 
 
