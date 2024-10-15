@@ -23,6 +23,7 @@ from juju.bundle import (
     SetAnnotationsChange,
 )
 from juju import charmhub
+from juju import constraints
 from juju.client import client
 from toposort import CircularDependencyError
 
@@ -123,12 +124,14 @@ class TestAddApplicationChange(unittest.TestCase):
 class TestAddApplicationChangeRun:
 
     async def test_run_with_charmhub_charm(self):
+        storage_label = "some-label"
+        storage_constraint = "ebs,100G,1"
         change = AddApplicationChange(1, [], params={"charm": "charm",
                                                      "series": "series",
                                                      "application": "application",
                                                      "options": "options",
                                                      "constraints": "constraints",
-                                                     "storage": "storage",
+                                                     "storage": {storage_label: storage_constraint},
                                                      "endpoint-bindings": "endpoint_bindings",
                                                      "resources": "resources",
                                                      "devices": "devices",
@@ -160,7 +163,7 @@ class TestAddApplicationChangeRun:
                                          constraints="constraints",
                                          endpoint_bindings="endpoint_bindings",
                                          resources=["resource1"],
-                                         storage="storage",
+                                         storage={storage_label: constraints.parse_storage_constraint(storage_constraint)},
                                          devices="devices",
                                          channel="channel",
                                          charm_origin=ANY,
@@ -170,12 +173,14 @@ class TestAddApplicationChangeRun:
         """Test to verify if when the given channel is None, the channel defaults to "local/stable", which
             is the default channel value for the Charm Hub
         """
+        storage_label = "some-label"
+        storage_constraint = "ebs,100G,1"
         change = AddApplicationChange(1, [], params={"charm": "charm",
                                                      "series": "series",
                                                      "application": "application",
                                                      "options": "options",
                                                      "constraints": "constraints",
-                                                     "storage": "storage",
+                                                     "storage": {storage_label: storage_constraint},
                                                      "endpoint-bindings": "endpoint_bindings",
                                                      "resources": "resources",
                                                      "devices": "devices",
@@ -208,19 +213,21 @@ class TestAddApplicationChangeRun:
                                          constraints="constraints",
                                          endpoint_bindings="endpoint_bindings",
                                          resources=["resource1"],
-                                         storage="storage",
+                                         storage={storage_label: constraints.parse_storage_constraint(storage_constraint)},
                                          devices="devices",
                                          channel="latest/stable",
                                          charm_origin=ANY,
                                          num_units="num_units")
 
     async def test_run_local(self):
+        storage_label = "some-label"
+        storage_constraint = "ebs,100G,1"
         change = AddApplicationChange(1, [], params={"charm": "local:charm",
                                                      "series": "series",
                                                      "application": "application",
                                                      "options": "options",
                                                      "constraints": "constraints",
-                                                     "storage": "storage",
+                                                     "storage": {storage_label: storage_constraint},
                                                      "endpoint-bindings": "endpoint_bindings",
                                                      "devices": "devices",
                                                      "num-units": "num_units"})
@@ -246,19 +253,21 @@ class TestAddApplicationChangeRun:
                                          constraints="constraints",
                                          endpoint_bindings="endpoint_bindings",
                                          resources={},
-                                         storage="storage",
+                                         storage={storage_label: constraints.parse_storage_constraint(storage_constraint)},
                                          devices="devices",
                                          num_units="num_units",
                                          channel="",
                                          charm_origin=ANY)
 
     async def test_run_no_series(self):
+        storage_label = "some-label"
+        storage_constraint = "ebs,100G,1"
         change = AddApplicationChange(1, [], params={"charm": "ch:charm1",
                                                      "series": "",
                                                      "application": "application",
                                                      "options": "options",
                                                      "constraints": "constraints",
-                                                     "storage": "storage",
+                                                     "storage": {storage_label: storage_constraint},
                                                      "endpoint-bindings": "endpoint_bindings",
                                                      "resources": "resources",
                                                      "devices": "devices",
@@ -289,7 +298,7 @@ class TestAddApplicationChangeRun:
                                          constraints="constraints",
                                          endpoint_bindings="endpoint_bindings",
                                          resources=["resource1"],
-                                         storage="storage",
+                                         storage={storage_label: constraints.parse_storage_constraint(storage_constraint)},
                                          devices="devices",
                                          channel="channel",
                                          charm_origin=ANY,
