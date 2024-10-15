@@ -19,6 +19,9 @@
 #
 
 import re
+from typing import Dict, List, Optional, TypedDict, Union
+from typing_extensions import Required, NotRequired
+
 
 # Matches on a string specifying memory size
 MEM = re.compile('^[1-9][0-9]*[MGTP]$')
@@ -61,7 +64,28 @@ SNAKE1 = re.compile(r'(.)([A-Z][a-z]+)')
 SNAKE2 = re.compile('([a-z0-9])([A-Z])')
 
 
-def parse(constraints):
+ParsedValue = Union[int, bool, str]
+
+
+class ConstraintsDict(TypedDict, total=False):
+    allocate_public_ip: ParsedValue
+    arch: ParsedValue
+    container: ParsedValue
+    cores: ParsedValue
+    cpu_cores: ParsedValue
+    cpu_power: ParsedValue
+    instance_role: ParsedValue
+    instance_type: ParsedValue
+    mem: ParsedValue
+    root_disk: ParsedValue
+    root_dist_source: ParsedValue
+    spaces: List[ParsedValue]
+    tags: List[ParsedValue]
+    virt_type: ParsedValue
+    zones: List[ParsedValue]
+
+
+def parse(constraints: Union[str, ConstraintsDict]) -> Optional[ConstraintsDict]:
     """
     Constraints must be expressed as a string containing only spaces
     and key value pairs joined by an '='.
@@ -74,7 +98,7 @@ def parse(constraints):
         # Fowards compatibilty: already parsed
         return constraints
 
-    normalized_constraints = {}
+    normalized_constraints: ConstraintsDict = {}
     for s in constraints.split(" "):
         if "=" not in s:
             raise ValueError("malformed constraint %s" % s)
@@ -89,7 +113,7 @@ def parse(constraints):
     return normalized_constraints
 
 
-def normalize_key(orig_key):
+def normalize_key(orig_key: str) -> str:
     key = orig_key.strip()
 
     key = key.replace("-", "_")  # Our _client lib wants "_" in place of "-"
@@ -103,7 +127,7 @@ def normalize_key(orig_key):
     return key
 
 
-def normalize_value(value):
+def normalize_value(value: str) -> Union[int, bool, str]:
     value = value.strip()
 
     if MEM.match(value):
@@ -121,7 +145,7 @@ def normalize_value(value):
     return value
 
 
-def normalize_list_value(value):
+def normalize_list_value(value: str) -> List[ParsedValue]:
     values = value.strip().split(',')
     return [normalize_value(value) for value in values]
 
@@ -130,8 +154,14 @@ STORAGE = re.compile(
     '(?:(?:^|(?<=,))(?:|(?P<pool>[a-zA-Z]+[-?a-zA-Z0-9]*)|(?P<count>-?[0-9]+)|(?:(?P<size>-?[0-9]+(?:\\.[0-9]+)?)(?P<size_exp>[MGTPEZY])(?:i?B)?))(?:$|,))')
 
 
-def parse_storage_constraint(constraint):
-    storage = {'count': 1}
+class StorageConstraintDict(TypedDict):
+    count: Required[int]  # >= 1
+    pool: NotRequired[str]
+    size: NotRequired[int]
+
+
+def parse_storage_constraint(constraint: str) -> StorageConstraintDict:
+    storage: StorageConstraintDict = {'count': 1}
     for m in STORAGE.finditer(constraint):
         pool = m.group('pool')
         if pool:
@@ -153,11 +183,17 @@ DEVICE = re.compile(
 ATTR = re.compile(';?(?P<key>[^=]+)=(?P<value>[^;]+)')
 
 
-def parse_device_constraint(constraint):
+class DeviceConstraintDict(TypedDict):
+    count: Required[int]
+    type: Required[str]
+    attributes: NotRequired[Dict[str, str]]
+
+
+def parse_device_constraint(constraint: str) -> DeviceConstraintDict:
     m = DEVICE.match(constraint)
     if m is None:
         raise ValueError("device constraint does not match")
-    device = {}
+    device: DeviceConstraintDict = {}
     count = m.group('count')
     if count:
         count = int(count)
