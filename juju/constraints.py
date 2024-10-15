@@ -154,17 +154,18 @@ STORAGE = re.compile(
     # original regex:
     # '(?:(?:^|(?<=,))(?:|(?P<pool>[a-zA-Z]+[-?a-zA-Z0-9]*)|(?P<count>-?[0-9]+)|(?:(?P<size>-?[0-9]+(?:\\.[0-9]+)?)(?P<size_exp>[MGTPEZY])(?:i?B)?))(?:$|,))'
     # with formatting and explanation -- note that this regex is used with re.finditer:
-    '(?:(?:^|(?<=,))'                           # start of string or previous match ends with ','
-    '(?:'                                       # match one of the following:
-        '|(?P<pool>[a-zA-Z]+[-?a-zA-Z0-9]*)'    # pool: a sequence starting with a letter, ending with a letter or number,
-                                                # -- and including letters, numbers and hyphens (no more than one in a row)
-        '|(?P<count>-?[0-9]+)'                  # count: an optional minus sign followed by one or more digits
-        '|(?:'                                  # size (number) and size_exp (units):
-            '(?P<size>-?[0-9]+(?:\\.[0-9]+)?)'  # an optional minus sign followed by one or more digits, optionally with decimal point and more digits
-            '(?P<size_exp>[MGTPEZY])(?:i?B)?'   # one of MGTPEZY, optionally followed by iB or B, for example 1M or 2.0MB or -3.3MiB
-        ')'
+    '(?:'
+    '(?:^|(?<=,))'                        # start of string or previous match ends with ','
+    '(?:'                                 # match one of the following:
+    '|(?P<pool>[a-zA-Z]+[-?a-zA-Z0-9]*)'  # * pool: a sequence starting with a letter, ending with a letter or number,
+                                          # ------- and including letters, numbers and hyphens (no more than one in a row)
+    '|(?P<count>-?[0-9]+)'                # * count: an optional minus sign followed by one or more digits
+    '|(?:'                                # * size (number) and size_exp (units):
+    '(?P<size>-?[0-9]+(?:\\.[0-9]+)?)'    # -- * an optional minus sign followed by one or more digits, optionally with decimal point and more digits
+    '(?P<size_exp>[MGTPEZY])(?:i?B)?)'    # -- * one of MGTPEZY, optionally followed by iB or B, for example 1M or 2.0MB or -3.3MiB
     ')'
-    '(?:$|,))'                                  # end of string or ','
+    '(?:$|,)'                             # end of string or ','
+    ')'
 )
 
 
@@ -195,7 +196,7 @@ def parse_storage_constraint(constraint: str) -> StorageConstraintDict:
 DEVICE = re.compile(
     # original regex:
     # '^(?P<count>[0-9]+)?(?:^|,)(?P<type>[^,]+)(?:$|,(?!$))(?P<attrs>(?:[^=]+=[^;]+)+)*$'
-    # with formatting and explanation:
+    # with formatting and explanation -- note this regex is used with re.match:
     '^'                             # start of string
     '(?P<count>[0-9]+)?'            # count is 1+ digits, and is optional
     '(?:^|,)'                       # match start of string or a comma
