@@ -9,6 +9,7 @@ import requests
 import base64
 from contextlib import closing
 from pathlib import Path
+from typing import Dict, Optional
 
 import yaml
 
@@ -555,7 +556,10 @@ class AddApplicationChange(ChangeInfo):
         this will be used to scale the application.
     :options: holds application options.
     :constraints: optional application constraints.
-    :storage: optional storage constraints.
+    :storage: optional storage constraints, in the form of `{label: constraint}`.
+        The label is a string specified by the charm, while the constraint is a string following
+        `the juju storage constraint directive format <https://juju.is/docs/juju/storage-constraint>`_,
+        specifying the storage pool, number of volumes, and size of each volume.
     :devices: optional devices constraints.
     :endpoint_bindings: optional endpoint bindings
     :resources: identifies the revision to use for each resource of the
@@ -563,6 +567,9 @@ class AddApplicationChange(ChangeInfo):
     :local_resources: identifies the path to the local resource of the
         application's charm.
     """
+
+    storage: Optional[Dict[str, str]]
+
     @staticmethod
     def method():
         """method returns an associated ID for the Juju API call.
@@ -631,7 +638,11 @@ class AddApplicationChange(ChangeInfo):
             constraints=self.constraints,
             endpoint_bindings=self.endpoint_bindings,
             resources=resources,
-            storage={k: parse_storage_constraint(v) for k, v in (self.storage or dict()).items()},
+            storage={
+                label: parse_storage_constraint(constraint)
+                for label, constraint
+                in (self.storage or {}).items()
+            },
             channel=self.channel,
             devices=self.devices,
             num_units=self.num_units,
