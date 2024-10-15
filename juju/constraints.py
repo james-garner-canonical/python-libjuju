@@ -52,7 +52,8 @@ SUPPORTED_KEYS = [
     "spaces",
     "virt_type",
     "zones",
-    "allocate_public_ip"]
+    "allocate_public_ip",
+]
 
 LIST_KEYS = {'tags', 'spaces', 'zones'}
 
@@ -69,18 +70,21 @@ def parse(constraints):
     if not constraints:
         return None
 
-    if type(constraints) is dict:
+    if isinstance(constraints, dict):
         # Fowards compatibilty: already parsed
         return constraints
 
     normalized_constraints = {}
     for s in constraints.split(" "):
         if "=" not in s:
-            raise Exception("malformed constraint %s" % s)
+            raise ValueError("malformed constraint %s" % s)
 
         k, v = s.split("=")
-        normalized_constraints[normalize_key(k)] = normalize_list_value(v) if\
-            k in LIST_KEYS else normalize_value(v)
+        normalized_constraints[normalize_key(k)] = (
+            normalize_list_value(v)
+            if k in LIST_KEYS
+            else normalize_value(v)
+        )
 
     return normalized_constraints
 
@@ -95,7 +99,7 @@ def normalize_key(orig_key):
     key = SNAKE2.sub(r'\1_\2', key).lower()
 
     if key not in SUPPORTED_KEYS:
-        raise Exception("unknown constraint in %s" % orig_key)
+        raise ValueError("unknown constraint in %s" % orig_key)
     return key
 
 
@@ -132,7 +136,7 @@ def parse_storage_constraint(constraint):
         pool = m.group('pool')
         if pool:
             if 'pool' in storage:
-                raise Exception("pool already specified")
+                raise ValueError("pool already specified")
             storage['pool'] = pool
         count = m.group('count')
         if count:
@@ -152,7 +156,7 @@ ATTR = re.compile(';?(?P<key>[^=]+)=(?P<value>[^;]+)')
 def parse_device_constraint(constraint):
     m = DEVICE.match(constraint)
     if m is None:
-        raise Exception("device constraint does not match")
+        raise ValueError("device constraint does not match")
     device = {}
     count = m.group('count')
     if count:
