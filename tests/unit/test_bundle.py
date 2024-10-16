@@ -1,12 +1,11 @@
 # Copyright 2023 Canonical Ltd.
 # Licensed under the Apache V2, see LICENCE file for details.
 
-import pytest
 import unittest
 from pathlib import Path
 from unittest import mock
 from mock import patch, Mock, ANY
-from typing import Dict, Union
+from typing import Dict, List, Tuple
 
 import yaml
 
@@ -170,9 +169,13 @@ class TestAddApplicationChangeRun:
                                          charm_origin=ANY,
                                          num_units="num_units")
 
-    @pytest.mark.parametrize(
-        'storage_arg_for_change,storage_arg_for_deploy',
-        [
+    async def test_run_with_storage_variations(self):
+        """Test that various valid storage constraints are parsed as expected before model._deploy is called.
+
+        Uses the mock call logic from test_run_with_charmhub_charm, which will run before this test.
+        """
+        storage_arg_pairs: List[Tuple[Dict[str, str], Dict[str, constraints.StorageConstraintDict]]] = [
+            # (storage_arg_for_change, storage_arg_for_deploy)
             ({'some-label': 'ebs,100G,1'}, {'some-label': {'count': 1, 'pool': 'ebs', 'size': 102400}}),
             ({'some-label': 'ebs,2.1G,3'}, {'some-label': {'count': 3, 'pool': 'ebs', 'size': 2150}}),
             ({'some-label': 'ebs,100G'}, {'some-label': {'count': 1, 'pool': 'ebs', 'size': 102400}}),
@@ -196,66 +199,57 @@ class TestAddApplicationChangeRun:
                 },
             ),
         ]
-    )
-    async def test_run_with_storage_variations(
-        self,
-        storage_arg_for_change: Dict[str, str],
-        storage_arg_for_deploy: Dict[str, Dict[str, Union[int, str]]],
-    ):
-        """Test that various valid storage constraints are parsed as expected before model._deploy is called.
-
-        Uses the mock call logic from test_run_with_charmhub_charm, which will run before this test.
-        """
-        change = AddApplicationChange(
-            1,
-            [],
-            params={
-                "charm": "charm",
-                "series": "series",
-                "application": "application",
-                "options": "options",
-                "constraints": "constraints",
-                "storage": storage_arg_for_change,
-                "endpoint-bindings": "endpoint_bindings",
-                "resources": "resources",
-                "devices": "devices",
-                "num-units": "num_units",
-                "channel": "channel",
-            },
-        )
-        # mock model
-        model = Mock()
-        model._deploy = mock.AsyncMock(return_value=None)
-        model._add_charmhub_resources = mock.AsyncMock(return_value=["resource1"])
-        model.applications = {}
-        # mock context
-        context = Mock()
-        context.resolve.return_value = "ch:charm1"
-        context.origins = {"ch:charm1": Mock()}
-        context.trusted = False
-        context.model = model
-        # mock info_func
-        info_func = mock.AsyncMock(return_value=["12345", "name"])
-        # patch and call
-        with patch.object(charmhub.CharmHub, 'get_charm_id', info_func):
-            result = await change.run(context)
-        assert result == "application"
-        # asserts
-        model._deploy.assert_called_once()
-        model._deploy.assert_called_with(
-            charm_url="ch:charm1",
-            application="application",
-            series="series",
-            config="options",
-            constraints="constraints",
-            endpoint_bindings="endpoint_bindings",
-            resources=["resource1"],
-            storage=storage_arg_for_deploy,  # we're testing this
-            devices="devices",
-            channel="channel",
-            charm_origin=ANY,
-            num_units="num_units",
-        )
+        for storage_arg_for_change, storage_arg_for_deploy in storage_arg_pairs:
+            change = AddApplicationChange(
+                1,
+                [],
+                params={
+                    "charm": "charm",
+                    "series": "series",
+                    "application": "application",
+                    "options": "options",
+                    "constraints": "constraints",
+                    "storage": storage_arg_for_change,
+                    "endpoint-bindings": "endpoint_bindings",
+                    "resources": "resources",
+                    "devices": "devices",
+                    "num-units": "num_units",
+                    "channel": "channel",
+                },
+            )
+            # mock model
+            model = Mock()
+            model._deploy = mock.AsyncMock(return_value=None)
+            model._add_charmhub_resources = mock.AsyncMock(return_value=["resource1"])
+            model.applications = {}
+            # mock context
+            context = Mock()
+            context.resolve.return_value = "ch:charm1"
+            context.origins = {"ch:charm1": Mock()}
+            context.trusted = False
+            context.model = model
+            # mock info_func
+            info_func = mock.AsyncMock(return_value=["12345", "name"])
+            # patch and call
+            with patch.object(charmhub.CharmHub, 'get_charm_id', info_func):
+                result = await change.run(context)
+            assert result == "application"
+            # asserts
+            model._deploy.assert_called_once()
+            model._deploy.assert_called_with(
+                charm_url="ch:charm1",
+                application="application",
+                series="series",
+                config="options",
+                constraints="constraints",
+                endpoint_bindings="endpoint_bindings",
+                resources=["resource1"],
+                storage=storage_arg_for_deploy,  # we're testing this
+                devices="devices",
+                channel="channel",
+                charm_origin=ANY,
+                num_units="num_units",
+            )
 
     async def test_run_with_charmhub_charm_no_channel(self):
         """Test to verify if when the given channel is None, the channel defaults to "local/stable", which
