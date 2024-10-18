@@ -13,7 +13,7 @@ import typing
 from collections import defaultdict
 from glob import glob
 from pathlib import Path
-from typing import Any, Mapping, Sequence, TypeVar
+from typing import Any, Dict, List, Mapping, Sequence, Tuple, TypeVar
 
 import typing_inspect
 
@@ -926,11 +926,22 @@ def generate_definitions(schemas):
     return definitions
 
 
-def generate_facades(schemas):
+def sortable_schema_version(version_string: str) -> Tuple[int, int, int]:
+    """Return a sorting key in the form (major, minor, micro) from a version string."""
+    # 'latest' is special cased in load_schemas and should come last
+    if version_string == 'latest':
+        return (9000, 9000, 9000)
+    # raise ValueError if string isn't in the format A.B.C
+    major, minor, micro = version_string.split('.')
+    # raise ValueError if major, minor, and micro aren't int strings
+    return (int(major), int(minor), int(micro))
+
+
+def generate_facades(schemas: Dict[str, List[Schema]]) -> Dict[str, Dict[int, codegen.Capture]]:
     captures = defaultdict(codegen.Capture)
 
     # Build the Facade classes
-    for juju_version in sorted(schemas.keys()):
+    for juju_version in sorted(schemas.keys(), key=sortable_schema_version):
         for schema in schemas[juju_version]:
             cls, source = buildFacade(schema)
             cls_name = "{}Facade".format(schema.name)
