@@ -1,6 +1,7 @@
 # Copyright 2023 Canonical Ltd.
 # Licensed under the Apache V2, see LICENCE file for details.
 
+from __future__ import annotations
 import argparse
 import builtins
 import functools
@@ -13,7 +14,7 @@ import typing
 from collections import defaultdict
 from glob import glob
 from pathlib import Path
-from typing import Any, Dict, List, Mapping, Sequence
+from typing import Any, Dict, List, Mapping, Sequence, Tuple, TypeVar
 
 import packaging.version
 import typing_inspect
@@ -48,53 +49,51 @@ HEADER = """\
 
 # Classes and helper functions that we'll write to _client.py
 LOOKUP_FACADE = '''
-def lookup_facade(name, version):
-    """
-    Given a facade name and version, attempt to pull that facade out
-    of the correct client<version>.py file.
-
-    """
-    for _version in range(int(version), 0, -1):
+def lookup_facade(name: str, version: int) -> typing.Type[juju.client.facade.Type]:
+    """Return the facade object of the given version or lower."""
+    for v in range(version, 0, -1):
         try:
-            facade = getattr(CLIENTS[str(_version)], name)
+            client_module = CLIENTS[str(v)]
+            facade = getattr(client_module, name)
             return facade
         except (KeyError, AttributeError):
             continue
-    else:
-        raise ImportError("No supported version for facade: "
-                          "{}".format(name))
+    raise ImportError(f'No supported version for facade: {name}')
 
 '''
 
 TYPE_FACTORY = '''
 class TypeFactory:
     @classmethod
-    def from_connection(cls, connection):
-        """
+    def from_connection(
+        cls, connection: juju.client.connection.Connection
+    ) -> juju.client.facade.Type:
+        """Return a facade object initialised with the connection.
+
         Given a connected Connection object, return an initialized and
         connected instance of an API Interface matching the name of
         this class.
 
         @param connection: initialized Connection object.
-
         """
-        facade_name = cls.__name__
-        if not facade_name.endswith('Facade'):
-           raise TypeError('Unexpected class name: {}'.format(facade_name))
-        facade_name = facade_name[:-len('Facade')]
+        class_name = cls.__name__
+        if not class_name.endswith('Facade'):
+            raise TypeError(f'Unexpected class name: {class_name}')
+        facade_name = class_name.removesuffix('Facade')
+
         version = connection.facades.get(facade_name)
         if version is None:
-            raise Exception('No facade {} in facades {}'.format(facade_name,
-                                                                connection.facades))
+            raise ValueError(f'No facade {facade_name} in facades {connection.facades}')
 
-        c = lookup_facade(cls.__name__, version)
-        c = c()
-        c.connect(connection)
-
-        return c
+        FacadeClass = lookup_facade(cls.__name__, version)
+        facade = FacadeClass()
+        facade.connect(connection)
+        return facade
 
     @classmethod
-    def best_facade_version(cls, connection):
+    def best_facade_version(
+        cls, connection: juju.client.connection.Connection
+    ) -> typing.Optional[int]:
         """
         Returns the best facade version for a given facade. This will help with
         trying to provide different functionality for different facade versions.
@@ -103,17 +102,10 @@ class TypeFactory:
         """
         facade_name = cls.__name__
         if not facade_name.endswith('Facade'):
-           raise TypeError('Unexpected class name: {}'.format(facade_name))
-        facade_name = facade_name[:-len('Facade')]
+            raise TypeError(f'Unexpected class name: {facade_name}')
+        facade_name = facade_name.removesuffix('Facade')
         return connection.facades.get(facade_name)
 
-
-'''
-
-CLIENT_TABLE = '''
-CLIENTS = {{
-    {clients}
-}}
 
 '''
 
@@ -224,7 +216,7 @@ def kind_to_py(kind):
         return name, type_mapping[name], True
 
     suffix = name.lstrip("~")
-    return suffix, "(dict, {})".format(suffix), True
+    return suffix, f'(dict, {suffix})', True
 
 
 def strcast(kind, keep_builtins=False):
@@ -285,10 +277,7 @@ class Args(list):
 
     def _format(self, name, rtype, typed=True):
         if typed:
-            return "{} : {}".format(
-                name_to_py(name),
-                strcast(rtype)
-            )
+            return f'{name_to_py(name)} : {strcast(rtype)}'
         else:
             return name_to_py(name)
 
@@ -308,7 +297,7 @@ class Args(list):
             for item in self:
                 var_name = name_to_py(item[0])
                 var_type = var_type_to_py(item[1])
-                parts.append('{}={}'.format(var_name, var_type))
+                parts.append(f'{var_name}={var_type}')
             return ', '.join(parts)
         return ''
 
@@ -335,21 +324,20 @@ class Args(list):
         return self._get_arg_str(True, "\n")
 
 
-def buildValidation(name, instance_type, instance_sub_type, ident=None):
-    INDENT = ident or "    "
-    source = """{ident}if {name} is not None and not isinstance({name}, {instance_sub_type}):
-{ident}    raise Exception("Expected {name} to be a {instance_type}, received: {{}}".format(type({name})))
-""".format(ident=INDENT,
-           name=name,
-           instance_type=instance_type,
-           instance_sub_type=instance_sub_type)
-    return source
+def buildValidation(name, instance_type, instance_sub_type, ident=None) -> str:
+    if ident is None:
+        ident = '    '
+    return (
+        f"{ident}if {name} is not None and not isinstance({name}, {instance_sub_type}):\n"
+        f"{ident}    raise TypeError(f'Expected {name} to be a {instance_type}, received: {{type({name})}}')\n"
+    )
 
 
 def buildTypes(schema, capture):
     INDENT = "    "
-    for kind in sorted((k for k in schema.types if not isinstance(k, str)),
-                       key=lambda x: str(x)):
+    for kind in sorted(schema.types, key=str):
+        if isinstance(kind, str):
+            continue
         name = schema.types[kind]
         if not name:
             # when running on juju 3.1.0 client-only schemas, we get a seemingly empty entry with no name
@@ -363,24 +351,18 @@ def buildTypes(schema, capture):
         # Write Factory class for _client.py
         make_factory(name)
         # Write actual class
-        source = ["""
-class {}(Type):
-    _toSchema = {}
-    _toPy = {}
-    def __init__(self{}{}, **unknown_fields):
-        '''
-{}
-        '''""".format(
-            name,
-            # pprint these to get stable ordering across regens
-            pprint.pformat(args.PyToSchemaMapping(), width=999),
-            pprint.pformat(args.SchemaToPyMapping(), width=999),
-            ", " if args else "",
-            args.as_kwargs(),
-            textwrap.indent(args.get_doc(), INDENT * 2))]
-
+        lines: typing.List[str] = [
+            f'class {name}(Type):',
+            f'    _toSchema = {pprint.pformat(args.PyToSchemaMapping(), width=999)}',
+            f'    _toPy = {pprint.pformat(args.SchemaToPyMapping(), width=999)}',
+            f'',
+            f'    def __init__(self{", " if args else ""}{args.as_kwargs()}, **unknown_fields):',
+            f'        """',
+            textwrap.indent(args.get_doc(), INDENT * 2),
+            f'        """',
+        ]
         if not args:
-            source.append("{}self.unknown_fields = unknown_fields".format(INDENT * 2))
+            lines.append(f'{INDENT * 2}self.unknown_fields = unknown_fields')
         else:
             # do the validation first, before setting the variables
             for arg in args:
@@ -388,16 +370,9 @@ class {}(Type):
                 arg_type = arg[1]
                 arg_type_name = strcast(arg_type)
                 if arg_type in basic_types or arg_type is typing.Any:
-                    source.append("{}{}_ = {}".format(INDENT * 2,
-                                                      arg_name,
-                                                      arg_name))
+                    lines.append(f'{INDENT * 2}{arg_name}_ = {arg_name}')
                 elif type(arg_type) is typing.TypeVar:
-                    source.append("{}{}_ = {}.from_json({}) "
-                                  "if {} else None".format(INDENT * 2,
-                                                           arg_name,
-                                                           arg_type_name,
-                                                           arg_name,
-                                                           arg_name))
+                    lines.append(f'{INDENT * 2}{arg_name}_ = {arg_type_name}.from_json({arg_name}) if {arg_name} else None')
                 elif typing_inspect.is_generic_type(arg_type) and issubclass(typing_inspect.get_origin(arg_type), Sequence):
                     parameters = typing_inspect.get_parameters(arg_type)
                     value_type = (
@@ -406,16 +381,11 @@ class {}(Type):
                         else None
                     )
                     if type(value_type) is typing.TypeVar:
-                        source.append(
-                            "{}{}_ = [{}.from_json(o) "
-                            "for o in {} or []]".format(INDENT * 2,
-                                                        arg_name,
-                                                        strcast(value_type),
-                                                        arg_name))
+                        lines.append(
+                            f'{INDENT * 2}{arg_name}_ = [{strcast(value_type)}.from_json(o) for o in {arg_name} or []]'
+                        )
                     else:
-                        source.append("{}{}_ = {}".format(INDENT * 2,
-                                                          arg_name,
-                                                          arg_name))
+                        lines.append(f'{INDENT * 2}{arg_name}_ = {arg_name}')
                 elif typing_inspect.is_generic_type(arg_type) and issubclass(typing_inspect.get_origin(arg_type), Mapping):
                     parameters = typing_inspect.get_parameters(arg_type)
                     value_type = (
@@ -424,46 +394,38 @@ class {}(Type):
                         else None
                     )
                     if type(value_type) is typing.TypeVar:
-                        source.append(
-                            "{}{}_ = {{k: {}.from_json(v) "
-                            "for k, v in ({} or dict()).items()}}".format(
-                                INDENT * 2,
-                                arg_name,
-                                strcast(value_type),
-                                arg_name))
+                        lines.append(
+                            f'{INDENT * 2}{arg_name}_ = {{'
+                            f'k: {strcast(value_type)}.from_json(v) '
+                            f'for k, v in ({arg_name} or {{}}).items()}}'
+                        )
                     else:
-                        source.append("{}{}_ = {}".format(INDENT * 2,
-                                                          arg_name,
-                                                          arg_name))
+                        lines.append(f'{INDENT * 2}{arg_name}_ = {arg_name}')
                 else:
-                    source.append("{}{}_ = {}".format(INDENT * 2,
-                                                      arg_name,
-                                                      arg_name))
+                    lines.append(f'{INDENT * 2}{arg_name}_ = {arg_name}')
             if len(args) > 0:
-                source.append('\n{}# Validate arguments against known Juju API types.'.format(INDENT * 2))
+                lines.append('')
+                lines.append(f'{INDENT * 2}# Validate arguments against known Juju API types.')
             for arg in args:
-                arg_name = "{}_".format(name_to_py(arg[0]))
+                arg_name = f'{name_to_py(arg[0])}_'
                 arg_type, arg_sub_type, ok = kind_to_py(arg[1])
                 if ok:
-                    source.append('{}'.format(buildValidation(arg_name,
-                                                              arg_type,
-                                                              arg_sub_type,
-                                                              ident=INDENT * 2)))
+                    lines.append(buildValidation(arg_name, arg_type, arg_sub_type, ident=INDENT * 2))
 
             for arg in args:
                 arg_name = name_to_py(arg[0])
-                source.append('{}self.{} = {}_'.format(INDENT * 2, arg_name, arg_name))
+                lines.append(f'{INDENT * 2}self.{arg_name} = {arg_name}_')
             # Ensure that we take the kwargs (unknown_fields) and put it on the
             # Results/Params so we can inspect it.
-            source.append("{}self.unknown_fields = unknown_fields".format(INDENT * 2))
+            lines.append(f'{INDENT * 2}self.unknown_fields = unknown_fields')
 
-        source = "\n".join(source)
+        source = '\n'.join(lines)
         capture.clear(name)
         capture[name].write(source)
-        capture[name].write("\n\n")
+        capture[name].write('\n\n')
         if name is None:
             print(source)
-        co = compile(source, __name__, "exec")
+        co = compile(source, __name__, 'exec')
         ns = _getns(schema)
         exec(co, ns)
         cls = ns[name]
@@ -522,46 +484,34 @@ def makeFunc(cls, name, description, params, result, _async=True):
     assignments = []
     toschema = args.PyToSchemaMapping()
     for arg in args._get_arg_str(False, False):
-        assignments.append("{}_params[\'{}\'] = {}".format(INDENT,
-                                                           toschema[arg],
-                                                           arg))
+        assignments.append(f"{INDENT}_params[\'{toschema[arg]}\'] = {arg}")
     assignments = "\n".join(assignments)
     res = retspec(cls.schema, result)
-    source = """
-
-@ReturnMapping({rettype})
-{_async}def {name}(self{argsep}{args}):
-    '''
-{docstring}
-    Returns -> {res}
-    '''
-{validation}
-    # map input types to rpc msg
-    _params = dict()
-    msg = dict(type='{cls.name}',
-               request='{name}',
-               version={cls.version},
-               params=_params)
-{assignments}
-    reply = {_await}self.rpc(msg)
-    return reply
-
-"""
-
-    if description != "":
-        description = "{}\n\n".format(description)
-    doc_string = "{}{}".format(description, args.get_doc())
-    fsource = source.format(_async="async " if _async else "",
-                            name=name,
-                            argsep=", " if args else "",
-                            args=args.as_kwargs(),
-                            res=res,
-                            validation=args.as_validation(),
-                            rettype=result.__name__ if result else None,
-                            docstring=textwrap.indent(doc_string, INDENT),
-                            cls=cls,
-                            assignments=assignments,
-                            _await="await " if _async else "")
+    doc_string = (description + '\n\n' if description else '') + args.get_doc()
+    lines = [
+        f'',
+        f'',
+        f'@ReturnMapping({result.__name__ if result else None})',
+        f'{"async " if _async else ""}def {name}(self{", " if args else ""}{args.as_kwargs()}):',
+        f'    """',
+        textwrap.indent(doc_string, INDENT),
+        f'    Returns -> {res}',
+        f'    """',
+        args.as_validation(),
+        f'    # map input types to rpc msg',
+        f'    _params = {{}}',
+        f'    msg = {{',
+        f"        'type': '{cls.name}',",
+        f"        'request': '{name}',",
+        f"        'version': {cls.version},",
+        f"        'params': _params,",
+        f'    }}',
+        assignments,
+        f'    reply = {"await " if _async else ""}self.rpc(msg)',
+        f'    return reply',
+        f'',
+    ]
+    fsource = '\n'.join(lines)
     ns = _getns(cls.schema)
     exec(fsource, ns)
     func = ns[name]
@@ -595,7 +545,7 @@ def buildMethods(cls, capture):
     for methodname in sorted(properties):
         method, source = _buildMethod(cls, methodname)
         setattr(cls, methodname, method)
-        capture["{}Facade".format(cls.__name__)].write(source, depth=1)
+        capture[f'{cls.__name__}Facade'].write(source, depth=1)
 
 
 def _buildMethod(cls, name):
@@ -624,21 +574,22 @@ def buildWatcherRPCMethods(cls, capture):
     if "Next" in properties and "Stop" in properties:
         method, source = makeRPCFunc(cls)
         setattr(cls, "rpc", method)
-        capture["{}Facade".format(cls.__name__)].write(source, depth=1)
+        capture[f'{cls.__name__}Facade'].write(source, depth=1)
 
 
-def buildFacade(schema):
-    cls = type(schema.name, (Type,), dict(name=schema.name,
-                                          version=schema.version,
-                                          schema=schema))
-    source = """
-class {name}Facade(Type):
-    name = '{name}'
-    version = {version}
-    schema = {schema}
-    """.format(name=schema.name,
-               version=schema.version,
-               schema=textwrap.indent(pprint.pformat(schema), "    "))
+def buildFacade(schema: Schema) -> typing.Tuple[typing.Type[Type], str]:
+    cls = type(
+        schema.name,
+        (Type,),
+        {'name': schema.name, 'version': schema.version, 'schema': schema},
+    )
+    schema_text = textwrap.indent(pprint.pformat(schema), "    ")
+    source = (
+        f'class {schema.name}Facade(Type):\n'
+        f'    name = {schema.name!r}\n'
+        f'    version = {schema.version}\n'
+        f'    schema = {schema_text}\n'
+    )
     return cls, source
 
 
@@ -654,7 +605,7 @@ class Type:
         self.connection = connection
 
     def __repr__(self):
-        return "{}({})".format(self.__class__, self.__dict__)
+        return f'{self.__class__}({self.__dict__})'
 
     def __eq__(self, other):
         if not isinstance(other, Type):
@@ -743,8 +694,8 @@ class Type:
 
 class Schema(dict):
     def __init__(self, schema):
-        self.name = schema['Name']
-        self.version = schema['Version']
+        self.name: str = schema['Name']
+        self.version: int = schema['Version']
         self.update(schema['Schema'])
 
         self.registry = KindRegistry()
@@ -847,7 +798,7 @@ def _getns(schema):
 def make_factory(name):
     if name in factories:
         del factories[name]
-    factories[name].write("class {}(TypeFactory):\n    pass\n\n".format(name))
+    factories[name].write(f'class {name}(TypeFactory):\n    pass\n\n')
 
 
 def write_facades(captures, options):
@@ -855,15 +806,17 @@ def write_facades(captures, options):
     Write the Facades to the appropriate _client<version>.py
 
     """
-    for version in sorted(captures.keys()):
-        filename = "{}/_client{}.py".format(options.output_dir, version)
-        with open(filename, "w") as f:
+    for version in sorted(captures):
+        with open(f'{options.output_dir}/_client{version}.py', 'w') as f:
             f.write(HEADER)
-            f.write("from juju.client.facade import Type, ReturnMapping\n")
-            f.write("from juju.client._definitions import *\n\n")
-            for key in sorted(
-                    [k for k in captures[version].keys() if "Facade" in k]):
-                print(captures[version][key], file=f)
+            f.write('from juju.client.facade import Type, ReturnMapping\n')
+            f.write('from juju.client._definitions import *\n')
+            f.write('\n')
+            for key in sorted(captures[version]):
+                if 'Facade' not in key:
+                    continue
+                f.write(str(captures[version][key]))
+                f.write('\n')
 
     # Return the last (most recent) version for use in other routines.
     return version
@@ -877,7 +830,7 @@ def write_definitions(captures, options):
     one of them -- we just use the last one from the loop above.
 
     """
-    with open("{}/_definitions.py".format(options.output_dir), "w") as f:
+    with open(f'{options.output_dir}/_definitions.py', 'w') as f:
         f.write(HEADER)
         f.write("from juju.client.facade import Type, ReturnMapping\n\n")
         for key in sorted(
@@ -889,23 +842,35 @@ def write_client(captures, options):
     """
     Write the TypeFactory classes to _client.py, along with some
     imports and tables so that we can look up versioned Facades.
-
     """
-    with open("{}/_client.py".format(options.output_dir), "w") as f:
+    with open(f'{options.output_dir}/_client.py', 'w') as f:
         f.write(HEADER)
-        f.write("from juju.client._definitions import *\n\n")
-        clients = ", ".join("_client{}".format(v) for v in captures)
-
-        # from juju.client import _client2, _client1, _client3 ...
-        f.write("\nfrom juju.client import " + clients + "\n\n")
-        # CLIENTS = { ....
-        f.write(CLIENT_TABLE.format(clients=",\n    ".join(
-            ['"{}": _client{}'.format(v, v) for v in captures])))
-
+        f.write('from __future__ import annotations\n')
+        f.write('import typing\n')
+        f.write('\n')
+        f.write("from juju.client._definitions import *\n")
+        f.write('from juju.client import (\n')
+        for version in sorted(captures):
+            f.write(f'    _client{version},\n')
+        f.write(')\n')
+        f.write('\n')
+        f.write('if typing.TYPE_CHECKING:\n')
+        f.write('    import juju.client.connection\n')
+        f.write('    import juju.client.facade\n')
+        f.write('\n')
+        f.write('\n')
+        f.write('CLIENTS = {\n')
+        for version in sorted(captures):
+            f.write(f"    '{version}': _client{version},\n")
+        f.write('}\n')
+        f.write('\n')
         f.write(LOOKUP_FACADE)
         f.write(TYPE_FACTORY)
-        for key in sorted([k for k in factories.keys() if "Facade" in k]):
-            print(factories[key], file=f)
+        for key in sorted(factories):
+            if 'Facade' not in key:
+                continue
+            f.write(str(factories[key]))
+            f.write('\n')
 
 
 def generate_definitions(schemas):
@@ -934,7 +899,7 @@ def generate_facades(schemas: Dict[str, List[Schema]]) -> Dict[str, Dict[int, co
     for juju_version in sorted(schemas.keys(), key=packaging.version.parse):
         for schema in schemas[juju_version]:
             cls, source = buildFacade(schema)
-            cls_name = "{}Facade".format(schema.name)
+            cls_name = f'{schema.name}Facade'
 
             captures[schema.version].clear(cls_name)
             # Make the factory class for _client.py

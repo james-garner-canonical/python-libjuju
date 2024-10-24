@@ -4,7 +4,6 @@
 from juju.client.facade import Type, ReturnMapping
 from juju.client._definitions import *
 
-
 class MachineManagerFacade(Type):
     name = 'MachineManager'
     version = 10
@@ -362,35 +361,36 @@ class MachineManagerFacade(Type):
                                                                        'Result': {'$ref': '#/definitions/NotifyWatchResults'}},
                                                         'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(AddMachinesResults)
     async def AddMachines(self, params=None):
-        '''
+        """
         AddMachines adds new machines with the supplied parameters.
         The args will contain Base info.
 
         params : typing.Sequence[~AddMachineParams]
         Returns -> AddMachinesResults
-        '''
+        """
         if params is not None and not isinstance(params, (bytes, str, list)):
-            raise Exception("Expected params to be a Sequence, received: {}".format(type(params)))
+            raise TypeError(f'Expected params to be a Sequence, received: {type(params)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='MachineManager',
-                   request='AddMachines',
-                   version=10,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'MachineManager',
+            'request': 'AddMachines',
+            'version': 10,
+            'params': _params,
+        }
         _params['params'] = params
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(DestroyMachineResults)
     async def DestroyMachineWithParams(self, dry_run=None, force=None, keep=None, machine_tags=None, max_wait=None):
-        '''
+        """
         DestroyMachineWithParams removes a set of machines from the model.
 
         dry_run : bool
@@ -399,28 +399,30 @@ class MachineManagerFacade(Type):
         machine_tags : typing.Sequence[str]
         max_wait : int
         Returns -> DestroyMachineResults
-        '''
+        """
         if dry_run is not None and not isinstance(dry_run, bool):
-            raise Exception("Expected dry_run to be a bool, received: {}".format(type(dry_run)))
+            raise TypeError(f'Expected dry_run to be a bool, received: {type(dry_run)}')
 
         if force is not None and not isinstance(force, bool):
-            raise Exception("Expected force to be a bool, received: {}".format(type(force)))
+            raise TypeError(f'Expected force to be a bool, received: {type(force)}')
 
         if keep is not None and not isinstance(keep, bool):
-            raise Exception("Expected keep to be a bool, received: {}".format(type(keep)))
+            raise TypeError(f'Expected keep to be a bool, received: {type(keep)}')
 
         if machine_tags is not None and not isinstance(machine_tags, (bytes, str, list)):
-            raise Exception("Expected machine_tags to be a Sequence, received: {}".format(type(machine_tags)))
+            raise TypeError(f'Expected machine_tags to be a Sequence, received: {type(machine_tags)}')
 
         if max_wait is not None and not isinstance(max_wait, int):
-            raise Exception("Expected max_wait to be a int, received: {}".format(type(max_wait)))
+            raise TypeError(f'Expected max_wait to be a int, received: {type(max_wait)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='MachineManager',
-                   request='DestroyMachineWithParams',
-                   version=10,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'MachineManager',
+            'request': 'DestroyMachineWithParams',
+            'version': 10,
+            'params': _params,
+        }
         _params['dry-run'] = dry_run
         _params['force'] = force
         _params['keep'] = keep
@@ -430,59 +432,60 @@ class MachineManagerFacade(Type):
         return reply
 
 
-
     @ReturnMapping(StringsResults)
     async def GetUpgradeSeriesMessages(self, params=None):
-        '''
+        """
         GetUpgradeSeriesMessages returns all new messages associated with upgrade
         series events. Messages that have already been retrieved once are not
         returned by this method.
 
         params : typing.Sequence[~UpgradeSeriesNotificationParam]
         Returns -> StringsResults
-        '''
+        """
         if params is not None and not isinstance(params, (bytes, str, list)):
-            raise Exception("Expected params to be a Sequence, received: {}".format(type(params)))
+            raise TypeError(f'Expected params to be a Sequence, received: {type(params)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='MachineManager',
-                   request='GetUpgradeSeriesMessages',
-                   version=10,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'MachineManager',
+            'request': 'GetUpgradeSeriesMessages',
+            'version': 10,
+            'params': _params,
+        }
         _params['params'] = params
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(InstanceTypesResults)
     async def InstanceTypes(self, constraints=None):
-        '''
+        """
         InstanceTypes returns instance type information for the cloud and region
         in which the current model is deployed.
 
         constraints : typing.Sequence[~ModelInstanceTypesConstraint]
         Returns -> InstanceTypesResults
-        '''
+        """
         if constraints is not None and not isinstance(constraints, (bytes, str, list)):
-            raise Exception("Expected constraints to be a Sequence, received: {}".format(type(constraints)))
+            raise TypeError(f'Expected constraints to be a Sequence, received: {type(constraints)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='MachineManager',
-                   request='InstanceTypes',
-                   version=10,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'MachineManager',
+            'request': 'InstanceTypes',
+            'version': 10,
+            'params': _params,
+        }
         _params['constraints'] = constraints
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ProvisioningScriptResult)
     async def ProvisioningScript(self, data_dir=None, disable_package_commands=None, machine_id=None, nonce=None):
-        '''
+        """
         ProvisioningScript returns a shell script that, when run,
         provisions a machine agent on the machine executing the script.
 
@@ -491,25 +494,27 @@ class MachineManagerFacade(Type):
         machine_id : str
         nonce : str
         Returns -> ProvisioningScriptResult
-        '''
+        """
         if data_dir is not None and not isinstance(data_dir, (bytes, str)):
-            raise Exception("Expected data_dir to be a str, received: {}".format(type(data_dir)))
+            raise TypeError(f'Expected data_dir to be a str, received: {type(data_dir)}')
 
         if disable_package_commands is not None and not isinstance(disable_package_commands, bool):
-            raise Exception("Expected disable_package_commands to be a bool, received: {}".format(type(disable_package_commands)))
+            raise TypeError(f'Expected disable_package_commands to be a bool, received: {type(disable_package_commands)}')
 
         if machine_id is not None and not isinstance(machine_id, (bytes, str)):
-            raise Exception("Expected machine_id to be a str, received: {}".format(type(machine_id)))
+            raise TypeError(f'Expected machine_id to be a str, received: {type(machine_id)}')
 
         if nonce is not None and not isinstance(nonce, (bytes, str)):
-            raise Exception("Expected nonce to be a str, received: {}".format(type(nonce)))
+            raise TypeError(f'Expected nonce to be a str, received: {type(nonce)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='MachineManager',
-                   request='ProvisioningScript',
-                   version=10,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'MachineManager',
+            'request': 'ProvisioningScript',
+            'version': 10,
+            'params': _params,
+        }
         _params['data-dir'] = data_dir
         _params['disable-package-commands'] = disable_package_commands
         _params['machine-id'] = machine_id
@@ -518,38 +523,38 @@ class MachineManagerFacade(Type):
         return reply
 
 
-
     @ReturnMapping(ErrorResults)
     async def RetryProvisioning(self, all_=None, machines=None):
-        '''
+        """
         RetryProvisioning marks a provisioning error as transient on the machines.
 
         all_ : bool
         machines : typing.Sequence[str]
         Returns -> ErrorResults
-        '''
+        """
         if all_ is not None and not isinstance(all_, bool):
-            raise Exception("Expected all_ to be a bool, received: {}".format(type(all_)))
+            raise TypeError(f'Expected all_ to be a bool, received: {type(all_)}')
 
         if machines is not None and not isinstance(machines, (bytes, str, list)):
-            raise Exception("Expected machines to be a Sequence, received: {}".format(type(machines)))
+            raise TypeError(f'Expected machines to be a Sequence, received: {type(machines)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='MachineManager',
-                   request='RetryProvisioning',
-                   version=10,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'MachineManager',
+            'request': 'RetryProvisioning',
+            'version': 10,
+            'params': _params,
+        }
         _params['all'] = all_
         _params['machines'] = machines
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ErrorResult)
     async def UpgradeSeriesComplete(self, channel=None, force=None, tag=None):
-        '''
+        """
         UpgradeSeriesComplete marks a machine as having completed a managed series
         upgrade.
 
@@ -557,22 +562,24 @@ class MachineManagerFacade(Type):
         force : bool
         tag : Entity
         Returns -> ErrorResult
-        '''
+        """
         if channel is not None and not isinstance(channel, (bytes, str)):
-            raise Exception("Expected channel to be a str, received: {}".format(type(channel)))
+            raise TypeError(f'Expected channel to be a str, received: {type(channel)}')
 
         if force is not None and not isinstance(force, bool):
-            raise Exception("Expected force to be a bool, received: {}".format(type(force)))
+            raise TypeError(f'Expected force to be a bool, received: {type(force)}')
 
         if tag is not None and not isinstance(tag, (dict, Entity)):
-            raise Exception("Expected tag to be a Entity, received: {}".format(type(tag)))
+            raise TypeError(f'Expected tag to be a Entity, received: {type(tag)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='MachineManager',
-                   request='UpgradeSeriesComplete',
-                   version=10,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'MachineManager',
+            'request': 'UpgradeSeriesComplete',
+            'version': 10,
+            'params': _params,
+        }
         _params['channel'] = channel
         _params['force'] = force
         _params['tag'] = tag
@@ -580,32 +587,33 @@ class MachineManagerFacade(Type):
         return reply
 
 
-
     @ReturnMapping(ErrorResult)
     async def UpgradeSeriesPrepare(self, channel=None, force=None, tag=None):
-        '''
+        """
         UpgradeSeriesPrepare prepares a machine for a OS series upgrade.
 
         channel : str
         force : bool
         tag : Entity
         Returns -> ErrorResult
-        '''
+        """
         if channel is not None and not isinstance(channel, (bytes, str)):
-            raise Exception("Expected channel to be a str, received: {}".format(type(channel)))
+            raise TypeError(f'Expected channel to be a str, received: {type(channel)}')
 
         if force is not None and not isinstance(force, bool):
-            raise Exception("Expected force to be a bool, received: {}".format(type(force)))
+            raise TypeError(f'Expected force to be a bool, received: {type(force)}')
 
         if tag is not None and not isinstance(tag, (dict, Entity)):
-            raise Exception("Expected tag to be a Entity, received: {}".format(type(tag)))
+            raise TypeError(f'Expected tag to be a Entity, received: {type(tag)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='MachineManager',
-                   request='UpgradeSeriesPrepare',
-                   version=10,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'MachineManager',
+            'request': 'UpgradeSeriesPrepare',
+            'version': 10,
+            'params': _params,
+        }
         _params['channel'] = channel
         _params['force'] = force
         _params['tag'] = tag
@@ -613,10 +621,9 @@ class MachineManagerFacade(Type):
         return reply
 
 
-
     @ReturnMapping(UpgradeSeriesUnitsResults)
     async def UpgradeSeriesValidate(self, args=None):
-        '''
+        """
         UpgradeSeriesValidate validates that the incoming arguments correspond to a
         valid series upgrade for the target machine.
         If they do, a list of the machine's current units is returned for use in
@@ -624,42 +631,44 @@ class MachineManagerFacade(Type):
 
         args : typing.Sequence[~UpdateChannelArg]
         Returns -> UpgradeSeriesUnitsResults
-        '''
+        """
         if args is not None and not isinstance(args, (bytes, str, list)):
-            raise Exception("Expected args to be a Sequence, received: {}".format(type(args)))
+            raise TypeError(f'Expected args to be a Sequence, received: {type(args)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='MachineManager',
-                   request='UpgradeSeriesValidate',
-                   version=10,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'MachineManager',
+            'request': 'UpgradeSeriesValidate',
+            'version': 10,
+            'params': _params,
+        }
         _params['args'] = args
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(NotifyWatchResults)
     async def WatchUpgradeSeriesNotifications(self, entities=None):
-        '''
+        """
         WatchUpgradeSeriesNotifications returns a watcher that fires on upgrade
         series events.
 
         entities : typing.Sequence[~Entity]
         Returns -> NotifyWatchResults
-        '''
+        """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise Exception("Expected entities to be a Sequence, received: {}".format(type(entities)))
+            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='MachineManager',
-                   request='WatchUpgradeSeriesNotifications',
-                   version=10,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'MachineManager',
+            'request': 'WatchUpgradeSeriesNotifications',
+            'version': 10,
+            'params': _params,
+        }
         _params['entities'] = entities
         reply = await self.rpc(msg)
         return reply
-
 

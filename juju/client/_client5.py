@@ -4,7 +4,6 @@
 from juju.client.facade import Type, ReturnMapping
 from juju.client._definitions import *
 
-
 class SubnetsFacade(Type):
     name = 'Subnets'
     version = 5
@@ -110,79 +109,82 @@ class SubnetsFacade(Type):
                                                      'Result': {'$ref': '#/definitions/SubnetsResults'}},
                                       'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(ZoneResults)
     async def AllZones(self):
-        '''
+        """
         AllZones returns all availability zones known to Juju. If a
         zone is unusable, unavailable, or deprecated the Available
         field will be false.
 
 
         Returns -> ZoneResults
-        '''
+        """
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Subnets',
-                   request='AllZones',
-                   version=5,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Subnets',
+            'request': 'AllZones',
+            'version': 5,
+            'params': _params,
+        }
 
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ListSubnetsResults)
     async def ListSubnets(self, space_tag=None, zone=None):
-        '''
+        """
         ListSubnets returns the matching subnets after applying
         optional filters.
 
         space_tag : str
         zone : str
         Returns -> ListSubnetsResults
-        '''
+        """
         if space_tag is not None and not isinstance(space_tag, (bytes, str)):
-            raise Exception("Expected space_tag to be a str, received: {}".format(type(space_tag)))
+            raise TypeError(f'Expected space_tag to be a str, received: {type(space_tag)}')
 
         if zone is not None and not isinstance(zone, (bytes, str)):
-            raise Exception("Expected zone to be a str, received: {}".format(type(zone)))
+            raise TypeError(f'Expected zone to be a str, received: {type(zone)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Subnets',
-                   request='ListSubnets',
-                   version=5,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Subnets',
+            'request': 'ListSubnets',
+            'version': 5,
+            'params': _params,
+        }
         _params['space-tag'] = space_tag
         _params['zone'] = zone
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(SubnetsResults)
     async def SubnetsByCIDR(self, cidrs=None):
-        '''
+        """
         SubnetsByCIDR returns the collection of subnets matching each CIDR in the input.
 
         cidrs : typing.Sequence[str]
         Returns -> SubnetsResults
-        '''
+        """
         if cidrs is not None and not isinstance(cidrs, (bytes, str, list)):
-            raise Exception("Expected cidrs to be a Sequence, received: {}".format(type(cidrs)))
+            raise TypeError(f'Expected cidrs to be a Sequence, received: {type(cidrs)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Subnets',
-                   request='SubnetsByCIDR',
-                   version=5,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Subnets',
+            'request': 'SubnetsByCIDR',
+            'version': 5,
+            'params': _params,
+        }
         _params['cidrs'] = cidrs
         reply = await self.rpc(msg)
         return reply
-
 

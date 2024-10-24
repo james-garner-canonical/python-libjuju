@@ -4,7 +4,6 @@
 from juju.client.facade import Type, ReturnMapping
 from juju.client._definitions import *
 
-
 class AnnotationsFacade(Type):
     name = 'Annotations'
     version = 2
@@ -72,55 +71,56 @@ class AnnotationsFacade(Type):
                                            'Result': {'$ref': '#/definitions/ErrorResults'}},
                             'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(AnnotationsGetResults)
     async def Get(self, entities=None):
-        '''
+        """
         Get returns annotations for given entities.
         If annotations cannot be retrieved for a given entity, an error is returned.
         Each entity is treated independently and, hence, will fail or succeed independently.
 
         entities : typing.Sequence[~Entity]
         Returns -> AnnotationsGetResults
-        '''
+        """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise Exception("Expected entities to be a Sequence, received: {}".format(type(entities)))
+            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Annotations',
-                   request='Get',
-                   version=2,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Annotations',
+            'request': 'Get',
+            'version': 2,
+            'params': _params,
+        }
         _params['entities'] = entities
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ErrorResults)
     async def Set(self, annotations=None):
-        '''
+        """
         Set stores annotations for given entities
 
         annotations : typing.Sequence[~EntityAnnotations]
         Returns -> ErrorResults
-        '''
+        """
         if annotations is not None and not isinstance(annotations, (bytes, str, list)):
-            raise Exception("Expected annotations to be a Sequence, received: {}".format(type(annotations)))
+            raise TypeError(f'Expected annotations to be a Sequence, received: {type(annotations)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Annotations',
-                   request='Set',
-                   version=2,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Annotations',
+            'request': 'Set',
+            'version': 2,
+            'params': _params,
+        }
         _params['annotations'] = annotations
         reply = await self.rpc(msg)
         return reply
-
-
 
 class BlockFacade(Type):
     name = 'Block'
@@ -171,84 +171,86 @@ class BlockFacade(Type):
                                                      'Result': {'$ref': '#/definitions/ErrorResult'}},
                                       'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(BlockResults)
     async def List(self):
-        '''
+        """
         List implements Block.List().
 
 
         Returns -> BlockResults
-        '''
+        """
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Block',
-                   request='List',
-                   version=2,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Block',
+            'request': 'List',
+            'version': 2,
+            'params': _params,
+        }
 
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ErrorResult)
     async def SwitchBlockOff(self, message=None, type_=None):
-        '''
+        """
         SwitchBlockOff implements Block.SwitchBlockOff().
 
         message : str
         type_ : str
         Returns -> ErrorResult
-        '''
+        """
         if message is not None and not isinstance(message, (bytes, str)):
-            raise Exception("Expected message to be a str, received: {}".format(type(message)))
+            raise TypeError(f'Expected message to be a str, received: {type(message)}')
 
         if type_ is not None and not isinstance(type_, (bytes, str)):
-            raise Exception("Expected type_ to be a str, received: {}".format(type(type_)))
+            raise TypeError(f'Expected type_ to be a str, received: {type(type_)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Block',
-                   request='SwitchBlockOff',
-                   version=2,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Block',
+            'request': 'SwitchBlockOff',
+            'version': 2,
+            'params': _params,
+        }
         _params['message'] = message
         _params['type'] = type_
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ErrorResult)
     async def SwitchBlockOn(self, message=None, type_=None):
-        '''
+        """
         SwitchBlockOn implements Block.SwitchBlockOn().
 
         message : str
         type_ : str
         Returns -> ErrorResult
-        '''
+        """
         if message is not None and not isinstance(message, (bytes, str)):
-            raise Exception("Expected message to be a str, received: {}".format(type(message)))
+            raise TypeError(f'Expected message to be a str, received: {type(message)}')
 
         if type_ is not None and not isinstance(type_, (bytes, str)):
-            raise Exception("Expected type_ to be a str, received: {}".format(type(type_)))
+            raise TypeError(f'Expected type_ to be a str, received: {type(type_)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Block',
-                   request='SwitchBlockOn',
-                   version=2,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Block',
+            'request': 'SwitchBlockOn',
+            'version': 2,
+            'params': _params,
+        }
         _params['message'] = message
         _params['type'] = type_
         reply = await self.rpc(msg)
         return reply
-
-
 
 class HighAvailabilityFacade(Type):
     name = 'HighAvailability'
@@ -321,31 +323,31 @@ class HighAvailabilityFacade(Type):
                                                 'Result': {'$ref': '#/definitions/ControllersChangeResults'}},
                                  'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(ControllersChangeResults)
     async def EnableHA(self, specs=None):
-        '''
+        """
         EnableHA adds controller machines as necessary to ensure the
         controller has the number of machines specified.
 
         specs : typing.Sequence[~ControllersSpec]
         Returns -> ControllersChangeResults
-        '''
+        """
         if specs is not None and not isinstance(specs, (bytes, str, list)):
-            raise Exception("Expected specs to be a Sequence, received: {}".format(type(specs)))
+            raise TypeError(f'Expected specs to be a Sequence, received: {type(specs)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='HighAvailability',
-                   request='EnableHA',
-                   version=2,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'HighAvailability',
+            'request': 'EnableHA',
+            'version': 2,
+            'params': _params,
+        }
         _params['specs'] = specs
         reply = await self.rpc(msg)
         return reply
-
-
 
 class MetricsDebugFacade(Type):
     name = 'MetricsDebug'
@@ -421,53 +423,54 @@ class MetricsDebugFacade(Type):
                                                       'Result': {'$ref': '#/definitions/ErrorResults'}},
                                        'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(MetricResults)
     async def GetMetrics(self, entities=None):
-        '''
+        """
         GetMetrics returns all metrics stored by the state server.
 
         entities : typing.Sequence[~Entity]
         Returns -> MetricResults
-        '''
+        """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise Exception("Expected entities to be a Sequence, received: {}".format(type(entities)))
+            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='MetricsDebug',
-                   request='GetMetrics',
-                   version=2,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'MetricsDebug',
+            'request': 'GetMetrics',
+            'version': 2,
+            'params': _params,
+        }
         _params['entities'] = entities
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ErrorResults)
     async def SetMeterStatus(self, statues=None):
-        '''
+        """
         SetMeterStatus sets meter statuses for entities.
 
         statues : typing.Sequence[~MeterStatusParam]
         Returns -> ErrorResults
-        '''
+        """
         if statues is not None and not isinstance(statues, (bytes, str, list)):
-            raise Exception("Expected statues to be a Sequence, received: {}".format(type(statues)))
+            raise TypeError(f'Expected statues to be a Sequence, received: {type(statues)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='MetricsDebug',
-                   request='SetMeterStatus',
-                   version=2,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'MetricsDebug',
+            'request': 'SetMeterStatus',
+            'version': 2,
+            'params': _params,
+        }
         _params['statues'] = statues
         reply = await self.rpc(msg)
         return reply
-
-
 
 class SecretsFacade(Type):
     name = 'Secrets'
@@ -675,56 +678,59 @@ class SecretsFacade(Type):
                                                      'Result': {'$ref': '#/definitions/ErrorResults'}},
                                       'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(StringResults)
     async def CreateSecrets(self, args=None):
-        '''
+        """
         CreateSecrets creates new secrets.
 
         args : typing.Sequence[~CreateSecretArg]
         Returns -> StringResults
-        '''
+        """
         if args is not None and not isinstance(args, (bytes, str, list)):
-            raise Exception("Expected args to be a Sequence, received: {}".format(type(args)))
+            raise TypeError(f'Expected args to be a Sequence, received: {type(args)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Secrets',
-                   request='CreateSecrets',
-                   version=2,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Secrets',
+            'request': 'CreateSecrets',
+            'version': 2,
+            'params': _params,
+        }
         _params['args'] = args
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ErrorResults)
     async def GrantSecret(self, applications=None, label=None, uri=None):
-        '''
+        """
         GrantSecret grants access to a user secret.
 
         applications : typing.Sequence[str]
         label : str
         uri : str
         Returns -> ErrorResults
-        '''
+        """
         if applications is not None and not isinstance(applications, (bytes, str, list)):
-            raise Exception("Expected applications to be a Sequence, received: {}".format(type(applications)))
+            raise TypeError(f'Expected applications to be a Sequence, received: {type(applications)}')
 
         if label is not None and not isinstance(label, (bytes, str)):
-            raise Exception("Expected label to be a str, received: {}".format(type(label)))
+            raise TypeError(f'Expected label to be a str, received: {type(label)}')
 
         if uri is not None and not isinstance(uri, (bytes, str)):
-            raise Exception("Expected uri to be a str, received: {}".format(type(uri)))
+            raise TypeError(f'Expected uri to be a str, received: {type(uri)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Secrets',
-                   request='GrantSecret',
-                   version=2,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Secrets',
+            'request': 'GrantSecret',
+            'version': 2,
+            'params': _params,
+        }
         _params['applications'] = applications
         _params['label'] = label
         _params['uri'] = uri
@@ -732,83 +738,86 @@ class SecretsFacade(Type):
         return reply
 
 
-
     @ReturnMapping(ListSecretResults)
     async def ListSecrets(self, filter_=None, show_secrets=None):
-        '''
+        """
         ListSecrets lists available secrets.
 
         filter_ : SecretsFilter
         show_secrets : bool
         Returns -> ListSecretResults
-        '''
+        """
         if filter_ is not None and not isinstance(filter_, (dict, SecretsFilter)):
-            raise Exception("Expected filter_ to be a SecretsFilter, received: {}".format(type(filter_)))
+            raise TypeError(f'Expected filter_ to be a SecretsFilter, received: {type(filter_)}')
 
         if show_secrets is not None and not isinstance(show_secrets, bool):
-            raise Exception("Expected show_secrets to be a bool, received: {}".format(type(show_secrets)))
+            raise TypeError(f'Expected show_secrets to be a bool, received: {type(show_secrets)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Secrets',
-                   request='ListSecrets',
-                   version=2,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Secrets',
+            'request': 'ListSecrets',
+            'version': 2,
+            'params': _params,
+        }
         _params['filter'] = filter_
         _params['show-secrets'] = show_secrets
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ErrorResults)
     async def RemoveSecrets(self, args=None):
-        '''
+        """
         RemoveSecrets remove user secret.
 
         args : typing.Sequence[~DeleteSecretArg]
         Returns -> ErrorResults
-        '''
+        """
         if args is not None and not isinstance(args, (bytes, str, list)):
-            raise Exception("Expected args to be a Sequence, received: {}".format(type(args)))
+            raise TypeError(f'Expected args to be a Sequence, received: {type(args)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Secrets',
-                   request='RemoveSecrets',
-                   version=2,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Secrets',
+            'request': 'RemoveSecrets',
+            'version': 2,
+            'params': _params,
+        }
         _params['args'] = args
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ErrorResults)
     async def RevokeSecret(self, applications=None, label=None, uri=None):
-        '''
+        """
         RevokeSecret revokes access to a user secret.
 
         applications : typing.Sequence[str]
         label : str
         uri : str
         Returns -> ErrorResults
-        '''
+        """
         if applications is not None and not isinstance(applications, (bytes, str, list)):
-            raise Exception("Expected applications to be a Sequence, received: {}".format(type(applications)))
+            raise TypeError(f'Expected applications to be a Sequence, received: {type(applications)}')
 
         if label is not None and not isinstance(label, (bytes, str)):
-            raise Exception("Expected label to be a str, received: {}".format(type(label)))
+            raise TypeError(f'Expected label to be a str, received: {type(label)}')
 
         if uri is not None and not isinstance(uri, (bytes, str)):
-            raise Exception("Expected uri to be a str, received: {}".format(type(uri)))
+            raise TypeError(f'Expected uri to be a str, received: {type(uri)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Secrets',
-                   request='RevokeSecret',
-                   version=2,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Secrets',
+            'request': 'RevokeSecret',
+            'version': 2,
+            'params': _params,
+        }
         _params['applications'] = applications
         _params['label'] = label
         _params['uri'] = uri
@@ -816,26 +825,26 @@ class SecretsFacade(Type):
         return reply
 
 
-
     @ReturnMapping(ErrorResults)
     async def UpdateSecrets(self, args=None):
-        '''
+        """
         UpdateSecrets creates new secrets.
 
         args : typing.Sequence[~UpdateUserSecretArg]
         Returns -> ErrorResults
-        '''
+        """
         if args is not None and not isinstance(args, (bytes, str, list)):
-            raise Exception("Expected args to be a Sequence, received: {}".format(type(args)))
+            raise TypeError(f'Expected args to be a Sequence, received: {type(args)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Secrets',
-                   request='UpdateSecrets',
-                   version=2,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Secrets',
+            'request': 'UpdateSecrets',
+            'version': 2,
+            'params': _params,
+        }
         _params['args'] = args
         reply = await self.rpc(msg)
         return reply
-
 

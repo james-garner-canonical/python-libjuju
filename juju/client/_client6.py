@@ -4,7 +4,6 @@
 from juju.client.facade import Type, ReturnMapping
 from juju.client._definitions import *
 
-
 class BundleFacade(Type):
     name = 'Bundle'
     version = 6
@@ -107,39 +106,40 @@ class BundleFacade(Type):
                                                          'Result': {'$ref': '#/definitions/BundleChangesMapArgsResults'}},
                                           'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(StringResult)
     async def ExportBundle(self, include_charm_defaults=None, include_series=None):
-        '''
+        """
         ExportBundle exports the current model configuration as bundle.
 
         include_charm_defaults : bool
         include_series : bool
         Returns -> StringResult
-        '''
+        """
         if include_charm_defaults is not None and not isinstance(include_charm_defaults, bool):
-            raise Exception("Expected include_charm_defaults to be a bool, received: {}".format(type(include_charm_defaults)))
+            raise TypeError(f'Expected include_charm_defaults to be a bool, received: {type(include_charm_defaults)}')
 
         if include_series is not None and not isinstance(include_series, bool):
-            raise Exception("Expected include_series to be a bool, received: {}".format(type(include_series)))
+            raise TypeError(f'Expected include_series to be a bool, received: {type(include_series)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Bundle',
-                   request='ExportBundle',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Bundle',
+            'request': 'ExportBundle',
+            'version': 6,
+            'params': _params,
+        }
         _params['include-charm-defaults'] = include_charm_defaults
         _params['include-series'] = include_series
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(BundleChangesResults)
     async def GetChanges(self, bundleurl=None, yaml=None):
-        '''
+        """
         GetChanges returns the list of changes required to deploy the given bundle
         data. The changes are sorted by requirements, so that they can be applied in
         order.
@@ -150,29 +150,30 @@ class BundleFacade(Type):
         bundleurl : str
         yaml : str
         Returns -> BundleChangesResults
-        '''
+        """
         if bundleurl is not None and not isinstance(bundleurl, (bytes, str)):
-            raise Exception("Expected bundleurl to be a str, received: {}".format(type(bundleurl)))
+            raise TypeError(f'Expected bundleurl to be a str, received: {type(bundleurl)}')
 
         if yaml is not None and not isinstance(yaml, (bytes, str)):
-            raise Exception("Expected yaml to be a str, received: {}".format(type(yaml)))
+            raise TypeError(f'Expected yaml to be a str, received: {type(yaml)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Bundle',
-                   request='GetChanges',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Bundle',
+            'request': 'GetChanges',
+            'version': 6,
+            'params': _params,
+        }
         _params['bundleURL'] = bundleurl
         _params['yaml'] = yaml
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(BundleChangesMapArgsResults)
     async def GetChangesMapArgs(self, bundleurl=None, yaml=None):
-        '''
+        """
         GetChangesMapArgs returns the list of changes required to deploy the given
         bundle data. The changes are sorted by requirements, so that they can be
         applied in order.
@@ -181,25 +182,25 @@ class BundleFacade(Type):
         bundleurl : str
         yaml : str
         Returns -> BundleChangesMapArgsResults
-        '''
+        """
         if bundleurl is not None and not isinstance(bundleurl, (bytes, str)):
-            raise Exception("Expected bundleurl to be a str, received: {}".format(type(bundleurl)))
+            raise TypeError(f'Expected bundleurl to be a str, received: {type(bundleurl)}')
 
         if yaml is not None and not isinstance(yaml, (bytes, str)):
-            raise Exception("Expected yaml to be a str, received: {}".format(type(yaml)))
+            raise TypeError(f'Expected yaml to be a str, received: {type(yaml)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Bundle',
-                   request='GetChangesMapArgs',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Bundle',
+            'request': 'GetChangesMapArgs',
+            'version': 6,
+            'params': _params,
+        }
         _params['bundleURL'] = bundleurl
         _params['yaml'] = yaml
         reply = await self.rpc(msg)
         return reply
-
-
 
 class CharmsFacade(Type):
     name = 'Charms'
@@ -632,11 +633,11 @@ class CharmsFacade(Type):
                                                      'Result': {'$ref': '#/definitions/ResolveCharmWithChannelResults'}},
                                       'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(CharmOriginResult)
     async def AddCharm(self, charm_origin=None, force=None, url=None):
-        '''
+        """
         AddCharm adds the given charm URL (which must include revision) to the
         environment, if it does not exist yet. Local charms are not supported,
         only charm store and charm hub URLs. See also AddLocalCharm().
@@ -645,22 +646,24 @@ class CharmsFacade(Type):
         force : bool
         url : str
         Returns -> CharmOriginResult
-        '''
+        """
         if charm_origin is not None and not isinstance(charm_origin, (dict, CharmOrigin)):
-            raise Exception("Expected charm_origin to be a CharmOrigin, received: {}".format(type(charm_origin)))
+            raise TypeError(f'Expected charm_origin to be a CharmOrigin, received: {type(charm_origin)}')
 
         if force is not None and not isinstance(force, bool):
-            raise Exception("Expected force to be a bool, received: {}".format(type(force)))
+            raise TypeError(f'Expected force to be a bool, received: {type(force)}')
 
         if url is not None and not isinstance(url, (bytes, str)):
-            raise Exception("Expected url to be a str, received: {}".format(type(url)))
+            raise TypeError(f'Expected url to be a str, received: {type(url)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Charms',
-                   request='AddCharm',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Charms',
+            'request': 'AddCharm',
+            'version': 6,
+            'params': _params,
+        }
         _params['charm-origin'] = charm_origin
         _params['force'] = force
         _params['url'] = url
@@ -668,177 +671,182 @@ class CharmsFacade(Type):
         return reply
 
 
-
     @ReturnMapping(Charm)
     async def CharmInfo(self, url=None):
-        '''
+        """
         CharmInfo returns information about the requested charm.
 
         url : str
         Returns -> Charm
-        '''
+        """
         if url is not None and not isinstance(url, (bytes, str)):
-            raise Exception("Expected url to be a str, received: {}".format(type(url)))
+            raise TypeError(f'Expected url to be a str, received: {type(url)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Charms',
-                   request='CharmInfo',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Charms',
+            'request': 'CharmInfo',
+            'version': 6,
+            'params': _params,
+        }
         _params['url'] = url
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ErrorResults)
     async def CheckCharmPlacement(self, placements=None):
-        '''
+        """
         CheckCharmPlacement checks if a charm is allowed to be placed with in a
         given application.
 
         placements : typing.Sequence[~ApplicationCharmPlacement]
         Returns -> ErrorResults
-        '''
+        """
         if placements is not None and not isinstance(placements, (bytes, str, list)):
-            raise Exception("Expected placements to be a Sequence, received: {}".format(type(placements)))
+            raise TypeError(f'Expected placements to be a Sequence, received: {type(placements)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Charms',
-                   request='CheckCharmPlacement',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Charms',
+            'request': 'CheckCharmPlacement',
+            'version': 6,
+            'params': _params,
+        }
         _params['placements'] = placements
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(DownloadInfoResults)
     async def GetDownloadInfos(self, entities=None):
-        '''
+        """
         GetDownloadInfos attempts to get the bundle corresponding to the charm url
         and origin.
 
         entities : typing.Sequence[~CharmURLAndOrigin]
         Returns -> DownloadInfoResults
-        '''
+        """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise Exception("Expected entities to be a Sequence, received: {}".format(type(entities)))
+            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Charms',
-                   request='GetDownloadInfos',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Charms',
+            'request': 'GetDownloadInfos',
+            'version': 6,
+            'params': _params,
+        }
         _params['entities'] = entities
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(IsMeteredResult)
     async def IsMetered(self, url=None):
-        '''
+        """
         IsMetered returns whether or not the charm is metered.
 
         url : str
         Returns -> IsMeteredResult
-        '''
+        """
         if url is not None and not isinstance(url, (bytes, str)):
-            raise Exception("Expected url to be a str, received: {}".format(type(url)))
+            raise TypeError(f'Expected url to be a str, received: {type(url)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Charms',
-                   request='IsMetered',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Charms',
+            'request': 'IsMetered',
+            'version': 6,
+            'params': _params,
+        }
         _params['url'] = url
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(CharmsListResult)
     async def List(self, names=None):
-        '''
+        """
         List returns a list of charm URLs currently in the state.
         If supplied parameter contains any names, the result will
         be filtered to return only the charms with supplied names.
 
         names : typing.Sequence[str]
         Returns -> CharmsListResult
-        '''
+        """
         if names is not None and not isinstance(names, (bytes, str, list)):
-            raise Exception("Expected names to be a Sequence, received: {}".format(type(names)))
+            raise TypeError(f'Expected names to be a Sequence, received: {type(names)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Charms',
-                   request='List',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Charms',
+            'request': 'List',
+            'version': 6,
+            'params': _params,
+        }
         _params['names'] = names
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(CharmResourcesResults)
     async def ListCharmResources(self, entities=None):
-        '''
+        """
         ListCharmResources returns a series of resources for a given charm.
 
         entities : typing.Sequence[~CharmURLAndOrigin]
         Returns -> CharmResourcesResults
-        '''
+        """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise Exception("Expected entities to be a Sequence, received: {}".format(type(entities)))
+            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Charms',
-                   request='ListCharmResources',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Charms',
+            'request': 'ListCharmResources',
+            'version': 6,
+            'params': _params,
+        }
         _params['entities'] = entities
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ResolveCharmWithChannelResults)
     async def ResolveCharms(self, macaroon=None, resolve=None):
-        '''
+        """
         ResolveCharms resolves the given charm URLs with an optionally specified
         preferred channel.  Channel provided via CharmOrigin.
 
         macaroon : Macaroon
         resolve : typing.Sequence[~ResolveCharmWithChannel]
         Returns -> ResolveCharmWithChannelResults
-        '''
+        """
         if macaroon is not None and not isinstance(macaroon, (dict, Macaroon)):
-            raise Exception("Expected macaroon to be a Macaroon, received: {}".format(type(macaroon)))
+            raise TypeError(f'Expected macaroon to be a Macaroon, received: {type(macaroon)}')
 
         if resolve is not None and not isinstance(resolve, (bytes, str, list)):
-            raise Exception("Expected resolve to be a Sequence, received: {}".format(type(resolve)))
+            raise TypeError(f'Expected resolve to be a Sequence, received: {type(resolve)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Charms',
-                   request='ResolveCharms',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Charms',
+            'request': 'ResolveCharms',
+            'version': 6,
+            'params': _params,
+        }
         _params['macaroon'] = macaroon
         _params['resolve'] = resolve
         reply = await self.rpc(msg)
         return reply
-
-
 
 class ClientFacade(Type):
     name = 'Client'
@@ -1273,11 +1281,11 @@ class ClientFacade(Type):
                                  'properties': {'Result': {'$ref': '#/definitions/AllWatcherId'}},
                                  'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(FindToolsResult)
     async def FindTools(self, agentstream=None, arch=None, major=None, number=None, os_type=None):
-        '''
+        """
         FindTools returns a List containing all tools matching the given parameters.
         TODO(juju 3.1) - remove, used by 2.9 client only
 
@@ -1287,28 +1295,30 @@ class ClientFacade(Type):
         number : Number
         os_type : str
         Returns -> FindToolsResult
-        '''
+        """
         if agentstream is not None and not isinstance(agentstream, (bytes, str)):
-            raise Exception("Expected agentstream to be a str, received: {}".format(type(agentstream)))
+            raise TypeError(f'Expected agentstream to be a str, received: {type(agentstream)}')
 
         if arch is not None and not isinstance(arch, (bytes, str)):
-            raise Exception("Expected arch to be a str, received: {}".format(type(arch)))
+            raise TypeError(f'Expected arch to be a str, received: {type(arch)}')
 
         if major is not None and not isinstance(major, int):
-            raise Exception("Expected major to be a int, received: {}".format(type(major)))
+            raise TypeError(f'Expected major to be a int, received: {type(major)}')
 
         if number is not None and not isinstance(number, (dict, Number)):
-            raise Exception("Expected number to be a Number, received: {}".format(type(number)))
+            raise TypeError(f'Expected number to be a Number, received: {type(number)}')
 
         if os_type is not None and not isinstance(os_type, (bytes, str)):
-            raise Exception("Expected os_type to be a str, received: {}".format(type(os_type)))
+            raise TypeError(f'Expected os_type to be a str, received: {type(os_type)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Client',
-                   request='FindTools',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Client',
+            'request': 'FindTools',
+            'version': 6,
+            'params': _params,
+        }
         _params['agentstream'] = agentstream
         _params['arch'] = arch
         _params['major'] = major
@@ -1318,73 +1328,74 @@ class ClientFacade(Type):
         return reply
 
 
-
     @ReturnMapping(FullStatus)
     async def FullStatus(self, patterns=None):
-        '''
+        """
         FullStatus gives the information needed for juju status over the api
 
         patterns : typing.Sequence[str]
         Returns -> FullStatus
-        '''
+        """
         if patterns is not None and not isinstance(patterns, (bytes, str, list)):
-            raise Exception("Expected patterns to be a Sequence, received: {}".format(type(patterns)))
+            raise TypeError(f'Expected patterns to be a Sequence, received: {type(patterns)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Client',
-                   request='FullStatus',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Client',
+            'request': 'FullStatus',
+            'version': 6,
+            'params': _params,
+        }
         _params['patterns'] = patterns
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(StatusHistoryResults)
     async def StatusHistory(self, requests=None):
-        '''
+        """
         StatusHistory returns a slice of past statuses for several entities.
 
         requests : typing.Sequence[~StatusHistoryRequest]
         Returns -> StatusHistoryResults
-        '''
+        """
         if requests is not None and not isinstance(requests, (bytes, str, list)):
-            raise Exception("Expected requests to be a Sequence, received: {}".format(type(requests)))
+            raise TypeError(f'Expected requests to be a Sequence, received: {type(requests)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Client',
-                   request='StatusHistory',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Client',
+            'request': 'StatusHistory',
+            'version': 6,
+            'params': _params,
+        }
         _params['requests'] = requests
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(AllWatcherId)
     async def WatchAll(self):
-        '''
+        """
         WatchAll initiates a watcher for entities in the connected model.
 
 
         Returns -> AllWatcherId
-        '''
+        """
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Client',
-                   request='WatchAll',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Client',
+            'request': 'WatchAll',
+            'version': 6,
+            'params': _params,
+        }
 
         reply = await self.rpc(msg)
         return reply
-
-
 
 class SpacesFacade(Type):
     name = 'Spaces'
@@ -1582,166 +1593,172 @@ class SpacesFacade(Type):
                                                  'Result': {'$ref': '#/definitions/ShowSpaceResults'}},
                                   'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(ErrorResults)
     async def CreateSpaces(self, spaces=None):
-        '''
+        """
         CreateSpaces creates a new Juju network space, associating the
         specified subnets with it (optional; can be empty).
 
         spaces : typing.Sequence[~CreateSpaceParams]
         Returns -> ErrorResults
-        '''
+        """
         if spaces is not None and not isinstance(spaces, (bytes, str, list)):
-            raise Exception("Expected spaces to be a Sequence, received: {}".format(type(spaces)))
+            raise TypeError(f'Expected spaces to be a Sequence, received: {type(spaces)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Spaces',
-                   request='CreateSpaces',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Spaces',
+            'request': 'CreateSpaces',
+            'version': 6,
+            'params': _params,
+        }
         _params['spaces'] = spaces
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ListSpacesResults)
     async def ListSpaces(self):
-        '''
+        """
         ListSpaces lists all the available spaces and their associated subnets.
 
 
         Returns -> ListSpacesResults
-        '''
+        """
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Spaces',
-                   request='ListSpaces',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Spaces',
+            'request': 'ListSpaces',
+            'version': 6,
+            'params': _params,
+        }
 
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(MoveSubnetsResults)
     async def MoveSubnets(self, args=None):
-        '''
+        """
         MoveSubnets ensures that the input subnets are in the input space.
 
         args : typing.Sequence[~MoveSubnetsParam]
         Returns -> MoveSubnetsResults
-        '''
+        """
         if args is not None and not isinstance(args, (bytes, str, list)):
-            raise Exception("Expected args to be a Sequence, received: {}".format(type(args)))
+            raise TypeError(f'Expected args to be a Sequence, received: {type(args)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Spaces',
-                   request='MoveSubnets',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Spaces',
+            'request': 'MoveSubnets',
+            'version': 6,
+            'params': _params,
+        }
         _params['args'] = args
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(None)
     async def ReloadSpaces(self):
-        '''
+        """
         ReloadSpaces refreshes spaces from substrate
 
 
         Returns -> None
-        '''
+        """
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Spaces',
-                   request='ReloadSpaces',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Spaces',
+            'request': 'ReloadSpaces',
+            'version': 6,
+            'params': _params,
+        }
 
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(RemoveSpaceResults)
     async def RemoveSpace(self, space_param=None):
-        '''
+        """
         RemoveSpace removes a space.
         Returns SpaceResults if entities/settings are found which makes the deletion not possible.
 
         space_param : typing.Sequence[~RemoveSpaceParam]
         Returns -> RemoveSpaceResults
-        '''
+        """
         if space_param is not None and not isinstance(space_param, (bytes, str, list)):
-            raise Exception("Expected space_param to be a Sequence, received: {}".format(type(space_param)))
+            raise TypeError(f'Expected space_param to be a Sequence, received: {type(space_param)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Spaces',
-                   request='RemoveSpace',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Spaces',
+            'request': 'RemoveSpace',
+            'version': 6,
+            'params': _params,
+        }
         _params['space-param'] = space_param
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ErrorResults)
     async def RenameSpace(self, changes=None):
-        '''
+        """
         RenameSpace renames a space.
 
         changes : typing.Sequence[~RenameSpaceParams]
         Returns -> ErrorResults
-        '''
+        """
         if changes is not None and not isinstance(changes, (bytes, str, list)):
-            raise Exception("Expected changes to be a Sequence, received: {}".format(type(changes)))
+            raise TypeError(f'Expected changes to be a Sequence, received: {type(changes)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Spaces',
-                   request='RenameSpace',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Spaces',
+            'request': 'RenameSpace',
+            'version': 6,
+            'params': _params,
+        }
         _params['changes'] = changes
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ShowSpaceResults)
     async def ShowSpace(self, entities=None):
-        '''
+        """
         ShowSpace shows the spaces for a set of given entities.
 
         entities : typing.Sequence[~Entity]
         Returns -> ShowSpaceResults
-        '''
+        """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise Exception("Expected entities to be a Sequence, received: {}".format(type(entities)))
+            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Spaces',
-                   request='ShowSpace',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Spaces',
+            'request': 'ShowSpace',
+            'version': 6,
+            'params': _params,
+        }
         _params['entities'] = entities
         reply = await self.rpc(msg)
         return reply
-
-
 
 class StorageFacade(Type):
     name = 'Storage'
@@ -2194,82 +2211,85 @@ class StorageFacade(Type):
                                                   'Result': {'$ref': '#/definitions/ErrorResults'}},
                                    'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(AddStorageResults)
     async def AddToUnit(self, storages=None):
-        '''
+        """
         AddToUnit validates and creates additional storage instances for units.
         A "CHANGE" block can block this operation.
 
         storages : typing.Sequence[~StorageAddParams]
         Returns -> AddStorageResults
-        '''
+        """
         if storages is not None and not isinstance(storages, (bytes, str, list)):
-            raise Exception("Expected storages to be a Sequence, received: {}".format(type(storages)))
+            raise TypeError(f'Expected storages to be a Sequence, received: {type(storages)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Storage',
-                   request='AddToUnit',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Storage',
+            'request': 'AddToUnit',
+            'version': 6,
+            'params': _params,
+        }
         _params['storages'] = storages
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ErrorResults)
     async def Attach(self, ids=None):
-        '''
+        """
         Attach attaches existing storage instances to units.
         A "CHANGE" block can block this operation.
 
         ids : typing.Sequence[~StorageAttachmentId]
         Returns -> ErrorResults
-        '''
+        """
         if ids is not None and not isinstance(ids, (bytes, str, list)):
-            raise Exception("Expected ids to be a Sequence, received: {}".format(type(ids)))
+            raise TypeError(f'Expected ids to be a Sequence, received: {type(ids)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Storage',
-                   request='Attach',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Storage',
+            'request': 'Attach',
+            'version': 6,
+            'params': _params,
+        }
         _params['ids'] = ids
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ErrorResults)
     async def CreatePool(self, pools=None):
-        '''
+        """
         CreatePool creates a new pool with specified parameters.
 
         pools : typing.Sequence[~StoragePool]
         Returns -> ErrorResults
-        '''
+        """
         if pools is not None and not isinstance(pools, (bytes, str, list)):
-            raise Exception("Expected pools to be a Sequence, received: {}".format(type(pools)))
+            raise TypeError(f'Expected pools to be a Sequence, received: {type(pools)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Storage',
-                   request='CreatePool',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Storage',
+            'request': 'CreatePool',
+            'version': 6,
+            'params': _params,
+        }
         _params['pools'] = pools
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ErrorResults)
     async def DetachStorage(self, force=None, ids=None, max_wait=None):
-        '''
+        """
         DetachStorage sets the specified storage attachments to Dying, unless they are
         already Dying or Dead. Any associated, persistent storage will remain
         alive. This call can be forced.
@@ -2278,22 +2298,24 @@ class StorageFacade(Type):
         ids : StorageAttachmentIds
         max_wait : int
         Returns -> ErrorResults
-        '''
+        """
         if force is not None and not isinstance(force, bool):
-            raise Exception("Expected force to be a bool, received: {}".format(type(force)))
+            raise TypeError(f'Expected force to be a bool, received: {type(force)}')
 
         if ids is not None and not isinstance(ids, (dict, StorageAttachmentIds)):
-            raise Exception("Expected ids to be a StorageAttachmentIds, received: {}".format(type(ids)))
+            raise TypeError(f'Expected ids to be a StorageAttachmentIds, received: {type(ids)}')
 
         if max_wait is not None and not isinstance(max_wait, int):
-            raise Exception("Expected max_wait to be a int, received: {}".format(type(max_wait)))
+            raise TypeError(f'Expected max_wait to be a int, received: {type(max_wait)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Storage',
-                   request='DetachStorage',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Storage',
+            'request': 'DetachStorage',
+            'version': 6,
+            'params': _params,
+        }
         _params['force'] = force
         _params['ids'] = ids
         _params['max-wait'] = max_wait
@@ -2301,59 +2323,60 @@ class StorageFacade(Type):
         return reply
 
 
-
     @ReturnMapping(ImportStorageResults)
     async def Import(self, storage=None):
-        '''
+        """
         Import imports existing storage into the model.
         A "CHANGE" block can block this operation.
 
         storage : typing.Sequence[~ImportStorageParams]
         Returns -> ImportStorageResults
-        '''
+        """
         if storage is not None and not isinstance(storage, (bytes, str, list)):
-            raise Exception("Expected storage to be a Sequence, received: {}".format(type(storage)))
+            raise TypeError(f'Expected storage to be a Sequence, received: {type(storage)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Storage',
-                   request='Import',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Storage',
+            'request': 'Import',
+            'version': 6,
+            'params': _params,
+        }
         _params['storage'] = storage
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(FilesystemDetailsListResults)
     async def ListFilesystems(self, filters=None):
-        '''
+        """
         ListFilesystems returns a list of filesystems in the environment matching
         the provided filter. Each result describes a filesystem in detail, including
         the filesystem's attachments.
 
         filters : typing.Sequence[~FilesystemFilter]
         Returns -> FilesystemDetailsListResults
-        '''
+        """
         if filters is not None and not isinstance(filters, (bytes, str, list)):
-            raise Exception("Expected filters to be a Sequence, received: {}".format(type(filters)))
+            raise TypeError(f'Expected filters to be a Sequence, received: {type(filters)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Storage',
-                   request='ListFilesystems',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Storage',
+            'request': 'ListFilesystems',
+            'version': 6,
+            'params': _params,
+        }
         _params['filters'] = filters
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(StoragePoolsResults)
     async def ListPools(self, filters=None):
-        '''
+        """
         ListPools returns a list of pools.
         If filter is provided, returned list only contains pools that match
         the filter.
@@ -2365,73 +2388,76 @@ class StorageFacade(Type):
 
         filters : typing.Sequence[~StoragePoolFilter]
         Returns -> StoragePoolsResults
-        '''
+        """
         if filters is not None and not isinstance(filters, (bytes, str, list)):
-            raise Exception("Expected filters to be a Sequence, received: {}".format(type(filters)))
+            raise TypeError(f'Expected filters to be a Sequence, received: {type(filters)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Storage',
-                   request='ListPools',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Storage',
+            'request': 'ListPools',
+            'version': 6,
+            'params': _params,
+        }
         _params['filters'] = filters
         reply = await self.rpc(msg)
         return reply
-
 
 
     @ReturnMapping(StorageDetailsListResults)
     async def ListStorageDetails(self, filters=None):
-        '''
+        """
         ListStorageDetails returns storage matching a filter.
 
         filters : typing.Sequence[~StorageFilter]
         Returns -> StorageDetailsListResults
-        '''
+        """
         if filters is not None and not isinstance(filters, (bytes, str, list)):
-            raise Exception("Expected filters to be a Sequence, received: {}".format(type(filters)))
+            raise TypeError(f'Expected filters to be a Sequence, received: {type(filters)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Storage',
-                   request='ListStorageDetails',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Storage',
+            'request': 'ListStorageDetails',
+            'version': 6,
+            'params': _params,
+        }
         _params['filters'] = filters
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(VolumeDetailsListResults)
     async def ListVolumes(self, filters=None):
-        '''
+        """
         ListVolumes lists volumes with the given filters. Each filter produces
         an independent list of volumes, or an error if the filter is invalid
         or the volumes could not be listed.
 
         filters : typing.Sequence[~VolumeFilter]
         Returns -> VolumeDetailsListResults
-        '''
+        """
         if filters is not None and not isinstance(filters, (bytes, str, list)):
-            raise Exception("Expected filters to be a Sequence, received: {}".format(type(filters)))
+            raise TypeError(f'Expected filters to be a Sequence, received: {type(filters)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Storage',
-                   request='ListVolumes',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Storage',
+            'request': 'ListVolumes',
+            'version': 6,
+            'params': _params,
+        }
         _params['filters'] = filters
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ErrorResults)
     async def Remove(self, storage=None):
-        '''
+        """
         Remove sets the specified storage entities to Dying, unless they are
         already Dying or Dead, such that the storage will eventually be removed
         from the model. If the arguments specify that the storage should be
@@ -2440,89 +2466,93 @@ class StorageFacade(Type):
 
         storage : typing.Sequence[~RemoveStorageInstance]
         Returns -> ErrorResults
-        '''
+        """
         if storage is not None and not isinstance(storage, (bytes, str, list)):
-            raise Exception("Expected storage to be a Sequence, received: {}".format(type(storage)))
+            raise TypeError(f'Expected storage to be a Sequence, received: {type(storage)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Storage',
-                   request='Remove',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Storage',
+            'request': 'Remove',
+            'version': 6,
+            'params': _params,
+        }
         _params['storage'] = storage
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ErrorResults)
     async def RemovePool(self, pools=None):
-        '''
+        """
         RemovePool deletes the named pool
 
         pools : typing.Sequence[~StoragePoolDeleteArg]
         Returns -> ErrorResults
-        '''
+        """
         if pools is not None and not isinstance(pools, (bytes, str, list)):
-            raise Exception("Expected pools to be a Sequence, received: {}".format(type(pools)))
+            raise TypeError(f'Expected pools to be a Sequence, received: {type(pools)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Storage',
-                   request='RemovePool',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Storage',
+            'request': 'RemovePool',
+            'version': 6,
+            'params': _params,
+        }
         _params['pools'] = pools
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(StorageDetailsResults)
     async def StorageDetails(self, entities=None):
-        '''
+        """
         StorageDetails retrieves and returns detailed information about desired
         storage identified by supplied tags. If specified storage cannot be
         retrieved, individual error is returned instead of storage information.
 
         entities : typing.Sequence[~Entity]
         Returns -> StorageDetailsResults
-        '''
+        """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise Exception("Expected entities to be a Sequence, received: {}".format(type(entities)))
+            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Storage',
-                   request='StorageDetails',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Storage',
+            'request': 'StorageDetails',
+            'version': 6,
+            'params': _params,
+        }
         _params['entities'] = entities
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ErrorResults)
     async def UpdatePool(self, pools=None):
-        '''
+        """
         UpdatePool deletes the named pool
 
         pools : typing.Sequence[~StoragePool]
         Returns -> ErrorResults
-        '''
+        """
         if pools is not None and not isinstance(pools, (bytes, str, list)):
-            raise Exception("Expected pools to be a Sequence, received: {}".format(type(pools)))
+            raise TypeError(f'Expected pools to be a Sequence, received: {type(pools)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Storage',
-                   request='UpdatePool',
-                   version=6,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Storage',
+            'request': 'UpdatePool',
+            'version': 6,
+            'params': _params,
+        }
         _params['pools'] = pools
         reply = await self.rpc(msg)
         return reply
-
 
