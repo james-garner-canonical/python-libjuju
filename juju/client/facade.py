@@ -4,7 +4,6 @@
 from __future__ import annotations
 import argparse
 import builtins
-import functools
 import json
 import keyword
 import pprint
@@ -16,8 +15,6 @@ from glob import glob
 from pathlib import Path
 from typing import (
     Any,
-    Awaitable,
-    Callable,
     Dict,
     List,
     Mapping,
@@ -28,7 +25,6 @@ from typing import (
 
 import packaging.version
 import typing_inspect
-from typing_extensions import ParamSpec
 
 from . import codegen
 
@@ -473,45 +469,6 @@ def retspec(schema, defs):
     return strcast(defs, False)
 
 
-C = TypeVar('C', bound='typing.Type[Type]')
-T = TypeVar('T')
-P = ParamSpec('P')
-@typing.overload
-def ReturnMapping(cls: None) -> Callable[
-    [Callable[P, Awaitable[T]]],
-    Callable[P, Awaitable[T]]
-]: ...
-@typing.overload
-def ReturnMapping(cls: C) -> Callable[
-    [Callable[P, Awaitable[Any]]],
-    Callable[P, Awaitable[typing.Optional[C]]]
-]: ...
-def ReturnMapping(cls: typing.Optional[C]) -> typing.Union[
-    Callable[[Callable[P, Awaitable[T]]], Callable[P, Awaitable[T]]],
-    Callable[[Callable[P, Awaitable[T]]], Callable[P, Awaitable[typing.Optional[C]]]],
-]:
-    # Annotate the method with a return Type
-    # so the value can be cast
-    if cls is None:
-        return lambda f: f
-
-    def decorator(f: Callable[P, Awaitable[T]]) -> Callable[P, Awaitable[C]]:
-        @functools.wraps(f)
-        async def wrapper(*args: P.args, **kwargs: P.kwargs) -> C:
-            reply = await f(*args, **kwargs)
-            if typing_inspect.is_generic_type(cls) and issubclass(typing_inspect.get_origin(cls), Sequence):
-                parameters = typing_inspect.get_parameters(cls)
-                result = []
-                item_cls = parameters[0]
-                for item in reply:
-                    result.append(item_cls.from_json(item))
-                return result
-            return cls.from_json(reply['response'])
-
-        return wrapper
-    return decorator
-
-
 def makeFunc(cls, name, description, params, result, _async=True):
     INDENT = "    "
     args = Args(cls.schema, params)
@@ -525,8 +482,11 @@ def makeFunc(cls, name, description, params, result, _async=True):
     lines = [
         f'',
         f'',
-        f'@ReturnMapping({result.__name__ if result else None})',
-        f'{"async " if _async else ""}def {name}(self{", " if args else ""}{args.as_kwargs()}):',
+        (
+            f'{"async " if _async else ""}'
+            f'def {name}(self{", " if args else ""}{args.as_kwargs()})'
+            f' -> {result.__name__ if result is not None else "JSONObject"}:'
+        ),
         f'    """',
         textwrap.indent(doc_string, INDENT),
         f'    Returns -> {res}',
@@ -542,7 +502,11 @@ def makeFunc(cls, name, description, params, result, _async=True):
         f'    }}',
         assignments,
         f'    reply = {"await " if _async else ""}self.rpc(msg)',
-        f'    return reply',
+        (
+            f"    return {result.__name__}.from_json(reply['response'])"
+            if result is not None
+            else f'    return reply'
+        ),
         f'',
     ]
     fsource = '\n'.join(lines)
@@ -633,6 +597,8 @@ class TypeEncoder(json.JSONEncoder):
             return obj.serialize()
         return json.JSONEncoder.default(self, obj)
 
+
+C = TypeVar("C")
 
 class Type:
     def connect(self, connection):
@@ -821,7 +787,6 @@ class Schema(dict):
 def _getns(schema):
     ns = {'Type': Type,
           'typing': typing,
-          'ReturnMapping': ReturnMapping
           }
     # Copy our types into the globals of the method
     for facade in schema.registry:
@@ -843,7 +808,7 @@ def write_facades(captures: Dict[int, codegen.Capture], options: Options) -> Non
     for version in sorted(captures):
         with open(f'{options.output_dir}/_client{version}.py', 'w') as f:
             f.write(HEADER)
-            f.write('from juju.client.facade import Type, ReturnMapping\n')
+            f.write('from juju.client.facade import Type, JSONObject\n')
             f.write('from juju.client._definitions import *\n')
             f.write('\n')
             for key in sorted(captures[version]):
@@ -866,7 +831,7 @@ def write_definitions(captures: codegen.Capture, options: Options) -> None:
     """
     with open(f'{options.output_dir}/_definitions.py', 'w') as f:
         f.write(HEADER)
-        f.write("from juju.client.facade import Type, ReturnMapping\n\n")
+        f.write("from juju.client.facade import Type, JSONObject\n\n")
         for key in sorted(
                 [k for k in captures.keys() if "Facade" not in k]):
             print(captures[key], file=f)
