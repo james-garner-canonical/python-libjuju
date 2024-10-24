@@ -14,7 +14,17 @@ import typing
 from collections import defaultdict
 from glob import glob
 from pathlib import Path
-from typing import Any, Awaitable, Callable, Dict, List, Mapping, Protocol, Sequence, TypeVar
+from typing import (
+    Any,
+    Awaitable,
+    Callable,
+    Dict,
+    List,
+    Mapping,
+    Protocol,
+    Sequence,
+    TypeVar,
+)
 
 import packaging.version
 import typing_inspect
