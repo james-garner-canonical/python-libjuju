@@ -10,7 +10,6 @@ import pprint
 import re
 import textwrap
 import typing
-from collections import defaultdict
 from glob import glob
 from pathlib import Path
 from typing import (
@@ -190,7 +189,7 @@ class TypeRegistry(dict):
 
 
 CLASSES = {}
-factories = codegen.Capture()
+factories: Dict[str, codegen.CodeWriter] = {}
 
 
 def booler(v):
@@ -357,7 +356,7 @@ def buildValidation(name, instance_type, instance_sub_type, ident=None) -> str:
     )
 
 
-def buildTypes(schema, capture):
+def buildTypes(schema: Schema, capture: Dict[str, codegen.CodeWriter]) -> None:
     INDENT = "    "
     for kind in sorted(schema.types, key=str):
         if isinstance(kind, str):
@@ -444,7 +443,7 @@ def buildTypes(schema, capture):
             lines.append(f'{INDENT * 2}self.unknown_fields = unknown_fields')
 
         source = '\n'.join(lines)
-        capture.clear(name)
+        capture[name] = codegen.CodeWriter()
         capture[name].write(source)
         capture[name].write('\n\n')
         if name is None:
@@ -538,7 +537,7 @@ async def rpc(self, msg):
     return func, source
 
 
-def buildMethods(cls, capture):
+def buildMethods(cls: typing.Type[Type], capture: Dict[str, codegen.CodeWriter]) -> None:
     properties = cls.schema['properties']
     for methodname in sorted(properties):
         method, source = _buildMethod(cls, methodname)
@@ -794,13 +793,12 @@ def _getns(schema):
     return ns
 
 
-def make_factory(name):
-    if name in factories:
-        del factories[name]
+def make_factory(name: str) -> None:
+    factories[name] = codegen.CodeWriter()
     factories[name].write(f'class {name}(TypeFactory):\n    pass\n\n')
 
 
-def write_facades(captures: Dict[int, codegen.Capture], options: Options) -> None:
+def write_facades(captures: Dict[int, Dict[str, codegen.CodeWriter]], options: Options) -> None:
     """
     Write the Facades to the appropriate _client<version>.py
 
@@ -821,7 +819,7 @@ def write_facades(captures: Dict[int, codegen.Capture], options: Options) -> Non
     return version
 
 
-def write_definitions(captures: codegen.Capture, options: Options) -> None:
+def write_definitions(captures: Dict[str, codegen.CodeWriter], options: Options) -> None:
     """
     Write auxillary (non versioned) classes to
     _definitions.py The auxillary classes currently get
@@ -837,7 +835,7 @@ def write_definitions(captures: codegen.Capture, options: Options) -> None:
             print(captures[key], file=f)
 
 
-def write_client(captures: Dict[int, codegen.Capture], options: Options) -> None:
+def write_client(captures: Dict[int, Dict[str, codegen.CodeWriter]], options: Options) -> None:
     """
     Write the TypeFactory classes to _client.py, along with some
     imports and tables so that we can look up versioned Facades.
@@ -872,11 +870,11 @@ def write_client(captures: Dict[int, codegen.Capture], options: Options) -> None
             f.write('\n')
 
 
-def generate_definitions(schemas: Dict[str, List[Schema]]) -> codegen.Capture:
+def generate_definitions(schemas: Dict[str, List[Schema]]) -> Dict[str, codegen.CodeWriter]:
     # Build all of the auxillary (unversioned) classes
     # TODO: get rid of some of the excess trips through loops in the
     # called functions.
-    definitions = codegen.Capture()
+    definitions: Dict[str, codegen.CodeWriter] = {}
 
     for juju_version in sorted(schemas.keys()):
         for schema in schemas[juju_version]:
@@ -891,24 +889,23 @@ def generate_definitions(schemas: Dict[str, List[Schema]]) -> codegen.Capture:
     return definitions
 
 
-def generate_facades(schemas: Dict[str, List[Schema]]) -> Dict[int, codegen.Capture]:
-    captures = defaultdict(codegen.Capture)
-
+def generate_facades(schemas: Dict[str, List[Schema]]) -> Dict[int, Dict[str, codegen.CodeWriter]]:
+    captures = {}
     # Build the Facade classes
     for juju_version in sorted(schemas.keys(), key=packaging.version.parse):
         for schema in schemas[juju_version]:
             cls, source = buildFacade(schema)
             cls_name = f'{schema.name}Facade'
-
-            captures[schema.version].clear(cls_name)
             # Make the factory class for _client.py
-            make_factory(cls_name)
-            # Make the actual class
-            captures[schema.version][cls_name].write(source)
+            make_factory(cls_name)  # adds to global factories ... sigh
+
+            capture = captures.setdefault(schema.version, {})
+            capture[cls_name] = codegen.CodeWriter()
+            capture[cls_name].write(source)
             # Build the methods for each Facade class.
-            buildMethods(cls, captures[schema.version])
+            buildMethods(cls, capture)
             # Build the override RPC method if the Facade is a watcher.
-            buildWatcherRPCMethods(cls, captures[schema.version])
+            buildWatcherRPCMethods(cls, capture)
             # Mark this Facade class as being done for this version --
             # helps mitigate some excessive looping.
             CLASSES[schema.name] = cls
