@@ -90,7 +90,7 @@ class TypeFactory:
         class_name = cls.__name__
         if not class_name.endswith('Facade'):
             raise TypeError(f'Unexpected class name: {class_name}')
-        facade_name = class_name.removesuffix('Facade')
+        facade_name = class_name[: -len('Facade')]
 
         version = connection.facades.get(facade_name)
         if version is None:
@@ -114,7 +114,7 @@ class TypeFactory:
         facade_name = cls.__name__
         if not facade_name.endswith('Facade'):
             raise TypeError(f'Unexpected class name: {facade_name}')
-        facade_name = facade_name.removesuffix('Facade')
+        facade_name = facade_name[: -len('Facade')]
         return connection.facades.get(facade_name)
 
 
