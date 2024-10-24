@@ -3,11 +3,35 @@
 
 from juju.client.facade import Type, ReturnMapping
 
-class Action(Type):
-    _toSchema = {'execution_group': 'execution-group', 'name': 'name', 'parallel': 'parallel', 'parameters': 'parameters', 'receiver': 'receiver', 'tag': 'tag'}
-    _toPy = {'execution-group': 'execution_group', 'name': 'name', 'parallel': 'parallel', 'parameters': 'parameters', 'receiver': 'receiver', 'tag': 'tag'}
 
-    def __init__(self, execution_group=None, name=None, parallel=None, parameters=None, receiver=None, tag=None, **unknown_fields):
+class Action(Type):
+    _toSchema = {
+        'execution_group': 'execution-group',
+        'name': 'name',
+        'parallel': 'parallel',
+        'parameters': 'parameters',
+        'receiver': 'receiver',
+        'tag': 'tag',
+    }
+    _toPy = {
+        'execution-group': 'execution_group',
+        'name': 'name',
+        'parallel': 'parallel',
+        'parameters': 'parameters',
+        'receiver': 'receiver',
+        'tag': 'tag',
+    }
+
+    def __init__(
+        self,
+        execution_group=None,
+        name=None,
+        parallel=None,
+        parameters=None,
+        receiver=None,
+        tag=None,
+        **unknown_fields,
+    ):
         """
         execution_group : str
         name : str
@@ -24,20 +48,30 @@ class Action(Type):
         tag_ = tag
 
         # Validate arguments against known Juju API types.
-        if execution_group_ is not None and not isinstance(execution_group_, (bytes, str)):
-            raise TypeError(f'Expected execution_group_ to be a str, received: {type(execution_group_)}')
+        if execution_group_ is not None and not isinstance(
+            execution_group_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected execution_group_ to be a str, received: {type(execution_group_)}'
+            )
 
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
 
         if parallel_ is not None and not isinstance(parallel_, bool):
-            raise TypeError(f'Expected parallel_ to be a bool, received: {type(parallel_)}')
+            raise TypeError(
+                f'Expected parallel_ to be a bool, received: {type(parallel_)}'
+            )
 
         if parameters_ is not None and not isinstance(parameters_, dict):
-            raise TypeError(f'Expected parameters_ to be a Mapping, received: {type(parameters_)}')
+            raise TypeError(
+                f'Expected parameters_ to be a Mapping, received: {type(parameters_)}'
+            )
 
         if receiver_ is not None and not isinstance(receiver_, (bytes, str)):
-            raise TypeError(f'Expected receiver_ to be a str, received: {type(receiver_)}')
+            raise TypeError(
+                f'Expected receiver_ to be a str, received: {type(receiver_)}'
+            )
 
         if tag_ is not None and not isinstance(tag_, (bytes, str)):
             raise TypeError(f'Expected tag_ to be a str, received: {type(tag_)}')
@@ -65,10 +99,14 @@ class ActionMessage(Type):
 
         # Validate arguments against known Juju API types.
         if message_ is not None and not isinstance(message_, (bytes, str)):
-            raise TypeError(f'Expected message_ to be a str, received: {type(message_)}')
+            raise TypeError(
+                f'Expected message_ to be a str, received: {type(message_)}'
+            )
 
         if timestamp_ is not None and not isinstance(timestamp_, (bytes, str)):
-            raise TypeError(f'Expected timestamp_ to be a str, received: {type(timestamp_)}')
+            raise TypeError(
+                f'Expected timestamp_ to be a str, received: {type(timestamp_)}'
+            )
 
         self.message = message_
         self.timestamp = timestamp_
@@ -76,10 +114,42 @@ class ActionMessage(Type):
 
 
 class ActionResult(Type):
-    _toSchema = {'action': 'action', 'completed': 'completed', 'enqueued': 'enqueued', 'error': 'error', 'log': 'log', 'message': 'message', 'output': 'output', 'started': 'started', 'status': 'status'}
-    _toPy = {'action': 'action', 'completed': 'completed', 'enqueued': 'enqueued', 'error': 'error', 'log': 'log', 'message': 'message', 'output': 'output', 'started': 'started', 'status': 'status'}
+    _toSchema = {
+        'action': 'action',
+        'completed': 'completed',
+        'enqueued': 'enqueued',
+        'error': 'error',
+        'log': 'log',
+        'message': 'message',
+        'output': 'output',
+        'started': 'started',
+        'status': 'status',
+    }
+    _toPy = {
+        'action': 'action',
+        'completed': 'completed',
+        'enqueued': 'enqueued',
+        'error': 'error',
+        'log': 'log',
+        'message': 'message',
+        'output': 'output',
+        'started': 'started',
+        'status': 'status',
+    }
 
-    def __init__(self, action=None, completed=None, enqueued=None, error=None, log=None, message=None, output=None, started=None, status=None, **unknown_fields):
+    def __init__(
+        self,
+        action=None,
+        completed=None,
+        enqueued=None,
+        error=None,
+        log=None,
+        message=None,
+        output=None,
+        started=None,
+        status=None,
+        **unknown_fields,
+    ):
         """
         action : Action
         completed : str
@@ -103,13 +173,19 @@ class ActionResult(Type):
 
         # Validate arguments against known Juju API types.
         if action_ is not None and not isinstance(action_, (dict, Action)):
-            raise TypeError(f'Expected action_ to be a Action, received: {type(action_)}')
+            raise TypeError(
+                f'Expected action_ to be a Action, received: {type(action_)}'
+            )
 
         if completed_ is not None and not isinstance(completed_, (bytes, str)):
-            raise TypeError(f'Expected completed_ to be a str, received: {type(completed_)}')
+            raise TypeError(
+                f'Expected completed_ to be a str, received: {type(completed_)}'
+            )
 
         if enqueued_ is not None and not isinstance(enqueued_, (bytes, str)):
-            raise TypeError(f'Expected enqueued_ to be a str, received: {type(enqueued_)}')
+            raise TypeError(
+                f'Expected enqueued_ to be a str, received: {type(enqueued_)}'
+            )
 
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
@@ -118,13 +194,19 @@ class ActionResult(Type):
             raise TypeError(f'Expected log_ to be a Sequence, received: {type(log_)}')
 
         if message_ is not None and not isinstance(message_, (bytes, str)):
-            raise TypeError(f'Expected message_ to be a str, received: {type(message_)}')
+            raise TypeError(
+                f'Expected message_ to be a str, received: {type(message_)}'
+            )
 
         if output_ is not None and not isinstance(output_, dict):
-            raise TypeError(f'Expected output_ to be a Mapping, received: {type(output_)}')
+            raise TypeError(
+                f'Expected output_ to be a Mapping, received: {type(output_)}'
+            )
 
         if started_ is not None and not isinstance(started_, (bytes, str)):
-            raise TypeError(f'Expected started_ to be a str, received: {type(started_)}')
+            raise TypeError(
+                f'Expected started_ to be a str, received: {type(started_)}'
+            )
 
         if status_ is not None and not isinstance(status_, (bytes, str)):
             raise TypeError(f'Expected status_ to be a str, received: {type(status_)}')
@@ -153,7 +235,9 @@ class ActionResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -173,10 +257,14 @@ class ActionSpec(Type):
 
         # Validate arguments against known Juju API types.
         if description_ is not None and not isinstance(description_, (bytes, str)):
-            raise TypeError(f'Expected description_ to be a str, received: {type(description_)}')
+            raise TypeError(
+                f'Expected description_ to be a str, received: {type(description_)}'
+            )
 
         if params_ is not None and not isinstance(params_, dict):
-            raise TypeError(f'Expected params_ to be a Mapping, received: {type(params_)}')
+            raise TypeError(
+                f'Expected params_ to be a Mapping, received: {type(params_)}'
+            )
 
         self.description = description_
         self.params = params_
@@ -195,17 +283,42 @@ class Actions(Type):
 
         # Validate arguments against known Juju API types.
         if actions_ is not None and not isinstance(actions_, (bytes, str, list)):
-            raise TypeError(f'Expected actions_ to be a Sequence, received: {type(actions_)}')
+            raise TypeError(
+                f'Expected actions_ to be a Sequence, received: {type(actions_)}'
+            )
 
         self.actions = actions_
         self.unknown_fields = unknown_fields
 
 
 class AddApplicationOffer(Type):
-    _toSchema = {'application_description': 'application-description', 'application_name': 'application-name', 'endpoints': 'endpoints', 'model_tag': 'model-tag', 'offer_name': 'offer-name', 'owner_tag': 'owner-tag'}
-    _toPy = {'application-description': 'application_description', 'application-name': 'application_name', 'endpoints': 'endpoints', 'model-tag': 'model_tag', 'offer-name': 'offer_name', 'owner-tag': 'owner_tag'}
+    _toSchema = {
+        'application_description': 'application-description',
+        'application_name': 'application-name',
+        'endpoints': 'endpoints',
+        'model_tag': 'model-tag',
+        'offer_name': 'offer-name',
+        'owner_tag': 'owner-tag',
+    }
+    _toPy = {
+        'application-description': 'application_description',
+        'application-name': 'application_name',
+        'endpoints': 'endpoints',
+        'model-tag': 'model_tag',
+        'offer-name': 'offer_name',
+        'owner-tag': 'owner_tag',
+    }
 
-    def __init__(self, application_description=None, application_name=None, endpoints=None, model_tag=None, offer_name=None, owner_tag=None, **unknown_fields):
+    def __init__(
+        self,
+        application_description=None,
+        application_name=None,
+        endpoints=None,
+        model_tag=None,
+        offer_name=None,
+        owner_tag=None,
+        **unknown_fields,
+    ):
         """
         application_description : str
         application_name : str
@@ -222,23 +335,39 @@ class AddApplicationOffer(Type):
         owner_tag_ = owner_tag
 
         # Validate arguments against known Juju API types.
-        if application_description_ is not None and not isinstance(application_description_, (bytes, str)):
-            raise TypeError(f'Expected application_description_ to be a str, received: {type(application_description_)}')
+        if application_description_ is not None and not isinstance(
+            application_description_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected application_description_ to be a str, received: {type(application_description_)}'
+            )
 
-        if application_name_ is not None and not isinstance(application_name_, (bytes, str)):
-            raise TypeError(f'Expected application_name_ to be a str, received: {type(application_name_)}')
+        if application_name_ is not None and not isinstance(
+            application_name_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected application_name_ to be a str, received: {type(application_name_)}'
+            )
 
         if endpoints_ is not None and not isinstance(endpoints_, dict):
-            raise TypeError(f'Expected endpoints_ to be a Mapping, received: {type(endpoints_)}')
+            raise TypeError(
+                f'Expected endpoints_ to be a Mapping, received: {type(endpoints_)}'
+            )
 
         if model_tag_ is not None and not isinstance(model_tag_, (bytes, str)):
-            raise TypeError(f'Expected model_tag_ to be a str, received: {type(model_tag_)}')
+            raise TypeError(
+                f'Expected model_tag_ to be a str, received: {type(model_tag_)}'
+            )
 
         if offer_name_ is not None and not isinstance(offer_name_, (bytes, str)):
-            raise TypeError(f'Expected offer_name_ to be a str, received: {type(offer_name_)}')
+            raise TypeError(
+                f'Expected offer_name_ to be a str, received: {type(offer_name_)}'
+            )
 
         if owner_tag_ is not None and not isinstance(owner_tag_, (bytes, str)):
-            raise TypeError(f'Expected owner_tag_ to be a str, received: {type(owner_tag_)}')
+            raise TypeError(
+                f'Expected owner_tag_ to be a str, received: {type(owner_tag_)}'
+            )
 
         self.application_description = application_description_
         self.application_name = application_name_
@@ -261,17 +390,39 @@ class AddApplicationOffers(Type):
 
         # Validate arguments against known Juju API types.
         if offers_ is not None and not isinstance(offers_, (bytes, str, list)):
-            raise TypeError(f'Expected offers_ to be a Sequence, received: {type(offers_)}')
+            raise TypeError(
+                f'Expected offers_ to be a Sequence, received: {type(offers_)}'
+            )
 
         self.offers = offers_
         self.unknown_fields = unknown_fields
 
 
 class AddApplicationUnits(Type):
-    _toSchema = {'application': 'application', 'attach_storage': 'attach-storage', 'num_units': 'num-units', 'placement': 'placement', 'policy': 'policy'}
-    _toPy = {'application': 'application', 'attach-storage': 'attach_storage', 'num-units': 'num_units', 'placement': 'placement', 'policy': 'policy'}
+    _toSchema = {
+        'application': 'application',
+        'attach_storage': 'attach-storage',
+        'num_units': 'num-units',
+        'placement': 'placement',
+        'policy': 'policy',
+    }
+    _toPy = {
+        'application': 'application',
+        'attach-storage': 'attach_storage',
+        'num-units': 'num_units',
+        'placement': 'placement',
+        'policy': 'policy',
+    }
 
-    def __init__(self, application=None, attach_storage=None, num_units=None, placement=None, policy=None, **unknown_fields):
+    def __init__(
+        self,
+        application=None,
+        attach_storage=None,
+        num_units=None,
+        placement=None,
+        policy=None,
+        **unknown_fields,
+    ):
         """
         application : str
         attach_storage : typing.Sequence[str]
@@ -287,16 +438,26 @@ class AddApplicationUnits(Type):
 
         # Validate arguments against known Juju API types.
         if application_ is not None and not isinstance(application_, (bytes, str)):
-            raise TypeError(f'Expected application_ to be a str, received: {type(application_)}')
+            raise TypeError(
+                f'Expected application_ to be a str, received: {type(application_)}'
+            )
 
-        if attach_storage_ is not None and not isinstance(attach_storage_, (bytes, str, list)):
-            raise TypeError(f'Expected attach_storage_ to be a Sequence, received: {type(attach_storage_)}')
+        if attach_storage_ is not None and not isinstance(
+            attach_storage_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected attach_storage_ to be a Sequence, received: {type(attach_storage_)}'
+            )
 
         if num_units_ is not None and not isinstance(num_units_, int):
-            raise TypeError(f'Expected num_units_ to be a int, received: {type(num_units_)}')
+            raise TypeError(
+                f'Expected num_units_ to be a int, received: {type(num_units_)}'
+            )
 
         if placement_ is not None and not isinstance(placement_, (bytes, str, list)):
-            raise TypeError(f'Expected placement_ to be a Sequence, received: {type(placement_)}')
+            raise TypeError(
+                f'Expected placement_ to be a Sequence, received: {type(placement_)}'
+            )
 
         if policy_ is not None and not isinstance(policy_, (bytes, str)):
             raise TypeError(f'Expected policy_ to be a str, received: {type(policy_)}')
@@ -321,7 +482,9 @@ class AddApplicationUnitsResults(Type):
 
         # Validate arguments against known Juju API types.
         if units_ is not None and not isinstance(units_, (bytes, str, list)):
-            raise TypeError(f'Expected units_ to be a Sequence, received: {type(units_)}')
+            raise TypeError(
+                f'Expected units_ to be a Sequence, received: {type(units_)}'
+            )
 
         self.units = units_
         self.unknown_fields = unknown_fields
@@ -342,8 +505,12 @@ class AddCharmWithOrigin(Type):
         url_ = url
 
         # Validate arguments against known Juju API types.
-        if charm_origin_ is not None and not isinstance(charm_origin_, (dict, CharmOrigin)):
-            raise TypeError(f'Expected charm_origin_ to be a CharmOrigin, received: {type(charm_origin_)}')
+        if charm_origin_ is not None and not isinstance(
+            charm_origin_, (dict, CharmOrigin)
+        ):
+            raise TypeError(
+                f'Expected charm_origin_ to be a CharmOrigin, received: {type(charm_origin_)}'
+            )
 
         if force_ is not None and not isinstance(force_, bool):
             raise TypeError(f'Expected force_ to be a bool, received: {type(force_)}')
@@ -388,10 +555,48 @@ class AddCloudArgs(Type):
 
 
 class AddMachineParams(Type):
-    _toSchema = {'addresses': 'addresses', 'base': 'base', 'constraints': 'constraints', 'container_type': 'container-type', 'disks': 'disks', 'hardware_characteristics': 'hardware-characteristics', 'instance_id': 'instance-id', 'jobs': 'jobs', 'nonce': 'nonce', 'parent_id': 'parent-id', 'placement': 'placement'}
-    _toPy = {'addresses': 'addresses', 'base': 'base', 'constraints': 'constraints', 'container-type': 'container_type', 'disks': 'disks', 'hardware-characteristics': 'hardware_characteristics', 'instance-id': 'instance_id', 'jobs': 'jobs', 'nonce': 'nonce', 'parent-id': 'parent_id', 'placement': 'placement'}
+    _toSchema = {
+        'addresses': 'addresses',
+        'base': 'base',
+        'constraints': 'constraints',
+        'container_type': 'container-type',
+        'disks': 'disks',
+        'hardware_characteristics': 'hardware-characteristics',
+        'instance_id': 'instance-id',
+        'jobs': 'jobs',
+        'nonce': 'nonce',
+        'parent_id': 'parent-id',
+        'placement': 'placement',
+    }
+    _toPy = {
+        'addresses': 'addresses',
+        'base': 'base',
+        'constraints': 'constraints',
+        'container-type': 'container_type',
+        'disks': 'disks',
+        'hardware-characteristics': 'hardware_characteristics',
+        'instance-id': 'instance_id',
+        'jobs': 'jobs',
+        'nonce': 'nonce',
+        'parent-id': 'parent_id',
+        'placement': 'placement',
+    }
 
-    def __init__(self, addresses=None, base=None, constraints=None, container_type=None, disks=None, hardware_characteristics=None, instance_id=None, jobs=None, nonce=None, parent_id=None, placement=None, **unknown_fields):
+    def __init__(
+        self,
+        addresses=None,
+        base=None,
+        constraints=None,
+        container_type=None,
+        disks=None,
+        hardware_characteristics=None,
+        instance_id=None,
+        jobs=None,
+        nonce=None,
+        parent_id=None,
+        placement=None,
+        **unknown_fields,
+    ):
         """
         addresses : typing.Sequence[~Address]
         base : Base
@@ -410,7 +615,11 @@ class AddMachineParams(Type):
         constraints_ = Value.from_json(constraints) if constraints else None
         container_type_ = container_type
         disks_ = [Constraints.from_json(o) for o in disks or []]
-        hardware_characteristics_ = HardwareCharacteristics.from_json(hardware_characteristics) if hardware_characteristics else None
+        hardware_characteristics_ = (
+            HardwareCharacteristics.from_json(hardware_characteristics)
+            if hardware_characteristics
+            else None
+        )
         instance_id_ = instance_id
         jobs_ = jobs
         nonce_ = nonce
@@ -419,25 +628,41 @@ class AddMachineParams(Type):
 
         # Validate arguments against known Juju API types.
         if addresses_ is not None and not isinstance(addresses_, (bytes, str, list)):
-            raise TypeError(f'Expected addresses_ to be a Sequence, received: {type(addresses_)}')
+            raise TypeError(
+                f'Expected addresses_ to be a Sequence, received: {type(addresses_)}'
+            )
 
         if base_ is not None and not isinstance(base_, (dict, Base)):
             raise TypeError(f'Expected base_ to be a Base, received: {type(base_)}')
 
         if constraints_ is not None and not isinstance(constraints_, (dict, Value)):
-            raise TypeError(f'Expected constraints_ to be a Value, received: {type(constraints_)}')
+            raise TypeError(
+                f'Expected constraints_ to be a Value, received: {type(constraints_)}'
+            )
 
-        if container_type_ is not None and not isinstance(container_type_, (bytes, str)):
-            raise TypeError(f'Expected container_type_ to be a str, received: {type(container_type_)}')
+        if container_type_ is not None and not isinstance(
+            container_type_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected container_type_ to be a str, received: {type(container_type_)}'
+            )
 
         if disks_ is not None and not isinstance(disks_, (bytes, str, list)):
-            raise TypeError(f'Expected disks_ to be a Sequence, received: {type(disks_)}')
+            raise TypeError(
+                f'Expected disks_ to be a Sequence, received: {type(disks_)}'
+            )
 
-        if hardware_characteristics_ is not None and not isinstance(hardware_characteristics_, (dict, HardwareCharacteristics)):
-            raise TypeError(f'Expected hardware_characteristics_ to be a HardwareCharacteristics, received: {type(hardware_characteristics_)}')
+        if hardware_characteristics_ is not None and not isinstance(
+            hardware_characteristics_, (dict, HardwareCharacteristics)
+        ):
+            raise TypeError(
+                f'Expected hardware_characteristics_ to be a HardwareCharacteristics, received: {type(hardware_characteristics_)}'
+            )
 
         if instance_id_ is not None and not isinstance(instance_id_, (bytes, str)):
-            raise TypeError(f'Expected instance_id_ to be a str, received: {type(instance_id_)}')
+            raise TypeError(
+                f'Expected instance_id_ to be a str, received: {type(instance_id_)}'
+            )
 
         if jobs_ is not None and not isinstance(jobs_, (bytes, str, list)):
             raise TypeError(f'Expected jobs_ to be a Sequence, received: {type(jobs_)}')
@@ -446,10 +671,14 @@ class AddMachineParams(Type):
             raise TypeError(f'Expected nonce_ to be a str, received: {type(nonce_)}')
 
         if parent_id_ is not None and not isinstance(parent_id_, (bytes, str)):
-            raise TypeError(f'Expected parent_id_ to be a str, received: {type(parent_id_)}')
+            raise TypeError(
+                f'Expected parent_id_ to be a str, received: {type(parent_id_)}'
+            )
 
         if placement_ is not None and not isinstance(placement_, (dict, Placement)):
-            raise TypeError(f'Expected placement_ to be a Placement, received: {type(placement_)}')
+            raise TypeError(
+                f'Expected placement_ to be a Placement, received: {type(placement_)}'
+            )
 
         self.addresses = addresses_
         self.base = base_
@@ -477,7 +706,9 @@ class AddMachines(Type):
 
         # Validate arguments against known Juju API types.
         if params_ is not None and not isinstance(params_, (bytes, str, list)):
-            raise TypeError(f'Expected params_ to be a Sequence, received: {type(params_)}')
+            raise TypeError(
+                f'Expected params_ to be a Sequence, received: {type(params_)}'
+            )
 
         self.params = params_
         self.unknown_fields = unknown_fields
@@ -500,7 +731,9 @@ class AddMachinesResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if machine_ is not None and not isinstance(machine_, (bytes, str)):
-            raise TypeError(f'Expected machine_ to be a str, received: {type(machine_)}')
+            raise TypeError(
+                f'Expected machine_ to be a str, received: {type(machine_)}'
+            )
 
         self.error = error_
         self.machine = machine_
@@ -519,17 +752,42 @@ class AddMachinesResults(Type):
 
         # Validate arguments against known Juju API types.
         if machines_ is not None and not isinstance(machines_, (bytes, str, list)):
-            raise TypeError(f'Expected machines_ to be a Sequence, received: {type(machines_)}')
+            raise TypeError(
+                f'Expected machines_ to be a Sequence, received: {type(machines_)}'
+            )
 
         self.machines = machines_
         self.unknown_fields = unknown_fields
 
 
 class AddPendingResourcesArgsV2(Type):
-    _toSchema = {'charm_origin': 'charm-origin', 'entity': 'Entity', 'macaroon': 'macaroon', 'resources': 'resources', 'tag': 'tag', 'url': 'url'}
-    _toPy = {'Entity': 'entity', 'charm-origin': 'charm_origin', 'macaroon': 'macaroon', 'resources': 'resources', 'tag': 'tag', 'url': 'url'}
+    _toSchema = {
+        'charm_origin': 'charm-origin',
+        'entity': 'Entity',
+        'macaroon': 'macaroon',
+        'resources': 'resources',
+        'tag': 'tag',
+        'url': 'url',
+    }
+    _toPy = {
+        'Entity': 'entity',
+        'charm-origin': 'charm_origin',
+        'macaroon': 'macaroon',
+        'resources': 'resources',
+        'tag': 'tag',
+        'url': 'url',
+    }
 
-    def __init__(self, entity=None, charm_origin=None, macaroon=None, resources=None, tag=None, url=None, **unknown_fields):
+    def __init__(
+        self,
+        entity=None,
+        charm_origin=None,
+        macaroon=None,
+        resources=None,
+        tag=None,
+        url=None,
+        **unknown_fields,
+    ):
         """
         entity : Entity
         charm_origin : CharmOrigin
@@ -547,16 +805,26 @@ class AddPendingResourcesArgsV2(Type):
 
         # Validate arguments against known Juju API types.
         if entity_ is not None and not isinstance(entity_, (dict, Entity)):
-            raise TypeError(f'Expected entity_ to be a Entity, received: {type(entity_)}')
+            raise TypeError(
+                f'Expected entity_ to be a Entity, received: {type(entity_)}'
+            )
 
-        if charm_origin_ is not None and not isinstance(charm_origin_, (dict, CharmOrigin)):
-            raise TypeError(f'Expected charm_origin_ to be a CharmOrigin, received: {type(charm_origin_)}')
+        if charm_origin_ is not None and not isinstance(
+            charm_origin_, (dict, CharmOrigin)
+        ):
+            raise TypeError(
+                f'Expected charm_origin_ to be a CharmOrigin, received: {type(charm_origin_)}'
+            )
 
         if macaroon_ is not None and not isinstance(macaroon_, (dict, Macaroon)):
-            raise TypeError(f'Expected macaroon_ to be a Macaroon, received: {type(macaroon_)}')
+            raise TypeError(
+                f'Expected macaroon_ to be a Macaroon, received: {type(macaroon_)}'
+            )
 
         if resources_ is not None and not isinstance(resources_, (bytes, str, list)):
-            raise TypeError(f'Expected resources_ to be a Sequence, received: {type(resources_)}')
+            raise TypeError(
+                f'Expected resources_ to be a Sequence, received: {type(resources_)}'
+            )
 
         if tag_ is not None and not isinstance(tag_, (bytes, str)):
             raise TypeError(f'Expected tag_ to be a str, received: {type(tag_)}')
@@ -574,10 +842,20 @@ class AddPendingResourcesArgsV2(Type):
 
 
 class AddPendingResourcesResult(Type):
-    _toSchema = {'error': 'error', 'errorresult': 'ErrorResult', 'pending_ids': 'pending-ids'}
-    _toPy = {'ErrorResult': 'errorresult', 'error': 'error', 'pending-ids': 'pending_ids'}
+    _toSchema = {
+        'error': 'error',
+        'errorresult': 'ErrorResult',
+        'pending_ids': 'pending-ids',
+    }
+    _toPy = {
+        'ErrorResult': 'errorresult',
+        'error': 'error',
+        'pending-ids': 'pending_ids',
+    }
 
-    def __init__(self, errorresult=None, error=None, pending_ids=None, **unknown_fields):
+    def __init__(
+        self, errorresult=None, error=None, pending_ids=None, **unknown_fields
+    ):
         """
         errorresult : ErrorResult
         error : Error
@@ -588,14 +866,22 @@ class AddPendingResourcesResult(Type):
         pending_ids_ = pending_ids
 
         # Validate arguments against known Juju API types.
-        if errorresult_ is not None and not isinstance(errorresult_, (dict, ErrorResult)):
-            raise TypeError(f'Expected errorresult_ to be a ErrorResult, received: {type(errorresult_)}')
+        if errorresult_ is not None and not isinstance(
+            errorresult_, (dict, ErrorResult)
+        ):
+            raise TypeError(
+                f'Expected errorresult_ to be a ErrorResult, received: {type(errorresult_)}'
+            )
 
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
-        if pending_ids_ is not None and not isinstance(pending_ids_, (bytes, str, list)):
-            raise TypeError(f'Expected pending_ids_ to be a Sequence, received: {type(pending_ids_)}')
+        if pending_ids_ is not None and not isinstance(
+            pending_ids_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected pending_ids_ to be a Sequence, received: {type(pending_ids_)}'
+            )
 
         self.errorresult = errorresult_
         self.error = error_
@@ -617,10 +903,14 @@ class AddRelation(Type):
 
         # Validate arguments against known Juju API types.
         if endpoints_ is not None and not isinstance(endpoints_, (bytes, str, list)):
-            raise TypeError(f'Expected endpoints_ to be a Sequence, received: {type(endpoints_)}')
+            raise TypeError(
+                f'Expected endpoints_ to be a Sequence, received: {type(endpoints_)}'
+            )
 
         if via_cidrs_ is not None and not isinstance(via_cidrs_, (bytes, str, list)):
-            raise TypeError(f'Expected via_cidrs_ to be a Sequence, received: {type(via_cidrs_)}')
+            raise TypeError(
+                f'Expected via_cidrs_ to be a Sequence, received: {type(via_cidrs_)}'
+            )
 
         self.endpoints = endpoints_
         self.via_cidrs = via_cidrs_
@@ -635,21 +925,48 @@ class AddRelationResults(Type):
         """
         endpoints : typing.Mapping[str, ~CharmRelation]
         """
-        endpoints_ = {k: CharmRelation.from_json(v) for k, v in (endpoints or {}).items()}
+        endpoints_ = {
+            k: CharmRelation.from_json(v) for k, v in (endpoints or {}).items()
+        }
 
         # Validate arguments against known Juju API types.
         if endpoints_ is not None and not isinstance(endpoints_, dict):
-            raise TypeError(f'Expected endpoints_ to be a Mapping, received: {type(endpoints_)}')
+            raise TypeError(
+                f'Expected endpoints_ to be a Mapping, received: {type(endpoints_)}'
+            )
 
         self.endpoints = endpoints_
         self.unknown_fields = unknown_fields
 
 
 class AddSecretBackendArg(Type):
-    _toSchema = {'backend_type': 'backend-type', 'config': 'config', 'id_': 'id', 'name': 'name', 'secretbackend': 'SecretBackend', 'token_rotate_interval': 'token-rotate-interval'}
-    _toPy = {'SecretBackend': 'secretbackend', 'backend-type': 'backend_type', 'config': 'config', 'id': 'id_', 'name': 'name', 'token-rotate-interval': 'token_rotate_interval'}
+    _toSchema = {
+        'backend_type': 'backend-type',
+        'config': 'config',
+        'id_': 'id',
+        'name': 'name',
+        'secretbackend': 'SecretBackend',
+        'token_rotate_interval': 'token-rotate-interval',
+    }
+    _toPy = {
+        'SecretBackend': 'secretbackend',
+        'backend-type': 'backend_type',
+        'config': 'config',
+        'id': 'id_',
+        'name': 'name',
+        'token-rotate-interval': 'token_rotate_interval',
+    }
 
-    def __init__(self, secretbackend=None, backend_type=None, config=None, id_=None, name=None, token_rotate_interval=None, **unknown_fields):
+    def __init__(
+        self,
+        secretbackend=None,
+        backend_type=None,
+        config=None,
+        id_=None,
+        name=None,
+        token_rotate_interval=None,
+        **unknown_fields,
+    ):
         """
         secretbackend : SecretBackend
         backend_type : str
@@ -658,7 +975,9 @@ class AddSecretBackendArg(Type):
         name : str
         token_rotate_interval : int
         """
-        secretbackend_ = SecretBackend.from_json(secretbackend) if secretbackend else None
+        secretbackend_ = (
+            SecretBackend.from_json(secretbackend) if secretbackend else None
+        )
         backend_type_ = backend_type
         config_ = config
         id__ = id_
@@ -666,14 +985,22 @@ class AddSecretBackendArg(Type):
         token_rotate_interval_ = token_rotate_interval
 
         # Validate arguments against known Juju API types.
-        if secretbackend_ is not None and not isinstance(secretbackend_, (dict, SecretBackend)):
-            raise TypeError(f'Expected secretbackend_ to be a SecretBackend, received: {type(secretbackend_)}')
+        if secretbackend_ is not None and not isinstance(
+            secretbackend_, (dict, SecretBackend)
+        ):
+            raise TypeError(
+                f'Expected secretbackend_ to be a SecretBackend, received: {type(secretbackend_)}'
+            )
 
         if backend_type_ is not None and not isinstance(backend_type_, (bytes, str)):
-            raise TypeError(f'Expected backend_type_ to be a str, received: {type(backend_type_)}')
+            raise TypeError(
+                f'Expected backend_type_ to be a str, received: {type(backend_type_)}'
+            )
 
         if config_ is not None and not isinstance(config_, dict):
-            raise TypeError(f'Expected config_ to be a Mapping, received: {type(config_)}')
+            raise TypeError(
+                f'Expected config_ to be a Mapping, received: {type(config_)}'
+            )
 
         if id__ is not None and not isinstance(id__, (bytes, str)):
             raise TypeError(f'Expected id__ to be a str, received: {type(id__)}')
@@ -681,8 +1008,12 @@ class AddSecretBackendArg(Type):
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
 
-        if token_rotate_interval_ is not None and not isinstance(token_rotate_interval_, int):
-            raise TypeError(f'Expected token_rotate_interval_ to be a int, received: {type(token_rotate_interval_)}')
+        if token_rotate_interval_ is not None and not isinstance(
+            token_rotate_interval_, int
+        ):
+            raise TypeError(
+                f'Expected token_rotate_interval_ to be a int, received: {type(token_rotate_interval_)}'
+            )
 
         self.secretbackend = secretbackend_
         self.backend_type = backend_type_
@@ -722,8 +1053,12 @@ class AddStorageDetails(Type):
         storage_tags_ = storage_tags
 
         # Validate arguments against known Juju API types.
-        if storage_tags_ is not None and not isinstance(storage_tags_, (bytes, str, list)):
-            raise TypeError(f'Expected storage_tags_ to be a Sequence, received: {type(storage_tags_)}')
+        if storage_tags_ is not None and not isinstance(
+            storage_tags_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected storage_tags_ to be a Sequence, received: {type(storage_tags_)}'
+            )
 
         self.storage_tags = storage_tags_
         self.unknown_fields = unknown_fields
@@ -746,7 +1081,9 @@ class AddStorageResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if result_ is not None and not isinstance(result_, (dict, AddStorageDetails)):
-            raise TypeError(f'Expected result_ to be a AddStorageDetails, received: {type(result_)}')
+            raise TypeError(
+                f'Expected result_ to be a AddStorageDetails, received: {type(result_)}'
+            )
 
         self.error = error_
         self.result = result_
@@ -765,17 +1102,29 @@ class AddStorageResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
 
 
 class AddUser(Type):
-    _toSchema = {'display_name': 'display-name', 'password': 'password', 'username': 'username'}
-    _toPy = {'display-name': 'display_name', 'password': 'password', 'username': 'username'}
+    _toSchema = {
+        'display_name': 'display-name',
+        'password': 'password',
+        'username': 'username',
+    }
+    _toPy = {
+        'display-name': 'display_name',
+        'password': 'password',
+        'username': 'username',
+    }
 
-    def __init__(self, display_name=None, password=None, username=None, **unknown_fields):
+    def __init__(
+        self, display_name=None, password=None, username=None, **unknown_fields
+    ):
         """
         display_name : str
         password : str
@@ -787,13 +1136,19 @@ class AddUser(Type):
 
         # Validate arguments against known Juju API types.
         if display_name_ is not None and not isinstance(display_name_, (bytes, str)):
-            raise TypeError(f'Expected display_name_ to be a str, received: {type(display_name_)}')
+            raise TypeError(
+                f'Expected display_name_ to be a str, received: {type(display_name_)}'
+            )
 
         if password_ is not None and not isinstance(password_, (bytes, str)):
-            raise TypeError(f'Expected password_ to be a str, received: {type(password_)}')
+            raise TypeError(
+                f'Expected password_ to be a str, received: {type(password_)}'
+            )
 
         if username_ is not None and not isinstance(username_, (bytes, str)):
-            raise TypeError(f'Expected username_ to be a str, received: {type(username_)}')
+            raise TypeError(
+                f'Expected username_ to be a str, received: {type(username_)}'
+            )
 
         self.display_name = display_name_
         self.password = password_
@@ -820,7 +1175,9 @@ class AddUserResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if secret_key_ is not None and not isinstance(secret_key_, (bytes, str, list)):
-            raise TypeError(f'Expected secret_key_ to be a Sequence, received: {type(secret_key_)}')
+            raise TypeError(
+                f'Expected secret_key_ to be a Sequence, received: {type(secret_key_)}'
+            )
 
         if tag_ is not None and not isinstance(tag_, (bytes, str)):
             raise TypeError(f'Expected tag_ to be a str, received: {type(tag_)}')
@@ -843,7 +1200,9 @@ class AddUserResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -861,17 +1220,48 @@ class AddUsers(Type):
 
         # Validate arguments against known Juju API types.
         if users_ is not None and not isinstance(users_, (bytes, str, list)):
-            raise TypeError(f'Expected users_ to be a Sequence, received: {type(users_)}')
+            raise TypeError(
+                f'Expected users_ to be a Sequence, received: {type(users_)}'
+            )
 
         self.users = users_
         self.unknown_fields = unknown_fields
 
 
 class Address(Type):
-    _toSchema = {'cidr': 'cidr', 'config_type': 'config-type', 'is_secondary': 'is-secondary', 'scope': 'scope', 'space_id': 'space-id', 'space_name': 'space-name', 'type_': 'type', 'value': 'value'}
-    _toPy = {'cidr': 'cidr', 'config-type': 'config_type', 'is-secondary': 'is_secondary', 'scope': 'scope', 'space-id': 'space_id', 'space-name': 'space_name', 'type': 'type_', 'value': 'value'}
+    _toSchema = {
+        'cidr': 'cidr',
+        'config_type': 'config-type',
+        'is_secondary': 'is-secondary',
+        'scope': 'scope',
+        'space_id': 'space-id',
+        'space_name': 'space-name',
+        'type_': 'type',
+        'value': 'value',
+    }
+    _toPy = {
+        'cidr': 'cidr',
+        'config-type': 'config_type',
+        'is-secondary': 'is_secondary',
+        'scope': 'scope',
+        'space-id': 'space_id',
+        'space-name': 'space_name',
+        'type': 'type_',
+        'value': 'value',
+    }
 
-    def __init__(self, cidr=None, config_type=None, is_secondary=None, scope=None, space_id=None, space_name=None, type_=None, value=None, **unknown_fields):
+    def __init__(
+        self,
+        cidr=None,
+        config_type=None,
+        is_secondary=None,
+        scope=None,
+        space_id=None,
+        space_name=None,
+        type_=None,
+        value=None,
+        **unknown_fields,
+    ):
         """
         cidr : str
         config_type : str
@@ -896,19 +1286,27 @@ class Address(Type):
             raise TypeError(f'Expected cidr_ to be a str, received: {type(cidr_)}')
 
         if config_type_ is not None and not isinstance(config_type_, (bytes, str)):
-            raise TypeError(f'Expected config_type_ to be a str, received: {type(config_type_)}')
+            raise TypeError(
+                f'Expected config_type_ to be a str, received: {type(config_type_)}'
+            )
 
         if is_secondary_ is not None and not isinstance(is_secondary_, bool):
-            raise TypeError(f'Expected is_secondary_ to be a bool, received: {type(is_secondary_)}')
+            raise TypeError(
+                f'Expected is_secondary_ to be a bool, received: {type(is_secondary_)}'
+            )
 
         if scope_ is not None and not isinstance(scope_, (bytes, str)):
             raise TypeError(f'Expected scope_ to be a str, received: {type(scope_)}')
 
         if space_id_ is not None and not isinstance(space_id_, (bytes, str)):
-            raise TypeError(f'Expected space_id_ to be a str, received: {type(space_id_)}')
+            raise TypeError(
+                f'Expected space_id_ to be a str, received: {type(space_id_)}'
+            )
 
         if space_name_ is not None and not isinstance(space_name_, (bytes, str)):
-            raise TypeError(f'Expected space_name_ to be a str, received: {type(space_name_)}')
+            raise TypeError(
+                f'Expected space_name_ to be a str, received: {type(space_name_)}'
+            )
 
         if type__ is not None and not isinstance(type__, (bytes, str)):
             raise TypeError(f'Expected type__ to be a str, received: {type(type__)}')
@@ -939,7 +1337,9 @@ class AllWatcherId(Type):
 
         # Validate arguments against known Juju API types.
         if watcher_id_ is not None and not isinstance(watcher_id_, (bytes, str)):
-            raise TypeError(f'Expected watcher_id_ to be a str, received: {type(watcher_id_)}')
+            raise TypeError(
+                f'Expected watcher_id_ to be a str, received: {type(watcher_id_)}'
+            )
 
         self.watcher_id = watcher_id_
         self.unknown_fields = unknown_fields
@@ -957,7 +1357,9 @@ class AllWatcherNextResults(Type):
 
         # Validate arguments against known Juju API types.
         if deltas_ is not None and not isinstance(deltas_, (bytes, str, list)):
-            raise TypeError(f'Expected deltas_ to be a Sequence, received: {type(deltas_)}')
+            raise TypeError(
+                f'Expected deltas_ to be a Sequence, received: {type(deltas_)}'
+            )
 
         self.deltas = deltas_
         self.unknown_fields = unknown_fields
@@ -979,13 +1381,17 @@ class AnnotationsGetResult(Type):
 
         # Validate arguments against known Juju API types.
         if annotations_ is not None and not isinstance(annotations_, dict):
-            raise TypeError(f'Expected annotations_ to be a Mapping, received: {type(annotations_)}')
+            raise TypeError(
+                f'Expected annotations_ to be a Mapping, received: {type(annotations_)}'
+            )
 
         if entity_ is not None and not isinstance(entity_, (bytes, str)):
             raise TypeError(f'Expected entity_ to be a str, received: {type(entity_)}')
 
         if error_ is not None and not isinstance(error_, (dict, ErrorResult)):
-            raise TypeError(f'Expected error_ to be a ErrorResult, received: {type(error_)}')
+            raise TypeError(
+                f'Expected error_ to be a ErrorResult, received: {type(error_)}'
+            )
 
         self.annotations = annotations_
         self.entity = entity_
@@ -1005,7 +1411,9 @@ class AnnotationsGetResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -1022,18 +1430,32 @@ class AnnotationsSet(Type):
         annotations_ = [EntityAnnotations.from_json(o) for o in annotations or []]
 
         # Validate arguments against known Juju API types.
-        if annotations_ is not None and not isinstance(annotations_, (bytes, str, list)):
-            raise TypeError(f'Expected annotations_ to be a Sequence, received: {type(annotations_)}')
+        if annotations_ is not None and not isinstance(
+            annotations_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected annotations_ to be a Sequence, received: {type(annotations_)}'
+            )
 
         self.annotations = annotations_
         self.unknown_fields = unknown_fields
 
 
 class ApplicationCharmActionsResult(Type):
-    _toSchema = {'actions': 'actions', 'application_tag': 'application-tag', 'error': 'error'}
-    _toPy = {'actions': 'actions', 'application-tag': 'application_tag', 'error': 'error'}
+    _toSchema = {
+        'actions': 'actions',
+        'application_tag': 'application-tag',
+        'error': 'error',
+    }
+    _toPy = {
+        'actions': 'actions',
+        'application-tag': 'application_tag',
+        'error': 'error',
+    }
 
-    def __init__(self, actions=None, application_tag=None, error=None, **unknown_fields):
+    def __init__(
+        self, actions=None, application_tag=None, error=None, **unknown_fields
+    ):
         """
         actions : typing.Mapping[str, ~ActionSpec]
         application_tag : str
@@ -1045,10 +1467,16 @@ class ApplicationCharmActionsResult(Type):
 
         # Validate arguments against known Juju API types.
         if actions_ is not None and not isinstance(actions_, dict):
-            raise TypeError(f'Expected actions_ to be a Mapping, received: {type(actions_)}')
+            raise TypeError(
+                f'Expected actions_ to be a Mapping, received: {type(actions_)}'
+            )
 
-        if application_tag_ is not None and not isinstance(application_tag_, (bytes, str)):
-            raise TypeError(f'Expected application_tag_ to be a str, received: {type(application_tag_)}')
+        if application_tag_ is not None and not isinstance(
+            application_tag_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected application_tag_ to be a str, received: {type(application_tag_)}'
+            )
 
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
@@ -1073,10 +1501,14 @@ class ApplicationCharmPlacement(Type):
 
         # Validate arguments against known Juju API types.
         if application_ is not None and not isinstance(application_, (bytes, str)):
-            raise TypeError(f'Expected application_ to be a str, received: {type(application_)}')
+            raise TypeError(
+                f'Expected application_ to be a str, received: {type(application_)}'
+            )
 
         if charm_url_ is not None and not isinstance(charm_url_, (bytes, str)):
-            raise TypeError(f'Expected charm_url_ to be a str, received: {type(charm_url_)}')
+            raise TypeError(
+                f'Expected charm_url_ to be a str, received: {type(charm_url_)}'
+            )
 
         self.application = application_
         self.charm_url = charm_url_
@@ -1095,7 +1527,9 @@ class ApplicationCharmPlacements(Type):
 
         # Validate arguments against known Juju API types.
         if placements_ is not None and not isinstance(placements_, (bytes, str, list)):
-            raise TypeError(f'Expected placements_ to be a Sequence, received: {type(placements_)}')
+            raise TypeError(
+                f'Expected placements_ to be a Sequence, received: {type(placements_)}'
+            )
 
         self.placements = placements_
         self.unknown_fields = unknown_fields
@@ -1113,7 +1547,9 @@ class ApplicationCharmRelations(Type):
 
         # Validate arguments against known Juju API types.
         if application_ is not None and not isinstance(application_, (bytes, str)):
-            raise TypeError(f'Expected application_ to be a str, received: {type(application_)}')
+            raise TypeError(
+                f'Expected application_ to be a str, received: {type(application_)}'
+            )
 
         self.application = application_
         self.unknown_fields = unknown_fields
@@ -1130,8 +1566,12 @@ class ApplicationCharmRelationsResults(Type):
         charm_relations_ = charm_relations
 
         # Validate arguments against known Juju API types.
-        if charm_relations_ is not None and not isinstance(charm_relations_, (bytes, str, list)):
-            raise TypeError(f'Expected charm_relations_ to be a Sequence, received: {type(charm_relations_)}')
+        if charm_relations_ is not None and not isinstance(
+            charm_relations_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected charm_relations_ to be a Sequence, received: {type(charm_relations_)}'
+            )
 
         self.charm_relations = charm_relations_
         self.unknown_fields = unknown_fields
@@ -1169,7 +1609,9 @@ class ApplicationConstraint(Type):
 
         # Validate arguments against known Juju API types.
         if constraints_ is not None and not isinstance(constraints_, (dict, Value)):
-            raise TypeError(f'Expected constraints_ to be a Value, received: {type(constraints_)}')
+            raise TypeError(
+                f'Expected constraints_ to be a Value, received: {type(constraints_)}'
+            )
 
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
@@ -1180,10 +1622,63 @@ class ApplicationConstraint(Type):
 
 
 class ApplicationDeploy(Type):
-    _toSchema = {'application': 'application', 'attach_storage': 'attach-storage', 'channel': 'channel', 'charm_origin': 'charm-origin', 'charm_url': 'charm-url', 'config': 'config', 'config_yaml': 'config-yaml', 'constraints': 'constraints', 'devices': 'devices', 'endpoint_bindings': 'endpoint-bindings', 'force': 'Force', 'num_units': 'num-units', 'placement': 'placement', 'policy': 'policy', 'resources': 'resources', 'storage': 'storage'}
-    _toPy = {'Force': 'force', 'application': 'application', 'attach-storage': 'attach_storage', 'channel': 'channel', 'charm-origin': 'charm_origin', 'charm-url': 'charm_url', 'config': 'config', 'config-yaml': 'config_yaml', 'constraints': 'constraints', 'devices': 'devices', 'endpoint-bindings': 'endpoint_bindings', 'num-units': 'num_units', 'placement': 'placement', 'policy': 'policy', 'resources': 'resources', 'storage': 'storage'}
+    _toSchema = {
+        'application': 'application',
+        'attach_storage': 'attach-storage',
+        'channel': 'channel',
+        'charm_origin': 'charm-origin',
+        'charm_url': 'charm-url',
+        'config': 'config',
+        'config_yaml': 'config-yaml',
+        'constraints': 'constraints',
+        'devices': 'devices',
+        'endpoint_bindings': 'endpoint-bindings',
+        'force': 'Force',
+        'num_units': 'num-units',
+        'placement': 'placement',
+        'policy': 'policy',
+        'resources': 'resources',
+        'storage': 'storage',
+    }
+    _toPy = {
+        'Force': 'force',
+        'application': 'application',
+        'attach-storage': 'attach_storage',
+        'channel': 'channel',
+        'charm-origin': 'charm_origin',
+        'charm-url': 'charm_url',
+        'config': 'config',
+        'config-yaml': 'config_yaml',
+        'constraints': 'constraints',
+        'devices': 'devices',
+        'endpoint-bindings': 'endpoint_bindings',
+        'num-units': 'num_units',
+        'placement': 'placement',
+        'policy': 'policy',
+        'resources': 'resources',
+        'storage': 'storage',
+    }
 
-    def __init__(self, force=None, application=None, attach_storage=None, channel=None, charm_origin=None, charm_url=None, config=None, config_yaml=None, constraints=None, devices=None, endpoint_bindings=None, num_units=None, placement=None, policy=None, resources=None, storage=None, **unknown_fields):
+    def __init__(
+        self,
+        force=None,
+        application=None,
+        attach_storage=None,
+        channel=None,
+        charm_origin=None,
+        charm_url=None,
+        config=None,
+        config_yaml=None,
+        constraints=None,
+        devices=None,
+        endpoint_bindings=None,
+        num_units=None,
+        placement=None,
+        policy=None,
+        resources=None,
+        storage=None,
+        **unknown_fields,
+    ):
         """
         force : bool
         application : str
@@ -1224,49 +1719,81 @@ class ApplicationDeploy(Type):
             raise TypeError(f'Expected force_ to be a bool, received: {type(force_)}')
 
         if application_ is not None and not isinstance(application_, (bytes, str)):
-            raise TypeError(f'Expected application_ to be a str, received: {type(application_)}')
+            raise TypeError(
+                f'Expected application_ to be a str, received: {type(application_)}'
+            )
 
-        if attach_storage_ is not None and not isinstance(attach_storage_, (bytes, str, list)):
-            raise TypeError(f'Expected attach_storage_ to be a Sequence, received: {type(attach_storage_)}')
+        if attach_storage_ is not None and not isinstance(
+            attach_storage_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected attach_storage_ to be a Sequence, received: {type(attach_storage_)}'
+            )
 
         if channel_ is not None and not isinstance(channel_, (bytes, str)):
-            raise TypeError(f'Expected channel_ to be a str, received: {type(channel_)}')
+            raise TypeError(
+                f'Expected channel_ to be a str, received: {type(channel_)}'
+            )
 
-        if charm_origin_ is not None and not isinstance(charm_origin_, (dict, CharmOrigin)):
-            raise TypeError(f'Expected charm_origin_ to be a CharmOrigin, received: {type(charm_origin_)}')
+        if charm_origin_ is not None and not isinstance(
+            charm_origin_, (dict, CharmOrigin)
+        ):
+            raise TypeError(
+                f'Expected charm_origin_ to be a CharmOrigin, received: {type(charm_origin_)}'
+            )
 
         if charm_url_ is not None and not isinstance(charm_url_, (bytes, str)):
-            raise TypeError(f'Expected charm_url_ to be a str, received: {type(charm_url_)}')
+            raise TypeError(
+                f'Expected charm_url_ to be a str, received: {type(charm_url_)}'
+            )
 
         if config_ is not None and not isinstance(config_, dict):
-            raise TypeError(f'Expected config_ to be a Mapping, received: {type(config_)}')
+            raise TypeError(
+                f'Expected config_ to be a Mapping, received: {type(config_)}'
+            )
 
         if config_yaml_ is not None and not isinstance(config_yaml_, (bytes, str)):
-            raise TypeError(f'Expected config_yaml_ to be a str, received: {type(config_yaml_)}')
+            raise TypeError(
+                f'Expected config_yaml_ to be a str, received: {type(config_yaml_)}'
+            )
 
         if constraints_ is not None and not isinstance(constraints_, (dict, Value)):
-            raise TypeError(f'Expected constraints_ to be a Value, received: {type(constraints_)}')
+            raise TypeError(
+                f'Expected constraints_ to be a Value, received: {type(constraints_)}'
+            )
 
         if devices_ is not None and not isinstance(devices_, dict):
-            raise TypeError(f'Expected devices_ to be a Mapping, received: {type(devices_)}')
+            raise TypeError(
+                f'Expected devices_ to be a Mapping, received: {type(devices_)}'
+            )
 
         if endpoint_bindings_ is not None and not isinstance(endpoint_bindings_, dict):
-            raise TypeError(f'Expected endpoint_bindings_ to be a Mapping, received: {type(endpoint_bindings_)}')
+            raise TypeError(
+                f'Expected endpoint_bindings_ to be a Mapping, received: {type(endpoint_bindings_)}'
+            )
 
         if num_units_ is not None and not isinstance(num_units_, int):
-            raise TypeError(f'Expected num_units_ to be a int, received: {type(num_units_)}')
+            raise TypeError(
+                f'Expected num_units_ to be a int, received: {type(num_units_)}'
+            )
 
         if placement_ is not None and not isinstance(placement_, (bytes, str, list)):
-            raise TypeError(f'Expected placement_ to be a Sequence, received: {type(placement_)}')
+            raise TypeError(
+                f'Expected placement_ to be a Sequence, received: {type(placement_)}'
+            )
 
         if policy_ is not None and not isinstance(policy_, (bytes, str)):
             raise TypeError(f'Expected policy_ to be a str, received: {type(policy_)}')
 
         if resources_ is not None and not isinstance(resources_, dict):
-            raise TypeError(f'Expected resources_ to be a Mapping, received: {type(resources_)}')
+            raise TypeError(
+                f'Expected resources_ to be a Mapping, received: {type(resources_)}'
+            )
 
         if storage_ is not None and not isinstance(storage_, dict):
-            raise TypeError(f'Expected storage_ to be a Mapping, received: {type(storage_)}')
+            raise TypeError(
+                f'Expected storage_ to be a Mapping, received: {type(storage_)}'
+            )
 
         self.force = force_
         self.application = application_
@@ -1297,14 +1824,21 @@ class ApplicationExpose(Type):
         exposed_endpoints : typing.Mapping[str, ~ExposedEndpoint]
         """
         application_ = application
-        exposed_endpoints_ = {k: ExposedEndpoint.from_json(v) for k, v in (exposed_endpoints or {}).items()}
+        exposed_endpoints_ = {
+            k: ExposedEndpoint.from_json(v)
+            for k, v in (exposed_endpoints or {}).items()
+        }
 
         # Validate arguments against known Juju API types.
         if application_ is not None and not isinstance(application_, (bytes, str)):
-            raise TypeError(f'Expected application_ to be a str, received: {type(application_)}')
+            raise TypeError(
+                f'Expected application_ to be a str, received: {type(application_)}'
+            )
 
         if exposed_endpoints_ is not None and not isinstance(exposed_endpoints_, dict):
-            raise TypeError(f'Expected exposed_endpoints_ to be a Mapping, received: {type(exposed_endpoints_)}')
+            raise TypeError(
+                f'Expected exposed_endpoints_ to be a Mapping, received: {type(exposed_endpoints_)}'
+            )
 
         self.application = application_
         self.exposed_endpoints = exposed_endpoints_
@@ -1325,7 +1859,9 @@ class ApplicationGet(Type):
 
         # Validate arguments against known Juju API types.
         if application_ is not None and not isinstance(application_, (bytes, str)):
-            raise TypeError(f'Expected application_ to be a str, received: {type(application_)}')
+            raise TypeError(
+                f'Expected application_ to be a str, received: {type(application_)}'
+            )
 
         if branch_ is not None and not isinstance(branch_, (bytes, str)):
             raise TypeError(f'Expected branch_ to be a str, received: {type(branch_)}')
@@ -1365,7 +1901,9 @@ class ApplicationGetConfigResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -1383,17 +1921,48 @@ class ApplicationGetConstraintsResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
 
 
 class ApplicationGetResults(Type):
-    _toSchema = {'application': 'application', 'application_config': 'application-config', 'base': 'base', 'channel': 'channel', 'charm': 'charm', 'config': 'config', 'constraints': 'constraints', 'endpoint_bindings': 'endpoint-bindings'}
-    _toPy = {'application': 'application', 'application-config': 'application_config', 'base': 'base', 'channel': 'channel', 'charm': 'charm', 'config': 'config', 'constraints': 'constraints', 'endpoint-bindings': 'endpoint_bindings'}
+    _toSchema = {
+        'application': 'application',
+        'application_config': 'application-config',
+        'base': 'base',
+        'channel': 'channel',
+        'charm': 'charm',
+        'config': 'config',
+        'constraints': 'constraints',
+        'endpoint_bindings': 'endpoint-bindings',
+    }
+    _toPy = {
+        'application': 'application',
+        'application-config': 'application_config',
+        'base': 'base',
+        'channel': 'channel',
+        'charm': 'charm',
+        'config': 'config',
+        'constraints': 'constraints',
+        'endpoint-bindings': 'endpoint_bindings',
+    }
 
-    def __init__(self, application=None, application_config=None, base=None, channel=None, charm=None, config=None, constraints=None, endpoint_bindings=None, **unknown_fields):
+    def __init__(
+        self,
+        application=None,
+        application_config=None,
+        base=None,
+        channel=None,
+        charm=None,
+        config=None,
+        constraints=None,
+        endpoint_bindings=None,
+        **unknown_fields,
+    ):
         """
         application : str
         application_config : typing.Mapping[str, typing.Any]
@@ -1415,28 +1984,42 @@ class ApplicationGetResults(Type):
 
         # Validate arguments against known Juju API types.
         if application_ is not None and not isinstance(application_, (bytes, str)):
-            raise TypeError(f'Expected application_ to be a str, received: {type(application_)}')
+            raise TypeError(
+                f'Expected application_ to be a str, received: {type(application_)}'
+            )
 
-        if application_config_ is not None and not isinstance(application_config_, dict):
-            raise TypeError(f'Expected application_config_ to be a Mapping, received: {type(application_config_)}')
+        if application_config_ is not None and not isinstance(
+            application_config_, dict
+        ):
+            raise TypeError(
+                f'Expected application_config_ to be a Mapping, received: {type(application_config_)}'
+            )
 
         if base_ is not None and not isinstance(base_, (dict, Base)):
             raise TypeError(f'Expected base_ to be a Base, received: {type(base_)}')
 
         if channel_ is not None and not isinstance(channel_, (bytes, str)):
-            raise TypeError(f'Expected channel_ to be a str, received: {type(channel_)}')
+            raise TypeError(
+                f'Expected channel_ to be a str, received: {type(channel_)}'
+            )
 
         if charm_ is not None and not isinstance(charm_, (bytes, str)):
             raise TypeError(f'Expected charm_ to be a str, received: {type(charm_)}')
 
         if config_ is not None and not isinstance(config_, dict):
-            raise TypeError(f'Expected config_ to be a Mapping, received: {type(config_)}')
+            raise TypeError(
+                f'Expected config_ to be a Mapping, received: {type(config_)}'
+            )
 
         if constraints_ is not None and not isinstance(constraints_, (dict, Value)):
-            raise TypeError(f'Expected constraints_ to be a Value, received: {type(constraints_)}')
+            raise TypeError(
+                f'Expected constraints_ to be a Value, received: {type(constraints_)}'
+            )
 
         if endpoint_bindings_ is not None and not isinstance(endpoint_bindings_, dict):
-            raise TypeError(f'Expected endpoint_bindings_ to be a Mapping, received: {type(endpoint_bindings_)}')
+            raise TypeError(
+                f'Expected endpoint_bindings_ to be a Mapping, received: {type(endpoint_bindings_)}'
+            )
 
         self.application = application_
         self.application_config = application_config_
@@ -1466,7 +2049,9 @@ class ApplicationInfoResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if result_ is not None and not isinstance(result_, (dict, ApplicationResult)):
-            raise TypeError(f'Expected result_ to be a ApplicationResult, received: {type(result_)}')
+            raise TypeError(
+                f'Expected result_ to be a ApplicationResult, received: {type(result_)}'
+            )
 
         self.error = error_
         self.result = result_
@@ -1485,17 +2070,29 @@ class ApplicationInfoResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
 
 
 class ApplicationMergeBindings(Type):
-    _toSchema = {'application_tag': 'application-tag', 'bindings': 'bindings', 'force': 'force'}
-    _toPy = {'application-tag': 'application_tag', 'bindings': 'bindings', 'force': 'force'}
+    _toSchema = {
+        'application_tag': 'application-tag',
+        'bindings': 'bindings',
+        'force': 'force',
+    }
+    _toPy = {
+        'application-tag': 'application_tag',
+        'bindings': 'bindings',
+        'force': 'force',
+    }
 
-    def __init__(self, application_tag=None, bindings=None, force=None, **unknown_fields):
+    def __init__(
+        self, application_tag=None, bindings=None, force=None, **unknown_fields
+    ):
         """
         application_tag : str
         bindings : typing.Mapping[str, str]
@@ -1506,11 +2103,17 @@ class ApplicationMergeBindings(Type):
         force_ = force
 
         # Validate arguments against known Juju API types.
-        if application_tag_ is not None and not isinstance(application_tag_, (bytes, str)):
-            raise TypeError(f'Expected application_tag_ to be a str, received: {type(application_tag_)}')
+        if application_tag_ is not None and not isinstance(
+            application_tag_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected application_tag_ to be a str, received: {type(application_tag_)}'
+            )
 
         if bindings_ is not None and not isinstance(bindings_, dict):
-            raise TypeError(f'Expected bindings_ to be a Mapping, received: {type(bindings_)}')
+            raise TypeError(
+                f'Expected bindings_ to be a Mapping, received: {type(bindings_)}'
+            )
 
         if force_ is not None and not isinstance(force_, bool):
             raise TypeError(f'Expected force_ to be a bool, received: {type(force_)}')
@@ -1540,7 +2143,10 @@ class ApplicationMergeBindingsArgs(Type):
 
 
 class ApplicationMetricCredential(Type):
-    _toSchema = {'application': 'application', 'metrics_credentials': 'metrics-credentials'}
+    _toSchema = {
+        'application': 'application',
+        'metrics_credentials': 'metrics-credentials',
+    }
     _toPy = {'application': 'application', 'metrics-credentials': 'metrics_credentials'}
 
     def __init__(self, application=None, metrics_credentials=None, **unknown_fields):
@@ -1553,10 +2159,16 @@ class ApplicationMetricCredential(Type):
 
         # Validate arguments against known Juju API types.
         if application_ is not None and not isinstance(application_, (bytes, str)):
-            raise TypeError(f'Expected application_ to be a str, received: {type(application_)}')
+            raise TypeError(
+                f'Expected application_ to be a str, received: {type(application_)}'
+            )
 
-        if metrics_credentials_ is not None and not isinstance(metrics_credentials_, (bytes, str, list)):
-            raise TypeError(f'Expected metrics_credentials_ to be a Sequence, received: {type(metrics_credentials_)}')
+        if metrics_credentials_ is not None and not isinstance(
+            metrics_credentials_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected metrics_credentials_ to be a Sequence, received: {type(metrics_credentials_)}'
+            )
 
         self.application = application_
         self.metrics_credentials = metrics_credentials_
@@ -1575,17 +2187,63 @@ class ApplicationMetricCredentials(Type):
 
         # Validate arguments against known Juju API types.
         if creds_ is not None and not isinstance(creds_, (bytes, str, list)):
-            raise TypeError(f'Expected creds_ to be a Sequence, received: {type(creds_)}')
+            raise TypeError(
+                f'Expected creds_ to be a Sequence, received: {type(creds_)}'
+            )
 
         self.creds = creds_
         self.unknown_fields = unknown_fields
 
 
 class ApplicationOfferAdminDetails(Type):
-    _toSchema = {'application_description': 'application-description', 'application_name': 'application-name', 'applicationofferdetails': 'ApplicationOfferDetails', 'bindings': 'bindings', 'charm_url': 'charm-url', 'connections': 'connections', 'endpoints': 'endpoints', 'offer_name': 'offer-name', 'offer_url': 'offer-url', 'offer_uuid': 'offer-uuid', 'source_model_tag': 'source-model-tag', 'spaces': 'spaces', 'users': 'users'}
-    _toPy = {'ApplicationOfferDetails': 'applicationofferdetails', 'application-description': 'application_description', 'application-name': 'application_name', 'bindings': 'bindings', 'charm-url': 'charm_url', 'connections': 'connections', 'endpoints': 'endpoints', 'offer-name': 'offer_name', 'offer-url': 'offer_url', 'offer-uuid': 'offer_uuid', 'source-model-tag': 'source_model_tag', 'spaces': 'spaces', 'users': 'users'}
+    _toSchema = {
+        'application_description': 'application-description',
+        'application_name': 'application-name',
+        'applicationofferdetails': 'ApplicationOfferDetails',
+        'bindings': 'bindings',
+        'charm_url': 'charm-url',
+        'connections': 'connections',
+        'endpoints': 'endpoints',
+        'offer_name': 'offer-name',
+        'offer_url': 'offer-url',
+        'offer_uuid': 'offer-uuid',
+        'source_model_tag': 'source-model-tag',
+        'spaces': 'spaces',
+        'users': 'users',
+    }
+    _toPy = {
+        'ApplicationOfferDetails': 'applicationofferdetails',
+        'application-description': 'application_description',
+        'application-name': 'application_name',
+        'bindings': 'bindings',
+        'charm-url': 'charm_url',
+        'connections': 'connections',
+        'endpoints': 'endpoints',
+        'offer-name': 'offer_name',
+        'offer-url': 'offer_url',
+        'offer-uuid': 'offer_uuid',
+        'source-model-tag': 'source_model_tag',
+        'spaces': 'spaces',
+        'users': 'users',
+    }
 
-    def __init__(self, applicationofferdetails=None, application_description=None, application_name=None, bindings=None, charm_url=None, connections=None, endpoints=None, offer_name=None, offer_url=None, offer_uuid=None, source_model_tag=None, spaces=None, users=None, **unknown_fields):
+    def __init__(
+        self,
+        applicationofferdetails=None,
+        application_description=None,
+        application_name=None,
+        bindings=None,
+        charm_url=None,
+        connections=None,
+        endpoints=None,
+        offer_name=None,
+        offer_url=None,
+        offer_uuid=None,
+        source_model_tag=None,
+        spaces=None,
+        users=None,
+        **unknown_fields,
+    ):
         """
         applicationofferdetails : ApplicationOfferDetails
         application_description : str
@@ -1601,7 +2259,11 @@ class ApplicationOfferAdminDetails(Type):
         spaces : typing.Sequence[~RemoteSpace]
         users : typing.Sequence[~OfferUserDetails]
         """
-        applicationofferdetails_ = ApplicationOfferDetails.from_json(applicationofferdetails) if applicationofferdetails else None
+        applicationofferdetails_ = (
+            ApplicationOfferDetails.from_json(applicationofferdetails)
+            if applicationofferdetails
+            else None
+        )
         application_description_ = application_description
         application_name_ = application_name
         bindings_ = bindings
@@ -1616,44 +2278,80 @@ class ApplicationOfferAdminDetails(Type):
         users_ = [OfferUserDetails.from_json(o) for o in users or []]
 
         # Validate arguments against known Juju API types.
-        if applicationofferdetails_ is not None and not isinstance(applicationofferdetails_, (dict, ApplicationOfferDetails)):
-            raise TypeError(f'Expected applicationofferdetails_ to be a ApplicationOfferDetails, received: {type(applicationofferdetails_)}')
+        if applicationofferdetails_ is not None and not isinstance(
+            applicationofferdetails_, (dict, ApplicationOfferDetails)
+        ):
+            raise TypeError(
+                f'Expected applicationofferdetails_ to be a ApplicationOfferDetails, received: {type(applicationofferdetails_)}'
+            )
 
-        if application_description_ is not None and not isinstance(application_description_, (bytes, str)):
-            raise TypeError(f'Expected application_description_ to be a str, received: {type(application_description_)}')
+        if application_description_ is not None and not isinstance(
+            application_description_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected application_description_ to be a str, received: {type(application_description_)}'
+            )
 
-        if application_name_ is not None and not isinstance(application_name_, (bytes, str)):
-            raise TypeError(f'Expected application_name_ to be a str, received: {type(application_name_)}')
+        if application_name_ is not None and not isinstance(
+            application_name_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected application_name_ to be a str, received: {type(application_name_)}'
+            )
 
         if bindings_ is not None and not isinstance(bindings_, dict):
-            raise TypeError(f'Expected bindings_ to be a Mapping, received: {type(bindings_)}')
+            raise TypeError(
+                f'Expected bindings_ to be a Mapping, received: {type(bindings_)}'
+            )
 
         if charm_url_ is not None and not isinstance(charm_url_, (bytes, str)):
-            raise TypeError(f'Expected charm_url_ to be a str, received: {type(charm_url_)}')
+            raise TypeError(
+                f'Expected charm_url_ to be a str, received: {type(charm_url_)}'
+            )
 
-        if connections_ is not None and not isinstance(connections_, (bytes, str, list)):
-            raise TypeError(f'Expected connections_ to be a Sequence, received: {type(connections_)}')
+        if connections_ is not None and not isinstance(
+            connections_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected connections_ to be a Sequence, received: {type(connections_)}'
+            )
 
         if endpoints_ is not None and not isinstance(endpoints_, (bytes, str, list)):
-            raise TypeError(f'Expected endpoints_ to be a Sequence, received: {type(endpoints_)}')
+            raise TypeError(
+                f'Expected endpoints_ to be a Sequence, received: {type(endpoints_)}'
+            )
 
         if offer_name_ is not None and not isinstance(offer_name_, (bytes, str)):
-            raise TypeError(f'Expected offer_name_ to be a str, received: {type(offer_name_)}')
+            raise TypeError(
+                f'Expected offer_name_ to be a str, received: {type(offer_name_)}'
+            )
 
         if offer_url_ is not None and not isinstance(offer_url_, (bytes, str)):
-            raise TypeError(f'Expected offer_url_ to be a str, received: {type(offer_url_)}')
+            raise TypeError(
+                f'Expected offer_url_ to be a str, received: {type(offer_url_)}'
+            )
 
         if offer_uuid_ is not None and not isinstance(offer_uuid_, (bytes, str)):
-            raise TypeError(f'Expected offer_uuid_ to be a str, received: {type(offer_uuid_)}')
+            raise TypeError(
+                f'Expected offer_uuid_ to be a str, received: {type(offer_uuid_)}'
+            )
 
-        if source_model_tag_ is not None and not isinstance(source_model_tag_, (bytes, str)):
-            raise TypeError(f'Expected source_model_tag_ to be a str, received: {type(source_model_tag_)}')
+        if source_model_tag_ is not None and not isinstance(
+            source_model_tag_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected source_model_tag_ to be a str, received: {type(source_model_tag_)}'
+            )
 
         if spaces_ is not None and not isinstance(spaces_, (bytes, str, list)):
-            raise TypeError(f'Expected spaces_ to be a Sequence, received: {type(spaces_)}')
+            raise TypeError(
+                f'Expected spaces_ to be a Sequence, received: {type(spaces_)}'
+            )
 
         if users_ is not None and not isinstance(users_, (bytes, str, list)):
-            raise TypeError(f'Expected users_ to be a Sequence, received: {type(users_)}')
+            raise TypeError(
+                f'Expected users_ to be a Sequence, received: {type(users_)}'
+            )
 
         self.applicationofferdetails = applicationofferdetails_
         self.application_description = application_description_
@@ -1672,10 +2370,42 @@ class ApplicationOfferAdminDetails(Type):
 
 
 class ApplicationOfferDetails(Type):
-    _toSchema = {'application_description': 'application-description', 'bindings': 'bindings', 'endpoints': 'endpoints', 'offer_name': 'offer-name', 'offer_url': 'offer-url', 'offer_uuid': 'offer-uuid', 'source_model_tag': 'source-model-tag', 'spaces': 'spaces', 'users': 'users'}
-    _toPy = {'application-description': 'application_description', 'bindings': 'bindings', 'endpoints': 'endpoints', 'offer-name': 'offer_name', 'offer-url': 'offer_url', 'offer-uuid': 'offer_uuid', 'source-model-tag': 'source_model_tag', 'spaces': 'spaces', 'users': 'users'}
+    _toSchema = {
+        'application_description': 'application-description',
+        'bindings': 'bindings',
+        'endpoints': 'endpoints',
+        'offer_name': 'offer-name',
+        'offer_url': 'offer-url',
+        'offer_uuid': 'offer-uuid',
+        'source_model_tag': 'source-model-tag',
+        'spaces': 'spaces',
+        'users': 'users',
+    }
+    _toPy = {
+        'application-description': 'application_description',
+        'bindings': 'bindings',
+        'endpoints': 'endpoints',
+        'offer-name': 'offer_name',
+        'offer-url': 'offer_url',
+        'offer-uuid': 'offer_uuid',
+        'source-model-tag': 'source_model_tag',
+        'spaces': 'spaces',
+        'users': 'users',
+    }
 
-    def __init__(self, application_description=None, bindings=None, endpoints=None, offer_name=None, offer_url=None, offer_uuid=None, source_model_tag=None, spaces=None, users=None, **unknown_fields):
+    def __init__(
+        self,
+        application_description=None,
+        bindings=None,
+        endpoints=None,
+        offer_name=None,
+        offer_url=None,
+        offer_uuid=None,
+        source_model_tag=None,
+        spaces=None,
+        users=None,
+        **unknown_fields,
+    ):
         """
         application_description : str
         bindings : typing.Mapping[str, str]
@@ -1698,32 +2428,54 @@ class ApplicationOfferDetails(Type):
         users_ = [OfferUserDetails.from_json(o) for o in users or []]
 
         # Validate arguments against known Juju API types.
-        if application_description_ is not None and not isinstance(application_description_, (bytes, str)):
-            raise TypeError(f'Expected application_description_ to be a str, received: {type(application_description_)}')
+        if application_description_ is not None and not isinstance(
+            application_description_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected application_description_ to be a str, received: {type(application_description_)}'
+            )
 
         if bindings_ is not None and not isinstance(bindings_, dict):
-            raise TypeError(f'Expected bindings_ to be a Mapping, received: {type(bindings_)}')
+            raise TypeError(
+                f'Expected bindings_ to be a Mapping, received: {type(bindings_)}'
+            )
 
         if endpoints_ is not None and not isinstance(endpoints_, (bytes, str, list)):
-            raise TypeError(f'Expected endpoints_ to be a Sequence, received: {type(endpoints_)}')
+            raise TypeError(
+                f'Expected endpoints_ to be a Sequence, received: {type(endpoints_)}'
+            )
 
         if offer_name_ is not None and not isinstance(offer_name_, (bytes, str)):
-            raise TypeError(f'Expected offer_name_ to be a str, received: {type(offer_name_)}')
+            raise TypeError(
+                f'Expected offer_name_ to be a str, received: {type(offer_name_)}'
+            )
 
         if offer_url_ is not None and not isinstance(offer_url_, (bytes, str)):
-            raise TypeError(f'Expected offer_url_ to be a str, received: {type(offer_url_)}')
+            raise TypeError(
+                f'Expected offer_url_ to be a str, received: {type(offer_url_)}'
+            )
 
         if offer_uuid_ is not None and not isinstance(offer_uuid_, (bytes, str)):
-            raise TypeError(f'Expected offer_uuid_ to be a str, received: {type(offer_uuid_)}')
+            raise TypeError(
+                f'Expected offer_uuid_ to be a str, received: {type(offer_uuid_)}'
+            )
 
-        if source_model_tag_ is not None and not isinstance(source_model_tag_, (bytes, str)):
-            raise TypeError(f'Expected source_model_tag_ to be a str, received: {type(source_model_tag_)}')
+        if source_model_tag_ is not None and not isinstance(
+            source_model_tag_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected source_model_tag_ to be a str, received: {type(source_model_tag_)}'
+            )
 
         if spaces_ is not None and not isinstance(spaces_, (bytes, str, list)):
-            raise TypeError(f'Expected spaces_ to be a Sequence, received: {type(spaces_)}')
+            raise TypeError(
+                f'Expected spaces_ to be a Sequence, received: {type(spaces_)}'
+            )
 
         if users_ is not None and not isinstance(users_, (bytes, str, list)):
-            raise TypeError(f'Expected users_ to be a Sequence, received: {type(users_)}')
+            raise TypeError(
+                f'Expected users_ to be a Sequence, received: {type(users_)}'
+            )
 
         self.application_description = application_description_
         self.bindings = bindings_
@@ -1753,8 +2505,12 @@ class ApplicationOfferResult(Type):
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
-        if result_ is not None and not isinstance(result_, (dict, ApplicationOfferAdminDetails)):
-            raise TypeError(f'Expected result_ to be a ApplicationOfferAdminDetails, received: {type(result_)}')
+        if result_ is not None and not isinstance(
+            result_, (dict, ApplicationOfferAdminDetails)
+        ):
+            raise TypeError(
+                f'Expected result_ to be a ApplicationOfferAdminDetails, received: {type(result_)}'
+            )
 
         self.error = error_
         self.result = result_
@@ -1762,10 +2518,36 @@ class ApplicationOfferResult(Type):
 
 
 class ApplicationOfferStatus(Type):
-    _toSchema = {'active_connected_count': 'active-connected-count', 'application_name': 'application-name', 'charm': 'charm', 'endpoints': 'endpoints', 'err': 'err', 'offer_name': 'offer-name', 'total_connected_count': 'total-connected-count'}
-    _toPy = {'active-connected-count': 'active_connected_count', 'application-name': 'application_name', 'charm': 'charm', 'endpoints': 'endpoints', 'err': 'err', 'offer-name': 'offer_name', 'total-connected-count': 'total_connected_count'}
+    _toSchema = {
+        'active_connected_count': 'active-connected-count',
+        'application_name': 'application-name',
+        'charm': 'charm',
+        'endpoints': 'endpoints',
+        'err': 'err',
+        'offer_name': 'offer-name',
+        'total_connected_count': 'total-connected-count',
+    }
+    _toPy = {
+        'active-connected-count': 'active_connected_count',
+        'application-name': 'application_name',
+        'charm': 'charm',
+        'endpoints': 'endpoints',
+        'err': 'err',
+        'offer-name': 'offer_name',
+        'total-connected-count': 'total_connected_count',
+    }
 
-    def __init__(self, active_connected_count=None, application_name=None, charm=None, endpoints=None, err=None, offer_name=None, total_connected_count=None, **unknown_fields):
+    def __init__(
+        self,
+        active_connected_count=None,
+        application_name=None,
+        charm=None,
+        endpoints=None,
+        err=None,
+        offer_name=None,
+        total_connected_count=None,
+        **unknown_fields,
+    ):
         """
         active_connected_count : int
         application_name : str
@@ -1778,32 +2560,50 @@ class ApplicationOfferStatus(Type):
         active_connected_count_ = active_connected_count
         application_name_ = application_name
         charm_ = charm
-        endpoints_ = {k: RemoteEndpoint.from_json(v) for k, v in (endpoints or {}).items()}
+        endpoints_ = {
+            k: RemoteEndpoint.from_json(v) for k, v in (endpoints or {}).items()
+        }
         err_ = Error.from_json(err) if err else None
         offer_name_ = offer_name
         total_connected_count_ = total_connected_count
 
         # Validate arguments against known Juju API types.
-        if active_connected_count_ is not None and not isinstance(active_connected_count_, int):
-            raise TypeError(f'Expected active_connected_count_ to be a int, received: {type(active_connected_count_)}')
+        if active_connected_count_ is not None and not isinstance(
+            active_connected_count_, int
+        ):
+            raise TypeError(
+                f'Expected active_connected_count_ to be a int, received: {type(active_connected_count_)}'
+            )
 
-        if application_name_ is not None and not isinstance(application_name_, (bytes, str)):
-            raise TypeError(f'Expected application_name_ to be a str, received: {type(application_name_)}')
+        if application_name_ is not None and not isinstance(
+            application_name_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected application_name_ to be a str, received: {type(application_name_)}'
+            )
 
         if charm_ is not None and not isinstance(charm_, (bytes, str)):
             raise TypeError(f'Expected charm_ to be a str, received: {type(charm_)}')
 
         if endpoints_ is not None and not isinstance(endpoints_, dict):
-            raise TypeError(f'Expected endpoints_ to be a Mapping, received: {type(endpoints_)}')
+            raise TypeError(
+                f'Expected endpoints_ to be a Mapping, received: {type(endpoints_)}'
+            )
 
         if err_ is not None and not isinstance(err_, (dict, Error)):
             raise TypeError(f'Expected err_ to be a Error, received: {type(err_)}')
 
         if offer_name_ is not None and not isinstance(offer_name_, (bytes, str)):
-            raise TypeError(f'Expected offer_name_ to be a str, received: {type(offer_name_)}')
+            raise TypeError(
+                f'Expected offer_name_ to be a str, received: {type(offer_name_)}'
+            )
 
-        if total_connected_count_ is not None and not isinstance(total_connected_count_, int):
-            raise TypeError(f'Expected total_connected_count_ to be a int, received: {type(total_connected_count_)}')
+        if total_connected_count_ is not None and not isinstance(
+            total_connected_count_, int
+        ):
+            raise TypeError(
+                f'Expected total_connected_count_ to be a int, received: {type(total_connected_count_)}'
+            )
 
         self.active_connected_count = active_connected_count_
         self.application_name = application_name_
@@ -1827,17 +2627,57 @@ class ApplicationOffersResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
 
 
 class ApplicationResult(Type):
-    _toSchema = {'base': 'base', 'channel': 'channel', 'charm': 'charm', 'constraints': 'constraints', 'endpoint_bindings': 'endpoint-bindings', 'exposed': 'exposed', 'exposed_endpoints': 'exposed-endpoints', 'life': 'life', 'principal': 'principal', 'remote': 'remote', 'tag': 'tag'}
-    _toPy = {'base': 'base', 'channel': 'channel', 'charm': 'charm', 'constraints': 'constraints', 'endpoint-bindings': 'endpoint_bindings', 'exposed': 'exposed', 'exposed-endpoints': 'exposed_endpoints', 'life': 'life', 'principal': 'principal', 'remote': 'remote', 'tag': 'tag'}
+    _toSchema = {
+        'base': 'base',
+        'channel': 'channel',
+        'charm': 'charm',
+        'constraints': 'constraints',
+        'endpoint_bindings': 'endpoint-bindings',
+        'exposed': 'exposed',
+        'exposed_endpoints': 'exposed-endpoints',
+        'life': 'life',
+        'principal': 'principal',
+        'remote': 'remote',
+        'tag': 'tag',
+    }
+    _toPy = {
+        'base': 'base',
+        'channel': 'channel',
+        'charm': 'charm',
+        'constraints': 'constraints',
+        'endpoint-bindings': 'endpoint_bindings',
+        'exposed': 'exposed',
+        'exposed-endpoints': 'exposed_endpoints',
+        'life': 'life',
+        'principal': 'principal',
+        'remote': 'remote',
+        'tag': 'tag',
+    }
 
-    def __init__(self, base=None, channel=None, charm=None, constraints=None, endpoint_bindings=None, exposed=None, exposed_endpoints=None, life=None, principal=None, remote=None, tag=None, **unknown_fields):
+    def __init__(
+        self,
+        base=None,
+        channel=None,
+        charm=None,
+        constraints=None,
+        endpoint_bindings=None,
+        exposed=None,
+        exposed_endpoints=None,
+        life=None,
+        principal=None,
+        remote=None,
+        tag=None,
+        **unknown_fields,
+    ):
         """
         base : Base
         channel : str
@@ -1857,7 +2697,10 @@ class ApplicationResult(Type):
         constraints_ = Value.from_json(constraints) if constraints else None
         endpoint_bindings_ = endpoint_bindings
         exposed_ = exposed
-        exposed_endpoints_ = {k: ExposedEndpoint.from_json(v) for k, v in (exposed_endpoints or {}).items()}
+        exposed_endpoints_ = {
+            k: ExposedEndpoint.from_json(v)
+            for k, v in (exposed_endpoints or {}).items()
+        }
         life_ = life
         principal_ = principal
         remote_ = remote
@@ -1868,28 +2711,40 @@ class ApplicationResult(Type):
             raise TypeError(f'Expected base_ to be a Base, received: {type(base_)}')
 
         if channel_ is not None and not isinstance(channel_, (bytes, str)):
-            raise TypeError(f'Expected channel_ to be a str, received: {type(channel_)}')
+            raise TypeError(
+                f'Expected channel_ to be a str, received: {type(channel_)}'
+            )
 
         if charm_ is not None and not isinstance(charm_, (bytes, str)):
             raise TypeError(f'Expected charm_ to be a str, received: {type(charm_)}')
 
         if constraints_ is not None and not isinstance(constraints_, (dict, Value)):
-            raise TypeError(f'Expected constraints_ to be a Value, received: {type(constraints_)}')
+            raise TypeError(
+                f'Expected constraints_ to be a Value, received: {type(constraints_)}'
+            )
 
         if endpoint_bindings_ is not None and not isinstance(endpoint_bindings_, dict):
-            raise TypeError(f'Expected endpoint_bindings_ to be a Mapping, received: {type(endpoint_bindings_)}')
+            raise TypeError(
+                f'Expected endpoint_bindings_ to be a Mapping, received: {type(endpoint_bindings_)}'
+            )
 
         if exposed_ is not None and not isinstance(exposed_, bool):
-            raise TypeError(f'Expected exposed_ to be a bool, received: {type(exposed_)}')
+            raise TypeError(
+                f'Expected exposed_ to be a bool, received: {type(exposed_)}'
+            )
 
         if exposed_endpoints_ is not None and not isinstance(exposed_endpoints_, dict):
-            raise TypeError(f'Expected exposed_endpoints_ to be a Mapping, received: {type(exposed_endpoints_)}')
+            raise TypeError(
+                f'Expected exposed_endpoints_ to be a Mapping, received: {type(exposed_endpoints_)}'
+            )
 
         if life_ is not None and not isinstance(life_, (bytes, str)):
             raise TypeError(f'Expected life_ to be a str, received: {type(life_)}')
 
         if principal_ is not None and not isinstance(principal_, bool):
-            raise TypeError(f'Expected principal_ to be a bool, received: {type(principal_)}')
+            raise TypeError(
+                f'Expected principal_ to be a bool, received: {type(principal_)}'
+            )
 
         if remote_ is not None and not isinstance(remote_, bool):
             raise TypeError(f'Expected remote_ to be a bool, received: {type(remote_)}')
@@ -1912,10 +2767,54 @@ class ApplicationResult(Type):
 
 
 class ApplicationSetCharm(Type):
-    _toSchema = {'application': 'application', 'channel': 'channel', 'charm_origin': 'charm-origin', 'charm_url': 'charm-url', 'config_settings': 'config-settings', 'config_settings_yaml': 'config-settings-yaml', 'endpoint_bindings': 'endpoint-bindings', 'force': 'force', 'force_base': 'force-base', 'force_units': 'force-units', 'generation': 'generation', 'resource_ids': 'resource-ids', 'storage_constraints': 'storage-constraints'}
-    _toPy = {'application': 'application', 'channel': 'channel', 'charm-origin': 'charm_origin', 'charm-url': 'charm_url', 'config-settings': 'config_settings', 'config-settings-yaml': 'config_settings_yaml', 'endpoint-bindings': 'endpoint_bindings', 'force': 'force', 'force-base': 'force_base', 'force-units': 'force_units', 'generation': 'generation', 'resource-ids': 'resource_ids', 'storage-constraints': 'storage_constraints'}
+    _toSchema = {
+        'application': 'application',
+        'channel': 'channel',
+        'charm_origin': 'charm-origin',
+        'charm_url': 'charm-url',
+        'config_settings': 'config-settings',
+        'config_settings_yaml': 'config-settings-yaml',
+        'endpoint_bindings': 'endpoint-bindings',
+        'force': 'force',
+        'force_base': 'force-base',
+        'force_units': 'force-units',
+        'generation': 'generation',
+        'resource_ids': 'resource-ids',
+        'storage_constraints': 'storage-constraints',
+    }
+    _toPy = {
+        'application': 'application',
+        'channel': 'channel',
+        'charm-origin': 'charm_origin',
+        'charm-url': 'charm_url',
+        'config-settings': 'config_settings',
+        'config-settings-yaml': 'config_settings_yaml',
+        'endpoint-bindings': 'endpoint_bindings',
+        'force': 'force',
+        'force-base': 'force_base',
+        'force-units': 'force_units',
+        'generation': 'generation',
+        'resource-ids': 'resource_ids',
+        'storage-constraints': 'storage_constraints',
+    }
 
-    def __init__(self, application=None, channel=None, charm_origin=None, charm_url=None, config_settings=None, config_settings_yaml=None, endpoint_bindings=None, force=None, force_base=None, force_units=None, generation=None, resource_ids=None, storage_constraints=None, **unknown_fields):
+    def __init__(
+        self,
+        application=None,
+        channel=None,
+        charm_origin=None,
+        charm_url=None,
+        config_settings=None,
+        config_settings_yaml=None,
+        endpoint_bindings=None,
+        force=None,
+        force_base=None,
+        force_units=None,
+        generation=None,
+        resource_ids=None,
+        storage_constraints=None,
+        **unknown_fields,
+    ):
         """
         application : str
         channel : str
@@ -1943,47 +2842,80 @@ class ApplicationSetCharm(Type):
         force_units_ = force_units
         generation_ = generation
         resource_ids_ = resource_ids
-        storage_constraints_ = {k: StorageConstraints.from_json(v) for k, v in (storage_constraints or {}).items()}
+        storage_constraints_ = {
+            k: StorageConstraints.from_json(v)
+            for k, v in (storage_constraints or {}).items()
+        }
 
         # Validate arguments against known Juju API types.
         if application_ is not None and not isinstance(application_, (bytes, str)):
-            raise TypeError(f'Expected application_ to be a str, received: {type(application_)}')
+            raise TypeError(
+                f'Expected application_ to be a str, received: {type(application_)}'
+            )
 
         if channel_ is not None and not isinstance(channel_, (bytes, str)):
-            raise TypeError(f'Expected channel_ to be a str, received: {type(channel_)}')
+            raise TypeError(
+                f'Expected channel_ to be a str, received: {type(channel_)}'
+            )
 
-        if charm_origin_ is not None and not isinstance(charm_origin_, (dict, CharmOrigin)):
-            raise TypeError(f'Expected charm_origin_ to be a CharmOrigin, received: {type(charm_origin_)}')
+        if charm_origin_ is not None and not isinstance(
+            charm_origin_, (dict, CharmOrigin)
+        ):
+            raise TypeError(
+                f'Expected charm_origin_ to be a CharmOrigin, received: {type(charm_origin_)}'
+            )
 
         if charm_url_ is not None and not isinstance(charm_url_, (bytes, str)):
-            raise TypeError(f'Expected charm_url_ to be a str, received: {type(charm_url_)}')
+            raise TypeError(
+                f'Expected charm_url_ to be a str, received: {type(charm_url_)}'
+            )
 
         if config_settings_ is not None and not isinstance(config_settings_, dict):
-            raise TypeError(f'Expected config_settings_ to be a Mapping, received: {type(config_settings_)}')
+            raise TypeError(
+                f'Expected config_settings_ to be a Mapping, received: {type(config_settings_)}'
+            )
 
-        if config_settings_yaml_ is not None and not isinstance(config_settings_yaml_, (bytes, str)):
-            raise TypeError(f'Expected config_settings_yaml_ to be a str, received: {type(config_settings_yaml_)}')
+        if config_settings_yaml_ is not None and not isinstance(
+            config_settings_yaml_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected config_settings_yaml_ to be a str, received: {type(config_settings_yaml_)}'
+            )
 
         if endpoint_bindings_ is not None and not isinstance(endpoint_bindings_, dict):
-            raise TypeError(f'Expected endpoint_bindings_ to be a Mapping, received: {type(endpoint_bindings_)}')
+            raise TypeError(
+                f'Expected endpoint_bindings_ to be a Mapping, received: {type(endpoint_bindings_)}'
+            )
 
         if force_ is not None and not isinstance(force_, bool):
             raise TypeError(f'Expected force_ to be a bool, received: {type(force_)}')
 
         if force_base_ is not None and not isinstance(force_base_, bool):
-            raise TypeError(f'Expected force_base_ to be a bool, received: {type(force_base_)}')
+            raise TypeError(
+                f'Expected force_base_ to be a bool, received: {type(force_base_)}'
+            )
 
         if force_units_ is not None and not isinstance(force_units_, bool):
-            raise TypeError(f'Expected force_units_ to be a bool, received: {type(force_units_)}')
+            raise TypeError(
+                f'Expected force_units_ to be a bool, received: {type(force_units_)}'
+            )
 
         if generation_ is not None and not isinstance(generation_, (bytes, str)):
-            raise TypeError(f'Expected generation_ to be a str, received: {type(generation_)}')
+            raise TypeError(
+                f'Expected generation_ to be a str, received: {type(generation_)}'
+            )
 
         if resource_ids_ is not None and not isinstance(resource_ids_, dict):
-            raise TypeError(f'Expected resource_ids_ to be a Mapping, received: {type(resource_ids_)}')
+            raise TypeError(
+                f'Expected resource_ids_ to be a Mapping, received: {type(resource_ids_)}'
+            )
 
-        if storage_constraints_ is not None and not isinstance(storage_constraints_, dict):
-            raise TypeError(f'Expected storage_constraints_ to be a Mapping, received: {type(storage_constraints_)}')
+        if storage_constraints_ is not None and not isinstance(
+            storage_constraints_, dict
+        ):
+            raise TypeError(
+                f'Expected storage_constraints_ to be a Mapping, received: {type(storage_constraints_)}'
+            )
 
         self.application = application_
         self.channel = channel_
@@ -2002,10 +2934,75 @@ class ApplicationSetCharm(Type):
 
 
 class ApplicationStatus(Type):
-    _toSchema = {'base': 'base', 'can_upgrade_to': 'can-upgrade-to', 'charm': 'charm', 'charm_channel': 'charm-channel', 'charm_profile': 'charm-profile', 'charm_version': 'charm-version', 'endpoint_bindings': 'endpoint-bindings', 'err': 'err', 'exposed': 'exposed', 'exposed_endpoints': 'exposed-endpoints', 'int_': 'int', 'life': 'life', 'meter_statuses': 'meter-statuses', 'provider_id': 'provider-id', 'public_address': 'public-address', 'relations': 'relations', 'status': 'status', 'subordinate_to': 'subordinate-to', 'units': 'units', 'workload_version': 'workload-version'}
-    _toPy = {'base': 'base', 'can-upgrade-to': 'can_upgrade_to', 'charm': 'charm', 'charm-channel': 'charm_channel', 'charm-profile': 'charm_profile', 'charm-version': 'charm_version', 'endpoint-bindings': 'endpoint_bindings', 'err': 'err', 'exposed': 'exposed', 'exposed-endpoints': 'exposed_endpoints', 'int': 'int_', 'life': 'life', 'meter-statuses': 'meter_statuses', 'provider-id': 'provider_id', 'public-address': 'public_address', 'relations': 'relations', 'status': 'status', 'subordinate-to': 'subordinate_to', 'units': 'units', 'workload-version': 'workload_version'}
+    _toSchema = {
+        'base': 'base',
+        'can_upgrade_to': 'can-upgrade-to',
+        'charm': 'charm',
+        'charm_channel': 'charm-channel',
+        'charm_profile': 'charm-profile',
+        'charm_version': 'charm-version',
+        'endpoint_bindings': 'endpoint-bindings',
+        'err': 'err',
+        'exposed': 'exposed',
+        'exposed_endpoints': 'exposed-endpoints',
+        'int_': 'int',
+        'life': 'life',
+        'meter_statuses': 'meter-statuses',
+        'provider_id': 'provider-id',
+        'public_address': 'public-address',
+        'relations': 'relations',
+        'status': 'status',
+        'subordinate_to': 'subordinate-to',
+        'units': 'units',
+        'workload_version': 'workload-version',
+    }
+    _toPy = {
+        'base': 'base',
+        'can-upgrade-to': 'can_upgrade_to',
+        'charm': 'charm',
+        'charm-channel': 'charm_channel',
+        'charm-profile': 'charm_profile',
+        'charm-version': 'charm_version',
+        'endpoint-bindings': 'endpoint_bindings',
+        'err': 'err',
+        'exposed': 'exposed',
+        'exposed-endpoints': 'exposed_endpoints',
+        'int': 'int_',
+        'life': 'life',
+        'meter-statuses': 'meter_statuses',
+        'provider-id': 'provider_id',
+        'public-address': 'public_address',
+        'relations': 'relations',
+        'status': 'status',
+        'subordinate-to': 'subordinate_to',
+        'units': 'units',
+        'workload-version': 'workload_version',
+    }
 
-    def __init__(self, base=None, can_upgrade_to=None, charm=None, charm_channel=None, charm_profile=None, charm_version=None, endpoint_bindings=None, err=None, exposed=None, exposed_endpoints=None, int_=None, life=None, meter_statuses=None, provider_id=None, public_address=None, relations=None, status=None, subordinate_to=None, units=None, workload_version=None, **unknown_fields):
+    def __init__(
+        self,
+        base=None,
+        can_upgrade_to=None,
+        charm=None,
+        charm_channel=None,
+        charm_profile=None,
+        charm_version=None,
+        endpoint_bindings=None,
+        err=None,
+        exposed=None,
+        exposed_endpoints=None,
+        int_=None,
+        life=None,
+        meter_statuses=None,
+        provider_id=None,
+        public_address=None,
+        relations=None,
+        status=None,
+        subordinate_to=None,
+        units=None,
+        workload_version=None,
+        **unknown_fields,
+    ):
         """
         base : Base
         can_upgrade_to : str
@@ -2037,10 +3034,15 @@ class ApplicationStatus(Type):
         endpoint_bindings_ = endpoint_bindings
         err_ = Error.from_json(err) if err else None
         exposed_ = exposed
-        exposed_endpoints_ = {k: ExposedEndpoint.from_json(v) for k, v in (exposed_endpoints or {}).items()}
+        exposed_endpoints_ = {
+            k: ExposedEndpoint.from_json(v)
+            for k, v in (exposed_endpoints or {}).items()
+        }
         int__ = int_
         life_ = life
-        meter_statuses_ = {k: MeterStatus.from_json(v) for k, v in (meter_statuses or {}).items()}
+        meter_statuses_ = {
+            k: MeterStatus.from_json(v) for k, v in (meter_statuses or {}).items()
+        }
         provider_id_ = provider_id
         public_address_ = public_address
         relations_ = relations
@@ -2053,32 +3055,48 @@ class ApplicationStatus(Type):
         if base_ is not None and not isinstance(base_, (dict, Base)):
             raise TypeError(f'Expected base_ to be a Base, received: {type(base_)}')
 
-        if can_upgrade_to_ is not None and not isinstance(can_upgrade_to_, (bytes, str)):
-            raise TypeError(f'Expected can_upgrade_to_ to be a str, received: {type(can_upgrade_to_)}')
+        if can_upgrade_to_ is not None and not isinstance(
+            can_upgrade_to_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected can_upgrade_to_ to be a str, received: {type(can_upgrade_to_)}'
+            )
 
         if charm_ is not None and not isinstance(charm_, (bytes, str)):
             raise TypeError(f'Expected charm_ to be a str, received: {type(charm_)}')
 
         if charm_channel_ is not None and not isinstance(charm_channel_, (bytes, str)):
-            raise TypeError(f'Expected charm_channel_ to be a str, received: {type(charm_channel_)}')
+            raise TypeError(
+                f'Expected charm_channel_ to be a str, received: {type(charm_channel_)}'
+            )
 
         if charm_profile_ is not None and not isinstance(charm_profile_, (bytes, str)):
-            raise TypeError(f'Expected charm_profile_ to be a str, received: {type(charm_profile_)}')
+            raise TypeError(
+                f'Expected charm_profile_ to be a str, received: {type(charm_profile_)}'
+            )
 
         if charm_version_ is not None and not isinstance(charm_version_, (bytes, str)):
-            raise TypeError(f'Expected charm_version_ to be a str, received: {type(charm_version_)}')
+            raise TypeError(
+                f'Expected charm_version_ to be a str, received: {type(charm_version_)}'
+            )
 
         if endpoint_bindings_ is not None and not isinstance(endpoint_bindings_, dict):
-            raise TypeError(f'Expected endpoint_bindings_ to be a Mapping, received: {type(endpoint_bindings_)}')
+            raise TypeError(
+                f'Expected endpoint_bindings_ to be a Mapping, received: {type(endpoint_bindings_)}'
+            )
 
         if err_ is not None and not isinstance(err_, (dict, Error)):
             raise TypeError(f'Expected err_ to be a Error, received: {type(err_)}')
 
         if exposed_ is not None and not isinstance(exposed_, bool):
-            raise TypeError(f'Expected exposed_ to be a bool, received: {type(exposed_)}')
+            raise TypeError(
+                f'Expected exposed_ to be a bool, received: {type(exposed_)}'
+            )
 
         if exposed_endpoints_ is not None and not isinstance(exposed_endpoints_, dict):
-            raise TypeError(f'Expected exposed_endpoints_ to be a Mapping, received: {type(exposed_endpoints_)}')
+            raise TypeError(
+                f'Expected exposed_endpoints_ to be a Mapping, received: {type(exposed_endpoints_)}'
+            )
 
         if int__ is not None and not isinstance(int__, int):
             raise TypeError(f'Expected int__ to be a int, received: {type(int__)}')
@@ -2087,28 +3105,50 @@ class ApplicationStatus(Type):
             raise TypeError(f'Expected life_ to be a str, received: {type(life_)}')
 
         if meter_statuses_ is not None and not isinstance(meter_statuses_, dict):
-            raise TypeError(f'Expected meter_statuses_ to be a Mapping, received: {type(meter_statuses_)}')
+            raise TypeError(
+                f'Expected meter_statuses_ to be a Mapping, received: {type(meter_statuses_)}'
+            )
 
         if provider_id_ is not None and not isinstance(provider_id_, (bytes, str)):
-            raise TypeError(f'Expected provider_id_ to be a str, received: {type(provider_id_)}')
+            raise TypeError(
+                f'Expected provider_id_ to be a str, received: {type(provider_id_)}'
+            )
 
-        if public_address_ is not None and not isinstance(public_address_, (bytes, str)):
-            raise TypeError(f'Expected public_address_ to be a str, received: {type(public_address_)}')
+        if public_address_ is not None and not isinstance(
+            public_address_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected public_address_ to be a str, received: {type(public_address_)}'
+            )
 
         if relations_ is not None and not isinstance(relations_, dict):
-            raise TypeError(f'Expected relations_ to be a Mapping, received: {type(relations_)}')
+            raise TypeError(
+                f'Expected relations_ to be a Mapping, received: {type(relations_)}'
+            )
 
         if status_ is not None and not isinstance(status_, (dict, DetailedStatus)):
-            raise TypeError(f'Expected status_ to be a DetailedStatus, received: {type(status_)}')
+            raise TypeError(
+                f'Expected status_ to be a DetailedStatus, received: {type(status_)}'
+            )
 
-        if subordinate_to_ is not None and not isinstance(subordinate_to_, (bytes, str, list)):
-            raise TypeError(f'Expected subordinate_to_ to be a Sequence, received: {type(subordinate_to_)}')
+        if subordinate_to_ is not None and not isinstance(
+            subordinate_to_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected subordinate_to_ to be a Sequence, received: {type(subordinate_to_)}'
+            )
 
         if units_ is not None and not isinstance(units_, dict):
-            raise TypeError(f'Expected units_ to be a Mapping, received: {type(units_)}')
+            raise TypeError(
+                f'Expected units_ to be a Mapping, received: {type(units_)}'
+            )
 
-        if workload_version_ is not None and not isinstance(workload_version_, (bytes, str)):
-            raise TypeError(f'Expected workload_version_ to be a str, received: {type(workload_version_)}')
+        if workload_version_ is not None and not isinstance(
+            workload_version_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected workload_version_ to be a str, received: {type(workload_version_)}'
+            )
 
         self.base = base_
         self.can_upgrade_to = can_upgrade_to_
@@ -2147,10 +3187,16 @@ class ApplicationUnexpose(Type):
 
         # Validate arguments against known Juju API types.
         if application_ is not None and not isinstance(application_, (bytes, str)):
-            raise TypeError(f'Expected application_ to be a str, received: {type(application_)}')
+            raise TypeError(
+                f'Expected application_ to be a str, received: {type(application_)}'
+            )
 
-        if exposed_endpoints_ is not None and not isinstance(exposed_endpoints_, (bytes, str, list)):
-            raise TypeError(f'Expected exposed_endpoints_ to be a Sequence, received: {type(exposed_endpoints_)}')
+        if exposed_endpoints_ is not None and not isinstance(
+            exposed_endpoints_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected exposed_endpoints_ to be a Sequence, received: {type(exposed_endpoints_)}'
+            )
 
         self.application = application_
         self.exposed_endpoints = exposed_endpoints_
@@ -2173,13 +3219,17 @@ class ApplicationUnset(Type):
 
         # Validate arguments against known Juju API types.
         if application_ is not None and not isinstance(application_, (bytes, str)):
-            raise TypeError(f'Expected application_ to be a str, received: {type(application_)}')
+            raise TypeError(
+                f'Expected application_ to be a str, received: {type(application_)}'
+            )
 
         if branch_ is not None and not isinstance(branch_, (bytes, str)):
             raise TypeError(f'Expected branch_ to be a str, received: {type(branch_)}')
 
         if options_ is not None and not isinstance(options_, (bytes, str, list)):
-            raise TypeError(f'Expected options_ to be a Sequence, received: {type(options_)}')
+            raise TypeError(
+                f'Expected options_ to be a Sequence, received: {type(options_)}'
+            )
 
         self.application = application_
         self.branch = branch_
@@ -2199,7 +3249,9 @@ class ApplicationsCharmActionsResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -2216,18 +3268,45 @@ class ApplicationsDeploy(Type):
         applications_ = [ApplicationDeploy.from_json(o) for o in applications or []]
 
         # Validate arguments against known Juju API types.
-        if applications_ is not None and not isinstance(applications_, (bytes, str, list)):
-            raise TypeError(f'Expected applications_ to be a Sequence, received: {type(applications_)}')
+        if applications_ is not None and not isinstance(
+            applications_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected applications_ to be a Sequence, received: {type(applications_)}'
+            )
 
         self.applications = applications_
         self.unknown_fields = unknown_fields
 
 
 class AuthUserInfo(Type):
-    _toSchema = {'controller_access': 'controller-access', 'credentials': 'credentials', 'display_name': 'display-name', 'identity': 'identity', 'last_connection': 'last-connection', 'model_access': 'model-access'}
-    _toPy = {'controller-access': 'controller_access', 'credentials': 'credentials', 'display-name': 'display_name', 'identity': 'identity', 'last-connection': 'last_connection', 'model-access': 'model_access'}
+    _toSchema = {
+        'controller_access': 'controller-access',
+        'credentials': 'credentials',
+        'display_name': 'display-name',
+        'identity': 'identity',
+        'last_connection': 'last-connection',
+        'model_access': 'model-access',
+    }
+    _toPy = {
+        'controller-access': 'controller_access',
+        'credentials': 'credentials',
+        'display-name': 'display_name',
+        'identity': 'identity',
+        'last-connection': 'last_connection',
+        'model-access': 'model_access',
+    }
 
-    def __init__(self, controller_access=None, credentials=None, display_name=None, identity=None, last_connection=None, model_access=None, **unknown_fields):
+    def __init__(
+        self,
+        controller_access=None,
+        credentials=None,
+        display_name=None,
+        identity=None,
+        last_connection=None,
+        model_access=None,
+        **unknown_fields,
+    ):
         """
         controller_access : str
         credentials : str
@@ -2244,23 +3323,39 @@ class AuthUserInfo(Type):
         model_access_ = model_access
 
         # Validate arguments against known Juju API types.
-        if controller_access_ is not None and not isinstance(controller_access_, (bytes, str)):
-            raise TypeError(f'Expected controller_access_ to be a str, received: {type(controller_access_)}')
+        if controller_access_ is not None and not isinstance(
+            controller_access_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected controller_access_ to be a str, received: {type(controller_access_)}'
+            )
 
         if credentials_ is not None and not isinstance(credentials_, (bytes, str)):
-            raise TypeError(f'Expected credentials_ to be a str, received: {type(credentials_)}')
+            raise TypeError(
+                f'Expected credentials_ to be a str, received: {type(credentials_)}'
+            )
 
         if display_name_ is not None and not isinstance(display_name_, (bytes, str)):
-            raise TypeError(f'Expected display_name_ to be a str, received: {type(display_name_)}')
+            raise TypeError(
+                f'Expected display_name_ to be a str, received: {type(display_name_)}'
+            )
 
         if identity_ is not None and not isinstance(identity_, (bytes, str)):
-            raise TypeError(f'Expected identity_ to be a str, received: {type(identity_)}')
+            raise TypeError(
+                f'Expected identity_ to be a str, received: {type(identity_)}'
+            )
 
-        if last_connection_ is not None and not isinstance(last_connection_, (bytes, str)):
-            raise TypeError(f'Expected last_connection_ to be a str, received: {type(last_connection_)}')
+        if last_connection_ is not None and not isinstance(
+            last_connection_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected last_connection_ to be a str, received: {type(last_connection_)}'
+            )
 
         if model_access_ is not None and not isinstance(model_access_, (bytes, str)):
-            raise TypeError(f'Expected model_access_ to be a str, received: {type(model_access_)}')
+            raise TypeError(
+                f'Expected model_access_ to be a str, received: {type(model_access_)}'
+            )
 
         self.controller_access = controller_access_
         self.credentials = credentials_
@@ -2285,7 +3380,9 @@ class BackupsCreateArgs(Type):
 
         # Validate arguments against known Juju API types.
         if no_download_ is not None and not isinstance(no_download_, bool):
-            raise TypeError(f'Expected no_download_ to be a bool, received: {type(no_download_)}')
+            raise TypeError(
+                f'Expected no_download_ to be a bool, received: {type(no_download_)}'
+            )
 
         if notes_ is not None and not isinstance(notes_, (bytes, str)):
             raise TypeError(f'Expected notes_ to be a str, received: {type(notes_)}')
@@ -2296,10 +3393,72 @@ class BackupsCreateArgs(Type):
 
 
 class BackupsMetadataResult(Type):
-    _toSchema = {'base': 'base', 'checksum': 'checksum', 'checksum_format': 'checksum-format', 'controller_machine_id': 'controller-machine-id', 'controller_machine_inst_id': 'controller-machine-inst-id', 'controller_uuid': 'controller-uuid', 'filename': 'filename', 'finished': 'finished', 'format_version': 'format-version', 'ha_nodes': 'ha-nodes', 'hostname': 'hostname', 'id_': 'id', 'machine': 'machine', 'model': 'model', 'notes': 'notes', 'size': 'size', 'started': 'started', 'stored': 'stored', 'version': 'version'}
-    _toPy = {'base': 'base', 'checksum': 'checksum', 'checksum-format': 'checksum_format', 'controller-machine-id': 'controller_machine_id', 'controller-machine-inst-id': 'controller_machine_inst_id', 'controller-uuid': 'controller_uuid', 'filename': 'filename', 'finished': 'finished', 'format-version': 'format_version', 'ha-nodes': 'ha_nodes', 'hostname': 'hostname', 'id': 'id_', 'machine': 'machine', 'model': 'model', 'notes': 'notes', 'size': 'size', 'started': 'started', 'stored': 'stored', 'version': 'version'}
+    _toSchema = {
+        'base': 'base',
+        'checksum': 'checksum',
+        'checksum_format': 'checksum-format',
+        'controller_machine_id': 'controller-machine-id',
+        'controller_machine_inst_id': 'controller-machine-inst-id',
+        'controller_uuid': 'controller-uuid',
+        'filename': 'filename',
+        'finished': 'finished',
+        'format_version': 'format-version',
+        'ha_nodes': 'ha-nodes',
+        'hostname': 'hostname',
+        'id_': 'id',
+        'machine': 'machine',
+        'model': 'model',
+        'notes': 'notes',
+        'size': 'size',
+        'started': 'started',
+        'stored': 'stored',
+        'version': 'version',
+    }
+    _toPy = {
+        'base': 'base',
+        'checksum': 'checksum',
+        'checksum-format': 'checksum_format',
+        'controller-machine-id': 'controller_machine_id',
+        'controller-machine-inst-id': 'controller_machine_inst_id',
+        'controller-uuid': 'controller_uuid',
+        'filename': 'filename',
+        'finished': 'finished',
+        'format-version': 'format_version',
+        'ha-nodes': 'ha_nodes',
+        'hostname': 'hostname',
+        'id': 'id_',
+        'machine': 'machine',
+        'model': 'model',
+        'notes': 'notes',
+        'size': 'size',
+        'started': 'started',
+        'stored': 'stored',
+        'version': 'version',
+    }
 
-    def __init__(self, base=None, checksum=None, checksum_format=None, controller_machine_id=None, controller_machine_inst_id=None, controller_uuid=None, filename=None, finished=None, format_version=None, ha_nodes=None, hostname=None, id_=None, machine=None, model=None, notes=None, size=None, started=None, stored=None, version=None, **unknown_fields):
+    def __init__(
+        self,
+        base=None,
+        checksum=None,
+        checksum_format=None,
+        controller_machine_id=None,
+        controller_machine_inst_id=None,
+        controller_uuid=None,
+        filename=None,
+        finished=None,
+        format_version=None,
+        ha_nodes=None,
+        hostname=None,
+        id_=None,
+        machine=None,
+        model=None,
+        notes=None,
+        size=None,
+        started=None,
+        stored=None,
+        version=None,
+        **unknown_fields,
+    ):
         """
         base : str
         checksum : str
@@ -2346,40 +3505,70 @@ class BackupsMetadataResult(Type):
             raise TypeError(f'Expected base_ to be a str, received: {type(base_)}')
 
         if checksum_ is not None and not isinstance(checksum_, (bytes, str)):
-            raise TypeError(f'Expected checksum_ to be a str, received: {type(checksum_)}')
+            raise TypeError(
+                f'Expected checksum_ to be a str, received: {type(checksum_)}'
+            )
 
-        if checksum_format_ is not None and not isinstance(checksum_format_, (bytes, str)):
-            raise TypeError(f'Expected checksum_format_ to be a str, received: {type(checksum_format_)}')
+        if checksum_format_ is not None and not isinstance(
+            checksum_format_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected checksum_format_ to be a str, received: {type(checksum_format_)}'
+            )
 
-        if controller_machine_id_ is not None and not isinstance(controller_machine_id_, (bytes, str)):
-            raise TypeError(f'Expected controller_machine_id_ to be a str, received: {type(controller_machine_id_)}')
+        if controller_machine_id_ is not None and not isinstance(
+            controller_machine_id_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected controller_machine_id_ to be a str, received: {type(controller_machine_id_)}'
+            )
 
-        if controller_machine_inst_id_ is not None and not isinstance(controller_machine_inst_id_, (bytes, str)):
-            raise TypeError(f'Expected controller_machine_inst_id_ to be a str, received: {type(controller_machine_inst_id_)}')
+        if controller_machine_inst_id_ is not None and not isinstance(
+            controller_machine_inst_id_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected controller_machine_inst_id_ to be a str, received: {type(controller_machine_inst_id_)}'
+            )
 
-        if controller_uuid_ is not None and not isinstance(controller_uuid_, (bytes, str)):
-            raise TypeError(f'Expected controller_uuid_ to be a str, received: {type(controller_uuid_)}')
+        if controller_uuid_ is not None and not isinstance(
+            controller_uuid_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected controller_uuid_ to be a str, received: {type(controller_uuid_)}'
+            )
 
         if filename_ is not None and not isinstance(filename_, (bytes, str)):
-            raise TypeError(f'Expected filename_ to be a str, received: {type(filename_)}')
+            raise TypeError(
+                f'Expected filename_ to be a str, received: {type(filename_)}'
+            )
 
         if finished_ is not None and not isinstance(finished_, (bytes, str)):
-            raise TypeError(f'Expected finished_ to be a str, received: {type(finished_)}')
+            raise TypeError(
+                f'Expected finished_ to be a str, received: {type(finished_)}'
+            )
 
         if format_version_ is not None and not isinstance(format_version_, int):
-            raise TypeError(f'Expected format_version_ to be a int, received: {type(format_version_)}')
+            raise TypeError(
+                f'Expected format_version_ to be a int, received: {type(format_version_)}'
+            )
 
         if ha_nodes_ is not None and not isinstance(ha_nodes_, int):
-            raise TypeError(f'Expected ha_nodes_ to be a int, received: {type(ha_nodes_)}')
+            raise TypeError(
+                f'Expected ha_nodes_ to be a int, received: {type(ha_nodes_)}'
+            )
 
         if hostname_ is not None and not isinstance(hostname_, (bytes, str)):
-            raise TypeError(f'Expected hostname_ to be a str, received: {type(hostname_)}')
+            raise TypeError(
+                f'Expected hostname_ to be a str, received: {type(hostname_)}'
+            )
 
         if id__ is not None and not isinstance(id__, (bytes, str)):
             raise TypeError(f'Expected id__ to be a str, received: {type(id__)}')
 
         if machine_ is not None and not isinstance(machine_, (bytes, str)):
-            raise TypeError(f'Expected machine_ to be a str, received: {type(machine_)}')
+            raise TypeError(
+                f'Expected machine_ to be a str, received: {type(machine_)}'
+            )
 
         if model_ is not None and not isinstance(model_, (bytes, str)):
             raise TypeError(f'Expected model_ to be a str, received: {type(model_)}')
@@ -2391,13 +3580,17 @@ class BackupsMetadataResult(Type):
             raise TypeError(f'Expected size_ to be a int, received: {type(size_)}')
 
         if started_ is not None and not isinstance(started_, (bytes, str)):
-            raise TypeError(f'Expected started_ to be a str, received: {type(started_)}')
+            raise TypeError(
+                f'Expected started_ to be a str, received: {type(started_)}'
+            )
 
         if stored_ is not None and not isinstance(stored_, (bytes, str)):
             raise TypeError(f'Expected stored_ to be a str, received: {type(stored_)}')
 
         if version_ is not None and not isinstance(version_, (dict, Number)):
-            raise TypeError(f'Expected version_ to be a Number, received: {type(version_)}')
+            raise TypeError(
+                f'Expected version_ to be a Number, received: {type(version_)}'
+            )
 
         self.base = base_
         self.checksum = checksum_
@@ -2435,7 +3628,9 @@ class Base(Type):
 
         # Validate arguments against known Juju API types.
         if channel_ is not None and not isinstance(channel_, (bytes, str)):
-            raise TypeError(f'Expected channel_ to be a str, received: {type(channel_)}')
+            raise TypeError(
+                f'Expected channel_ to be a str, received: {type(channel_)}'
+            )
 
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
@@ -2446,10 +3641,39 @@ class Base(Type):
 
 
 class Binary(Type):
-    _toSchema = {'arch': 'Arch', 'build': 'Build', 'major': 'Major', 'minor': 'Minor', 'number': 'Number', 'patch': 'Patch', 'release': 'Release', 'tag': 'Tag'}
-    _toPy = {'Arch': 'arch', 'Build': 'build', 'Major': 'major', 'Minor': 'minor', 'Number': 'number', 'Patch': 'patch', 'Release': 'release', 'Tag': 'tag'}
+    _toSchema = {
+        'arch': 'Arch',
+        'build': 'Build',
+        'major': 'Major',
+        'minor': 'Minor',
+        'number': 'Number',
+        'patch': 'Patch',
+        'release': 'Release',
+        'tag': 'Tag',
+    }
+    _toPy = {
+        'Arch': 'arch',
+        'Build': 'build',
+        'Major': 'major',
+        'Minor': 'minor',
+        'Number': 'number',
+        'Patch': 'patch',
+        'Release': 'release',
+        'Tag': 'tag',
+    }
 
-    def __init__(self, arch=None, build=None, major=None, minor=None, number=None, patch=None, release=None, tag=None, **unknown_fields):
+    def __init__(
+        self,
+        arch=None,
+        build=None,
+        major=None,
+        minor=None,
+        number=None,
+        patch=None,
+        release=None,
+        tag=None,
+        **unknown_fields,
+    ):
         """
         arch : str
         build : int
@@ -2483,13 +3707,17 @@ class Binary(Type):
             raise TypeError(f'Expected minor_ to be a int, received: {type(minor_)}')
 
         if number_ is not None and not isinstance(number_, (dict, Number)):
-            raise TypeError(f'Expected number_ to be a Number, received: {type(number_)}')
+            raise TypeError(
+                f'Expected number_ to be a Number, received: {type(number_)}'
+            )
 
         if patch_ is not None and not isinstance(patch_, int):
             raise TypeError(f'Expected patch_ to be a int, received: {type(patch_)}')
 
         if release_ is not None and not isinstance(release_, (bytes, str)):
-            raise TypeError(f'Expected release_ to be a str, received: {type(release_)}')
+            raise TypeError(
+                f'Expected release_ to be a str, received: {type(release_)}'
+            )
 
         if tag_ is not None and not isinstance(tag_, (bytes, str)):
             raise TypeError(f'Expected tag_ to be a str, received: {type(tag_)}')
@@ -2526,7 +3754,9 @@ class Block(Type):
             raise TypeError(f'Expected id__ to be a str, received: {type(id__)}')
 
         if message_ is not None and not isinstance(message_, (bytes, str)):
-            raise TypeError(f'Expected message_ to be a str, received: {type(message_)}')
+            raise TypeError(
+                f'Expected message_ to be a str, received: {type(message_)}'
+            )
 
         if tag_ is not None and not isinstance(tag_, (bytes, str)):
             raise TypeError(f'Expected tag_ to be a str, received: {type(tag_)}')
@@ -2558,7 +3788,9 @@ class BlockResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if result_ is not None and not isinstance(result_, (dict, Block)):
-            raise TypeError(f'Expected result_ to be a Block, received: {type(result_)}')
+            raise TypeError(
+                f'Expected result_ to be a Block, received: {type(result_)}'
+            )
 
         self.error = error_
         self.result = result_
@@ -2577,7 +3809,9 @@ class BlockResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -2597,7 +3831,9 @@ class BlockSwitchParams(Type):
 
         # Validate arguments against known Juju API types.
         if message_ is not None and not isinstance(message_, (bytes, str)):
-            raise TypeError(f'Expected message_ to be a str, received: {type(message_)}')
+            raise TypeError(
+                f'Expected message_ to be a str, received: {type(message_)}'
+            )
 
         if type__ is not None and not isinstance(type__, (bytes, str)):
             raise TypeError(f'Expected type__ to be a str, received: {type(type__)}')
@@ -2663,10 +3899,14 @@ class BranchInfoArgs(Type):
 
         # Validate arguments against known Juju API types.
         if branches_ is not None and not isinstance(branches_, (bytes, str, list)):
-            raise TypeError(f'Expected branches_ to be a Sequence, received: {type(branches_)}')
+            raise TypeError(
+                f'Expected branches_ to be a Sequence, received: {type(branches_)}'
+            )
 
         if detailed_ is not None and not isinstance(detailed_, bool):
-            raise TypeError(f'Expected detailed_ to be a bool, received: {type(detailed_)}')
+            raise TypeError(
+                f'Expected detailed_ to be a bool, received: {type(detailed_)}'
+            )
 
         self.branches = branches_
         self.detailed = detailed_
@@ -2689,8 +3929,12 @@ class BranchResults(Type):
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
-        if generations_ is not None and not isinstance(generations_, (bytes, str, list)):
-            raise TypeError(f'Expected generations_ to be a Sequence, received: {type(generations_)}')
+        if generations_ is not None and not isinstance(
+            generations_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected generations_ to be a Sequence, received: {type(generations_)}'
+            )
 
         self.error = error_
         self.generations = generations_
@@ -2698,10 +3942,20 @@ class BranchResults(Type):
 
 
 class BranchStatus(Type):
-    _toSchema = {'assigned_units': 'assigned-units', 'created': 'created', 'created_by': 'created-by'}
-    _toPy = {'assigned-units': 'assigned_units', 'created': 'created', 'created-by': 'created_by'}
+    _toSchema = {
+        'assigned_units': 'assigned-units',
+        'created': 'created',
+        'created_by': 'created-by',
+    }
+    _toPy = {
+        'assigned-units': 'assigned_units',
+        'created': 'created',
+        'created-by': 'created_by',
+    }
 
-    def __init__(self, assigned_units=None, created=None, created_by=None, **unknown_fields):
+    def __init__(
+        self, assigned_units=None, created=None, created_by=None, **unknown_fields
+    ):
         """
         assigned_units : typing.Mapping[str, typing.Sequence[str]]
         created : int
@@ -2713,13 +3967,19 @@ class BranchStatus(Type):
 
         # Validate arguments against known Juju API types.
         if assigned_units_ is not None and not isinstance(assigned_units_, dict):
-            raise TypeError(f'Expected assigned_units_ to be a Mapping, received: {type(assigned_units_)}')
+            raise TypeError(
+                f'Expected assigned_units_ to be a Mapping, received: {type(assigned_units_)}'
+            )
 
         if created_ is not None and not isinstance(created_, int):
-            raise TypeError(f'Expected created_ to be a int, received: {type(created_)}')
+            raise TypeError(
+                f'Expected created_ to be a int, received: {type(created_)}'
+            )
 
         if created_by_ is not None and not isinstance(created_by_, (bytes, str)):
-            raise TypeError(f'Expected created_by_ to be a str, received: {type(created_by_)}')
+            raise TypeError(
+                f'Expected created_by_ to be a str, received: {type(created_by_)}'
+            )
 
         self.assigned_units = assigned_units_
         self.created = created_
@@ -2746,10 +4006,14 @@ class BranchTrackArg(Type):
             raise TypeError(f'Expected branch_ to be a str, received: {type(branch_)}')
 
         if entities_ is not None and not isinstance(entities_, (bytes, str, list)):
-            raise TypeError(f'Expected entities_ to be a Sequence, received: {type(entities_)}')
+            raise TypeError(
+                f'Expected entities_ to be a Sequence, received: {type(entities_)}'
+            )
 
         if num_units_ is not None and not isinstance(num_units_, int):
-            raise TypeError(f'Expected num_units_ to be a int, received: {type(num_units_)}')
+            raise TypeError(
+                f'Expected num_units_ to be a int, received: {type(num_units_)}'
+            )
 
         self.branch = branch_
         self.entities = entities_
@@ -2769,17 +4033,26 @@ class BulkImportStorageParams(Type):
 
         # Validate arguments against known Juju API types.
         if storage_ is not None and not isinstance(storage_, (bytes, str, list)):
-            raise TypeError(f'Expected storage_ to be a Sequence, received: {type(storage_)}')
+            raise TypeError(
+                f'Expected storage_ to be a Sequence, received: {type(storage_)}'
+            )
 
         self.storage = storage_
         self.unknown_fields = unknown_fields
 
 
 class BundleChange(Type):
-    _toSchema = {'args': 'args', 'id_': 'id', 'method': 'method', 'requires': 'requires'}
+    _toSchema = {
+        'args': 'args',
+        'id_': 'id',
+        'method': 'method',
+        'requires': 'requires',
+    }
     _toPy = {'args': 'args', 'id': 'id_', 'method': 'method', 'requires': 'requires'}
 
-    def __init__(self, args=None, id_=None, method=None, requires=None, **unknown_fields):
+    def __init__(
+        self, args=None, id_=None, method=None, requires=None, **unknown_fields
+    ):
         """
         args : typing.Sequence[typing.Any]
         id_ : str
@@ -2802,7 +4075,9 @@ class BundleChange(Type):
             raise TypeError(f'Expected method_ to be a str, received: {type(method_)}')
 
         if requires_ is not None and not isinstance(requires_, (bytes, str, list)):
-            raise TypeError(f'Expected requires_ to be a Sequence, received: {type(requires_)}')
+            raise TypeError(
+                f'Expected requires_ to be a Sequence, received: {type(requires_)}'
+            )
 
         self.args = args_
         self.id_ = id__
@@ -2812,10 +4087,17 @@ class BundleChange(Type):
 
 
 class BundleChangesMapArgs(Type):
-    _toSchema = {'args': 'args', 'id_': 'id', 'method': 'method', 'requires': 'requires'}
+    _toSchema = {
+        'args': 'args',
+        'id_': 'id',
+        'method': 'method',
+        'requires': 'requires',
+    }
     _toPy = {'args': 'args', 'id': 'id_', 'method': 'method', 'requires': 'requires'}
 
-    def __init__(self, args=None, id_=None, method=None, requires=None, **unknown_fields):
+    def __init__(
+        self, args=None, id_=None, method=None, requires=None, **unknown_fields
+    ):
         """
         args : typing.Mapping[str, typing.Any]
         id_ : str
@@ -2838,7 +4120,9 @@ class BundleChangesMapArgs(Type):
             raise TypeError(f'Expected method_ to be a str, received: {type(method_)}')
 
         if requires_ is not None and not isinstance(requires_, (bytes, str, list)):
-            raise TypeError(f'Expected requires_ to be a Sequence, received: {type(requires_)}')
+            raise TypeError(
+                f'Expected requires_ to be a Sequence, received: {type(requires_)}'
+            )
 
         self.args = args_
         self.id_ = id__
@@ -2861,10 +4145,14 @@ class BundleChangesMapArgsResults(Type):
 
         # Validate arguments against known Juju API types.
         if changes_ is not None and not isinstance(changes_, (bytes, str, list)):
-            raise TypeError(f'Expected changes_ to be a Sequence, received: {type(changes_)}')
+            raise TypeError(
+                f'Expected changes_ to be a Sequence, received: {type(changes_)}'
+            )
 
         if errors_ is not None and not isinstance(errors_, (bytes, str, list)):
-            raise TypeError(f'Expected errors_ to be a Sequence, received: {type(errors_)}')
+            raise TypeError(
+                f'Expected errors_ to be a Sequence, received: {type(errors_)}'
+            )
 
         self.changes = changes_
         self.errors = errors_
@@ -2885,7 +4173,9 @@ class BundleChangesParams(Type):
 
         # Validate arguments against known Juju API types.
         if bundleurl_ is not None and not isinstance(bundleurl_, (bytes, str)):
-            raise TypeError(f'Expected bundleurl_ to be a str, received: {type(bundleurl_)}')
+            raise TypeError(
+                f'Expected bundleurl_ to be a str, received: {type(bundleurl_)}'
+            )
 
         if yaml_ is not None and not isinstance(yaml_, (bytes, str)):
             raise TypeError(f'Expected yaml_ to be a str, received: {type(yaml_)}')
@@ -2909,10 +4199,14 @@ class BundleChangesResults(Type):
 
         # Validate arguments against known Juju API types.
         if changes_ is not None and not isinstance(changes_, (bytes, str, list)):
-            raise TypeError(f'Expected changes_ to be a Sequence, received: {type(changes_)}')
+            raise TypeError(
+                f'Expected changes_ to be a Sequence, received: {type(changes_)}'
+            )
 
         if errors_ is not None and not isinstance(errors_, (bytes, str, list)):
-            raise TypeError(f'Expected errors_ to be a Sequence, received: {type(errors_)}')
+            raise TypeError(
+                f'Expected errors_ to be a Sequence, received: {type(errors_)}'
+            )
 
         self.changes = changes_
         self.errors = errors_
@@ -2931,7 +4225,9 @@ class CIDRParams(Type):
 
         # Validate arguments against known Juju API types.
         if cidrs_ is not None and not isinstance(cidrs_, (bytes, str, list)):
-            raise TypeError(f'Expected cidrs_ to be a Sequence, received: {type(cidrs_)}')
+            raise TypeError(
+                f'Expected cidrs_ to be a Sequence, received: {type(cidrs_)}'
+            )
 
         self.cidrs = cidrs_
         self.unknown_fields = unknown_fields
@@ -2950,11 +4246,17 @@ class ChangeModelCredentialParams(Type):
         model_tag_ = model_tag
 
         # Validate arguments against known Juju API types.
-        if credential_tag_ is not None and not isinstance(credential_tag_, (bytes, str)):
-            raise TypeError(f'Expected credential_tag_ to be a str, received: {type(credential_tag_)}')
+        if credential_tag_ is not None and not isinstance(
+            credential_tag_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected credential_tag_ to be a str, received: {type(credential_tag_)}'
+            )
 
         if model_tag_ is not None and not isinstance(model_tag_, (bytes, str)):
-            raise TypeError(f'Expected model_tag_ to be a str, received: {type(model_tag_)}')
+            raise TypeError(
+                f'Expected model_tag_ to be a str, received: {type(model_tag_)}'
+            )
 
         self.credential_tag = credential_tag_
         self.model_tag = model_tag_
@@ -2969,21 +4271,56 @@ class ChangeModelCredentialsParams(Type):
         """
         model_credentials : typing.Sequence[~ChangeModelCredentialParams]
         """
-        model_credentials_ = [ChangeModelCredentialParams.from_json(o) for o in model_credentials or []]
+        model_credentials_ = [
+            ChangeModelCredentialParams.from_json(o) for o in model_credentials or []
+        ]
 
         # Validate arguments against known Juju API types.
-        if model_credentials_ is not None and not isinstance(model_credentials_, (bytes, str, list)):
-            raise TypeError(f'Expected model_credentials_ to be a Sequence, received: {type(model_credentials_)}')
+        if model_credentials_ is not None and not isinstance(
+            model_credentials_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected model_credentials_ to be a Sequence, received: {type(model_credentials_)}'
+            )
 
         self.model_credentials = model_credentials_
         self.unknown_fields = unknown_fields
 
 
 class Charm(Type):
-    _toSchema = {'actions': 'actions', 'config': 'config', 'lxd_profile': 'lxd-profile', 'manifest': 'manifest', 'meta': 'meta', 'metrics': 'metrics', 'revision': 'revision', 'url': 'url'}
-    _toPy = {'actions': 'actions', 'config': 'config', 'lxd-profile': 'lxd_profile', 'manifest': 'manifest', 'meta': 'meta', 'metrics': 'metrics', 'revision': 'revision', 'url': 'url'}
+    _toSchema = {
+        'actions': 'actions',
+        'config': 'config',
+        'lxd_profile': 'lxd-profile',
+        'manifest': 'manifest',
+        'meta': 'meta',
+        'metrics': 'metrics',
+        'revision': 'revision',
+        'url': 'url',
+    }
+    _toPy = {
+        'actions': 'actions',
+        'config': 'config',
+        'lxd-profile': 'lxd_profile',
+        'manifest': 'manifest',
+        'meta': 'meta',
+        'metrics': 'metrics',
+        'revision': 'revision',
+        'url': 'url',
+    }
 
-    def __init__(self, actions=None, config=None, lxd_profile=None, manifest=None, meta=None, metrics=None, revision=None, url=None, **unknown_fields):
+    def __init__(
+        self,
+        actions=None,
+        config=None,
+        lxd_profile=None,
+        manifest=None,
+        meta=None,
+        metrics=None,
+        revision=None,
+        url=None,
+        **unknown_fields,
+    ):
         """
         actions : CharmActions
         config : typing.Mapping[str, ~CharmOption]
@@ -3005,25 +4342,41 @@ class Charm(Type):
 
         # Validate arguments against known Juju API types.
         if actions_ is not None and not isinstance(actions_, (dict, CharmActions)):
-            raise TypeError(f'Expected actions_ to be a CharmActions, received: {type(actions_)}')
+            raise TypeError(
+                f'Expected actions_ to be a CharmActions, received: {type(actions_)}'
+            )
 
         if config_ is not None and not isinstance(config_, dict):
-            raise TypeError(f'Expected config_ to be a Mapping, received: {type(config_)}')
+            raise TypeError(
+                f'Expected config_ to be a Mapping, received: {type(config_)}'
+            )
 
-        if lxd_profile_ is not None and not isinstance(lxd_profile_, (dict, CharmLXDProfile)):
-            raise TypeError(f'Expected lxd_profile_ to be a CharmLXDProfile, received: {type(lxd_profile_)}')
+        if lxd_profile_ is not None and not isinstance(
+            lxd_profile_, (dict, CharmLXDProfile)
+        ):
+            raise TypeError(
+                f'Expected lxd_profile_ to be a CharmLXDProfile, received: {type(lxd_profile_)}'
+            )
 
         if manifest_ is not None and not isinstance(manifest_, (dict, CharmManifest)):
-            raise TypeError(f'Expected manifest_ to be a CharmManifest, received: {type(manifest_)}')
+            raise TypeError(
+                f'Expected manifest_ to be a CharmManifest, received: {type(manifest_)}'
+            )
 
         if meta_ is not None and not isinstance(meta_, (dict, CharmMeta)):
-            raise TypeError(f'Expected meta_ to be a CharmMeta, received: {type(meta_)}')
+            raise TypeError(
+                f'Expected meta_ to be a CharmMeta, received: {type(meta_)}'
+            )
 
         if metrics_ is not None and not isinstance(metrics_, (dict, CharmMetrics)):
-            raise TypeError(f'Expected metrics_ to be a CharmMetrics, received: {type(metrics_)}')
+            raise TypeError(
+                f'Expected metrics_ to be a CharmMetrics, received: {type(metrics_)}'
+            )
 
         if revision_ is not None and not isinstance(revision_, int):
-            raise TypeError(f'Expected revision_ to be a int, received: {type(revision_)}')
+            raise TypeError(
+                f'Expected revision_ to be a int, received: {type(revision_)}'
+            )
 
         if url_ is not None and not isinstance(url_, (bytes, str)):
             raise TypeError(f'Expected url_ to be a str, received: {type(url_)}')
@@ -3053,10 +4406,14 @@ class CharmActionSpec(Type):
 
         # Validate arguments against known Juju API types.
         if description_ is not None and not isinstance(description_, (bytes, str)):
-            raise TypeError(f'Expected description_ to be a str, received: {type(description_)}')
+            raise TypeError(
+                f'Expected description_ to be a str, received: {type(description_)}'
+            )
 
         if params_ is not None and not isinstance(params_, dict):
-            raise TypeError(f'Expected params_ to be a Mapping, received: {type(params_)}')
+            raise TypeError(
+                f'Expected params_ to be a Mapping, received: {type(params_)}'
+            )
 
         self.description = description_
         self.params = params_
@@ -3075,7 +4432,9 @@ class CharmActions(Type):
 
         # Validate arguments against known Juju API types.
         if specs_ is not None and not isinstance(specs_, dict):
-            raise TypeError(f'Expected specs_ to be a Mapping, received: {type(specs_)}')
+            raise TypeError(
+                f'Expected specs_ to be a Mapping, received: {type(specs_)}'
+            )
 
         self.specs = specs_
         self.unknown_fields = unknown_fields
@@ -3096,11 +4455,17 @@ class CharmBase(Type):
         name_ = name
 
         # Validate arguments against known Juju API types.
-        if architectures_ is not None and not isinstance(architectures_, (bytes, str, list)):
-            raise TypeError(f'Expected architectures_ to be a Sequence, received: {type(architectures_)}')
+        if architectures_ is not None and not isinstance(
+            architectures_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected architectures_ to be a Sequence, received: {type(architectures_)}'
+            )
 
         if channel_ is not None and not isinstance(channel_, (bytes, str)):
-            raise TypeError(f'Expected channel_ to be a str, received: {type(channel_)}')
+            raise TypeError(
+                f'Expected channel_ to be a str, received: {type(channel_)}'
+            )
 
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
@@ -3125,10 +4490,14 @@ class CharmContainer(Type):
 
         # Validate arguments against known Juju API types.
         if mounts_ is not None and not isinstance(mounts_, (bytes, str, list)):
-            raise TypeError(f'Expected mounts_ to be a Sequence, received: {type(mounts_)}')
+            raise TypeError(
+                f'Expected mounts_ to be a Sequence, received: {type(mounts_)}'
+            )
 
         if resource_ is not None and not isinstance(resource_, (bytes, str)):
-            raise TypeError(f'Expected resource_ to be a str, received: {type(resource_)}')
+            raise TypeError(
+                f'Expected resource_ to be a str, received: {type(resource_)}'
+            )
 
         self.mounts = mounts_
         self.resource = resource_
@@ -3136,10 +4505,22 @@ class CharmContainer(Type):
 
 
 class CharmDeployment(Type):
-    _toSchema = {'min_version': 'min-version', 'mode': 'mode', 'service': 'service', 'type_': 'type'}
-    _toPy = {'min-version': 'min_version', 'mode': 'mode', 'service': 'service', 'type': 'type_'}
+    _toSchema = {
+        'min_version': 'min-version',
+        'mode': 'mode',
+        'service': 'service',
+        'type_': 'type',
+    }
+    _toPy = {
+        'min-version': 'min_version',
+        'mode': 'mode',
+        'service': 'service',
+        'type': 'type_',
+    }
 
-    def __init__(self, min_version=None, mode=None, service=None, type_=None, **unknown_fields):
+    def __init__(
+        self, min_version=None, mode=None, service=None, type_=None, **unknown_fields
+    ):
         """
         min_version : str
         mode : str
@@ -3153,13 +4534,17 @@ class CharmDeployment(Type):
 
         # Validate arguments against known Juju API types.
         if min_version_ is not None and not isinstance(min_version_, (bytes, str)):
-            raise TypeError(f'Expected min_version_ to be a str, received: {type(min_version_)}')
+            raise TypeError(
+                f'Expected min_version_ to be a str, received: {type(min_version_)}'
+            )
 
         if mode_ is not None and not isinstance(mode_, (bytes, str)):
             raise TypeError(f'Expected mode_ to be a str, received: {type(mode_)}')
 
         if service_ is not None and not isinstance(service_, (bytes, str)):
-            raise TypeError(f'Expected service_ to be a str, received: {type(service_)}')
+            raise TypeError(
+                f'Expected service_ to be a str, received: {type(service_)}'
+            )
 
         if type__ is not None and not isinstance(type__, (bytes, str)):
             raise TypeError(f'Expected type__ to be a str, received: {type(type__)}')
@@ -3172,10 +4557,30 @@ class CharmDeployment(Type):
 
 
 class CharmDevice(Type):
-    _toSchema = {'countmax': 'CountMax', 'countmin': 'CountMin', 'description': 'Description', 'name': 'Name', 'type_': 'Type'}
-    _toPy = {'CountMax': 'countmax', 'CountMin': 'countmin', 'Description': 'description', 'Name': 'name', 'Type': 'type_'}
+    _toSchema = {
+        'countmax': 'CountMax',
+        'countmin': 'CountMin',
+        'description': 'Description',
+        'name': 'Name',
+        'type_': 'Type',
+    }
+    _toPy = {
+        'CountMax': 'countmax',
+        'CountMin': 'countmin',
+        'Description': 'description',
+        'Name': 'name',
+        'Type': 'type_',
+    }
 
-    def __init__(self, countmax=None, countmin=None, description=None, name=None, type_=None, **unknown_fields):
+    def __init__(
+        self,
+        countmax=None,
+        countmin=None,
+        description=None,
+        name=None,
+        type_=None,
+        **unknown_fields,
+    ):
         """
         countmax : int
         countmin : int
@@ -3191,13 +4596,19 @@ class CharmDevice(Type):
 
         # Validate arguments against known Juju API types.
         if countmax_ is not None and not isinstance(countmax_, int):
-            raise TypeError(f'Expected countmax_ to be a int, received: {type(countmax_)}')
+            raise TypeError(
+                f'Expected countmax_ to be a int, received: {type(countmax_)}'
+            )
 
         if countmin_ is not None and not isinstance(countmin_, int):
-            raise TypeError(f'Expected countmin_ to be a int, received: {type(countmin_)}')
+            raise TypeError(
+                f'Expected countmin_ to be a int, received: {type(countmin_)}'
+            )
 
         if description_ is not None and not isinstance(description_, (bytes, str)):
-            raise TypeError(f'Expected description_ to be a str, received: {type(description_)}')
+            raise TypeError(
+                f'Expected description_ to be a str, received: {type(description_)}'
+            )
 
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
@@ -3229,13 +4640,19 @@ class CharmLXDProfile(Type):
 
         # Validate arguments against known Juju API types.
         if config_ is not None and not isinstance(config_, dict):
-            raise TypeError(f'Expected config_ to be a Mapping, received: {type(config_)}')
+            raise TypeError(
+                f'Expected config_ to be a Mapping, received: {type(config_)}'
+            )
 
         if description_ is not None and not isinstance(description_, (bytes, str)):
-            raise TypeError(f'Expected description_ to be a str, received: {type(description_)}')
+            raise TypeError(
+                f'Expected description_ to be a str, received: {type(description_)}'
+            )
 
         if devices_ is not None and not isinstance(devices_, dict):
-            raise TypeError(f'Expected devices_ to be a Mapping, received: {type(devices_)}')
+            raise TypeError(
+                f'Expected devices_ to be a Mapping, received: {type(devices_)}'
+            )
 
         self.config = config_
         self.description = description_
@@ -3255,17 +4672,84 @@ class CharmManifest(Type):
 
         # Validate arguments against known Juju API types.
         if bases_ is not None and not isinstance(bases_, (bytes, str, list)):
-            raise TypeError(f'Expected bases_ to be a Sequence, received: {type(bases_)}')
+            raise TypeError(
+                f'Expected bases_ to be a Sequence, received: {type(bases_)}'
+            )
 
         self.bases = bases_
         self.unknown_fields = unknown_fields
 
 
 class CharmMeta(Type):
-    _toSchema = {'assumes_expr': 'assumes-expr', 'categories': 'categories', 'containers': 'containers', 'deployment': 'deployment', 'description': 'description', 'devices': 'devices', 'extra_bindings': 'extra-bindings', 'min_juju_version': 'min-juju-version', 'name': 'name', 'payload_classes': 'payload-classes', 'peers': 'peers', 'provides': 'provides', 'requires': 'requires', 'resources': 'resources', 'series': 'series', 'storage': 'storage', 'subordinate': 'subordinate', 'summary': 'summary', 'tags': 'tags', 'terms': 'terms'}
-    _toPy = {'assumes-expr': 'assumes_expr', 'categories': 'categories', 'containers': 'containers', 'deployment': 'deployment', 'description': 'description', 'devices': 'devices', 'extra-bindings': 'extra_bindings', 'min-juju-version': 'min_juju_version', 'name': 'name', 'payload-classes': 'payload_classes', 'peers': 'peers', 'provides': 'provides', 'requires': 'requires', 'resources': 'resources', 'series': 'series', 'storage': 'storage', 'subordinate': 'subordinate', 'summary': 'summary', 'tags': 'tags', 'terms': 'terms'}
+    _toSchema = {
+        'assumes_expr': 'assumes-expr',
+        'categories': 'categories',
+        'containers': 'containers',
+        'deployment': 'deployment',
+        'description': 'description',
+        'devices': 'devices',
+        'extra_bindings': 'extra-bindings',
+        'min_juju_version': 'min-juju-version',
+        'name': 'name',
+        'payload_classes': 'payload-classes',
+        'peers': 'peers',
+        'provides': 'provides',
+        'requires': 'requires',
+        'resources': 'resources',
+        'series': 'series',
+        'storage': 'storage',
+        'subordinate': 'subordinate',
+        'summary': 'summary',
+        'tags': 'tags',
+        'terms': 'terms',
+    }
+    _toPy = {
+        'assumes-expr': 'assumes_expr',
+        'categories': 'categories',
+        'containers': 'containers',
+        'deployment': 'deployment',
+        'description': 'description',
+        'devices': 'devices',
+        'extra-bindings': 'extra_bindings',
+        'min-juju-version': 'min_juju_version',
+        'name': 'name',
+        'payload-classes': 'payload_classes',
+        'peers': 'peers',
+        'provides': 'provides',
+        'requires': 'requires',
+        'resources': 'resources',
+        'series': 'series',
+        'storage': 'storage',
+        'subordinate': 'subordinate',
+        'summary': 'summary',
+        'tags': 'tags',
+        'terms': 'terms',
+    }
 
-    def __init__(self, assumes_expr=None, categories=None, containers=None, deployment=None, description=None, devices=None, extra_bindings=None, min_juju_version=None, name=None, payload_classes=None, peers=None, provides=None, requires=None, resources=None, series=None, storage=None, subordinate=None, summary=None, tags=None, terms=None, **unknown_fields):
+    def __init__(
+        self,
+        assumes_expr=None,
+        categories=None,
+        containers=None,
+        deployment=None,
+        description=None,
+        devices=None,
+        extra_bindings=None,
+        min_juju_version=None,
+        name=None,
+        payload_classes=None,
+        peers=None,
+        provides=None,
+        requires=None,
+        resources=None,
+        series=None,
+        storage=None,
+        subordinate=None,
+        summary=None,
+        tags=None,
+        terms=None,
+        **unknown_fields,
+    ):
         """
         assumes_expr : ExpressionTree
         categories : typing.Sequence[str]
@@ -3290,18 +4774,25 @@ class CharmMeta(Type):
         """
         assumes_expr_ = ExpressionTree.from_json(assumes_expr) if assumes_expr else None
         categories_ = categories
-        containers_ = {k: CharmContainer.from_json(v) for k, v in (containers or {}).items()}
+        containers_ = {
+            k: CharmContainer.from_json(v) for k, v in (containers or {}).items()
+        }
         deployment_ = CharmDeployment.from_json(deployment) if deployment else None
         description_ = description
         devices_ = {k: CharmDevice.from_json(v) for k, v in (devices or {}).items()}
         extra_bindings_ = extra_bindings
         min_juju_version_ = min_juju_version
         name_ = name
-        payload_classes_ = {k: CharmPayloadClass.from_json(v) for k, v in (payload_classes or {}).items()}
+        payload_classes_ = {
+            k: CharmPayloadClass.from_json(v)
+            for k, v in (payload_classes or {}).items()
+        }
         peers_ = {k: CharmRelation.from_json(v) for k, v in (peers or {}).items()}
         provides_ = {k: CharmRelation.from_json(v) for k, v in (provides or {}).items()}
         requires_ = {k: CharmRelation.from_json(v) for k, v in (requires or {}).items()}
-        resources_ = {k: CharmResourceMeta.from_json(v) for k, v in (resources or {}).items()}
+        resources_ = {
+            k: CharmResourceMeta.from_json(v) for k, v in (resources or {}).items()
+        }
         series_ = series
         storage_ = {k: CharmStorage.from_json(v) for k, v in (storage or {}).items()}
         subordinate_ = subordinate
@@ -3310,65 +4801,107 @@ class CharmMeta(Type):
         terms_ = terms
 
         # Validate arguments against known Juju API types.
-        if assumes_expr_ is not None and not isinstance(assumes_expr_, (dict, ExpressionTree)):
-            raise TypeError(f'Expected assumes_expr_ to be a ExpressionTree, received: {type(assumes_expr_)}')
+        if assumes_expr_ is not None and not isinstance(
+            assumes_expr_, (dict, ExpressionTree)
+        ):
+            raise TypeError(
+                f'Expected assumes_expr_ to be a ExpressionTree, received: {type(assumes_expr_)}'
+            )
 
         if categories_ is not None and not isinstance(categories_, (bytes, str, list)):
-            raise TypeError(f'Expected categories_ to be a Sequence, received: {type(categories_)}')
+            raise TypeError(
+                f'Expected categories_ to be a Sequence, received: {type(categories_)}'
+            )
 
         if containers_ is not None and not isinstance(containers_, dict):
-            raise TypeError(f'Expected containers_ to be a Mapping, received: {type(containers_)}')
+            raise TypeError(
+                f'Expected containers_ to be a Mapping, received: {type(containers_)}'
+            )
 
-        if deployment_ is not None and not isinstance(deployment_, (dict, CharmDeployment)):
-            raise TypeError(f'Expected deployment_ to be a CharmDeployment, received: {type(deployment_)}')
+        if deployment_ is not None and not isinstance(
+            deployment_, (dict, CharmDeployment)
+        ):
+            raise TypeError(
+                f'Expected deployment_ to be a CharmDeployment, received: {type(deployment_)}'
+            )
 
         if description_ is not None and not isinstance(description_, (bytes, str)):
-            raise TypeError(f'Expected description_ to be a str, received: {type(description_)}')
+            raise TypeError(
+                f'Expected description_ to be a str, received: {type(description_)}'
+            )
 
         if devices_ is not None and not isinstance(devices_, dict):
-            raise TypeError(f'Expected devices_ to be a Mapping, received: {type(devices_)}')
+            raise TypeError(
+                f'Expected devices_ to be a Mapping, received: {type(devices_)}'
+            )
 
         if extra_bindings_ is not None and not isinstance(extra_bindings_, dict):
-            raise TypeError(f'Expected extra_bindings_ to be a Mapping, received: {type(extra_bindings_)}')
+            raise TypeError(
+                f'Expected extra_bindings_ to be a Mapping, received: {type(extra_bindings_)}'
+            )
 
-        if min_juju_version_ is not None and not isinstance(min_juju_version_, (bytes, str)):
-            raise TypeError(f'Expected min_juju_version_ to be a str, received: {type(min_juju_version_)}')
+        if min_juju_version_ is not None and not isinstance(
+            min_juju_version_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected min_juju_version_ to be a str, received: {type(min_juju_version_)}'
+            )
 
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
 
         if payload_classes_ is not None and not isinstance(payload_classes_, dict):
-            raise TypeError(f'Expected payload_classes_ to be a Mapping, received: {type(payload_classes_)}')
+            raise TypeError(
+                f'Expected payload_classes_ to be a Mapping, received: {type(payload_classes_)}'
+            )
 
         if peers_ is not None and not isinstance(peers_, dict):
-            raise TypeError(f'Expected peers_ to be a Mapping, received: {type(peers_)}')
+            raise TypeError(
+                f'Expected peers_ to be a Mapping, received: {type(peers_)}'
+            )
 
         if provides_ is not None and not isinstance(provides_, dict):
-            raise TypeError(f'Expected provides_ to be a Mapping, received: {type(provides_)}')
+            raise TypeError(
+                f'Expected provides_ to be a Mapping, received: {type(provides_)}'
+            )
 
         if requires_ is not None and not isinstance(requires_, dict):
-            raise TypeError(f'Expected requires_ to be a Mapping, received: {type(requires_)}')
+            raise TypeError(
+                f'Expected requires_ to be a Mapping, received: {type(requires_)}'
+            )
 
         if resources_ is not None and not isinstance(resources_, dict):
-            raise TypeError(f'Expected resources_ to be a Mapping, received: {type(resources_)}')
+            raise TypeError(
+                f'Expected resources_ to be a Mapping, received: {type(resources_)}'
+            )
 
         if series_ is not None and not isinstance(series_, (bytes, str, list)):
-            raise TypeError(f'Expected series_ to be a Sequence, received: {type(series_)}')
+            raise TypeError(
+                f'Expected series_ to be a Sequence, received: {type(series_)}'
+            )
 
         if storage_ is not None and not isinstance(storage_, dict):
-            raise TypeError(f'Expected storage_ to be a Mapping, received: {type(storage_)}')
+            raise TypeError(
+                f'Expected storage_ to be a Mapping, received: {type(storage_)}'
+            )
 
         if subordinate_ is not None and not isinstance(subordinate_, bool):
-            raise TypeError(f'Expected subordinate_ to be a bool, received: {type(subordinate_)}')
+            raise TypeError(
+                f'Expected subordinate_ to be a bool, received: {type(subordinate_)}'
+            )
 
         if summary_ is not None and not isinstance(summary_, (bytes, str)):
-            raise TypeError(f'Expected summary_ to be a str, received: {type(summary_)}')
+            raise TypeError(
+                f'Expected summary_ to be a str, received: {type(summary_)}'
+            )
 
         if tags_ is not None and not isinstance(tags_, (bytes, str, list)):
             raise TypeError(f'Expected tags_ to be a Sequence, received: {type(tags_)}')
 
         if terms_ is not None and not isinstance(terms_, (bytes, str, list)):
-            raise TypeError(f'Expected terms_ to be a Sequence, received: {type(terms_)}')
+            raise TypeError(
+                f'Expected terms_ to be a Sequence, received: {type(terms_)}'
+            )
 
         self.assumes_expr = assumes_expr_
         self.categories = categories_
@@ -3407,7 +4940,9 @@ class CharmMetric(Type):
 
         # Validate arguments against known Juju API types.
         if description_ is not None and not isinstance(description_, (bytes, str)):
-            raise TypeError(f'Expected description_ to be a str, received: {type(description_)}')
+            raise TypeError(
+                f'Expected description_ to be a str, received: {type(description_)}'
+            )
 
         if type__ is not None and not isinstance(type__, (bytes, str)):
             raise TypeError(f'Expected type__ to be a str, received: {type(type__)}')
@@ -3431,10 +4966,14 @@ class CharmMetrics(Type):
 
         # Validate arguments against known Juju API types.
         if metrics_ is not None and not isinstance(metrics_, dict):
-            raise TypeError(f'Expected metrics_ to be a Mapping, received: {type(metrics_)}')
+            raise TypeError(
+                f'Expected metrics_ to be a Mapping, received: {type(metrics_)}'
+            )
 
         if plan_ is not None and not isinstance(plan_, (dict, CharmPlan)):
-            raise TypeError(f'Expected plan_ to be a CharmPlan, received: {type(plan_)}')
+            raise TypeError(
+                f'Expected plan_ to be a CharmPlan, received: {type(plan_)}'
+            )
 
         self.metrics = metrics_
         self.plan = plan_
@@ -3455,10 +4994,14 @@ class CharmMount(Type):
 
         # Validate arguments against known Juju API types.
         if location_ is not None and not isinstance(location_, (bytes, str)):
-            raise TypeError(f'Expected location_ to be a str, received: {type(location_)}')
+            raise TypeError(
+                f'Expected location_ to be a str, received: {type(location_)}'
+            )
 
         if storage_ is not None and not isinstance(storage_, (bytes, str)):
-            raise TypeError(f'Expected storage_ to be a str, received: {type(storage_)}')
+            raise TypeError(
+                f'Expected storage_ to be a str, received: {type(storage_)}'
+            )
 
         self.location = location_
         self.storage = storage_
@@ -3481,7 +5024,9 @@ class CharmOption(Type):
 
         # Validate arguments against known Juju API types.
         if description_ is not None and not isinstance(description_, (bytes, str)):
-            raise TypeError(f'Expected description_ to be a str, received: {type(description_)}')
+            raise TypeError(
+                f'Expected description_ to be a str, received: {type(description_)}'
+            )
 
         if type__ is not None and not isinstance(type__, (bytes, str)):
             raise TypeError(f'Expected type__ to be a str, received: {type(type__)}')
@@ -3493,10 +5038,48 @@ class CharmOption(Type):
 
 
 class CharmOrigin(Type):
-    _toSchema = {'architecture': 'architecture', 'base': 'base', 'branch': 'branch', 'hash_': 'hash', 'id_': 'id', 'instance_key': 'instance-key', 'revision': 'revision', 'risk': 'risk', 'source': 'source', 'track': 'track', 'type_': 'type'}
-    _toPy = {'architecture': 'architecture', 'base': 'base', 'branch': 'branch', 'hash': 'hash_', 'id': 'id_', 'instance-key': 'instance_key', 'revision': 'revision', 'risk': 'risk', 'source': 'source', 'track': 'track', 'type': 'type_'}
+    _toSchema = {
+        'architecture': 'architecture',
+        'base': 'base',
+        'branch': 'branch',
+        'hash_': 'hash',
+        'id_': 'id',
+        'instance_key': 'instance-key',
+        'revision': 'revision',
+        'risk': 'risk',
+        'source': 'source',
+        'track': 'track',
+        'type_': 'type',
+    }
+    _toPy = {
+        'architecture': 'architecture',
+        'base': 'base',
+        'branch': 'branch',
+        'hash': 'hash_',
+        'id': 'id_',
+        'instance-key': 'instance_key',
+        'revision': 'revision',
+        'risk': 'risk',
+        'source': 'source',
+        'track': 'track',
+        'type': 'type_',
+    }
 
-    def __init__(self, architecture=None, base=None, branch=None, hash_=None, id_=None, instance_key=None, revision=None, risk=None, source=None, track=None, type_=None, **unknown_fields):
+    def __init__(
+        self,
+        architecture=None,
+        base=None,
+        branch=None,
+        hash_=None,
+        id_=None,
+        instance_key=None,
+        revision=None,
+        risk=None,
+        source=None,
+        track=None,
+        type_=None,
+        **unknown_fields,
+    ):
         """
         architecture : str
         base : Base
@@ -3524,7 +5107,9 @@ class CharmOrigin(Type):
 
         # Validate arguments against known Juju API types.
         if architecture_ is not None and not isinstance(architecture_, (bytes, str)):
-            raise TypeError(f'Expected architecture_ to be a str, received: {type(architecture_)}')
+            raise TypeError(
+                f'Expected architecture_ to be a str, received: {type(architecture_)}'
+            )
 
         if base_ is not None and not isinstance(base_, (dict, Base)):
             raise TypeError(f'Expected base_ to be a Base, received: {type(base_)}')
@@ -3539,10 +5124,14 @@ class CharmOrigin(Type):
             raise TypeError(f'Expected id__ to be a str, received: {type(id__)}')
 
         if instance_key_ is not None and not isinstance(instance_key_, (bytes, str)):
-            raise TypeError(f'Expected instance_key_ to be a str, received: {type(instance_key_)}')
+            raise TypeError(
+                f'Expected instance_key_ to be a str, received: {type(instance_key_)}'
+            )
 
         if revision_ is not None and not isinstance(revision_, int):
-            raise TypeError(f'Expected revision_ to be a int, received: {type(revision_)}')
+            raise TypeError(
+                f'Expected revision_ to be a int, received: {type(revision_)}'
+            )
 
         if risk_ is not None and not isinstance(risk_, (bytes, str)):
             raise TypeError(f'Expected risk_ to be a str, received: {type(risk_)}')
@@ -3583,8 +5172,12 @@ class CharmOriginResult(Type):
         error_ = Error.from_json(error) if error else None
 
         # Validate arguments against known Juju API types.
-        if charm_origin_ is not None and not isinstance(charm_origin_, (dict, CharmOrigin)):
-            raise TypeError(f'Expected charm_origin_ to be a CharmOrigin, received: {type(charm_origin_)}')
+        if charm_origin_ is not None and not isinstance(
+            charm_origin_, (dict, CharmOrigin)
+        ):
+            raise TypeError(
+                f'Expected charm_origin_ to be a CharmOrigin, received: {type(charm_origin_)}'
+            )
 
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
@@ -3630,17 +5223,42 @@ class CharmPlan(Type):
 
         # Validate arguments against known Juju API types.
         if required_ is not None and not isinstance(required_, bool):
-            raise TypeError(f'Expected required_ to be a bool, received: {type(required_)}')
+            raise TypeError(
+                f'Expected required_ to be a bool, received: {type(required_)}'
+            )
 
         self.required = required_
         self.unknown_fields = unknown_fields
 
 
 class CharmRelation(Type):
-    _toSchema = {'interface': 'interface', 'limit': 'limit', 'name': 'name', 'optional': 'optional', 'role': 'role', 'scope': 'scope'}
-    _toPy = {'interface': 'interface', 'limit': 'limit', 'name': 'name', 'optional': 'optional', 'role': 'role', 'scope': 'scope'}
+    _toSchema = {
+        'interface': 'interface',
+        'limit': 'limit',
+        'name': 'name',
+        'optional': 'optional',
+        'role': 'role',
+        'scope': 'scope',
+    }
+    _toPy = {
+        'interface': 'interface',
+        'limit': 'limit',
+        'name': 'name',
+        'optional': 'optional',
+        'role': 'role',
+        'scope': 'scope',
+    }
 
-    def __init__(self, interface=None, limit=None, name=None, optional=None, role=None, scope=None, **unknown_fields):
+    def __init__(
+        self,
+        interface=None,
+        limit=None,
+        name=None,
+        optional=None,
+        role=None,
+        scope=None,
+        **unknown_fields,
+    ):
         """
         interface : str
         limit : int
@@ -3658,7 +5276,9 @@ class CharmRelation(Type):
 
         # Validate arguments against known Juju API types.
         if interface_ is not None and not isinstance(interface_, (bytes, str)):
-            raise TypeError(f'Expected interface_ to be a str, received: {type(interface_)}')
+            raise TypeError(
+                f'Expected interface_ to be a str, received: {type(interface_)}'
+            )
 
         if limit_ is not None and not isinstance(limit_, int):
             raise TypeError(f'Expected limit_ to be a int, received: {type(limit_)}')
@@ -3667,7 +5287,9 @@ class CharmRelation(Type):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
 
         if optional_ is not None and not isinstance(optional_, bool):
-            raise TypeError(f'Expected optional_ to be a bool, received: {type(optional_)}')
+            raise TypeError(
+                f'Expected optional_ to be a bool, received: {type(optional_)}'
+            )
 
         if role_ is not None and not isinstance(role_, (bytes, str)):
             raise TypeError(f'Expected role_ to be a str, received: {type(role_)}')
@@ -3685,10 +5307,39 @@ class CharmRelation(Type):
 
 
 class CharmResource(Type):
-    _toSchema = {'description': 'description', 'fingerprint': 'fingerprint', 'name': 'name', 'origin': 'origin', 'path': 'path', 'revision': 'revision', 'size': 'size', 'type_': 'type'}
-    _toPy = {'description': 'description', 'fingerprint': 'fingerprint', 'name': 'name', 'origin': 'origin', 'path': 'path', 'revision': 'revision', 'size': 'size', 'type': 'type_'}
+    _toSchema = {
+        'description': 'description',
+        'fingerprint': 'fingerprint',
+        'name': 'name',
+        'origin': 'origin',
+        'path': 'path',
+        'revision': 'revision',
+        'size': 'size',
+        'type_': 'type',
+    }
+    _toPy = {
+        'description': 'description',
+        'fingerprint': 'fingerprint',
+        'name': 'name',
+        'origin': 'origin',
+        'path': 'path',
+        'revision': 'revision',
+        'size': 'size',
+        'type': 'type_',
+    }
 
-    def __init__(self, description=None, fingerprint=None, name=None, origin=None, path=None, revision=None, size=None, type_=None, **unknown_fields):
+    def __init__(
+        self,
+        description=None,
+        fingerprint=None,
+        name=None,
+        origin=None,
+        path=None,
+        revision=None,
+        size=None,
+        type_=None,
+        **unknown_fields,
+    ):
         """
         description : str
         fingerprint : typing.Sequence[int]
@@ -3710,10 +5361,16 @@ class CharmResource(Type):
 
         # Validate arguments against known Juju API types.
         if description_ is not None and not isinstance(description_, (bytes, str)):
-            raise TypeError(f'Expected description_ to be a str, received: {type(description_)}')
+            raise TypeError(
+                f'Expected description_ to be a str, received: {type(description_)}'
+            )
 
-        if fingerprint_ is not None and not isinstance(fingerprint_, (bytes, str, list)):
-            raise TypeError(f'Expected fingerprint_ to be a Sequence, received: {type(fingerprint_)}')
+        if fingerprint_ is not None and not isinstance(
+            fingerprint_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected fingerprint_ to be a Sequence, received: {type(fingerprint_)}'
+            )
 
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
@@ -3725,7 +5382,9 @@ class CharmResource(Type):
             raise TypeError(f'Expected path_ to be a str, received: {type(path_)}')
 
         if revision_ is not None and not isinstance(revision_, int):
-            raise TypeError(f'Expected revision_ to be a int, received: {type(revision_)}')
+            raise TypeError(
+                f'Expected revision_ to be a int, received: {type(revision_)}'
+            )
 
         if size_ is not None and not isinstance(size_, int):
             raise TypeError(f'Expected size_ to be a int, received: {type(size_)}')
@@ -3745,10 +5404,22 @@ class CharmResource(Type):
 
 
 class CharmResourceMeta(Type):
-    _toSchema = {'description': 'description', 'name': 'name', 'path': 'path', 'type_': 'type'}
-    _toPy = {'description': 'description', 'name': 'name', 'path': 'path', 'type': 'type_'}
+    _toSchema = {
+        'description': 'description',
+        'name': 'name',
+        'path': 'path',
+        'type_': 'type',
+    }
+    _toPy = {
+        'description': 'description',
+        'name': 'name',
+        'path': 'path',
+        'type': 'type_',
+    }
 
-    def __init__(self, description=None, name=None, path=None, type_=None, **unknown_fields):
+    def __init__(
+        self, description=None, name=None, path=None, type_=None, **unknown_fields
+    ):
         """
         description : str
         name : str
@@ -3762,7 +5433,9 @@ class CharmResourceMeta(Type):
 
         # Validate arguments against known Juju API types.
         if description_ is not None and not isinstance(description_, (bytes, str)):
-            raise TypeError(f'Expected description_ to be a str, received: {type(description_)}')
+            raise TypeError(
+                f'Expected description_ to be a str, received: {type(description_)}'
+            )
 
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
@@ -3781,10 +5454,48 @@ class CharmResourceMeta(Type):
 
 
 class CharmResourceResult(Type):
-    _toSchema = {'charmresource': 'CharmResource', 'description': 'description', 'error': 'error', 'errorresult': 'ErrorResult', 'fingerprint': 'fingerprint', 'name': 'name', 'origin': 'origin', 'path': 'path', 'revision': 'revision', 'size': 'size', 'type_': 'type'}
-    _toPy = {'CharmResource': 'charmresource', 'ErrorResult': 'errorresult', 'description': 'description', 'error': 'error', 'fingerprint': 'fingerprint', 'name': 'name', 'origin': 'origin', 'path': 'path', 'revision': 'revision', 'size': 'size', 'type': 'type_'}
+    _toSchema = {
+        'charmresource': 'CharmResource',
+        'description': 'description',
+        'error': 'error',
+        'errorresult': 'ErrorResult',
+        'fingerprint': 'fingerprint',
+        'name': 'name',
+        'origin': 'origin',
+        'path': 'path',
+        'revision': 'revision',
+        'size': 'size',
+        'type_': 'type',
+    }
+    _toPy = {
+        'CharmResource': 'charmresource',
+        'ErrorResult': 'errorresult',
+        'description': 'description',
+        'error': 'error',
+        'fingerprint': 'fingerprint',
+        'name': 'name',
+        'origin': 'origin',
+        'path': 'path',
+        'revision': 'revision',
+        'size': 'size',
+        'type': 'type_',
+    }
 
-    def __init__(self, charmresource=None, errorresult=None, description=None, error=None, fingerprint=None, name=None, origin=None, path=None, revision=None, size=None, type_=None, **unknown_fields):
+    def __init__(
+        self,
+        charmresource=None,
+        errorresult=None,
+        description=None,
+        error=None,
+        fingerprint=None,
+        name=None,
+        origin=None,
+        path=None,
+        revision=None,
+        size=None,
+        type_=None,
+        **unknown_fields,
+    ):
         """
         charmresource : CharmResource
         errorresult : ErrorResult
@@ -3798,7 +5509,9 @@ class CharmResourceResult(Type):
         size : int
         type_ : str
         """
-        charmresource_ = CharmResource.from_json(charmresource) if charmresource else None
+        charmresource_ = (
+            CharmResource.from_json(charmresource) if charmresource else None
+        )
         errorresult_ = ErrorResult.from_json(errorresult) if errorresult else None
         description_ = description
         error_ = Error.from_json(error) if error else None
@@ -3811,20 +5524,34 @@ class CharmResourceResult(Type):
         type__ = type_
 
         # Validate arguments against known Juju API types.
-        if charmresource_ is not None and not isinstance(charmresource_, (dict, CharmResource)):
-            raise TypeError(f'Expected charmresource_ to be a CharmResource, received: {type(charmresource_)}')
+        if charmresource_ is not None and not isinstance(
+            charmresource_, (dict, CharmResource)
+        ):
+            raise TypeError(
+                f'Expected charmresource_ to be a CharmResource, received: {type(charmresource_)}'
+            )
 
-        if errorresult_ is not None and not isinstance(errorresult_, (dict, ErrorResult)):
-            raise TypeError(f'Expected errorresult_ to be a ErrorResult, received: {type(errorresult_)}')
+        if errorresult_ is not None and not isinstance(
+            errorresult_, (dict, ErrorResult)
+        ):
+            raise TypeError(
+                f'Expected errorresult_ to be a ErrorResult, received: {type(errorresult_)}'
+            )
 
         if description_ is not None and not isinstance(description_, (bytes, str)):
-            raise TypeError(f'Expected description_ to be a str, received: {type(description_)}')
+            raise TypeError(
+                f'Expected description_ to be a str, received: {type(description_)}'
+            )
 
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
-        if fingerprint_ is not None and not isinstance(fingerprint_, (bytes, str, list)):
-            raise TypeError(f'Expected fingerprint_ to be a Sequence, received: {type(fingerprint_)}')
+        if fingerprint_ is not None and not isinstance(
+            fingerprint_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected fingerprint_ to be a Sequence, received: {type(fingerprint_)}'
+            )
 
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
@@ -3836,7 +5563,9 @@ class CharmResourceResult(Type):
             raise TypeError(f'Expected path_ to be a str, received: {type(path_)}')
 
         if revision_ is not None and not isinstance(revision_, int):
-            raise TypeError(f'Expected revision_ to be a int, received: {type(revision_)}')
+            raise TypeError(
+                f'Expected revision_ to be a int, received: {type(revision_)}'
+            )
 
         if size_ is not None and not isinstance(size_, int):
             raise TypeError(f'Expected size_ to be a int, received: {type(size_)}')
@@ -3870,17 +5599,54 @@ class CharmResourcesResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
 
 
 class CharmStorage(Type):
-    _toSchema = {'count_max': 'count-max', 'count_min': 'count-min', 'description': 'description', 'location': 'location', 'minimum_size': 'minimum-size', 'name': 'name', 'properties': 'properties', 'read_only': 'read-only', 'shared': 'shared', 'type_': 'type'}
-    _toPy = {'count-max': 'count_max', 'count-min': 'count_min', 'description': 'description', 'location': 'location', 'minimum-size': 'minimum_size', 'name': 'name', 'properties': 'properties', 'read-only': 'read_only', 'shared': 'shared', 'type': 'type_'}
+    _toSchema = {
+        'count_max': 'count-max',
+        'count_min': 'count-min',
+        'description': 'description',
+        'location': 'location',
+        'minimum_size': 'minimum-size',
+        'name': 'name',
+        'properties': 'properties',
+        'read_only': 'read-only',
+        'shared': 'shared',
+        'type_': 'type',
+    }
+    _toPy = {
+        'count-max': 'count_max',
+        'count-min': 'count_min',
+        'description': 'description',
+        'location': 'location',
+        'minimum-size': 'minimum_size',
+        'name': 'name',
+        'properties': 'properties',
+        'read-only': 'read_only',
+        'shared': 'shared',
+        'type': 'type_',
+    }
 
-    def __init__(self, count_max=None, count_min=None, description=None, location=None, minimum_size=None, name=None, properties=None, read_only=None, shared=None, type_=None, **unknown_fields):
+    def __init__(
+        self,
+        count_max=None,
+        count_min=None,
+        description=None,
+        location=None,
+        minimum_size=None,
+        name=None,
+        properties=None,
+        read_only=None,
+        shared=None,
+        type_=None,
+        **unknown_fields,
+    ):
         """
         count_max : int
         count_min : int
@@ -3906,28 +5672,42 @@ class CharmStorage(Type):
 
         # Validate arguments against known Juju API types.
         if count_max_ is not None and not isinstance(count_max_, int):
-            raise TypeError(f'Expected count_max_ to be a int, received: {type(count_max_)}')
+            raise TypeError(
+                f'Expected count_max_ to be a int, received: {type(count_max_)}'
+            )
 
         if count_min_ is not None and not isinstance(count_min_, int):
-            raise TypeError(f'Expected count_min_ to be a int, received: {type(count_min_)}')
+            raise TypeError(
+                f'Expected count_min_ to be a int, received: {type(count_min_)}'
+            )
 
         if description_ is not None and not isinstance(description_, (bytes, str)):
-            raise TypeError(f'Expected description_ to be a str, received: {type(description_)}')
+            raise TypeError(
+                f'Expected description_ to be a str, received: {type(description_)}'
+            )
 
         if location_ is not None and not isinstance(location_, (bytes, str)):
-            raise TypeError(f'Expected location_ to be a str, received: {type(location_)}')
+            raise TypeError(
+                f'Expected location_ to be a str, received: {type(location_)}'
+            )
 
         if minimum_size_ is not None and not isinstance(minimum_size_, int):
-            raise TypeError(f'Expected minimum_size_ to be a int, received: {type(minimum_size_)}')
+            raise TypeError(
+                f'Expected minimum_size_ to be a int, received: {type(minimum_size_)}'
+            )
 
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
 
         if properties_ is not None and not isinstance(properties_, (bytes, str, list)):
-            raise TypeError(f'Expected properties_ to be a Sequence, received: {type(properties_)}')
+            raise TypeError(
+                f'Expected properties_ to be a Sequence, received: {type(properties_)}'
+            )
 
         if read_only_ is not None and not isinstance(read_only_, bool):
-            raise TypeError(f'Expected read_only_ to be a bool, received: {type(read_only_)}')
+            raise TypeError(
+                f'Expected read_only_ to be a bool, received: {type(read_only_)}'
+            )
 
         if shared_ is not None and not isinstance(shared_, bool):
             raise TypeError(f'Expected shared_ to be a bool, received: {type(shared_)}')
@@ -3967,10 +5747,20 @@ class CharmURL(Type):
 
 
 class CharmURLAndOrigin(Type):
-    _toSchema = {'charm_origin': 'charm-origin', 'charm_url': 'charm-url', 'macaroon': 'macaroon'}
-    _toPy = {'charm-origin': 'charm_origin', 'charm-url': 'charm_url', 'macaroon': 'macaroon'}
+    _toSchema = {
+        'charm_origin': 'charm-origin',
+        'charm_url': 'charm-url',
+        'macaroon': 'macaroon',
+    }
+    _toPy = {
+        'charm-origin': 'charm_origin',
+        'charm-url': 'charm_url',
+        'macaroon': 'macaroon',
+    }
 
-    def __init__(self, charm_origin=None, charm_url=None, macaroon=None, **unknown_fields):
+    def __init__(
+        self, charm_origin=None, charm_url=None, macaroon=None, **unknown_fields
+    ):
         """
         charm_origin : CharmOrigin
         charm_url : str
@@ -3981,14 +5771,22 @@ class CharmURLAndOrigin(Type):
         macaroon_ = Macaroon.from_json(macaroon) if macaroon else None
 
         # Validate arguments against known Juju API types.
-        if charm_origin_ is not None and not isinstance(charm_origin_, (dict, CharmOrigin)):
-            raise TypeError(f'Expected charm_origin_ to be a CharmOrigin, received: {type(charm_origin_)}')
+        if charm_origin_ is not None and not isinstance(
+            charm_origin_, (dict, CharmOrigin)
+        ):
+            raise TypeError(
+                f'Expected charm_origin_ to be a CharmOrigin, received: {type(charm_origin_)}'
+            )
 
         if charm_url_ is not None and not isinstance(charm_url_, (bytes, str)):
-            raise TypeError(f'Expected charm_url_ to be a str, received: {type(charm_url_)}')
+            raise TypeError(
+                f'Expected charm_url_ to be a str, received: {type(charm_url_)}'
+            )
 
         if macaroon_ is not None and not isinstance(macaroon_, (dict, Macaroon)):
-            raise TypeError(f'Expected macaroon_ to be a Macaroon, received: {type(macaroon_)}')
+            raise TypeError(
+                f'Expected macaroon_ to be a Macaroon, received: {type(macaroon_)}'
+            )
 
         self.charm_origin = charm_origin_
         self.charm_url = charm_url_
@@ -4008,7 +5806,9 @@ class CharmURLAndOrigins(Type):
 
         # Validate arguments against known Juju API types.
         if entities_ is not None and not isinstance(entities_, (bytes, str, list)):
-            raise TypeError(f'Expected entities_ to be a Sequence, received: {type(entities_)}')
+            raise TypeError(
+                f'Expected entities_ to be a Sequence, received: {type(entities_)}'
+            )
 
         self.entities = entities_
         self.unknown_fields = unknown_fields
@@ -4029,8 +5829,12 @@ class CharmURLOriginResult(Type):
         url_ = url
 
         # Validate arguments against known Juju API types.
-        if charm_origin_ is not None and not isinstance(charm_origin_, (dict, CharmOrigin)):
-            raise TypeError(f'Expected charm_origin_ to be a CharmOrigin, received: {type(charm_origin_)}')
+        if charm_origin_ is not None and not isinstance(
+            charm_origin_, (dict, CharmOrigin)
+        ):
+            raise TypeError(
+                f'Expected charm_origin_ to be a CharmOrigin, received: {type(charm_origin_)}'
+            )
 
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
@@ -4056,7 +5860,9 @@ class CharmsList(Type):
 
         # Validate arguments against known Juju API types.
         if names_ is not None and not isinstance(names_, (bytes, str, list)):
-            raise TypeError(f'Expected names_ to be a Sequence, received: {type(names_)}')
+            raise TypeError(
+                f'Expected names_ to be a Sequence, received: {type(names_)}'
+            )
 
         self.names = names_
         self.unknown_fields = unknown_fields
@@ -4074,17 +5880,60 @@ class CharmsListResult(Type):
 
         # Validate arguments against known Juju API types.
         if charm_urls_ is not None and not isinstance(charm_urls_, (bytes, str, list)):
-            raise TypeError(f'Expected charm_urls_ to be a Sequence, received: {type(charm_urls_)}')
+            raise TypeError(
+                f'Expected charm_urls_ to be a Sequence, received: {type(charm_urls_)}'
+            )
 
         self.charm_urls = charm_urls_
         self.unknown_fields = unknown_fields
 
 
 class Cloud(Type):
-    _toSchema = {'auth_types': 'auth-types', 'ca_certificates': 'ca-certificates', 'config': 'config', 'endpoint': 'endpoint', 'host_cloud_region': 'host-cloud-region', 'identity_endpoint': 'identity-endpoint', 'is_controller_cloud': 'is-controller-cloud', 'region_config': 'region-config', 'regions': 'regions', 'skip_tls_verify': 'skip-tls-verify', 'storage_endpoint': 'storage-endpoint', 'type_': 'type'}
-    _toPy = {'auth-types': 'auth_types', 'ca-certificates': 'ca_certificates', 'config': 'config', 'endpoint': 'endpoint', 'host-cloud-region': 'host_cloud_region', 'identity-endpoint': 'identity_endpoint', 'is-controller-cloud': 'is_controller_cloud', 'region-config': 'region_config', 'regions': 'regions', 'skip-tls-verify': 'skip_tls_verify', 'storage-endpoint': 'storage_endpoint', 'type': 'type_'}
+    _toSchema = {
+        'auth_types': 'auth-types',
+        'ca_certificates': 'ca-certificates',
+        'config': 'config',
+        'endpoint': 'endpoint',
+        'host_cloud_region': 'host-cloud-region',
+        'identity_endpoint': 'identity-endpoint',
+        'is_controller_cloud': 'is-controller-cloud',
+        'region_config': 'region-config',
+        'regions': 'regions',
+        'skip_tls_verify': 'skip-tls-verify',
+        'storage_endpoint': 'storage-endpoint',
+        'type_': 'type',
+    }
+    _toPy = {
+        'auth-types': 'auth_types',
+        'ca-certificates': 'ca_certificates',
+        'config': 'config',
+        'endpoint': 'endpoint',
+        'host-cloud-region': 'host_cloud_region',
+        'identity-endpoint': 'identity_endpoint',
+        'is-controller-cloud': 'is_controller_cloud',
+        'region-config': 'region_config',
+        'regions': 'regions',
+        'skip-tls-verify': 'skip_tls_verify',
+        'storage-endpoint': 'storage_endpoint',
+        'type': 'type_',
+    }
 
-    def __init__(self, auth_types=None, ca_certificates=None, config=None, endpoint=None, host_cloud_region=None, identity_endpoint=None, is_controller_cloud=None, region_config=None, regions=None, skip_tls_verify=None, storage_endpoint=None, type_=None, **unknown_fields):
+    def __init__(
+        self,
+        auth_types=None,
+        ca_certificates=None,
+        config=None,
+        endpoint=None,
+        host_cloud_region=None,
+        identity_endpoint=None,
+        is_controller_cloud=None,
+        region_config=None,
+        regions=None,
+        skip_tls_verify=None,
+        storage_endpoint=None,
+        type_=None,
+        **unknown_fields,
+    ):
         """
         auth_types : typing.Sequence[str]
         ca_certificates : typing.Sequence[str]
@@ -4114,37 +5963,69 @@ class Cloud(Type):
 
         # Validate arguments against known Juju API types.
         if auth_types_ is not None and not isinstance(auth_types_, (bytes, str, list)):
-            raise TypeError(f'Expected auth_types_ to be a Sequence, received: {type(auth_types_)}')
+            raise TypeError(
+                f'Expected auth_types_ to be a Sequence, received: {type(auth_types_)}'
+            )
 
-        if ca_certificates_ is not None and not isinstance(ca_certificates_, (bytes, str, list)):
-            raise TypeError(f'Expected ca_certificates_ to be a Sequence, received: {type(ca_certificates_)}')
+        if ca_certificates_ is not None and not isinstance(
+            ca_certificates_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected ca_certificates_ to be a Sequence, received: {type(ca_certificates_)}'
+            )
 
         if config_ is not None and not isinstance(config_, dict):
-            raise TypeError(f'Expected config_ to be a Mapping, received: {type(config_)}')
+            raise TypeError(
+                f'Expected config_ to be a Mapping, received: {type(config_)}'
+            )
 
         if endpoint_ is not None and not isinstance(endpoint_, (bytes, str)):
-            raise TypeError(f'Expected endpoint_ to be a str, received: {type(endpoint_)}')
+            raise TypeError(
+                f'Expected endpoint_ to be a str, received: {type(endpoint_)}'
+            )
 
-        if host_cloud_region_ is not None and not isinstance(host_cloud_region_, (bytes, str)):
-            raise TypeError(f'Expected host_cloud_region_ to be a str, received: {type(host_cloud_region_)}')
+        if host_cloud_region_ is not None and not isinstance(
+            host_cloud_region_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected host_cloud_region_ to be a str, received: {type(host_cloud_region_)}'
+            )
 
-        if identity_endpoint_ is not None and not isinstance(identity_endpoint_, (bytes, str)):
-            raise TypeError(f'Expected identity_endpoint_ to be a str, received: {type(identity_endpoint_)}')
+        if identity_endpoint_ is not None and not isinstance(
+            identity_endpoint_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected identity_endpoint_ to be a str, received: {type(identity_endpoint_)}'
+            )
 
-        if is_controller_cloud_ is not None and not isinstance(is_controller_cloud_, bool):
-            raise TypeError(f'Expected is_controller_cloud_ to be a bool, received: {type(is_controller_cloud_)}')
+        if is_controller_cloud_ is not None and not isinstance(
+            is_controller_cloud_, bool
+        ):
+            raise TypeError(
+                f'Expected is_controller_cloud_ to be a bool, received: {type(is_controller_cloud_)}'
+            )
 
         if region_config_ is not None and not isinstance(region_config_, dict):
-            raise TypeError(f'Expected region_config_ to be a Mapping, received: {type(region_config_)}')
+            raise TypeError(
+                f'Expected region_config_ to be a Mapping, received: {type(region_config_)}'
+            )
 
         if regions_ is not None and not isinstance(regions_, (bytes, str, list)):
-            raise TypeError(f'Expected regions_ to be a Sequence, received: {type(regions_)}')
+            raise TypeError(
+                f'Expected regions_ to be a Sequence, received: {type(regions_)}'
+            )
 
         if skip_tls_verify_ is not None and not isinstance(skip_tls_verify_, bool):
-            raise TypeError(f'Expected skip_tls_verify_ to be a bool, received: {type(skip_tls_verify_)}')
+            raise TypeError(
+                f'Expected skip_tls_verify_ to be a bool, received: {type(skip_tls_verify_)}'
+            )
 
-        if storage_endpoint_ is not None and not isinstance(storage_endpoint_, (bytes, str)):
-            raise TypeError(f'Expected storage_endpoint_ to be a str, received: {type(storage_endpoint_)}')
+        if storage_endpoint_ is not None and not isinstance(
+            storage_endpoint_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected storage_endpoint_ to be a str, received: {type(storage_endpoint_)}'
+            )
 
         if type__ is not None and not isinstance(type__, (bytes, str)):
             raise TypeError(f'Expected type__ to be a str, received: {type(type__)}')
@@ -4180,13 +6061,19 @@ class CloudCredential(Type):
 
         # Validate arguments against known Juju API types.
         if attrs_ is not None and not isinstance(attrs_, dict):
-            raise TypeError(f'Expected attrs_ to be a Mapping, received: {type(attrs_)}')
+            raise TypeError(
+                f'Expected attrs_ to be a Mapping, received: {type(attrs_)}'
+            )
 
         if auth_type_ is not None and not isinstance(auth_type_, (bytes, str)):
-            raise TypeError(f'Expected auth_type_ to be a str, received: {type(auth_type_)}')
+            raise TypeError(
+                f'Expected auth_type_ to be a str, received: {type(auth_type_)}'
+            )
 
         if redacted_ is not None and not isinstance(redacted_, (bytes, str, list)):
-            raise TypeError(f'Expected redacted_ to be a Sequence, received: {type(redacted_)}')
+            raise TypeError(
+                f'Expected redacted_ to be a Sequence, received: {type(redacted_)}'
+            )
 
         self.attrs = attrs_
         self.auth_type = auth_type_
@@ -4208,10 +6095,16 @@ class CloudCredentialArg(Type):
 
         # Validate arguments against known Juju API types.
         if cloud_name_ is not None and not isinstance(cloud_name_, (bytes, str)):
-            raise TypeError(f'Expected cloud_name_ to be a str, received: {type(cloud_name_)}')
+            raise TypeError(
+                f'Expected cloud_name_ to be a str, received: {type(cloud_name_)}'
+            )
 
-        if credential_name_ is not None and not isinstance(credential_name_, (bytes, str)):
-            raise TypeError(f'Expected credential_name_ to be a str, received: {type(credential_name_)}')
+        if credential_name_ is not None and not isinstance(
+            credential_name_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected credential_name_ to be a str, received: {type(credential_name_)}'
+            )
 
         self.cloud_name = cloud_name_
         self.credential_name = credential_name_
@@ -4231,11 +6124,17 @@ class CloudCredentialArgs(Type):
         include_secrets_ = include_secrets
 
         # Validate arguments against known Juju API types.
-        if credentials_ is not None and not isinstance(credentials_, (bytes, str, list)):
-            raise TypeError(f'Expected credentials_ to be a Sequence, received: {type(credentials_)}')
+        if credentials_ is not None and not isinstance(
+            credentials_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected credentials_ to be a Sequence, received: {type(credentials_)}'
+            )
 
         if include_secrets_ is not None and not isinstance(include_secrets_, bool):
-            raise TypeError(f'Expected include_secrets_ to be a bool, received: {type(include_secrets_)}')
+            raise TypeError(
+                f'Expected include_secrets_ to be a bool, received: {type(include_secrets_)}'
+            )
 
         self.credentials = credentials_
         self.include_secrets = include_secrets_
@@ -4259,7 +6158,9 @@ class CloudCredentialResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if result_ is not None and not isinstance(result_, (dict, CloudCredential)):
-            raise TypeError(f'Expected result_ to be a CloudCredential, received: {type(result_)}')
+            raise TypeError(
+                f'Expected result_ to be a CloudCredential, received: {type(result_)}'
+            )
 
         self.error = error_
         self.result = result_
@@ -4278,17 +6179,42 @@ class CloudCredentialResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
 
 
 class CloudDetails(Type):
-    _toSchema = {'auth_types': 'auth-types', 'endpoint': 'endpoint', 'identity_endpoint': 'identity-endpoint', 'regions': 'regions', 'storage_endpoint': 'storage-endpoint', 'type_': 'type'}
-    _toPy = {'auth-types': 'auth_types', 'endpoint': 'endpoint', 'identity-endpoint': 'identity_endpoint', 'regions': 'regions', 'storage-endpoint': 'storage_endpoint', 'type': 'type_'}
+    _toSchema = {
+        'auth_types': 'auth-types',
+        'endpoint': 'endpoint',
+        'identity_endpoint': 'identity-endpoint',
+        'regions': 'regions',
+        'storage_endpoint': 'storage-endpoint',
+        'type_': 'type',
+    }
+    _toPy = {
+        'auth-types': 'auth_types',
+        'endpoint': 'endpoint',
+        'identity-endpoint': 'identity_endpoint',
+        'regions': 'regions',
+        'storage-endpoint': 'storage_endpoint',
+        'type': 'type_',
+    }
 
-    def __init__(self, auth_types=None, endpoint=None, identity_endpoint=None, regions=None, storage_endpoint=None, type_=None, **unknown_fields):
+    def __init__(
+        self,
+        auth_types=None,
+        endpoint=None,
+        identity_endpoint=None,
+        regions=None,
+        storage_endpoint=None,
+        type_=None,
+        **unknown_fields,
+    ):
         """
         auth_types : typing.Sequence[str]
         endpoint : str
@@ -4306,19 +6232,33 @@ class CloudDetails(Type):
 
         # Validate arguments against known Juju API types.
         if auth_types_ is not None and not isinstance(auth_types_, (bytes, str, list)):
-            raise TypeError(f'Expected auth_types_ to be a Sequence, received: {type(auth_types_)}')
+            raise TypeError(
+                f'Expected auth_types_ to be a Sequence, received: {type(auth_types_)}'
+            )
 
         if endpoint_ is not None and not isinstance(endpoint_, (bytes, str)):
-            raise TypeError(f'Expected endpoint_ to be a str, received: {type(endpoint_)}')
+            raise TypeError(
+                f'Expected endpoint_ to be a str, received: {type(endpoint_)}'
+            )
 
-        if identity_endpoint_ is not None and not isinstance(identity_endpoint_, (bytes, str)):
-            raise TypeError(f'Expected identity_endpoint_ to be a str, received: {type(identity_endpoint_)}')
+        if identity_endpoint_ is not None and not isinstance(
+            identity_endpoint_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected identity_endpoint_ to be a str, received: {type(identity_endpoint_)}'
+            )
 
         if regions_ is not None and not isinstance(regions_, (bytes, str, list)):
-            raise TypeError(f'Expected regions_ to be a Sequence, received: {type(regions_)}')
+            raise TypeError(
+                f'Expected regions_ to be a Sequence, received: {type(regions_)}'
+            )
 
-        if storage_endpoint_ is not None and not isinstance(storage_endpoint_, (bytes, str)):
-            raise TypeError(f'Expected storage_endpoint_ to be a str, received: {type(storage_endpoint_)}')
+        if storage_endpoint_ is not None and not isinstance(
+            storage_endpoint_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected storage_endpoint_ to be a str, received: {type(storage_endpoint_)}'
+            )
 
         if type__ is not None and not isinstance(type__, (bytes, str)):
             raise TypeError(f'Expected type__ to be a str, received: {type(type__)}')
@@ -4333,10 +6273,45 @@ class CloudDetails(Type):
 
 
 class CloudImageMetadata(Type):
-    _toSchema = {'arch': 'arch', 'image_id': 'image-id', 'priority': 'priority', 'region': 'region', 'root_storage_size': 'root-storage-size', 'root_storage_type': 'root-storage-type', 'source': 'source', 'stream': 'stream', 'version': 'version', 'virt_type': 'virt-type'}
-    _toPy = {'arch': 'arch', 'image-id': 'image_id', 'priority': 'priority', 'region': 'region', 'root-storage-size': 'root_storage_size', 'root-storage-type': 'root_storage_type', 'source': 'source', 'stream': 'stream', 'version': 'version', 'virt-type': 'virt_type'}
+    _toSchema = {
+        'arch': 'arch',
+        'image_id': 'image-id',
+        'priority': 'priority',
+        'region': 'region',
+        'root_storage_size': 'root-storage-size',
+        'root_storage_type': 'root-storage-type',
+        'source': 'source',
+        'stream': 'stream',
+        'version': 'version',
+        'virt_type': 'virt-type',
+    }
+    _toPy = {
+        'arch': 'arch',
+        'image-id': 'image_id',
+        'priority': 'priority',
+        'region': 'region',
+        'root-storage-size': 'root_storage_size',
+        'root-storage-type': 'root_storage_type',
+        'source': 'source',
+        'stream': 'stream',
+        'version': 'version',
+        'virt-type': 'virt_type',
+    }
 
-    def __init__(self, arch=None, image_id=None, priority=None, region=None, root_storage_size=None, root_storage_type=None, source=None, stream=None, version=None, virt_type=None, **unknown_fields):
+    def __init__(
+        self,
+        arch=None,
+        image_id=None,
+        priority=None,
+        region=None,
+        root_storage_size=None,
+        root_storage_type=None,
+        source=None,
+        stream=None,
+        version=None,
+        virt_type=None,
+        **unknown_fields,
+    ):
         """
         arch : str
         image_id : str
@@ -4365,19 +6340,29 @@ class CloudImageMetadata(Type):
             raise TypeError(f'Expected arch_ to be a str, received: {type(arch_)}')
 
         if image_id_ is not None and not isinstance(image_id_, (bytes, str)):
-            raise TypeError(f'Expected image_id_ to be a str, received: {type(image_id_)}')
+            raise TypeError(
+                f'Expected image_id_ to be a str, received: {type(image_id_)}'
+            )
 
         if priority_ is not None and not isinstance(priority_, int):
-            raise TypeError(f'Expected priority_ to be a int, received: {type(priority_)}')
+            raise TypeError(
+                f'Expected priority_ to be a int, received: {type(priority_)}'
+            )
 
         if region_ is not None and not isinstance(region_, (bytes, str)):
             raise TypeError(f'Expected region_ to be a str, received: {type(region_)}')
 
         if root_storage_size_ is not None and not isinstance(root_storage_size_, int):
-            raise TypeError(f'Expected root_storage_size_ to be a int, received: {type(root_storage_size_)}')
+            raise TypeError(
+                f'Expected root_storage_size_ to be a int, received: {type(root_storage_size_)}'
+            )
 
-        if root_storage_type_ is not None and not isinstance(root_storage_type_, (bytes, str)):
-            raise TypeError(f'Expected root_storage_type_ to be a str, received: {type(root_storage_type_)}')
+        if root_storage_type_ is not None and not isinstance(
+            root_storage_type_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected root_storage_type_ to be a str, received: {type(root_storage_type_)}'
+            )
 
         if source_ is not None and not isinstance(source_, (bytes, str)):
             raise TypeError(f'Expected source_ to be a str, received: {type(source_)}')
@@ -4386,10 +6371,14 @@ class CloudImageMetadata(Type):
             raise TypeError(f'Expected stream_ to be a str, received: {type(stream_)}')
 
         if version_ is not None and not isinstance(version_, (bytes, str)):
-            raise TypeError(f'Expected version_ to be a str, received: {type(version_)}')
+            raise TypeError(
+                f'Expected version_ to be a str, received: {type(version_)}'
+            )
 
         if virt_type_ is not None and not isinstance(virt_type_, (bytes, str)):
-            raise TypeError(f'Expected virt_type_ to be a str, received: {type(virt_type_)}')
+            raise TypeError(
+                f'Expected virt_type_ to be a str, received: {type(virt_type_)}'
+            )
 
         self.arch = arch_
         self.image_id = image_id_
@@ -4416,7 +6405,9 @@ class CloudImageMetadataList(Type):
 
         # Validate arguments against known Juju API types.
         if metadata_ is not None and not isinstance(metadata_, (bytes, str, list)):
-            raise TypeError(f'Expected metadata_ to be a Sequence, received: {type(metadata_)}')
+            raise TypeError(
+                f'Expected metadata_ to be a Sequence, received: {type(metadata_)}'
+            )
 
         self.metadata = metadata_
         self.unknown_fields = unknown_fields
@@ -4435,11 +6426,17 @@ class CloudInfo(Type):
         users_ = [CloudUserInfo.from_json(o) for o in users or []]
 
         # Validate arguments against known Juju API types.
-        if clouddetails_ is not None and not isinstance(clouddetails_, (dict, CloudDetails)):
-            raise TypeError(f'Expected clouddetails_ to be a CloudDetails, received: {type(clouddetails_)}')
+        if clouddetails_ is not None and not isinstance(
+            clouddetails_, (dict, CloudDetails)
+        ):
+            raise TypeError(
+                f'Expected clouddetails_ to be a CloudDetails, received: {type(clouddetails_)}'
+            )
 
         if users_ is not None and not isinstance(users_, (bytes, str, list)):
-            raise TypeError(f'Expected users_ to be a Sequence, received: {type(users_)}')
+            raise TypeError(
+                f'Expected users_ to be a Sequence, received: {type(users_)}'
+            )
 
         self.clouddetails = clouddetails_
         self.users = users_
@@ -4463,7 +6460,9 @@ class CloudInfoResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if result_ is not None and not isinstance(result_, (dict, CloudInfo)):
-            raise TypeError(f'Expected result_ to be a CloudInfo, received: {type(result_)}')
+            raise TypeError(
+                f'Expected result_ to be a CloudInfo, received: {type(result_)}'
+            )
 
         self.error = error_
         self.result = result_
@@ -4482,14 +6481,20 @@ class CloudInfoResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
 
 
 class CloudInstanceTypesConstraint(Type):
-    _toSchema = {'cloud_tag': 'cloud-tag', 'constraints': 'constraints', 'region': 'region'}
+    _toSchema = {
+        'cloud_tag': 'cloud-tag',
+        'constraints': 'constraints',
+        'region': 'region',
+    }
     _toPy = {'cloud-tag': 'cloud_tag', 'constraints': 'constraints', 'region': 'region'}
 
     def __init__(self, cloud_tag=None, constraints=None, region=None, **unknown_fields):
@@ -4504,10 +6509,14 @@ class CloudInstanceTypesConstraint(Type):
 
         # Validate arguments against known Juju API types.
         if cloud_tag_ is not None and not isinstance(cloud_tag_, (bytes, str)):
-            raise TypeError(f'Expected cloud_tag_ to be a str, received: {type(cloud_tag_)}')
+            raise TypeError(
+                f'Expected cloud_tag_ to be a str, received: {type(cloud_tag_)}'
+            )
 
         if constraints_ is not None and not isinstance(constraints_, (dict, Value)):
-            raise TypeError(f'Expected constraints_ to be a Value, received: {type(constraints_)}')
+            raise TypeError(
+                f'Expected constraints_ to be a Value, received: {type(constraints_)}'
+            )
 
         if region_ is not None and not isinstance(region_, (bytes, str)):
             raise TypeError(f'Expected region_ to be a str, received: {type(region_)}')
@@ -4526,21 +6535,44 @@ class CloudInstanceTypesConstraints(Type):
         """
         constraints : typing.Sequence[~CloudInstanceTypesConstraint]
         """
-        constraints_ = [CloudInstanceTypesConstraint.from_json(o) for o in constraints or []]
+        constraints_ = [
+            CloudInstanceTypesConstraint.from_json(o) for o in constraints or []
+        ]
 
         # Validate arguments against known Juju API types.
-        if constraints_ is not None and not isinstance(constraints_, (bytes, str, list)):
-            raise TypeError(f'Expected constraints_ to be a Sequence, received: {type(constraints_)}')
+        if constraints_ is not None and not isinstance(
+            constraints_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected constraints_ to be a Sequence, received: {type(constraints_)}'
+            )
 
         self.constraints = constraints_
         self.unknown_fields = unknown_fields
 
 
 class CloudRegion(Type):
-    _toSchema = {'endpoint': 'endpoint', 'identity_endpoint': 'identity-endpoint', 'name': 'name', 'storage_endpoint': 'storage-endpoint'}
-    _toPy = {'endpoint': 'endpoint', 'identity-endpoint': 'identity_endpoint', 'name': 'name', 'storage-endpoint': 'storage_endpoint'}
+    _toSchema = {
+        'endpoint': 'endpoint',
+        'identity_endpoint': 'identity-endpoint',
+        'name': 'name',
+        'storage_endpoint': 'storage-endpoint',
+    }
+    _toPy = {
+        'endpoint': 'endpoint',
+        'identity-endpoint': 'identity_endpoint',
+        'name': 'name',
+        'storage-endpoint': 'storage_endpoint',
+    }
 
-    def __init__(self, endpoint=None, identity_endpoint=None, name=None, storage_endpoint=None, **unknown_fields):
+    def __init__(
+        self,
+        endpoint=None,
+        identity_endpoint=None,
+        name=None,
+        storage_endpoint=None,
+        **unknown_fields,
+    ):
         """
         endpoint : str
         identity_endpoint : str
@@ -4554,16 +6586,26 @@ class CloudRegion(Type):
 
         # Validate arguments against known Juju API types.
         if endpoint_ is not None and not isinstance(endpoint_, (bytes, str)):
-            raise TypeError(f'Expected endpoint_ to be a str, received: {type(endpoint_)}')
+            raise TypeError(
+                f'Expected endpoint_ to be a str, received: {type(endpoint_)}'
+            )
 
-        if identity_endpoint_ is not None and not isinstance(identity_endpoint_, (bytes, str)):
-            raise TypeError(f'Expected identity_endpoint_ to be a str, received: {type(identity_endpoint_)}')
+        if identity_endpoint_ is not None and not isinstance(
+            identity_endpoint_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected identity_endpoint_ to be a str, received: {type(identity_endpoint_)}'
+            )
 
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
 
-        if storage_endpoint_ is not None and not isinstance(storage_endpoint_, (bytes, str)):
-            raise TypeError(f'Expected storage_endpoint_ to be a str, received: {type(storage_endpoint_)}')
+        if storage_endpoint_ is not None and not isinstance(
+            storage_endpoint_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected storage_endpoint_ to be a str, received: {type(storage_endpoint_)}'
+            )
 
         self.endpoint = endpoint_
         self.identity_endpoint = identity_endpoint_
@@ -4608,17 +6650,54 @@ class CloudResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
 
 
 class CloudSpec(Type):
-    _toSchema = {'cacertificates': 'cacertificates', 'credential': 'credential', 'endpoint': 'endpoint', 'identity_endpoint': 'identity-endpoint', 'is_controller_cloud': 'is-controller-cloud', 'name': 'name', 'region': 'region', 'skip_tls_verify': 'skip-tls-verify', 'storage_endpoint': 'storage-endpoint', 'type_': 'type'}
-    _toPy = {'cacertificates': 'cacertificates', 'credential': 'credential', 'endpoint': 'endpoint', 'identity-endpoint': 'identity_endpoint', 'is-controller-cloud': 'is_controller_cloud', 'name': 'name', 'region': 'region', 'skip-tls-verify': 'skip_tls_verify', 'storage-endpoint': 'storage_endpoint', 'type': 'type_'}
+    _toSchema = {
+        'cacertificates': 'cacertificates',
+        'credential': 'credential',
+        'endpoint': 'endpoint',
+        'identity_endpoint': 'identity-endpoint',
+        'is_controller_cloud': 'is-controller-cloud',
+        'name': 'name',
+        'region': 'region',
+        'skip_tls_verify': 'skip-tls-verify',
+        'storage_endpoint': 'storage-endpoint',
+        'type_': 'type',
+    }
+    _toPy = {
+        'cacertificates': 'cacertificates',
+        'credential': 'credential',
+        'endpoint': 'endpoint',
+        'identity-endpoint': 'identity_endpoint',
+        'is-controller-cloud': 'is_controller_cloud',
+        'name': 'name',
+        'region': 'region',
+        'skip-tls-verify': 'skip_tls_verify',
+        'storage-endpoint': 'storage_endpoint',
+        'type': 'type_',
+    }
 
-    def __init__(self, cacertificates=None, credential=None, endpoint=None, identity_endpoint=None, is_controller_cloud=None, name=None, region=None, skip_tls_verify=None, storage_endpoint=None, type_=None, **unknown_fields):
+    def __init__(
+        self,
+        cacertificates=None,
+        credential=None,
+        endpoint=None,
+        identity_endpoint=None,
+        is_controller_cloud=None,
+        name=None,
+        region=None,
+        skip_tls_verify=None,
+        storage_endpoint=None,
+        type_=None,
+        **unknown_fields,
+    ):
         """
         cacertificates : typing.Sequence[str]
         credential : CloudCredential
@@ -4643,20 +6722,38 @@ class CloudSpec(Type):
         type__ = type_
 
         # Validate arguments against known Juju API types.
-        if cacertificates_ is not None and not isinstance(cacertificates_, (bytes, str, list)):
-            raise TypeError(f'Expected cacertificates_ to be a Sequence, received: {type(cacertificates_)}')
+        if cacertificates_ is not None and not isinstance(
+            cacertificates_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected cacertificates_ to be a Sequence, received: {type(cacertificates_)}'
+            )
 
-        if credential_ is not None and not isinstance(credential_, (dict, CloudCredential)):
-            raise TypeError(f'Expected credential_ to be a CloudCredential, received: {type(credential_)}')
+        if credential_ is not None and not isinstance(
+            credential_, (dict, CloudCredential)
+        ):
+            raise TypeError(
+                f'Expected credential_ to be a CloudCredential, received: {type(credential_)}'
+            )
 
         if endpoint_ is not None and not isinstance(endpoint_, (bytes, str)):
-            raise TypeError(f'Expected endpoint_ to be a str, received: {type(endpoint_)}')
+            raise TypeError(
+                f'Expected endpoint_ to be a str, received: {type(endpoint_)}'
+            )
 
-        if identity_endpoint_ is not None and not isinstance(identity_endpoint_, (bytes, str)):
-            raise TypeError(f'Expected identity_endpoint_ to be a str, received: {type(identity_endpoint_)}')
+        if identity_endpoint_ is not None and not isinstance(
+            identity_endpoint_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected identity_endpoint_ to be a str, received: {type(identity_endpoint_)}'
+            )
 
-        if is_controller_cloud_ is not None and not isinstance(is_controller_cloud_, bool):
-            raise TypeError(f'Expected is_controller_cloud_ to be a bool, received: {type(is_controller_cloud_)}')
+        if is_controller_cloud_ is not None and not isinstance(
+            is_controller_cloud_, bool
+        ):
+            raise TypeError(
+                f'Expected is_controller_cloud_ to be a bool, received: {type(is_controller_cloud_)}'
+            )
 
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
@@ -4665,10 +6762,16 @@ class CloudSpec(Type):
             raise TypeError(f'Expected region_ to be a str, received: {type(region_)}')
 
         if skip_tls_verify_ is not None and not isinstance(skip_tls_verify_, bool):
-            raise TypeError(f'Expected skip_tls_verify_ to be a bool, received: {type(skip_tls_verify_)}')
+            raise TypeError(
+                f'Expected skip_tls_verify_ to be a bool, received: {type(skip_tls_verify_)}'
+            )
 
-        if storage_endpoint_ is not None and not isinstance(storage_endpoint_, (bytes, str)):
-            raise TypeError(f'Expected storage_endpoint_ to be a str, received: {type(storage_endpoint_)}')
+        if storage_endpoint_ is not None and not isinstance(
+            storage_endpoint_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected storage_endpoint_ to be a str, received: {type(storage_endpoint_)}'
+            )
 
         if type__ is not None and not isinstance(type__, (bytes, str)):
             raise TypeError(f'Expected type__ to be a str, received: {type(type__)}')
@@ -4703,7 +6806,9 @@ class CloudSpecResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if result_ is not None and not isinstance(result_, (dict, CloudSpec)):
-            raise TypeError(f'Expected result_ to be a CloudSpec, received: {type(result_)}')
+            raise TypeError(
+                f'Expected result_ to be a CloudSpec, received: {type(result_)}'
+            )
 
         self.error = error_
         self.result = result_
@@ -4722,7 +6827,9 @@ class CloudSpecResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -4747,7 +6854,9 @@ class CloudUserInfo(Type):
             raise TypeError(f'Expected access_ to be a str, received: {type(access_)}')
 
         if display_name_ is not None and not isinstance(display_name_, (bytes, str)):
-            raise TypeError(f'Expected display_name_ to be a str, received: {type(display_name_)}')
+            raise TypeError(
+                f'Expected display_name_ to be a str, received: {type(display_name_)}'
+            )
 
         if user_ is not None and not isinstance(user_, (bytes, str)):
             raise TypeError(f'Expected user_ to be a str, received: {type(user_)}')
@@ -4770,7 +6879,9 @@ class CloudsResult(Type):
 
         # Validate arguments against known Juju API types.
         if clouds_ is not None and not isinstance(clouds_, dict):
-            raise TypeError(f'Expected clouds_ to be a Mapping, received: {type(clouds_)}')
+            raise TypeError(
+                f'Expected clouds_ to be a Mapping, received: {type(clouds_)}'
+            )
 
         self.clouds = clouds_
         self.unknown_fields = unknown_fields
@@ -4790,7 +6901,9 @@ class ConfigResult(Type):
 
         # Validate arguments against known Juju API types.
         if config_ is not None and not isinstance(config_, dict):
-            raise TypeError(f'Expected config_ to be a Mapping, received: {type(config_)}')
+            raise TypeError(
+                f'Expected config_ to be a Mapping, received: {type(config_)}'
+            )
 
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
@@ -4801,10 +6914,27 @@ class ConfigResult(Type):
 
 
 class ConfigSet(Type):
-    _toSchema = {'application': 'application', 'config': 'config', 'config_yaml': 'config-yaml', 'generation': 'generation'}
-    _toPy = {'application': 'application', 'config': 'config', 'config-yaml': 'config_yaml', 'generation': 'generation'}
+    _toSchema = {
+        'application': 'application',
+        'config': 'config',
+        'config_yaml': 'config-yaml',
+        'generation': 'generation',
+    }
+    _toPy = {
+        'application': 'application',
+        'config': 'config',
+        'config-yaml': 'config_yaml',
+        'generation': 'generation',
+    }
 
-    def __init__(self, application=None, config=None, config_yaml=None, generation=None, **unknown_fields):
+    def __init__(
+        self,
+        application=None,
+        config=None,
+        config_yaml=None,
+        generation=None,
+        **unknown_fields,
+    ):
         """
         application : str
         config : typing.Mapping[str, str]
@@ -4818,16 +6948,24 @@ class ConfigSet(Type):
 
         # Validate arguments against known Juju API types.
         if application_ is not None and not isinstance(application_, (bytes, str)):
-            raise TypeError(f'Expected application_ to be a str, received: {type(application_)}')
+            raise TypeError(
+                f'Expected application_ to be a str, received: {type(application_)}'
+            )
 
         if config_ is not None and not isinstance(config_, dict):
-            raise TypeError(f'Expected config_ to be a Mapping, received: {type(config_)}')
+            raise TypeError(
+                f'Expected config_ to be a Mapping, received: {type(config_)}'
+            )
 
         if config_yaml_ is not None and not isinstance(config_yaml_, (bytes, str)):
-            raise TypeError(f'Expected config_yaml_ to be a str, received: {type(config_yaml_)}')
+            raise TypeError(
+                f'Expected config_yaml_ to be a str, received: {type(config_yaml_)}'
+            )
 
         if generation_ is not None and not isinstance(generation_, (bytes, str)):
-            raise TypeError(f'Expected generation_ to be a str, received: {type(generation_)}')
+            raise TypeError(
+                f'Expected generation_ to be a str, received: {type(generation_)}'
+            )
 
         self.application = application_
         self.config = config_
@@ -4906,10 +7044,54 @@ class Constraints(Type):
 
 
 class ConsumeApplicationArg(Type):
-    _toSchema = {'application_alias': 'application-alias', 'application_description': 'application-description', 'applicationofferdetails': 'ApplicationOfferDetails', 'bindings': 'bindings', 'endpoints': 'endpoints', 'external_controller': 'external-controller', 'macaroon': 'macaroon', 'offer_name': 'offer-name', 'offer_url': 'offer-url', 'offer_uuid': 'offer-uuid', 'source_model_tag': 'source-model-tag', 'spaces': 'spaces', 'users': 'users'}
-    _toPy = {'ApplicationOfferDetails': 'applicationofferdetails', 'application-alias': 'application_alias', 'application-description': 'application_description', 'bindings': 'bindings', 'endpoints': 'endpoints', 'external-controller': 'external_controller', 'macaroon': 'macaroon', 'offer-name': 'offer_name', 'offer-url': 'offer_url', 'offer-uuid': 'offer_uuid', 'source-model-tag': 'source_model_tag', 'spaces': 'spaces', 'users': 'users'}
+    _toSchema = {
+        'application_alias': 'application-alias',
+        'application_description': 'application-description',
+        'applicationofferdetails': 'ApplicationOfferDetails',
+        'bindings': 'bindings',
+        'endpoints': 'endpoints',
+        'external_controller': 'external-controller',
+        'macaroon': 'macaroon',
+        'offer_name': 'offer-name',
+        'offer_url': 'offer-url',
+        'offer_uuid': 'offer-uuid',
+        'source_model_tag': 'source-model-tag',
+        'spaces': 'spaces',
+        'users': 'users',
+    }
+    _toPy = {
+        'ApplicationOfferDetails': 'applicationofferdetails',
+        'application-alias': 'application_alias',
+        'application-description': 'application_description',
+        'bindings': 'bindings',
+        'endpoints': 'endpoints',
+        'external-controller': 'external_controller',
+        'macaroon': 'macaroon',
+        'offer-name': 'offer_name',
+        'offer-url': 'offer_url',
+        'offer-uuid': 'offer_uuid',
+        'source-model-tag': 'source_model_tag',
+        'spaces': 'spaces',
+        'users': 'users',
+    }
 
-    def __init__(self, applicationofferdetails=None, application_alias=None, application_description=None, bindings=None, endpoints=None, external_controller=None, macaroon=None, offer_name=None, offer_url=None, offer_uuid=None, source_model_tag=None, spaces=None, users=None, **unknown_fields):
+    def __init__(
+        self,
+        applicationofferdetails=None,
+        application_alias=None,
+        application_description=None,
+        bindings=None,
+        endpoints=None,
+        external_controller=None,
+        macaroon=None,
+        offer_name=None,
+        offer_url=None,
+        offer_uuid=None,
+        source_model_tag=None,
+        spaces=None,
+        users=None,
+        **unknown_fields,
+    ):
         """
         applicationofferdetails : ApplicationOfferDetails
         application_alias : str
@@ -4925,12 +7107,20 @@ class ConsumeApplicationArg(Type):
         spaces : typing.Sequence[~RemoteSpace]
         users : typing.Sequence[~OfferUserDetails]
         """
-        applicationofferdetails_ = ApplicationOfferDetails.from_json(applicationofferdetails) if applicationofferdetails else None
+        applicationofferdetails_ = (
+            ApplicationOfferDetails.from_json(applicationofferdetails)
+            if applicationofferdetails
+            else None
+        )
         application_alias_ = application_alias
         application_description_ = application_description
         bindings_ = bindings
         endpoints_ = [RemoteEndpoint.from_json(o) for o in endpoints or []]
-        external_controller_ = ExternalControllerInfo.from_json(external_controller) if external_controller else None
+        external_controller_ = (
+            ExternalControllerInfo.from_json(external_controller)
+            if external_controller
+            else None
+        )
         macaroon_ = Macaroon.from_json(macaroon) if macaroon else None
         offer_name_ = offer_name
         offer_url_ = offer_url
@@ -4940,44 +7130,80 @@ class ConsumeApplicationArg(Type):
         users_ = [OfferUserDetails.from_json(o) for o in users or []]
 
         # Validate arguments against known Juju API types.
-        if applicationofferdetails_ is not None and not isinstance(applicationofferdetails_, (dict, ApplicationOfferDetails)):
-            raise TypeError(f'Expected applicationofferdetails_ to be a ApplicationOfferDetails, received: {type(applicationofferdetails_)}')
+        if applicationofferdetails_ is not None and not isinstance(
+            applicationofferdetails_, (dict, ApplicationOfferDetails)
+        ):
+            raise TypeError(
+                f'Expected applicationofferdetails_ to be a ApplicationOfferDetails, received: {type(applicationofferdetails_)}'
+            )
 
-        if application_alias_ is not None and not isinstance(application_alias_, (bytes, str)):
-            raise TypeError(f'Expected application_alias_ to be a str, received: {type(application_alias_)}')
+        if application_alias_ is not None and not isinstance(
+            application_alias_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected application_alias_ to be a str, received: {type(application_alias_)}'
+            )
 
-        if application_description_ is not None and not isinstance(application_description_, (bytes, str)):
-            raise TypeError(f'Expected application_description_ to be a str, received: {type(application_description_)}')
+        if application_description_ is not None and not isinstance(
+            application_description_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected application_description_ to be a str, received: {type(application_description_)}'
+            )
 
         if bindings_ is not None and not isinstance(bindings_, dict):
-            raise TypeError(f'Expected bindings_ to be a Mapping, received: {type(bindings_)}')
+            raise TypeError(
+                f'Expected bindings_ to be a Mapping, received: {type(bindings_)}'
+            )
 
         if endpoints_ is not None and not isinstance(endpoints_, (bytes, str, list)):
-            raise TypeError(f'Expected endpoints_ to be a Sequence, received: {type(endpoints_)}')
+            raise TypeError(
+                f'Expected endpoints_ to be a Sequence, received: {type(endpoints_)}'
+            )
 
-        if external_controller_ is not None and not isinstance(external_controller_, (dict, ExternalControllerInfo)):
-            raise TypeError(f'Expected external_controller_ to be a ExternalControllerInfo, received: {type(external_controller_)}')
+        if external_controller_ is not None and not isinstance(
+            external_controller_, (dict, ExternalControllerInfo)
+        ):
+            raise TypeError(
+                f'Expected external_controller_ to be a ExternalControllerInfo, received: {type(external_controller_)}'
+            )
 
         if macaroon_ is not None and not isinstance(macaroon_, (dict, Macaroon)):
-            raise TypeError(f'Expected macaroon_ to be a Macaroon, received: {type(macaroon_)}')
+            raise TypeError(
+                f'Expected macaroon_ to be a Macaroon, received: {type(macaroon_)}'
+            )
 
         if offer_name_ is not None and not isinstance(offer_name_, (bytes, str)):
-            raise TypeError(f'Expected offer_name_ to be a str, received: {type(offer_name_)}')
+            raise TypeError(
+                f'Expected offer_name_ to be a str, received: {type(offer_name_)}'
+            )
 
         if offer_url_ is not None and not isinstance(offer_url_, (bytes, str)):
-            raise TypeError(f'Expected offer_url_ to be a str, received: {type(offer_url_)}')
+            raise TypeError(
+                f'Expected offer_url_ to be a str, received: {type(offer_url_)}'
+            )
 
         if offer_uuid_ is not None and not isinstance(offer_uuid_, (bytes, str)):
-            raise TypeError(f'Expected offer_uuid_ to be a str, received: {type(offer_uuid_)}')
+            raise TypeError(
+                f'Expected offer_uuid_ to be a str, received: {type(offer_uuid_)}'
+            )
 
-        if source_model_tag_ is not None and not isinstance(source_model_tag_, (bytes, str)):
-            raise TypeError(f'Expected source_model_tag_ to be a str, received: {type(source_model_tag_)}')
+        if source_model_tag_ is not None and not isinstance(
+            source_model_tag_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected source_model_tag_ to be a str, received: {type(source_model_tag_)}'
+            )
 
         if spaces_ is not None and not isinstance(spaces_, (bytes, str, list)):
-            raise TypeError(f'Expected spaces_ to be a Sequence, received: {type(spaces_)}')
+            raise TypeError(
+                f'Expected spaces_ to be a Sequence, received: {type(spaces_)}'
+            )
 
         if users_ is not None and not isinstance(users_, (bytes, str, list)):
-            raise TypeError(f'Expected users_ to be a Sequence, received: {type(users_)}')
+            raise TypeError(
+                f'Expected users_ to be a Sequence, received: {type(users_)}'
+            )
 
         self.applicationofferdetails = applicationofferdetails_
         self.application_alias = application_alias_
@@ -5014,28 +7240,52 @@ class ConsumeApplicationArgs(Type):
 
 
 class ConsumeOfferDetails(Type):
-    _toSchema = {'external_controller': 'external-controller', 'macaroon': 'macaroon', 'offer': 'offer'}
-    _toPy = {'external-controller': 'external_controller', 'macaroon': 'macaroon', 'offer': 'offer'}
+    _toSchema = {
+        'external_controller': 'external-controller',
+        'macaroon': 'macaroon',
+        'offer': 'offer',
+    }
+    _toPy = {
+        'external-controller': 'external_controller',
+        'macaroon': 'macaroon',
+        'offer': 'offer',
+    }
 
-    def __init__(self, external_controller=None, macaroon=None, offer=None, **unknown_fields):
+    def __init__(
+        self, external_controller=None, macaroon=None, offer=None, **unknown_fields
+    ):
         """
         external_controller : ExternalControllerInfo
         macaroon : Macaroon
         offer : ApplicationOfferDetails
         """
-        external_controller_ = ExternalControllerInfo.from_json(external_controller) if external_controller else None
+        external_controller_ = (
+            ExternalControllerInfo.from_json(external_controller)
+            if external_controller
+            else None
+        )
         macaroon_ = Macaroon.from_json(macaroon) if macaroon else None
         offer_ = ApplicationOfferDetails.from_json(offer) if offer else None
 
         # Validate arguments against known Juju API types.
-        if external_controller_ is not None and not isinstance(external_controller_, (dict, ExternalControllerInfo)):
-            raise TypeError(f'Expected external_controller_ to be a ExternalControllerInfo, received: {type(external_controller_)}')
+        if external_controller_ is not None and not isinstance(
+            external_controller_, (dict, ExternalControllerInfo)
+        ):
+            raise TypeError(
+                f'Expected external_controller_ to be a ExternalControllerInfo, received: {type(external_controller_)}'
+            )
 
         if macaroon_ is not None and not isinstance(macaroon_, (dict, Macaroon)):
-            raise TypeError(f'Expected macaroon_ to be a Macaroon, received: {type(macaroon_)}')
+            raise TypeError(
+                f'Expected macaroon_ to be a Macaroon, received: {type(macaroon_)}'
+            )
 
-        if offer_ is not None and not isinstance(offer_, (dict, ApplicationOfferDetails)):
-            raise TypeError(f'Expected offer_ to be a ApplicationOfferDetails, received: {type(offer_)}')
+        if offer_ is not None and not isinstance(
+            offer_, (dict, ApplicationOfferDetails)
+        ):
+            raise TypeError(
+                f'Expected offer_ to be a ApplicationOfferDetails, received: {type(offer_)}'
+            )
 
         self.external_controller = external_controller_
         self.macaroon = macaroon_
@@ -5057,10 +7307,14 @@ class ConsumeOfferDetailsArg(Type):
 
         # Validate arguments against known Juju API types.
         if offer_urls_ is not None and not isinstance(offer_urls_, (dict, OfferURLs)):
-            raise TypeError(f'Expected offer_urls_ to be a OfferURLs, received: {type(offer_urls_)}')
+            raise TypeError(
+                f'Expected offer_urls_ to be a OfferURLs, received: {type(offer_urls_)}'
+            )
 
         if user_tag_ is not None and not isinstance(user_tag_, (bytes, str)):
-            raise TypeError(f'Expected user_tag_ to be a str, received: {type(user_tag_)}')
+            raise TypeError(
+                f'Expected user_tag_ to be a str, received: {type(user_tag_)}'
+            )
 
         self.offer_urls = offer_urls_
         self.user_tag = user_tag_
@@ -5068,10 +7322,30 @@ class ConsumeOfferDetailsArg(Type):
 
 
 class ConsumeOfferDetailsResult(Type):
-    _toSchema = {'consumeofferdetails': 'ConsumeOfferDetails', 'error': 'error', 'external_controller': 'external-controller', 'macaroon': 'macaroon', 'offer': 'offer'}
-    _toPy = {'ConsumeOfferDetails': 'consumeofferdetails', 'error': 'error', 'external-controller': 'external_controller', 'macaroon': 'macaroon', 'offer': 'offer'}
+    _toSchema = {
+        'consumeofferdetails': 'ConsumeOfferDetails',
+        'error': 'error',
+        'external_controller': 'external-controller',
+        'macaroon': 'macaroon',
+        'offer': 'offer',
+    }
+    _toPy = {
+        'ConsumeOfferDetails': 'consumeofferdetails',
+        'error': 'error',
+        'external-controller': 'external_controller',
+        'macaroon': 'macaroon',
+        'offer': 'offer',
+    }
 
-    def __init__(self, consumeofferdetails=None, error=None, external_controller=None, macaroon=None, offer=None, **unknown_fields):
+    def __init__(
+        self,
+        consumeofferdetails=None,
+        error=None,
+        external_controller=None,
+        macaroon=None,
+        offer=None,
+        **unknown_fields,
+    ):
         """
         consumeofferdetails : ConsumeOfferDetails
         error : Error
@@ -5079,27 +7353,49 @@ class ConsumeOfferDetailsResult(Type):
         macaroon : Macaroon
         offer : ApplicationOfferDetails
         """
-        consumeofferdetails_ = ConsumeOfferDetails.from_json(consumeofferdetails) if consumeofferdetails else None
+        consumeofferdetails_ = (
+            ConsumeOfferDetails.from_json(consumeofferdetails)
+            if consumeofferdetails
+            else None
+        )
         error_ = Error.from_json(error) if error else None
-        external_controller_ = ExternalControllerInfo.from_json(external_controller) if external_controller else None
+        external_controller_ = (
+            ExternalControllerInfo.from_json(external_controller)
+            if external_controller
+            else None
+        )
         macaroon_ = Macaroon.from_json(macaroon) if macaroon else None
         offer_ = ApplicationOfferDetails.from_json(offer) if offer else None
 
         # Validate arguments against known Juju API types.
-        if consumeofferdetails_ is not None and not isinstance(consumeofferdetails_, (dict, ConsumeOfferDetails)):
-            raise TypeError(f'Expected consumeofferdetails_ to be a ConsumeOfferDetails, received: {type(consumeofferdetails_)}')
+        if consumeofferdetails_ is not None and not isinstance(
+            consumeofferdetails_, (dict, ConsumeOfferDetails)
+        ):
+            raise TypeError(
+                f'Expected consumeofferdetails_ to be a ConsumeOfferDetails, received: {type(consumeofferdetails_)}'
+            )
 
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
-        if external_controller_ is not None and not isinstance(external_controller_, (dict, ExternalControllerInfo)):
-            raise TypeError(f'Expected external_controller_ to be a ExternalControllerInfo, received: {type(external_controller_)}')
+        if external_controller_ is not None and not isinstance(
+            external_controller_, (dict, ExternalControllerInfo)
+        ):
+            raise TypeError(
+                f'Expected external_controller_ to be a ExternalControllerInfo, received: {type(external_controller_)}'
+            )
 
         if macaroon_ is not None and not isinstance(macaroon_, (dict, Macaroon)):
-            raise TypeError(f'Expected macaroon_ to be a Macaroon, received: {type(macaroon_)}')
+            raise TypeError(
+                f'Expected macaroon_ to be a Macaroon, received: {type(macaroon_)}'
+            )
 
-        if offer_ is not None and not isinstance(offer_, (dict, ApplicationOfferDetails)):
-            raise TypeError(f'Expected offer_ to be a ApplicationOfferDetails, received: {type(offer_)}')
+        if offer_ is not None and not isinstance(
+            offer_, (dict, ApplicationOfferDetails)
+        ):
+            raise TypeError(
+                f'Expected offer_ to be a ApplicationOfferDetails, received: {type(offer_)}'
+            )
 
         self.consumeofferdetails = consumeofferdetails_
         self.error = error_
@@ -5121,7 +7417,9 @@ class ConsumeOfferDetailsResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -5143,7 +7441,9 @@ class ControllerAPIInfoResult(Type):
 
         # Validate arguments against known Juju API types.
         if addresses_ is not None and not isinstance(addresses_, (bytes, str, list)):
-            raise TypeError(f'Expected addresses_ to be a Sequence, received: {type(addresses_)}')
+            raise TypeError(
+                f'Expected addresses_ to be a Sequence, received: {type(addresses_)}'
+            )
 
         if cacert_ is not None and not isinstance(cacert_, (bytes, str)):
             raise TypeError(f'Expected cacert_ to be a str, received: {type(cacert_)}')
@@ -5169,7 +7469,9 @@ class ControllerAPIInfoResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -5187,7 +7489,9 @@ class ControllerConfigResult(Type):
 
         # Validate arguments against known Juju API types.
         if config_ is not None and not isinstance(config_, dict):
-            raise TypeError(f'Expected config_ to be a Mapping, received: {type(config_)}')
+            raise TypeError(
+                f'Expected config_ to be a Mapping, received: {type(config_)}'
+            )
 
         self.config = config_
         self.unknown_fields = unknown_fields
@@ -5205,7 +7509,9 @@ class ControllerConfigSet(Type):
 
         # Validate arguments against known Juju API types.
         if config_ is not None and not isinstance(config_, dict):
-            raise TypeError(f'Expected config_ to be a Mapping, received: {type(config_)}')
+            raise TypeError(
+                f'Expected config_ to be a Mapping, received: {type(config_)}'
+            )
 
         self.config = config_
         self.unknown_fields = unknown_fields
@@ -5225,10 +7531,14 @@ class ControllerCredentialInfo(Type):
 
         # Validate arguments against known Juju API types.
         if content_ is not None and not isinstance(content_, (dict, CredentialContent)):
-            raise TypeError(f'Expected content_ to be a CredentialContent, received: {type(content_)}')
+            raise TypeError(
+                f'Expected content_ to be a CredentialContent, received: {type(content_)}'
+            )
 
         if models_ is not None and not isinstance(models_, (bytes, str, list)):
-            raise TypeError(f'Expected models_ to be a Sequence, received: {type(models_)}')
+            raise TypeError(
+                f'Expected models_ to be a Sequence, received: {type(models_)}'
+            )
 
         self.content = content_
         self.models = models_
@@ -5249,10 +7559,14 @@ class ControllerVersionResults(Type):
 
         # Validate arguments against known Juju API types.
         if git_commit_ is not None and not isinstance(git_commit_, (bytes, str)):
-            raise TypeError(f'Expected git_commit_ to be a str, received: {type(git_commit_)}')
+            raise TypeError(
+                f'Expected git_commit_ to be a str, received: {type(git_commit_)}'
+            )
 
         if version_ is not None and not isinstance(version_, (bytes, str)):
-            raise TypeError(f'Expected version_ to be a str, received: {type(version_)}')
+            raise TypeError(
+                f'Expected version_ to be a str, received: {type(version_)}'
+            )
 
         self.git_commit = git_commit_
         self.version = version_
@@ -5276,7 +7590,9 @@ class ControllersChangeResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if result_ is not None and not isinstance(result_, (dict, ControllersChanges)):
-            raise TypeError(f'Expected result_ to be a ControllersChanges, received: {type(result_)}')
+            raise TypeError(
+                f'Expected result_ to be a ControllersChanges, received: {type(result_)}'
+            )
 
         self.error = error_
         self.result = result_
@@ -5295,17 +7611,36 @@ class ControllersChangeResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
 
 
 class ControllersChanges(Type):
-    _toSchema = {'added': 'added', 'converted': 'converted', 'maintained': 'maintained', 'removed': 'removed'}
-    _toPy = {'added': 'added', 'converted': 'converted', 'maintained': 'maintained', 'removed': 'removed'}
+    _toSchema = {
+        'added': 'added',
+        'converted': 'converted',
+        'maintained': 'maintained',
+        'removed': 'removed',
+    }
+    _toPy = {
+        'added': 'added',
+        'converted': 'converted',
+        'maintained': 'maintained',
+        'removed': 'removed',
+    }
 
-    def __init__(self, added=None, converted=None, maintained=None, removed=None, **unknown_fields):
+    def __init__(
+        self,
+        added=None,
+        converted=None,
+        maintained=None,
+        removed=None,
+        **unknown_fields,
+    ):
         """
         added : typing.Sequence[str]
         converted : typing.Sequence[str]
@@ -5319,16 +7654,24 @@ class ControllersChanges(Type):
 
         # Validate arguments against known Juju API types.
         if added_ is not None and not isinstance(added_, (bytes, str, list)):
-            raise TypeError(f'Expected added_ to be a Sequence, received: {type(added_)}')
+            raise TypeError(
+                f'Expected added_ to be a Sequence, received: {type(added_)}'
+            )
 
         if converted_ is not None and not isinstance(converted_, (bytes, str, list)):
-            raise TypeError(f'Expected converted_ to be a Sequence, received: {type(converted_)}')
+            raise TypeError(
+                f'Expected converted_ to be a Sequence, received: {type(converted_)}'
+            )
 
         if maintained_ is not None and not isinstance(maintained_, (bytes, str, list)):
-            raise TypeError(f'Expected maintained_ to be a Sequence, received: {type(maintained_)}')
+            raise TypeError(
+                f'Expected maintained_ to be a Sequence, received: {type(maintained_)}'
+            )
 
         if removed_ is not None and not isinstance(removed_, (bytes, str, list)):
-            raise TypeError(f'Expected removed_ to be a Sequence, received: {type(removed_)}')
+            raise TypeError(
+                f'Expected removed_ to be a Sequence, received: {type(removed_)}'
+            )
 
         self.added = added_
         self.converted = converted_
@@ -5338,10 +7681,20 @@ class ControllersChanges(Type):
 
 
 class ControllersSpec(Type):
-    _toSchema = {'constraints': 'constraints', 'num_controllers': 'num-controllers', 'placement': 'placement'}
-    _toPy = {'constraints': 'constraints', 'num-controllers': 'num_controllers', 'placement': 'placement'}
+    _toSchema = {
+        'constraints': 'constraints',
+        'num_controllers': 'num-controllers',
+        'placement': 'placement',
+    }
+    _toPy = {
+        'constraints': 'constraints',
+        'num-controllers': 'num_controllers',
+        'placement': 'placement',
+    }
 
-    def __init__(self, constraints=None, num_controllers=None, placement=None, **unknown_fields):
+    def __init__(
+        self, constraints=None, num_controllers=None, placement=None, **unknown_fields
+    ):
         """
         constraints : Value
         num_controllers : int
@@ -5353,13 +7706,19 @@ class ControllersSpec(Type):
 
         # Validate arguments against known Juju API types.
         if constraints_ is not None and not isinstance(constraints_, (dict, Value)):
-            raise TypeError(f'Expected constraints_ to be a Value, received: {type(constraints_)}')
+            raise TypeError(
+                f'Expected constraints_ to be a Value, received: {type(constraints_)}'
+            )
 
         if num_controllers_ is not None and not isinstance(num_controllers_, int):
-            raise TypeError(f'Expected num_controllers_ to be a int, received: {type(num_controllers_)}')
+            raise TypeError(
+                f'Expected num_controllers_ to be a int, received: {type(num_controllers_)}'
+            )
 
         if placement_ is not None and not isinstance(placement_, (bytes, str, list)):
-            raise TypeError(f'Expected placement_ to be a Sequence, received: {type(placement_)}')
+            raise TypeError(
+                f'Expected placement_ to be a Sequence, received: {type(placement_)}'
+            )
 
         self.constraints = constraints_
         self.num_controllers = num_controllers_
@@ -5379,17 +7738,51 @@ class ControllersSpecs(Type):
 
         # Validate arguments against known Juju API types.
         if specs_ is not None and not isinstance(specs_, (bytes, str, list)):
-            raise TypeError(f'Expected specs_ to be a Sequence, received: {type(specs_)}')
+            raise TypeError(
+                f'Expected specs_ to be a Sequence, received: {type(specs_)}'
+            )
 
         self.specs = specs_
         self.unknown_fields = unknown_fields
 
 
 class CreateSecretArg(Type):
-    _toSchema = {'content': 'content', 'description': 'description', 'expire_time': 'expire-time', 'label': 'label', 'owner_tag': 'owner-tag', 'params': 'params', 'rotate_policy': 'rotate-policy', 'upsertsecretarg': 'UpsertSecretArg', 'uri': 'uri'}
-    _toPy = {'UpsertSecretArg': 'upsertsecretarg', 'content': 'content', 'description': 'description', 'expire-time': 'expire_time', 'label': 'label', 'owner-tag': 'owner_tag', 'params': 'params', 'rotate-policy': 'rotate_policy', 'uri': 'uri'}
+    _toSchema = {
+        'content': 'content',
+        'description': 'description',
+        'expire_time': 'expire-time',
+        'label': 'label',
+        'owner_tag': 'owner-tag',
+        'params': 'params',
+        'rotate_policy': 'rotate-policy',
+        'upsertsecretarg': 'UpsertSecretArg',
+        'uri': 'uri',
+    }
+    _toPy = {
+        'UpsertSecretArg': 'upsertsecretarg',
+        'content': 'content',
+        'description': 'description',
+        'expire-time': 'expire_time',
+        'label': 'label',
+        'owner-tag': 'owner_tag',
+        'params': 'params',
+        'rotate-policy': 'rotate_policy',
+        'uri': 'uri',
+    }
 
-    def __init__(self, upsertsecretarg=None, content=None, description=None, expire_time=None, label=None, owner_tag=None, params=None, rotate_policy=None, uri=None, **unknown_fields):
+    def __init__(
+        self,
+        upsertsecretarg=None,
+        content=None,
+        description=None,
+        expire_time=None,
+        label=None,
+        owner_tag=None,
+        params=None,
+        rotate_policy=None,
+        uri=None,
+        **unknown_fields,
+    ):
         """
         upsertsecretarg : UpsertSecretArg
         content : SecretContentParams
@@ -5401,7 +7794,9 @@ class CreateSecretArg(Type):
         rotate_policy : str
         uri : str
         """
-        upsertsecretarg_ = UpsertSecretArg.from_json(upsertsecretarg) if upsertsecretarg else None
+        upsertsecretarg_ = (
+            UpsertSecretArg.from_json(upsertsecretarg) if upsertsecretarg else None
+        )
         content_ = SecretContentParams.from_json(content) if content else None
         description_ = description
         expire_time_ = expire_time
@@ -5412,29 +7807,47 @@ class CreateSecretArg(Type):
         uri_ = uri
 
         # Validate arguments against known Juju API types.
-        if upsertsecretarg_ is not None and not isinstance(upsertsecretarg_, (dict, UpsertSecretArg)):
-            raise TypeError(f'Expected upsertsecretarg_ to be a UpsertSecretArg, received: {type(upsertsecretarg_)}')
+        if upsertsecretarg_ is not None and not isinstance(
+            upsertsecretarg_, (dict, UpsertSecretArg)
+        ):
+            raise TypeError(
+                f'Expected upsertsecretarg_ to be a UpsertSecretArg, received: {type(upsertsecretarg_)}'
+            )
 
-        if content_ is not None and not isinstance(content_, (dict, SecretContentParams)):
-            raise TypeError(f'Expected content_ to be a SecretContentParams, received: {type(content_)}')
+        if content_ is not None and not isinstance(
+            content_, (dict, SecretContentParams)
+        ):
+            raise TypeError(
+                f'Expected content_ to be a SecretContentParams, received: {type(content_)}'
+            )
 
         if description_ is not None and not isinstance(description_, (bytes, str)):
-            raise TypeError(f'Expected description_ to be a str, received: {type(description_)}')
+            raise TypeError(
+                f'Expected description_ to be a str, received: {type(description_)}'
+            )
 
         if expire_time_ is not None and not isinstance(expire_time_, (bytes, str)):
-            raise TypeError(f'Expected expire_time_ to be a str, received: {type(expire_time_)}')
+            raise TypeError(
+                f'Expected expire_time_ to be a str, received: {type(expire_time_)}'
+            )
 
         if label_ is not None and not isinstance(label_, (bytes, str)):
             raise TypeError(f'Expected label_ to be a str, received: {type(label_)}')
 
         if owner_tag_ is not None and not isinstance(owner_tag_, (bytes, str)):
-            raise TypeError(f'Expected owner_tag_ to be a str, received: {type(owner_tag_)}')
+            raise TypeError(
+                f'Expected owner_tag_ to be a str, received: {type(owner_tag_)}'
+            )
 
         if params_ is not None and not isinstance(params_, dict):
-            raise TypeError(f'Expected params_ to be a Mapping, received: {type(params_)}')
+            raise TypeError(
+                f'Expected params_ to be a Mapping, received: {type(params_)}'
+            )
 
         if rotate_policy_ is not None and not isinstance(rotate_policy_, (bytes, str)):
-            raise TypeError(f'Expected rotate_policy_ to be a str, received: {type(rotate_policy_)}')
+            raise TypeError(
+                f'Expected rotate_policy_ to be a str, received: {type(rotate_policy_)}'
+            )
 
         if uri_ is not None and not isinstance(uri_, (bytes, str)):
             raise TypeError(f'Expected uri_ to be a str, received: {type(uri_)}')
@@ -5470,10 +7883,27 @@ class CreateSecretArgs(Type):
 
 
 class CreateSpaceParams(Type):
-    _toSchema = {'cidrs': 'cidrs', 'provider_id': 'provider-id', 'public': 'public', 'space_tag': 'space-tag'}
-    _toPy = {'cidrs': 'cidrs', 'provider-id': 'provider_id', 'public': 'public', 'space-tag': 'space_tag'}
+    _toSchema = {
+        'cidrs': 'cidrs',
+        'provider_id': 'provider-id',
+        'public': 'public',
+        'space_tag': 'space-tag',
+    }
+    _toPy = {
+        'cidrs': 'cidrs',
+        'provider-id': 'provider_id',
+        'public': 'public',
+        'space-tag': 'space_tag',
+    }
 
-    def __init__(self, cidrs=None, provider_id=None, public=None, space_tag=None, **unknown_fields):
+    def __init__(
+        self,
+        cidrs=None,
+        provider_id=None,
+        public=None,
+        space_tag=None,
+        **unknown_fields,
+    ):
         """
         cidrs : typing.Sequence[str]
         provider_id : str
@@ -5487,16 +7917,22 @@ class CreateSpaceParams(Type):
 
         # Validate arguments against known Juju API types.
         if cidrs_ is not None and not isinstance(cidrs_, (bytes, str, list)):
-            raise TypeError(f'Expected cidrs_ to be a Sequence, received: {type(cidrs_)}')
+            raise TypeError(
+                f'Expected cidrs_ to be a Sequence, received: {type(cidrs_)}'
+            )
 
         if provider_id_ is not None and not isinstance(provider_id_, (bytes, str)):
-            raise TypeError(f'Expected provider_id_ to be a str, received: {type(provider_id_)}')
+            raise TypeError(
+                f'Expected provider_id_ to be a str, received: {type(provider_id_)}'
+            )
 
         if public_ is not None and not isinstance(public_, bool):
             raise TypeError(f'Expected public_ to be a bool, received: {type(public_)}')
 
         if space_tag_ is not None and not isinstance(space_tag_, (bytes, str)):
-            raise TypeError(f'Expected space_tag_ to be a str, received: {type(space_tag_)}')
+            raise TypeError(
+                f'Expected space_tag_ to be a str, received: {type(space_tag_)}'
+            )
 
         self.cidrs = cidrs_
         self.provider_id = provider_id_
@@ -5517,17 +7953,39 @@ class CreateSpacesParams(Type):
 
         # Validate arguments against known Juju API types.
         if spaces_ is not None and not isinstance(spaces_, (bytes, str, list)):
-            raise TypeError(f'Expected spaces_ to be a Sequence, received: {type(spaces_)}')
+            raise TypeError(
+                f'Expected spaces_ to be a Sequence, received: {type(spaces_)}'
+            )
 
         self.spaces = spaces_
         self.unknown_fields = unknown_fields
 
 
 class CredentialContent(Type):
-    _toSchema = {'attrs': 'attrs', 'auth_type': 'auth-type', 'cloud': 'cloud', 'name': 'name', 'valid': 'valid'}
-    _toPy = {'attrs': 'attrs', 'auth-type': 'auth_type', 'cloud': 'cloud', 'name': 'name', 'valid': 'valid'}
+    _toSchema = {
+        'attrs': 'attrs',
+        'auth_type': 'auth-type',
+        'cloud': 'cloud',
+        'name': 'name',
+        'valid': 'valid',
+    }
+    _toPy = {
+        'attrs': 'attrs',
+        'auth-type': 'auth_type',
+        'cloud': 'cloud',
+        'name': 'name',
+        'valid': 'valid',
+    }
 
-    def __init__(self, attrs=None, auth_type=None, cloud=None, name=None, valid=None, **unknown_fields):
+    def __init__(
+        self,
+        attrs=None,
+        auth_type=None,
+        cloud=None,
+        name=None,
+        valid=None,
+        **unknown_fields,
+    ):
         """
         attrs : typing.Mapping[str, str]
         auth_type : str
@@ -5543,10 +8001,14 @@ class CredentialContent(Type):
 
         # Validate arguments against known Juju API types.
         if attrs_ is not None and not isinstance(attrs_, dict):
-            raise TypeError(f'Expected attrs_ to be a Mapping, received: {type(attrs_)}')
+            raise TypeError(
+                f'Expected attrs_ to be a Mapping, received: {type(attrs_)}'
+            )
 
         if auth_type_ is not None and not isinstance(auth_type_, (bytes, str)):
-            raise TypeError(f'Expected auth_type_ to be a str, received: {type(auth_type_)}')
+            raise TypeError(
+                f'Expected auth_type_ to be a str, received: {type(auth_type_)}'
+            )
 
         if cloud_ is not None and not isinstance(cloud_, (bytes, str)):
             raise TypeError(f'Expected cloud_ to be a str, received: {type(cloud_)}')
@@ -5581,8 +8043,12 @@ class CredentialContentResult(Type):
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
-        if result_ is not None and not isinstance(result_, (dict, ControllerCredentialInfo)):
-            raise TypeError(f'Expected result_ to be a ControllerCredentialInfo, received: {type(result_)}')
+        if result_ is not None and not isinstance(
+            result_, (dict, ControllerCredentialInfo)
+        ):
+            raise TypeError(
+                f'Expected result_ to be a ControllerCredentialInfo, received: {type(result_)}'
+            )
 
         self.error = error_
         self.result = result_
@@ -5601,35 +8067,61 @@ class CredentialContentResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
 
 
 class DashboardConnectionInfo(Type):
-    _toSchema = {'error': 'error', 'proxy_connection': 'proxy-connection', 'ssh_connection': 'ssh-connection'}
-    _toPy = {'error': 'error', 'proxy-connection': 'proxy_connection', 'ssh-connection': 'ssh_connection'}
+    _toSchema = {
+        'error': 'error',
+        'proxy_connection': 'proxy-connection',
+        'ssh_connection': 'ssh-connection',
+    }
+    _toPy = {
+        'error': 'error',
+        'proxy-connection': 'proxy_connection',
+        'ssh-connection': 'ssh_connection',
+    }
 
-    def __init__(self, error=None, proxy_connection=None, ssh_connection=None, **unknown_fields):
+    def __init__(
+        self, error=None, proxy_connection=None, ssh_connection=None, **unknown_fields
+    ):
         """
         error : Error
         proxy_connection : Proxy
         ssh_connection : DashboardConnectionSSHTunnel
         """
         error_ = Error.from_json(error) if error else None
-        proxy_connection_ = Proxy.from_json(proxy_connection) if proxy_connection else None
-        ssh_connection_ = DashboardConnectionSSHTunnel.from_json(ssh_connection) if ssh_connection else None
+        proxy_connection_ = (
+            Proxy.from_json(proxy_connection) if proxy_connection else None
+        )
+        ssh_connection_ = (
+            DashboardConnectionSSHTunnel.from_json(ssh_connection)
+            if ssh_connection
+            else None
+        )
 
         # Validate arguments against known Juju API types.
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
-        if proxy_connection_ is not None and not isinstance(proxy_connection_, (dict, Proxy)):
-            raise TypeError(f'Expected proxy_connection_ to be a Proxy, received: {type(proxy_connection_)}')
+        if proxy_connection_ is not None and not isinstance(
+            proxy_connection_, (dict, Proxy)
+        ):
+            raise TypeError(
+                f'Expected proxy_connection_ to be a Proxy, received: {type(proxy_connection_)}'
+            )
 
-        if ssh_connection_ is not None and not isinstance(ssh_connection_, (dict, DashboardConnectionSSHTunnel)):
-            raise TypeError(f'Expected ssh_connection_ to be a DashboardConnectionSSHTunnel, received: {type(ssh_connection_)}')
+        if ssh_connection_ is not None and not isinstance(
+            ssh_connection_, (dict, DashboardConnectionSSHTunnel)
+        ):
+            raise TypeError(
+                f'Expected ssh_connection_ to be a DashboardConnectionSSHTunnel, received: {type(ssh_connection_)}'
+            )
 
         self.error = error_
         self.proxy_connection = proxy_connection_
@@ -5692,7 +8184,9 @@ class DeleteSecretArg(Type):
             raise TypeError(f'Expected label_ to be a str, received: {type(label_)}')
 
         if revisions_ is not None and not isinstance(revisions_, (bytes, str, list)):
-            raise TypeError(f'Expected revisions_ to be a Sequence, received: {type(revisions_)}')
+            raise TypeError(
+                f'Expected revisions_ to be a Sequence, received: {type(revisions_)}'
+            )
 
         if uri_ is not None and not isinstance(uri_, (bytes, str)):
             raise TypeError(f'Expected uri_ to be a str, received: {type(uri_)}')
@@ -5735,7 +8229,9 @@ class Delta(Type):
 
         # Validate arguments against known Juju API types.
         if removed_ is not None and not isinstance(removed_, bool):
-            raise TypeError(f'Expected removed_ to be a bool, received: {type(removed_)}')
+            raise TypeError(
+                f'Expected removed_ to be a bool, received: {type(removed_)}'
+            )
 
         self.entity = entity_
         self.removed = removed_
@@ -5743,10 +8239,66 @@ class Delta(Type):
 
 
 class DeployFromRepositoryArg(Type):
-    _toSchema = {'applicationname': 'ApplicationName', 'attachstorage': 'AttachStorage', 'base': 'base', 'channel': 'channel', 'charmname': 'CharmName', 'configyaml': 'ConfigYAML', 'cons': 'Cons', 'devices': 'Devices', 'dryrun': 'DryRun', 'endpoint_bindings': 'endpoint-bindings', 'force': 'force', 'num_units': 'num-units', 'placement': 'Placement', 'resources': 'resources', 'revision': 'revision', 'storage': 'Storage', 'trust': 'Trust'}
-    _toPy = {'ApplicationName': 'applicationname', 'AttachStorage': 'attachstorage', 'CharmName': 'charmname', 'ConfigYAML': 'configyaml', 'Cons': 'cons', 'Devices': 'devices', 'DryRun': 'dryrun', 'Placement': 'placement', 'Storage': 'storage', 'Trust': 'trust', 'base': 'base', 'channel': 'channel', 'endpoint-bindings': 'endpoint_bindings', 'force': 'force', 'num-units': 'num_units', 'resources': 'resources', 'revision': 'revision'}
+    _toSchema = {
+        'applicationname': 'ApplicationName',
+        'attachstorage': 'AttachStorage',
+        'base': 'base',
+        'channel': 'channel',
+        'charmname': 'CharmName',
+        'configyaml': 'ConfigYAML',
+        'cons': 'Cons',
+        'devices': 'Devices',
+        'dryrun': 'DryRun',
+        'endpoint_bindings': 'endpoint-bindings',
+        'force': 'force',
+        'num_units': 'num-units',
+        'placement': 'Placement',
+        'resources': 'resources',
+        'revision': 'revision',
+        'storage': 'Storage',
+        'trust': 'Trust',
+    }
+    _toPy = {
+        'ApplicationName': 'applicationname',
+        'AttachStorage': 'attachstorage',
+        'CharmName': 'charmname',
+        'ConfigYAML': 'configyaml',
+        'Cons': 'cons',
+        'Devices': 'devices',
+        'DryRun': 'dryrun',
+        'Placement': 'placement',
+        'Storage': 'storage',
+        'Trust': 'trust',
+        'base': 'base',
+        'channel': 'channel',
+        'endpoint-bindings': 'endpoint_bindings',
+        'force': 'force',
+        'num-units': 'num_units',
+        'resources': 'resources',
+        'revision': 'revision',
+    }
 
-    def __init__(self, applicationname=None, attachstorage=None, charmname=None, configyaml=None, cons=None, devices=None, dryrun=None, placement=None, storage=None, trust=None, base=None, channel=None, endpoint_bindings=None, force=None, num_units=None, resources=None, revision=None, **unknown_fields):
+    def __init__(
+        self,
+        applicationname=None,
+        attachstorage=None,
+        charmname=None,
+        configyaml=None,
+        cons=None,
+        devices=None,
+        dryrun=None,
+        placement=None,
+        storage=None,
+        trust=None,
+        base=None,
+        channel=None,
+        endpoint_bindings=None,
+        force=None,
+        num_units=None,
+        resources=None,
+        revision=None,
+        **unknown_fields,
+    ):
         """
         applicationname : str
         attachstorage : typing.Sequence[str]
@@ -5785,32 +8337,50 @@ class DeployFromRepositoryArg(Type):
         revision_ = revision
 
         # Validate arguments against known Juju API types.
-        if applicationname_ is not None and not isinstance(applicationname_, (bytes, str)):
-            raise TypeError(f'Expected applicationname_ to be a str, received: {type(applicationname_)}')
+        if applicationname_ is not None and not isinstance(
+            applicationname_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected applicationname_ to be a str, received: {type(applicationname_)}'
+            )
 
-        if attachstorage_ is not None and not isinstance(attachstorage_, (bytes, str, list)):
-            raise TypeError(f'Expected attachstorage_ to be a Sequence, received: {type(attachstorage_)}')
+        if attachstorage_ is not None and not isinstance(
+            attachstorage_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected attachstorage_ to be a Sequence, received: {type(attachstorage_)}'
+            )
 
         if charmname_ is not None and not isinstance(charmname_, (bytes, str)):
-            raise TypeError(f'Expected charmname_ to be a str, received: {type(charmname_)}')
+            raise TypeError(
+                f'Expected charmname_ to be a str, received: {type(charmname_)}'
+            )
 
         if configyaml_ is not None and not isinstance(configyaml_, (bytes, str)):
-            raise TypeError(f'Expected configyaml_ to be a str, received: {type(configyaml_)}')
+            raise TypeError(
+                f'Expected configyaml_ to be a str, received: {type(configyaml_)}'
+            )
 
         if cons_ is not None and not isinstance(cons_, (dict, Value)):
             raise TypeError(f'Expected cons_ to be a Value, received: {type(cons_)}')
 
         if devices_ is not None and not isinstance(devices_, dict):
-            raise TypeError(f'Expected devices_ to be a Mapping, received: {type(devices_)}')
+            raise TypeError(
+                f'Expected devices_ to be a Mapping, received: {type(devices_)}'
+            )
 
         if dryrun_ is not None and not isinstance(dryrun_, bool):
             raise TypeError(f'Expected dryrun_ to be a bool, received: {type(dryrun_)}')
 
         if placement_ is not None and not isinstance(placement_, (bytes, str, list)):
-            raise TypeError(f'Expected placement_ to be a Sequence, received: {type(placement_)}')
+            raise TypeError(
+                f'Expected placement_ to be a Sequence, received: {type(placement_)}'
+            )
 
         if storage_ is not None and not isinstance(storage_, dict):
-            raise TypeError(f'Expected storage_ to be a Mapping, received: {type(storage_)}')
+            raise TypeError(
+                f'Expected storage_ to be a Mapping, received: {type(storage_)}'
+            )
 
         if trust_ is not None and not isinstance(trust_, bool):
             raise TypeError(f'Expected trust_ to be a bool, received: {type(trust_)}')
@@ -5819,22 +8389,32 @@ class DeployFromRepositoryArg(Type):
             raise TypeError(f'Expected base_ to be a Base, received: {type(base_)}')
 
         if channel_ is not None and not isinstance(channel_, (bytes, str)):
-            raise TypeError(f'Expected channel_ to be a str, received: {type(channel_)}')
+            raise TypeError(
+                f'Expected channel_ to be a str, received: {type(channel_)}'
+            )
 
         if endpoint_bindings_ is not None and not isinstance(endpoint_bindings_, dict):
-            raise TypeError(f'Expected endpoint_bindings_ to be a Mapping, received: {type(endpoint_bindings_)}')
+            raise TypeError(
+                f'Expected endpoint_bindings_ to be a Mapping, received: {type(endpoint_bindings_)}'
+            )
 
         if force_ is not None and not isinstance(force_, bool):
             raise TypeError(f'Expected force_ to be a bool, received: {type(force_)}')
 
         if num_units_ is not None and not isinstance(num_units_, int):
-            raise TypeError(f'Expected num_units_ to be a int, received: {type(num_units_)}')
+            raise TypeError(
+                f'Expected num_units_ to be a int, received: {type(num_units_)}'
+            )
 
         if resources_ is not None and not isinstance(resources_, dict):
-            raise TypeError(f'Expected resources_ to be a Mapping, received: {type(resources_)}')
+            raise TypeError(
+                f'Expected resources_ to be a Mapping, received: {type(resources_)}'
+            )
 
         if revision_ is not None and not isinstance(revision_, int):
-            raise TypeError(f'Expected revision_ to be a int, received: {type(revision_)}')
+            raise TypeError(
+                f'Expected revision_ to be a int, received: {type(revision_)}'
+            )
 
         self.applicationname = applicationname_
         self.attachstorage = attachstorage_
@@ -5875,10 +8455,33 @@ class DeployFromRepositoryArgs(Type):
 
 
 class DeployFromRepositoryInfo(Type):
-    _toSchema = {'architecture': 'architecture', 'base': 'base', 'channel': 'channel', 'effective_channel': 'effective-channel', 'name': 'name', 'revision': 'revision'}
-    _toPy = {'architecture': 'architecture', 'base': 'base', 'channel': 'channel', 'effective-channel': 'effective_channel', 'name': 'name', 'revision': 'revision'}
+    _toSchema = {
+        'architecture': 'architecture',
+        'base': 'base',
+        'channel': 'channel',
+        'effective_channel': 'effective-channel',
+        'name': 'name',
+        'revision': 'revision',
+    }
+    _toPy = {
+        'architecture': 'architecture',
+        'base': 'base',
+        'channel': 'channel',
+        'effective-channel': 'effective_channel',
+        'name': 'name',
+        'revision': 'revision',
+    }
 
-    def __init__(self, architecture=None, base=None, channel=None, effective_channel=None, name=None, revision=None, **unknown_fields):
+    def __init__(
+        self,
+        architecture=None,
+        base=None,
+        channel=None,
+        effective_channel=None,
+        name=None,
+        revision=None,
+        **unknown_fields,
+    ):
         """
         architecture : str
         base : Base
@@ -5896,22 +8499,32 @@ class DeployFromRepositoryInfo(Type):
 
         # Validate arguments against known Juju API types.
         if architecture_ is not None and not isinstance(architecture_, (bytes, str)):
-            raise TypeError(f'Expected architecture_ to be a str, received: {type(architecture_)}')
+            raise TypeError(
+                f'Expected architecture_ to be a str, received: {type(architecture_)}'
+            )
 
         if base_ is not None and not isinstance(base_, (dict, Base)):
             raise TypeError(f'Expected base_ to be a Base, received: {type(base_)}')
 
         if channel_ is not None and not isinstance(channel_, (bytes, str)):
-            raise TypeError(f'Expected channel_ to be a str, received: {type(channel_)}')
+            raise TypeError(
+                f'Expected channel_ to be a str, received: {type(channel_)}'
+            )
 
-        if effective_channel_ is not None and not isinstance(effective_channel_, (bytes, str)):
-            raise TypeError(f'Expected effective_channel_ to be a str, received: {type(effective_channel_)}')
+        if effective_channel_ is not None and not isinstance(
+            effective_channel_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected effective_channel_ to be a str, received: {type(effective_channel_)}'
+            )
 
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
 
         if revision_ is not None and not isinstance(revision_, int):
-            raise TypeError(f'Expected revision_ to be a int, received: {type(revision_)}')
+            raise TypeError(
+                f'Expected revision_ to be a int, received: {type(revision_)}'
+            )
 
         self.architecture = architecture_
         self.base = base_
@@ -5923,10 +8536,20 @@ class DeployFromRepositoryInfo(Type):
 
 
 class DeployFromRepositoryResult(Type):
-    _toSchema = {'errors': 'Errors', 'info': 'Info', 'pendingresourceuploads': 'PendingResourceUploads'}
-    _toPy = {'Errors': 'errors', 'Info': 'info', 'PendingResourceUploads': 'pendingresourceuploads'}
+    _toSchema = {
+        'errors': 'Errors',
+        'info': 'Info',
+        'pendingresourceuploads': 'PendingResourceUploads',
+    }
+    _toPy = {
+        'Errors': 'errors',
+        'Info': 'info',
+        'PendingResourceUploads': 'pendingresourceuploads',
+    }
 
-    def __init__(self, errors=None, info=None, pendingresourceuploads=None, **unknown_fields):
+    def __init__(
+        self, errors=None, info=None, pendingresourceuploads=None, **unknown_fields
+    ):
         """
         errors : typing.Sequence[~Error]
         info : DeployFromRepositoryInfo
@@ -5934,17 +8557,29 @@ class DeployFromRepositoryResult(Type):
         """
         errors_ = [Error.from_json(o) for o in errors or []]
         info_ = DeployFromRepositoryInfo.from_json(info) if info else None
-        pendingresourceuploads_ = [PendingResourceUpload.from_json(o) for o in pendingresourceuploads or []]
+        pendingresourceuploads_ = [
+            PendingResourceUpload.from_json(o) for o in pendingresourceuploads or []
+        ]
 
         # Validate arguments against known Juju API types.
         if errors_ is not None and not isinstance(errors_, (bytes, str, list)):
-            raise TypeError(f'Expected errors_ to be a Sequence, received: {type(errors_)}')
+            raise TypeError(
+                f'Expected errors_ to be a Sequence, received: {type(errors_)}'
+            )
 
-        if info_ is not None and not isinstance(info_, (dict, DeployFromRepositoryInfo)):
-            raise TypeError(f'Expected info_ to be a DeployFromRepositoryInfo, received: {type(info_)}')
+        if info_ is not None and not isinstance(
+            info_, (dict, DeployFromRepositoryInfo)
+        ):
+            raise TypeError(
+                f'Expected info_ to be a DeployFromRepositoryInfo, received: {type(info_)}'
+            )
 
-        if pendingresourceuploads_ is not None and not isinstance(pendingresourceuploads_, (bytes, str, list)):
-            raise TypeError(f'Expected pendingresourceuploads_ to be a Sequence, received: {type(pendingresourceuploads_)}')
+        if pendingresourceuploads_ is not None and not isinstance(
+            pendingresourceuploads_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected pendingresourceuploads_ to be a Sequence, received: {type(pendingresourceuploads_)}'
+            )
 
         self.errors = errors_
         self.info = info_
@@ -5964,17 +8599,33 @@ class DeployFromRepositoryResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
 
 
 class DestroyApplicationInfo(Type):
-    _toSchema = {'destroyed_storage': 'destroyed-storage', 'destroyed_units': 'destroyed-units', 'detached_storage': 'detached-storage'}
-    _toPy = {'destroyed-storage': 'destroyed_storage', 'destroyed-units': 'destroyed_units', 'detached-storage': 'detached_storage'}
+    _toSchema = {
+        'destroyed_storage': 'destroyed-storage',
+        'destroyed_units': 'destroyed-units',
+        'detached_storage': 'detached-storage',
+    }
+    _toPy = {
+        'destroyed-storage': 'destroyed_storage',
+        'destroyed-units': 'destroyed_units',
+        'detached-storage': 'detached_storage',
+    }
 
-    def __init__(self, destroyed_storage=None, destroyed_units=None, detached_storage=None, **unknown_fields):
+    def __init__(
+        self,
+        destroyed_storage=None,
+        destroyed_units=None,
+        detached_storage=None,
+        **unknown_fields,
+    ):
         """
         destroyed_storage : typing.Sequence[~Entity]
         destroyed_units : typing.Sequence[~Entity]
@@ -5985,14 +8636,26 @@ class DestroyApplicationInfo(Type):
         detached_storage_ = [Entity.from_json(o) for o in detached_storage or []]
 
         # Validate arguments against known Juju API types.
-        if destroyed_storage_ is not None and not isinstance(destroyed_storage_, (bytes, str, list)):
-            raise TypeError(f'Expected destroyed_storage_ to be a Sequence, received: {type(destroyed_storage_)}')
+        if destroyed_storage_ is not None and not isinstance(
+            destroyed_storage_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected destroyed_storage_ to be a Sequence, received: {type(destroyed_storage_)}'
+            )
 
-        if destroyed_units_ is not None and not isinstance(destroyed_units_, (bytes, str, list)):
-            raise TypeError(f'Expected destroyed_units_ to be a Sequence, received: {type(destroyed_units_)}')
+        if destroyed_units_ is not None and not isinstance(
+            destroyed_units_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected destroyed_units_ to be a Sequence, received: {type(destroyed_units_)}'
+            )
 
-        if detached_storage_ is not None and not isinstance(detached_storage_, (bytes, str, list)):
-            raise TypeError(f'Expected detached_storage_ to be a Sequence, received: {type(detached_storage_)}')
+        if detached_storage_ is not None and not isinstance(
+            detached_storage_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected detached_storage_ to be a Sequence, received: {type(detached_storage_)}'
+            )
 
         self.destroyed_storage = destroyed_storage_
         self.destroyed_units = destroyed_units_
@@ -6017,7 +8680,9 @@ class DestroyApplicationOffers(Type):
             raise TypeError(f'Expected force_ to be a bool, received: {type(force_)}')
 
         if offer_urls_ is not None and not isinstance(offer_urls_, (bytes, str, list)):
-            raise TypeError(f'Expected offer_urls_ to be a Sequence, received: {type(offer_urls_)}')
+            raise TypeError(
+                f'Expected offer_urls_ to be a Sequence, received: {type(offer_urls_)}'
+            )
 
         self.force = force_
         self.offer_urls = offer_urls_
@@ -6025,10 +8690,30 @@ class DestroyApplicationOffers(Type):
 
 
 class DestroyApplicationParams(Type):
-    _toSchema = {'application_tag': 'application-tag', 'destroy_storage': 'destroy-storage', 'dry_run': 'dry-run', 'force': 'force', 'max_wait': 'max-wait'}
-    _toPy = {'application-tag': 'application_tag', 'destroy-storage': 'destroy_storage', 'dry-run': 'dry_run', 'force': 'force', 'max-wait': 'max_wait'}
+    _toSchema = {
+        'application_tag': 'application-tag',
+        'destroy_storage': 'destroy-storage',
+        'dry_run': 'dry-run',
+        'force': 'force',
+        'max_wait': 'max-wait',
+    }
+    _toPy = {
+        'application-tag': 'application_tag',
+        'destroy-storage': 'destroy_storage',
+        'dry-run': 'dry_run',
+        'force': 'force',
+        'max-wait': 'max_wait',
+    }
 
-    def __init__(self, application_tag=None, destroy_storage=None, dry_run=None, force=None, max_wait=None, **unknown_fields):
+    def __init__(
+        self,
+        application_tag=None,
+        destroy_storage=None,
+        dry_run=None,
+        force=None,
+        max_wait=None,
+        **unknown_fields,
+    ):
         """
         application_tag : str
         destroy_storage : bool
@@ -6043,20 +8728,30 @@ class DestroyApplicationParams(Type):
         max_wait_ = max_wait
 
         # Validate arguments against known Juju API types.
-        if application_tag_ is not None and not isinstance(application_tag_, (bytes, str)):
-            raise TypeError(f'Expected application_tag_ to be a str, received: {type(application_tag_)}')
+        if application_tag_ is not None and not isinstance(
+            application_tag_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected application_tag_ to be a str, received: {type(application_tag_)}'
+            )
 
         if destroy_storage_ is not None and not isinstance(destroy_storage_, bool):
-            raise TypeError(f'Expected destroy_storage_ to be a bool, received: {type(destroy_storage_)}')
+            raise TypeError(
+                f'Expected destroy_storage_ to be a bool, received: {type(destroy_storage_)}'
+            )
 
         if dry_run_ is not None and not isinstance(dry_run_, bool):
-            raise TypeError(f'Expected dry_run_ to be a bool, received: {type(dry_run_)}')
+            raise TypeError(
+                f'Expected dry_run_ to be a bool, received: {type(dry_run_)}'
+            )
 
         if force_ is not None and not isinstance(force_, bool):
             raise TypeError(f'Expected force_ to be a bool, received: {type(force_)}')
 
         if max_wait_ is not None and not isinstance(max_wait_, int):
-            raise TypeError(f'Expected max_wait_ to be a int, received: {type(max_wait_)}')
+            raise TypeError(
+                f'Expected max_wait_ to be a int, received: {type(max_wait_)}'
+            )
 
         self.application_tag = application_tag_
         self.destroy_storage = destroy_storage_
@@ -6083,7 +8778,9 @@ class DestroyApplicationResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if info_ is not None and not isinstance(info_, (dict, DestroyApplicationInfo)):
-            raise TypeError(f'Expected info_ to be a DestroyApplicationInfo, received: {type(info_)}')
+            raise TypeError(
+                f'Expected info_ to be a DestroyApplicationInfo, received: {type(info_)}'
+            )
 
         self.error = error_
         self.info = info_
@@ -6102,7 +8799,9 @@ class DestroyApplicationResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -6116,21 +8815,37 @@ class DestroyApplicationsParams(Type):
         """
         applications : typing.Sequence[~DestroyApplicationParams]
         """
-        applications_ = [DestroyApplicationParams.from_json(o) for o in applications or []]
+        applications_ = [
+            DestroyApplicationParams.from_json(o) for o in applications or []
+        ]
 
         # Validate arguments against known Juju API types.
-        if applications_ is not None and not isinstance(applications_, (bytes, str, list)):
-            raise TypeError(f'Expected applications_ to be a Sequence, received: {type(applications_)}')
+        if applications_ is not None and not isinstance(
+            applications_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected applications_ to be a Sequence, received: {type(applications_)}'
+            )
 
         self.applications = applications_
         self.unknown_fields = unknown_fields
 
 
 class DestroyConsumedApplicationParams(Type):
-    _toSchema = {'application_tag': 'application-tag', 'force': 'force', 'max_wait': 'max-wait'}
-    _toPy = {'application-tag': 'application_tag', 'force': 'force', 'max-wait': 'max_wait'}
+    _toSchema = {
+        'application_tag': 'application-tag',
+        'force': 'force',
+        'max_wait': 'max-wait',
+    }
+    _toPy = {
+        'application-tag': 'application_tag',
+        'force': 'force',
+        'max-wait': 'max_wait',
+    }
 
-    def __init__(self, application_tag=None, force=None, max_wait=None, **unknown_fields):
+    def __init__(
+        self, application_tag=None, force=None, max_wait=None, **unknown_fields
+    ):
         """
         application_tag : str
         force : bool
@@ -6141,14 +8856,20 @@ class DestroyConsumedApplicationParams(Type):
         max_wait_ = max_wait
 
         # Validate arguments against known Juju API types.
-        if application_tag_ is not None and not isinstance(application_tag_, (bytes, str)):
-            raise TypeError(f'Expected application_tag_ to be a str, received: {type(application_tag_)}')
+        if application_tag_ is not None and not isinstance(
+            application_tag_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected application_tag_ to be a str, received: {type(application_tag_)}'
+            )
 
         if force_ is not None and not isinstance(force_, bool):
             raise TypeError(f'Expected force_ to be a bool, received: {type(force_)}')
 
         if max_wait_ is not None and not isinstance(max_wait_, int):
-            raise TypeError(f'Expected max_wait_ to be a int, received: {type(max_wait_)}')
+            raise TypeError(
+                f'Expected max_wait_ to be a int, received: {type(max_wait_)}'
+            )
 
         self.application_tag = application_tag_
         self.force = force_
@@ -6164,21 +8885,47 @@ class DestroyConsumedApplicationsParams(Type):
         """
         applications : typing.Sequence[~DestroyConsumedApplicationParams]
         """
-        applications_ = [DestroyConsumedApplicationParams.from_json(o) for o in applications or []]
+        applications_ = [
+            DestroyConsumedApplicationParams.from_json(o) for o in applications or []
+        ]
 
         # Validate arguments against known Juju API types.
-        if applications_ is not None and not isinstance(applications_, (bytes, str, list)):
-            raise TypeError(f'Expected applications_ to be a Sequence, received: {type(applications_)}')
+        if applications_ is not None and not isinstance(
+            applications_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected applications_ to be a Sequence, received: {type(applications_)}'
+            )
 
         self.applications = applications_
         self.unknown_fields = unknown_fields
 
 
 class DestroyControllerArgs(Type):
-    _toSchema = {'destroy_models': 'destroy-models', 'destroy_storage': 'destroy-storage', 'force': 'force', 'max_wait': 'max-wait', 'model_timeout': 'model-timeout'}
-    _toPy = {'destroy-models': 'destroy_models', 'destroy-storage': 'destroy_storage', 'force': 'force', 'max-wait': 'max_wait', 'model-timeout': 'model_timeout'}
+    _toSchema = {
+        'destroy_models': 'destroy-models',
+        'destroy_storage': 'destroy-storage',
+        'force': 'force',
+        'max_wait': 'max-wait',
+        'model_timeout': 'model-timeout',
+    }
+    _toPy = {
+        'destroy-models': 'destroy_models',
+        'destroy-storage': 'destroy_storage',
+        'force': 'force',
+        'max-wait': 'max_wait',
+        'model-timeout': 'model_timeout',
+    }
 
-    def __init__(self, destroy_models=None, destroy_storage=None, force=None, max_wait=None, model_timeout=None, **unknown_fields):
+    def __init__(
+        self,
+        destroy_models=None,
+        destroy_storage=None,
+        force=None,
+        max_wait=None,
+        model_timeout=None,
+        **unknown_fields,
+    ):
         """
         destroy_models : bool
         destroy_storage : bool
@@ -6194,19 +8941,27 @@ class DestroyControllerArgs(Type):
 
         # Validate arguments against known Juju API types.
         if destroy_models_ is not None and not isinstance(destroy_models_, bool):
-            raise TypeError(f'Expected destroy_models_ to be a bool, received: {type(destroy_models_)}')
+            raise TypeError(
+                f'Expected destroy_models_ to be a bool, received: {type(destroy_models_)}'
+            )
 
         if destroy_storage_ is not None and not isinstance(destroy_storage_, bool):
-            raise TypeError(f'Expected destroy_storage_ to be a bool, received: {type(destroy_storage_)}')
+            raise TypeError(
+                f'Expected destroy_storage_ to be a bool, received: {type(destroy_storage_)}'
+            )
 
         if force_ is not None and not isinstance(force_, bool):
             raise TypeError(f'Expected force_ to be a bool, received: {type(force_)}')
 
         if max_wait_ is not None and not isinstance(max_wait_, int):
-            raise TypeError(f'Expected max_wait_ to be a int, received: {type(max_wait_)}')
+            raise TypeError(
+                f'Expected max_wait_ to be a int, received: {type(max_wait_)}'
+            )
 
         if model_timeout_ is not None and not isinstance(model_timeout_, int):
-            raise TypeError(f'Expected model_timeout_ to be a int, received: {type(model_timeout_)}')
+            raise TypeError(
+                f'Expected model_timeout_ to be a int, received: {type(model_timeout_)}'
+            )
 
         self.destroy_models = destroy_models_
         self.destroy_storage = destroy_storage_
@@ -6217,10 +8972,30 @@ class DestroyControllerArgs(Type):
 
 
 class DestroyMachineInfo(Type):
-    _toSchema = {'destroyed_containers': 'destroyed-containers', 'destroyed_storage': 'destroyed-storage', 'destroyed_units': 'destroyed-units', 'detached_storage': 'detached-storage', 'machine_id': 'machine-id'}
-    _toPy = {'destroyed-containers': 'destroyed_containers', 'destroyed-storage': 'destroyed_storage', 'destroyed-units': 'destroyed_units', 'detached-storage': 'detached_storage', 'machine-id': 'machine_id'}
+    _toSchema = {
+        'destroyed_containers': 'destroyed-containers',
+        'destroyed_storage': 'destroyed-storage',
+        'destroyed_units': 'destroyed-units',
+        'detached_storage': 'detached-storage',
+        'machine_id': 'machine-id',
+    }
+    _toPy = {
+        'destroyed-containers': 'destroyed_containers',
+        'destroyed-storage': 'destroyed_storage',
+        'destroyed-units': 'destroyed_units',
+        'detached-storage': 'detached_storage',
+        'machine-id': 'machine_id',
+    }
 
-    def __init__(self, destroyed_containers=None, destroyed_storage=None, destroyed_units=None, detached_storage=None, machine_id=None, **unknown_fields):
+    def __init__(
+        self,
+        destroyed_containers=None,
+        destroyed_storage=None,
+        destroyed_units=None,
+        detached_storage=None,
+        machine_id=None,
+        **unknown_fields,
+    ):
         """
         destroyed_containers : typing.Sequence[~DestroyMachineResult]
         destroyed_storage : typing.Sequence[~Entity]
@@ -6228,27 +9003,47 @@ class DestroyMachineInfo(Type):
         detached_storage : typing.Sequence[~Entity]
         machine_id : str
         """
-        destroyed_containers_ = [DestroyMachineResult.from_json(o) for o in destroyed_containers or []]
+        destroyed_containers_ = [
+            DestroyMachineResult.from_json(o) for o in destroyed_containers or []
+        ]
         destroyed_storage_ = [Entity.from_json(o) for o in destroyed_storage or []]
         destroyed_units_ = [Entity.from_json(o) for o in destroyed_units or []]
         detached_storage_ = [Entity.from_json(o) for o in detached_storage or []]
         machine_id_ = machine_id
 
         # Validate arguments against known Juju API types.
-        if destroyed_containers_ is not None and not isinstance(destroyed_containers_, (bytes, str, list)):
-            raise TypeError(f'Expected destroyed_containers_ to be a Sequence, received: {type(destroyed_containers_)}')
+        if destroyed_containers_ is not None and not isinstance(
+            destroyed_containers_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected destroyed_containers_ to be a Sequence, received: {type(destroyed_containers_)}'
+            )
 
-        if destroyed_storage_ is not None and not isinstance(destroyed_storage_, (bytes, str, list)):
-            raise TypeError(f'Expected destroyed_storage_ to be a Sequence, received: {type(destroyed_storage_)}')
+        if destroyed_storage_ is not None and not isinstance(
+            destroyed_storage_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected destroyed_storage_ to be a Sequence, received: {type(destroyed_storage_)}'
+            )
 
-        if destroyed_units_ is not None and not isinstance(destroyed_units_, (bytes, str, list)):
-            raise TypeError(f'Expected destroyed_units_ to be a Sequence, received: {type(destroyed_units_)}')
+        if destroyed_units_ is not None and not isinstance(
+            destroyed_units_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected destroyed_units_ to be a Sequence, received: {type(destroyed_units_)}'
+            )
 
-        if detached_storage_ is not None and not isinstance(detached_storage_, (bytes, str, list)):
-            raise TypeError(f'Expected detached_storage_ to be a Sequence, received: {type(detached_storage_)}')
+        if detached_storage_ is not None and not isinstance(
+            detached_storage_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected detached_storage_ to be a Sequence, received: {type(detached_storage_)}'
+            )
 
         if machine_id_ is not None and not isinstance(machine_id_, (bytes, str)):
-            raise TypeError(f'Expected machine_id_ to be a str, received: {type(machine_id_)}')
+            raise TypeError(
+                f'Expected machine_id_ to be a str, received: {type(machine_id_)}'
+            )
 
         self.destroyed_containers = destroyed_containers_
         self.destroyed_storage = destroyed_storage_
@@ -6275,7 +9070,9 @@ class DestroyMachineResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if info_ is not None and not isinstance(info_, (dict, DestroyMachineInfo)):
-            raise TypeError(f'Expected info_ to be a DestroyMachineInfo, received: {type(info_)}')
+            raise TypeError(
+                f'Expected info_ to be a DestroyMachineInfo, received: {type(info_)}'
+            )
 
         self.error = error_
         self.info = info_
@@ -6294,17 +9091,39 @@ class DestroyMachineResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
 
 
 class DestroyMachinesParams(Type):
-    _toSchema = {'dry_run': 'dry-run', 'force': 'force', 'keep': 'keep', 'machine_tags': 'machine-tags', 'max_wait': 'max-wait'}
-    _toPy = {'dry-run': 'dry_run', 'force': 'force', 'keep': 'keep', 'machine-tags': 'machine_tags', 'max-wait': 'max_wait'}
+    _toSchema = {
+        'dry_run': 'dry-run',
+        'force': 'force',
+        'keep': 'keep',
+        'machine_tags': 'machine-tags',
+        'max_wait': 'max-wait',
+    }
+    _toPy = {
+        'dry-run': 'dry_run',
+        'force': 'force',
+        'keep': 'keep',
+        'machine-tags': 'machine_tags',
+        'max-wait': 'max_wait',
+    }
 
-    def __init__(self, dry_run=None, force=None, keep=None, machine_tags=None, max_wait=None, **unknown_fields):
+    def __init__(
+        self,
+        dry_run=None,
+        force=None,
+        keep=None,
+        machine_tags=None,
+        max_wait=None,
+        **unknown_fields,
+    ):
         """
         dry_run : bool
         force : bool
@@ -6320,7 +9139,9 @@ class DestroyMachinesParams(Type):
 
         # Validate arguments against known Juju API types.
         if dry_run_ is not None and not isinstance(dry_run_, bool):
-            raise TypeError(f'Expected dry_run_ to be a bool, received: {type(dry_run_)}')
+            raise TypeError(
+                f'Expected dry_run_ to be a bool, received: {type(dry_run_)}'
+            )
 
         if force_ is not None and not isinstance(force_, bool):
             raise TypeError(f'Expected force_ to be a bool, received: {type(force_)}')
@@ -6328,11 +9149,17 @@ class DestroyMachinesParams(Type):
         if keep_ is not None and not isinstance(keep_, bool):
             raise TypeError(f'Expected keep_ to be a bool, received: {type(keep_)}')
 
-        if machine_tags_ is not None and not isinstance(machine_tags_, (bytes, str, list)):
-            raise TypeError(f'Expected machine_tags_ to be a Sequence, received: {type(machine_tags_)}')
+        if machine_tags_ is not None and not isinstance(
+            machine_tags_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected machine_tags_ to be a Sequence, received: {type(machine_tags_)}'
+            )
 
         if max_wait_ is not None and not isinstance(max_wait_, int):
-            raise TypeError(f'Expected max_wait_ to be a int, received: {type(max_wait_)}')
+            raise TypeError(
+                f'Expected max_wait_ to be a int, received: {type(max_wait_)}'
+            )
 
         self.dry_run = dry_run_
         self.force = force_
@@ -6343,10 +9170,30 @@ class DestroyMachinesParams(Type):
 
 
 class DestroyModelParams(Type):
-    _toSchema = {'destroy_storage': 'destroy-storage', 'force': 'force', 'max_wait': 'max-wait', 'model_tag': 'model-tag', 'timeout': 'timeout'}
-    _toPy = {'destroy-storage': 'destroy_storage', 'force': 'force', 'max-wait': 'max_wait', 'model-tag': 'model_tag', 'timeout': 'timeout'}
+    _toSchema = {
+        'destroy_storage': 'destroy-storage',
+        'force': 'force',
+        'max_wait': 'max-wait',
+        'model_tag': 'model-tag',
+        'timeout': 'timeout',
+    }
+    _toPy = {
+        'destroy-storage': 'destroy_storage',
+        'force': 'force',
+        'max-wait': 'max_wait',
+        'model-tag': 'model_tag',
+        'timeout': 'timeout',
+    }
 
-    def __init__(self, destroy_storage=None, force=None, max_wait=None, model_tag=None, timeout=None, **unknown_fields):
+    def __init__(
+        self,
+        destroy_storage=None,
+        force=None,
+        max_wait=None,
+        model_tag=None,
+        timeout=None,
+        **unknown_fields,
+    ):
         """
         destroy_storage : bool
         force : bool
@@ -6362,19 +9209,27 @@ class DestroyModelParams(Type):
 
         # Validate arguments against known Juju API types.
         if destroy_storage_ is not None and not isinstance(destroy_storage_, bool):
-            raise TypeError(f'Expected destroy_storage_ to be a bool, received: {type(destroy_storage_)}')
+            raise TypeError(
+                f'Expected destroy_storage_ to be a bool, received: {type(destroy_storage_)}'
+            )
 
         if force_ is not None and not isinstance(force_, bool):
             raise TypeError(f'Expected force_ to be a bool, received: {type(force_)}')
 
         if max_wait_ is not None and not isinstance(max_wait_, int):
-            raise TypeError(f'Expected max_wait_ to be a int, received: {type(max_wait_)}')
+            raise TypeError(
+                f'Expected max_wait_ to be a int, received: {type(max_wait_)}'
+            )
 
         if model_tag_ is not None and not isinstance(model_tag_, (bytes, str)):
-            raise TypeError(f'Expected model_tag_ to be a str, received: {type(model_tag_)}')
+            raise TypeError(
+                f'Expected model_tag_ to be a str, received: {type(model_tag_)}'
+            )
 
         if timeout_ is not None and not isinstance(timeout_, int):
-            raise TypeError(f'Expected timeout_ to be a int, received: {type(timeout_)}')
+            raise TypeError(
+                f'Expected timeout_ to be a int, received: {type(timeout_)}'
+            )
 
         self.destroy_storage = destroy_storage_
         self.force = force_
@@ -6396,17 +9251,36 @@ class DestroyModelsParams(Type):
 
         # Validate arguments against known Juju API types.
         if models_ is not None and not isinstance(models_, (bytes, str, list)):
-            raise TypeError(f'Expected models_ to be a Sequence, received: {type(models_)}')
+            raise TypeError(
+                f'Expected models_ to be a Sequence, received: {type(models_)}'
+            )
 
         self.models = models_
         self.unknown_fields = unknown_fields
 
 
 class DestroyRelation(Type):
-    _toSchema = {'endpoints': 'endpoints', 'force': 'force', 'max_wait': 'max-wait', 'relation_id': 'relation-id'}
-    _toPy = {'endpoints': 'endpoints', 'force': 'force', 'max-wait': 'max_wait', 'relation-id': 'relation_id'}
+    _toSchema = {
+        'endpoints': 'endpoints',
+        'force': 'force',
+        'max_wait': 'max-wait',
+        'relation_id': 'relation-id',
+    }
+    _toPy = {
+        'endpoints': 'endpoints',
+        'force': 'force',
+        'max-wait': 'max_wait',
+        'relation-id': 'relation_id',
+    }
 
-    def __init__(self, endpoints=None, force=None, max_wait=None, relation_id=None, **unknown_fields):
+    def __init__(
+        self,
+        endpoints=None,
+        force=None,
+        max_wait=None,
+        relation_id=None,
+        **unknown_fields,
+    ):
         """
         endpoints : typing.Sequence[str]
         force : bool
@@ -6420,16 +9294,22 @@ class DestroyRelation(Type):
 
         # Validate arguments against known Juju API types.
         if endpoints_ is not None and not isinstance(endpoints_, (bytes, str, list)):
-            raise TypeError(f'Expected endpoints_ to be a Sequence, received: {type(endpoints_)}')
+            raise TypeError(
+                f'Expected endpoints_ to be a Sequence, received: {type(endpoints_)}'
+            )
 
         if force_ is not None and not isinstance(force_, bool):
             raise TypeError(f'Expected force_ to be a bool, received: {type(force_)}')
 
         if max_wait_ is not None and not isinstance(max_wait_, int):
-            raise TypeError(f'Expected max_wait_ to be a int, received: {type(max_wait_)}')
+            raise TypeError(
+                f'Expected max_wait_ to be a int, received: {type(max_wait_)}'
+            )
 
         if relation_id_ is not None and not isinstance(relation_id_, int):
-            raise TypeError(f'Expected relation_id_ to be a int, received: {type(relation_id_)}')
+            raise TypeError(
+                f'Expected relation_id_ to be a int, received: {type(relation_id_)}'
+            )
 
         self.endpoints = endpoints_
         self.force = force_
@@ -6439,8 +9319,14 @@ class DestroyRelation(Type):
 
 
 class DestroyUnitInfo(Type):
-    _toSchema = {'destroyed_storage': 'destroyed-storage', 'detached_storage': 'detached-storage'}
-    _toPy = {'destroyed-storage': 'destroyed_storage', 'detached-storage': 'detached_storage'}
+    _toSchema = {
+        'destroyed_storage': 'destroyed-storage',
+        'detached_storage': 'detached-storage',
+    }
+    _toPy = {
+        'destroyed-storage': 'destroyed_storage',
+        'detached-storage': 'detached_storage',
+    }
 
     def __init__(self, destroyed_storage=None, detached_storage=None, **unknown_fields):
         """
@@ -6451,11 +9337,19 @@ class DestroyUnitInfo(Type):
         detached_storage_ = [Entity.from_json(o) for o in detached_storage or []]
 
         # Validate arguments against known Juju API types.
-        if destroyed_storage_ is not None and not isinstance(destroyed_storage_, (bytes, str, list)):
-            raise TypeError(f'Expected destroyed_storage_ to be a Sequence, received: {type(destroyed_storage_)}')
+        if destroyed_storage_ is not None and not isinstance(
+            destroyed_storage_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected destroyed_storage_ to be a Sequence, received: {type(destroyed_storage_)}'
+            )
 
-        if detached_storage_ is not None and not isinstance(detached_storage_, (bytes, str, list)):
-            raise TypeError(f'Expected detached_storage_ to be a Sequence, received: {type(detached_storage_)}')
+        if detached_storage_ is not None and not isinstance(
+            detached_storage_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected detached_storage_ to be a Sequence, received: {type(detached_storage_)}'
+            )
 
         self.destroyed_storage = destroyed_storage_
         self.detached_storage = detached_storage_
@@ -6463,10 +9357,30 @@ class DestroyUnitInfo(Type):
 
 
 class DestroyUnitParams(Type):
-    _toSchema = {'destroy_storage': 'destroy-storage', 'dry_run': 'dry-run', 'force': 'force', 'max_wait': 'max-wait', 'unit_tag': 'unit-tag'}
-    _toPy = {'destroy-storage': 'destroy_storage', 'dry-run': 'dry_run', 'force': 'force', 'max-wait': 'max_wait', 'unit-tag': 'unit_tag'}
+    _toSchema = {
+        'destroy_storage': 'destroy-storage',
+        'dry_run': 'dry-run',
+        'force': 'force',
+        'max_wait': 'max-wait',
+        'unit_tag': 'unit-tag',
+    }
+    _toPy = {
+        'destroy-storage': 'destroy_storage',
+        'dry-run': 'dry_run',
+        'force': 'force',
+        'max-wait': 'max_wait',
+        'unit-tag': 'unit_tag',
+    }
 
-    def __init__(self, destroy_storage=None, dry_run=None, force=None, max_wait=None, unit_tag=None, **unknown_fields):
+    def __init__(
+        self,
+        destroy_storage=None,
+        dry_run=None,
+        force=None,
+        max_wait=None,
+        unit_tag=None,
+        **unknown_fields,
+    ):
         """
         destroy_storage : bool
         dry_run : bool
@@ -6482,19 +9396,27 @@ class DestroyUnitParams(Type):
 
         # Validate arguments against known Juju API types.
         if destroy_storage_ is not None and not isinstance(destroy_storage_, bool):
-            raise TypeError(f'Expected destroy_storage_ to be a bool, received: {type(destroy_storage_)}')
+            raise TypeError(
+                f'Expected destroy_storage_ to be a bool, received: {type(destroy_storage_)}'
+            )
 
         if dry_run_ is not None and not isinstance(dry_run_, bool):
-            raise TypeError(f'Expected dry_run_ to be a bool, received: {type(dry_run_)}')
+            raise TypeError(
+                f'Expected dry_run_ to be a bool, received: {type(dry_run_)}'
+            )
 
         if force_ is not None and not isinstance(force_, bool):
             raise TypeError(f'Expected force_ to be a bool, received: {type(force_)}')
 
         if max_wait_ is not None and not isinstance(max_wait_, int):
-            raise TypeError(f'Expected max_wait_ to be a int, received: {type(max_wait_)}')
+            raise TypeError(
+                f'Expected max_wait_ to be a int, received: {type(max_wait_)}'
+            )
 
         if unit_tag_ is not None and not isinstance(unit_tag_, (bytes, str)):
-            raise TypeError(f'Expected unit_tag_ to be a str, received: {type(unit_tag_)}')
+            raise TypeError(
+                f'Expected unit_tag_ to be a str, received: {type(unit_tag_)}'
+            )
 
         self.destroy_storage = destroy_storage_
         self.dry_run = dry_run_
@@ -6521,7 +9443,9 @@ class DestroyUnitResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if info_ is not None and not isinstance(info_, (dict, DestroyUnitInfo)):
-            raise TypeError(f'Expected info_ to be a DestroyUnitInfo, received: {type(info_)}')
+            raise TypeError(
+                f'Expected info_ to be a DestroyUnitInfo, received: {type(info_)}'
+            )
 
         self.error = error_
         self.info = info_
@@ -6540,7 +9464,9 @@ class DestroyUnitResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -6558,17 +9484,48 @@ class DestroyUnitsParams(Type):
 
         # Validate arguments against known Juju API types.
         if units_ is not None and not isinstance(units_, (bytes, str, list)):
-            raise TypeError(f'Expected units_ to be a Sequence, received: {type(units_)}')
+            raise TypeError(
+                f'Expected units_ to be a Sequence, received: {type(units_)}'
+            )
 
         self.units = units_
         self.unknown_fields = unknown_fields
 
 
 class DetailedStatus(Type):
-    _toSchema = {'data': 'data', 'err': 'err', 'info': 'info', 'kind': 'kind', 'life': 'life', 'since': 'since', 'status': 'status', 'version': 'version'}
-    _toPy = {'data': 'data', 'err': 'err', 'info': 'info', 'kind': 'kind', 'life': 'life', 'since': 'since', 'status': 'status', 'version': 'version'}
+    _toSchema = {
+        'data': 'data',
+        'err': 'err',
+        'info': 'info',
+        'kind': 'kind',
+        'life': 'life',
+        'since': 'since',
+        'status': 'status',
+        'version': 'version',
+    }
+    _toPy = {
+        'data': 'data',
+        'err': 'err',
+        'info': 'info',
+        'kind': 'kind',
+        'life': 'life',
+        'since': 'since',
+        'status': 'status',
+        'version': 'version',
+    }
 
-    def __init__(self, data=None, err=None, info=None, kind=None, life=None, since=None, status=None, version=None, **unknown_fields):
+    def __init__(
+        self,
+        data=None,
+        err=None,
+        info=None,
+        kind=None,
+        life=None,
+        since=None,
+        status=None,
+        version=None,
+        **unknown_fields,
+    ):
         """
         data : typing.Mapping[str, typing.Any]
         err : Error
@@ -6611,7 +9568,9 @@ class DetailedStatus(Type):
             raise TypeError(f'Expected status_ to be a str, received: {type(status_)}')
 
         if version_ is not None and not isinstance(version_, (bytes, str)):
-            raise TypeError(f'Expected version_ to be a str, received: {type(version_)}')
+            raise TypeError(
+                f'Expected version_ to be a str, received: {type(version_)}'
+            )
 
         self.data = data_
         self.err = err_
@@ -6637,8 +9596,12 @@ class DownloadInfoResult(Type):
         url_ = url
 
         # Validate arguments against known Juju API types.
-        if charm_origin_ is not None and not isinstance(charm_origin_, (dict, CharmOrigin)):
-            raise TypeError(f'Expected charm_origin_ to be a CharmOrigin, received: {type(charm_origin_)}')
+        if charm_origin_ is not None and not isinstance(
+            charm_origin_, (dict, CharmOrigin)
+        ):
+            raise TypeError(
+                f'Expected charm_origin_ to be a CharmOrigin, received: {type(charm_origin_)}'
+            )
 
         if url_ is not None and not isinstance(url_, (bytes, str)):
             raise TypeError(f'Expected url_ to be a str, received: {type(url_)}')
@@ -6660,7 +9623,9 @@ class DownloadInfoResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -6680,10 +9645,14 @@ class DumpModelRequest(Type):
 
         # Validate arguments against known Juju API types.
         if entities_ is not None and not isinstance(entities_, (bytes, str, list)):
-            raise TypeError(f'Expected entities_ to be a Sequence, received: {type(entities_)}')
+            raise TypeError(
+                f'Expected entities_ to be a Sequence, received: {type(entities_)}'
+            )
 
         if simplified_ is not None and not isinstance(simplified_, bool):
-            raise TypeError(f'Expected simplified_ to be a bool, received: {type(simplified_)}')
+            raise TypeError(
+                f'Expected simplified_ to be a bool, received: {type(simplified_)}'
+            )
 
         self.entities = entities_
         self.simplified = simplified_
@@ -6706,7 +9675,9 @@ class EndpointFilterAttributes(Type):
 
         # Validate arguments against known Juju API types.
         if interface_ is not None and not isinstance(interface_, (bytes, str)):
-            raise TypeError(f'Expected interface_ to be a str, received: {type(interface_)}')
+            raise TypeError(
+                f'Expected interface_ to be a str, received: {type(interface_)}'
+            )
 
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
@@ -6721,10 +9692,33 @@ class EndpointFilterAttributes(Type):
 
 
 class EndpointRelationData(Type):
-    _toSchema = {'applicationdata': 'ApplicationData', 'cross_model': 'cross-model', 'endpoint': 'endpoint', 'related_endpoint': 'related-endpoint', 'relation_id': 'relation-id', 'unit_relation_data': 'unit-relation-data'}
-    _toPy = {'ApplicationData': 'applicationdata', 'cross-model': 'cross_model', 'endpoint': 'endpoint', 'related-endpoint': 'related_endpoint', 'relation-id': 'relation_id', 'unit-relation-data': 'unit_relation_data'}
+    _toSchema = {
+        'applicationdata': 'ApplicationData',
+        'cross_model': 'cross-model',
+        'endpoint': 'endpoint',
+        'related_endpoint': 'related-endpoint',
+        'relation_id': 'relation-id',
+        'unit_relation_data': 'unit-relation-data',
+    }
+    _toPy = {
+        'ApplicationData': 'applicationdata',
+        'cross-model': 'cross_model',
+        'endpoint': 'endpoint',
+        'related-endpoint': 'related_endpoint',
+        'relation-id': 'relation_id',
+        'unit-relation-data': 'unit_relation_data',
+    }
 
-    def __init__(self, applicationdata=None, cross_model=None, endpoint=None, related_endpoint=None, relation_id=None, unit_relation_data=None, **unknown_fields):
+    def __init__(
+        self,
+        applicationdata=None,
+        cross_model=None,
+        endpoint=None,
+        related_endpoint=None,
+        relation_id=None,
+        unit_relation_data=None,
+        **unknown_fields,
+    ):
         """
         applicationdata : typing.Mapping[str, typing.Any]
         cross_model : bool
@@ -6738,26 +9732,44 @@ class EndpointRelationData(Type):
         endpoint_ = endpoint
         related_endpoint_ = related_endpoint
         relation_id_ = relation_id
-        unit_relation_data_ = {k: RelationData.from_json(v) for k, v in (unit_relation_data or {}).items()}
+        unit_relation_data_ = {
+            k: RelationData.from_json(v) for k, v in (unit_relation_data or {}).items()
+        }
 
         # Validate arguments against known Juju API types.
         if applicationdata_ is not None and not isinstance(applicationdata_, dict):
-            raise TypeError(f'Expected applicationdata_ to be a Mapping, received: {type(applicationdata_)}')
+            raise TypeError(
+                f'Expected applicationdata_ to be a Mapping, received: {type(applicationdata_)}'
+            )
 
         if cross_model_ is not None and not isinstance(cross_model_, bool):
-            raise TypeError(f'Expected cross_model_ to be a bool, received: {type(cross_model_)}')
+            raise TypeError(
+                f'Expected cross_model_ to be a bool, received: {type(cross_model_)}'
+            )
 
         if endpoint_ is not None and not isinstance(endpoint_, (bytes, str)):
-            raise TypeError(f'Expected endpoint_ to be a str, received: {type(endpoint_)}')
+            raise TypeError(
+                f'Expected endpoint_ to be a str, received: {type(endpoint_)}'
+            )
 
-        if related_endpoint_ is not None and not isinstance(related_endpoint_, (bytes, str)):
-            raise TypeError(f'Expected related_endpoint_ to be a str, received: {type(related_endpoint_)}')
+        if related_endpoint_ is not None and not isinstance(
+            related_endpoint_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected related_endpoint_ to be a str, received: {type(related_endpoint_)}'
+            )
 
         if relation_id_ is not None and not isinstance(relation_id_, int):
-            raise TypeError(f'Expected relation_id_ to be a int, received: {type(relation_id_)}')
+            raise TypeError(
+                f'Expected relation_id_ to be a int, received: {type(relation_id_)}'
+            )
 
-        if unit_relation_data_ is not None and not isinstance(unit_relation_data_, dict):
-            raise TypeError(f'Expected unit_relation_data_ to be a Mapping, received: {type(unit_relation_data_)}')
+        if unit_relation_data_ is not None and not isinstance(
+            unit_relation_data_, dict
+        ):
+            raise TypeError(
+                f'Expected unit_relation_data_ to be a Mapping, received: {type(unit_relation_data_)}'
+            )
 
         self.applicationdata = applicationdata_
         self.cross_model = cross_model_
@@ -6769,10 +9781,22 @@ class EndpointRelationData(Type):
 
 
 class EndpointStatus(Type):
-    _toSchema = {'application': 'application', 'name': 'name', 'role': 'role', 'subordinate': 'subordinate'}
-    _toPy = {'application': 'application', 'name': 'name', 'role': 'role', 'subordinate': 'subordinate'}
+    _toSchema = {
+        'application': 'application',
+        'name': 'name',
+        'role': 'role',
+        'subordinate': 'subordinate',
+    }
+    _toPy = {
+        'application': 'application',
+        'name': 'name',
+        'role': 'role',
+        'subordinate': 'subordinate',
+    }
 
-    def __init__(self, application=None, name=None, role=None, subordinate=None, **unknown_fields):
+    def __init__(
+        self, application=None, name=None, role=None, subordinate=None, **unknown_fields
+    ):
         """
         application : str
         name : str
@@ -6786,7 +9810,9 @@ class EndpointStatus(Type):
 
         # Validate arguments against known Juju API types.
         if application_ is not None and not isinstance(application_, (bytes, str)):
-            raise TypeError(f'Expected application_ to be a str, received: {type(application_)}')
+            raise TypeError(
+                f'Expected application_ to be a str, received: {type(application_)}'
+            )
 
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
@@ -6795,7 +9821,9 @@ class EndpointStatus(Type):
             raise TypeError(f'Expected role_ to be a str, received: {type(role_)}')
 
         if subordinate_ is not None and not isinstance(subordinate_, bool):
-            raise TypeError(f'Expected subordinate_ to be a bool, received: {type(subordinate_)}')
+            raise TypeError(
+                f'Expected subordinate_ to be a bool, received: {type(subordinate_)}'
+            )
 
         self.application = application_
         self.name = name_
@@ -6818,10 +9846,14 @@ class EnqueuedActions(Type):
 
         # Validate arguments against known Juju API types.
         if actions_ is not None and not isinstance(actions_, (bytes, str, list)):
-            raise TypeError(f'Expected actions_ to be a Sequence, received: {type(actions_)}')
+            raise TypeError(
+                f'Expected actions_ to be a Sequence, received: {type(actions_)}'
+            )
 
         if operation_ is not None and not isinstance(operation_, (bytes, str)):
-            raise TypeError(f'Expected operation_ to be a str, received: {type(operation_)}')
+            raise TypeError(
+                f'Expected operation_ to be a str, received: {type(operation_)}'
+            )
 
         self.actions = actions_
         self.operation = operation_
@@ -6840,7 +9872,9 @@ class Entities(Type):
 
         # Validate arguments against known Juju API types.
         if entities_ is not None and not isinstance(entities_, (bytes, str, list)):
-            raise TypeError(f'Expected entities_ to be a Sequence, received: {type(entities_)}')
+            raise TypeError(
+                f'Expected entities_ to be a Sequence, received: {type(entities_)}'
+            )
 
         self.entities = entities_
         self.unknown_fields = unknown_fields
@@ -6878,7 +9912,9 @@ class EntityAnnotations(Type):
 
         # Validate arguments against known Juju API types.
         if annotations_ is not None and not isinstance(annotations_, dict):
-            raise TypeError(f'Expected annotations_ to be a Mapping, received: {type(annotations_)}')
+            raise TypeError(
+                f'Expected annotations_ to be a Mapping, received: {type(annotations_)}'
+            )
 
         if entity_ is not None and not isinstance(entity_, (bytes, str)):
             raise TypeError(f'Expected entity_ to be a str, received: {type(entity_)}')
@@ -6905,7 +9941,9 @@ class EntityMetrics(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if metrics_ is not None and not isinstance(metrics_, (bytes, str, list)):
-            raise TypeError(f'Expected metrics_ to be a Sequence, received: {type(metrics_)}')
+            raise TypeError(
+                f'Expected metrics_ to be a Sequence, received: {type(metrics_)}'
+            )
 
         self.error = error_
         self.metrics = metrics_
@@ -6926,7 +9964,9 @@ class EntityPassword(Type):
 
         # Validate arguments against known Juju API types.
         if password_ is not None and not isinstance(password_, (bytes, str)):
-            raise TypeError(f'Expected password_ to be a str, received: {type(password_)}')
+            raise TypeError(
+                f'Expected password_ to be a str, received: {type(password_)}'
+            )
 
         if tag_ is not None and not isinstance(tag_, (bytes, str)):
             raise TypeError(f'Expected tag_ to be a str, received: {type(tag_)}')
@@ -6948,7 +9988,9 @@ class EntityPasswords(Type):
 
         # Validate arguments against known Juju API types.
         if changes_ is not None and not isinstance(changes_, (bytes, str, list)):
-            raise TypeError(f'Expected changes_ to be a Sequence, received: {type(changes_)}')
+            raise TypeError(
+                f'Expected changes_ to be a Sequence, received: {type(changes_)}'
+            )
 
         self.changes = changes_
         self.unknown_fields = unknown_fields
@@ -7012,7 +10054,9 @@ class Error(Type):
             raise TypeError(f'Expected info_ to be a Mapping, received: {type(info_)}')
 
         if message_ is not None and not isinstance(message_, (bytes, str)):
-            raise TypeError(f'Expected message_ to be a str, received: {type(message_)}')
+            raise TypeError(
+                f'Expected message_ to be a str, received: {type(message_)}'
+            )
 
         self.code = code_
         self.info = info_
@@ -7050,17 +10094,27 @@ class ErrorResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
 
 
 class ExportBundleParams(Type):
-    _toSchema = {'include_charm_defaults': 'include-charm-defaults', 'include_series': 'include-series'}
-    _toPy = {'include-charm-defaults': 'include_charm_defaults', 'include-series': 'include_series'}
+    _toSchema = {
+        'include_charm_defaults': 'include-charm-defaults',
+        'include_series': 'include-series',
+    }
+    _toPy = {
+        'include-charm-defaults': 'include_charm_defaults',
+        'include-series': 'include_series',
+    }
 
-    def __init__(self, include_charm_defaults=None, include_series=None, **unknown_fields):
+    def __init__(
+        self, include_charm_defaults=None, include_series=None, **unknown_fields
+    ):
         """
         include_charm_defaults : bool
         include_series : bool
@@ -7069,11 +10123,17 @@ class ExportBundleParams(Type):
         include_series_ = include_series
 
         # Validate arguments against known Juju API types.
-        if include_charm_defaults_ is not None and not isinstance(include_charm_defaults_, bool):
-            raise TypeError(f'Expected include_charm_defaults_ to be a bool, received: {type(include_charm_defaults_)}')
+        if include_charm_defaults_ is not None and not isinstance(
+            include_charm_defaults_, bool
+        ):
+            raise TypeError(
+                f'Expected include_charm_defaults_ to be a bool, received: {type(include_charm_defaults_)}'
+            )
 
         if include_series_ is not None and not isinstance(include_series_, bool):
-            raise TypeError(f'Expected include_series_ to be a bool, received: {type(include_series_)}')
+            raise TypeError(
+                f'Expected include_series_ to be a bool, received: {type(include_series_)}'
+            )
 
         self.include_charm_defaults = include_charm_defaults_
         self.include_series = include_series_
@@ -7081,8 +10141,14 @@ class ExportBundleParams(Type):
 
 
 class ExposedEndpoint(Type):
-    _toSchema = {'expose_to_cidrs': 'expose-to-cidrs', 'expose_to_spaces': 'expose-to-spaces'}
-    _toPy = {'expose-to-cidrs': 'expose_to_cidrs', 'expose-to-spaces': 'expose_to_spaces'}
+    _toSchema = {
+        'expose_to_cidrs': 'expose-to-cidrs',
+        'expose_to_spaces': 'expose-to-spaces',
+    }
+    _toPy = {
+        'expose-to-cidrs': 'expose_to_cidrs',
+        'expose-to-spaces': 'expose_to_spaces',
+    }
 
     def __init__(self, expose_to_cidrs=None, expose_to_spaces=None, **unknown_fields):
         """
@@ -7093,11 +10159,19 @@ class ExposedEndpoint(Type):
         expose_to_spaces_ = expose_to_spaces
 
         # Validate arguments against known Juju API types.
-        if expose_to_cidrs_ is not None and not isinstance(expose_to_cidrs_, (bytes, str, list)):
-            raise TypeError(f'Expected expose_to_cidrs_ to be a Sequence, received: {type(expose_to_cidrs_)}')
+        if expose_to_cidrs_ is not None and not isinstance(
+            expose_to_cidrs_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected expose_to_cidrs_ to be a Sequence, received: {type(expose_to_cidrs_)}'
+            )
 
-        if expose_to_spaces_ is not None and not isinstance(expose_to_spaces_, (bytes, str, list)):
-            raise TypeError(f'Expected expose_to_spaces_ to be a Sequence, received: {type(expose_to_spaces_)}')
+        if expose_to_spaces_ is not None and not isinstance(
+            expose_to_spaces_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected expose_to_spaces_ to be a Sequence, received: {type(expose_to_spaces_)}'
+            )
 
         self.expose_to_cidrs = expose_to_cidrs_
         self.expose_to_spaces = expose_to_spaces_
@@ -7120,10 +10194,27 @@ class ExpressionTree(Type):
 
 
 class ExternalControllerInfo(Type):
-    _toSchema = {'addrs': 'addrs', 'ca_cert': 'ca-cert', 'controller_alias': 'controller-alias', 'controller_tag': 'controller-tag'}
-    _toPy = {'addrs': 'addrs', 'ca-cert': 'ca_cert', 'controller-alias': 'controller_alias', 'controller-tag': 'controller_tag'}
+    _toSchema = {
+        'addrs': 'addrs',
+        'ca_cert': 'ca-cert',
+        'controller_alias': 'controller-alias',
+        'controller_tag': 'controller-tag',
+    }
+    _toPy = {
+        'addrs': 'addrs',
+        'ca-cert': 'ca_cert',
+        'controller-alias': 'controller_alias',
+        'controller-tag': 'controller_tag',
+    }
 
-    def __init__(self, addrs=None, ca_cert=None, controller_alias=None, controller_tag=None, **unknown_fields):
+    def __init__(
+        self,
+        addrs=None,
+        ca_cert=None,
+        controller_alias=None,
+        controller_tag=None,
+        **unknown_fields,
+    ):
         """
         addrs : typing.Sequence[str]
         ca_cert : str
@@ -7137,16 +10228,28 @@ class ExternalControllerInfo(Type):
 
         # Validate arguments against known Juju API types.
         if addrs_ is not None and not isinstance(addrs_, (bytes, str, list)):
-            raise TypeError(f'Expected addrs_ to be a Sequence, received: {type(addrs_)}')
+            raise TypeError(
+                f'Expected addrs_ to be a Sequence, received: {type(addrs_)}'
+            )
 
         if ca_cert_ is not None and not isinstance(ca_cert_, (bytes, str)):
-            raise TypeError(f'Expected ca_cert_ to be a str, received: {type(ca_cert_)}')
+            raise TypeError(
+                f'Expected ca_cert_ to be a str, received: {type(ca_cert_)}'
+            )
 
-        if controller_alias_ is not None and not isinstance(controller_alias_, (bytes, str)):
-            raise TypeError(f'Expected controller_alias_ to be a str, received: {type(controller_alias_)}')
+        if controller_alias_ is not None and not isinstance(
+            controller_alias_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected controller_alias_ to be a str, received: {type(controller_alias_)}'
+            )
 
-        if controller_tag_ is not None and not isinstance(controller_tag_, (bytes, str)):
-            raise TypeError(f'Expected controller_tag_ to be a str, received: {type(controller_tag_)}')
+        if controller_tag_ is not None and not isinstance(
+            controller_tag_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected controller_tag_ to be a str, received: {type(controller_tag_)}'
+            )
 
         self.addrs = addrs_
         self.ca_cert = ca_cert_
@@ -7156,33 +10259,62 @@ class ExternalControllerInfo(Type):
 
 
 class FilesystemAttachmentDetails(Type):
-    _toSchema = {'filesystemattachmentinfo': 'FilesystemAttachmentInfo', 'life': 'life', 'mount_point': 'mount-point', 'read_only': 'read-only'}
-    _toPy = {'FilesystemAttachmentInfo': 'filesystemattachmentinfo', 'life': 'life', 'mount-point': 'mount_point', 'read-only': 'read_only'}
+    _toSchema = {
+        'filesystemattachmentinfo': 'FilesystemAttachmentInfo',
+        'life': 'life',
+        'mount_point': 'mount-point',
+        'read_only': 'read-only',
+    }
+    _toPy = {
+        'FilesystemAttachmentInfo': 'filesystemattachmentinfo',
+        'life': 'life',
+        'mount-point': 'mount_point',
+        'read-only': 'read_only',
+    }
 
-    def __init__(self, filesystemattachmentinfo=None, life=None, mount_point=None, read_only=None, **unknown_fields):
+    def __init__(
+        self,
+        filesystemattachmentinfo=None,
+        life=None,
+        mount_point=None,
+        read_only=None,
+        **unknown_fields,
+    ):
         """
         filesystemattachmentinfo : FilesystemAttachmentInfo
         life : str
         mount_point : str
         read_only : bool
         """
-        filesystemattachmentinfo_ = FilesystemAttachmentInfo.from_json(filesystemattachmentinfo) if filesystemattachmentinfo else None
+        filesystemattachmentinfo_ = (
+            FilesystemAttachmentInfo.from_json(filesystemattachmentinfo)
+            if filesystemattachmentinfo
+            else None
+        )
         life_ = life
         mount_point_ = mount_point
         read_only_ = read_only
 
         # Validate arguments against known Juju API types.
-        if filesystemattachmentinfo_ is not None and not isinstance(filesystemattachmentinfo_, (dict, FilesystemAttachmentInfo)):
-            raise TypeError(f'Expected filesystemattachmentinfo_ to be a FilesystemAttachmentInfo, received: {type(filesystemattachmentinfo_)}')
+        if filesystemattachmentinfo_ is not None and not isinstance(
+            filesystemattachmentinfo_, (dict, FilesystemAttachmentInfo)
+        ):
+            raise TypeError(
+                f'Expected filesystemattachmentinfo_ to be a FilesystemAttachmentInfo, received: {type(filesystemattachmentinfo_)}'
+            )
 
         if life_ is not None and not isinstance(life_, (bytes, str)):
             raise TypeError(f'Expected life_ to be a str, received: {type(life_)}')
 
         if mount_point_ is not None and not isinstance(mount_point_, (bytes, str)):
-            raise TypeError(f'Expected mount_point_ to be a str, received: {type(mount_point_)}')
+            raise TypeError(
+                f'Expected mount_point_ to be a str, received: {type(mount_point_)}'
+            )
 
         if read_only_ is not None and not isinstance(read_only_, bool):
-            raise TypeError(f'Expected read_only_ to be a bool, received: {type(read_only_)}')
+            raise TypeError(
+                f'Expected read_only_ to be a bool, received: {type(read_only_)}'
+            )
 
         self.filesystemattachmentinfo = filesystemattachmentinfo_
         self.life = life_
@@ -7205,10 +10337,14 @@ class FilesystemAttachmentInfo(Type):
 
         # Validate arguments against known Juju API types.
         if mount_point_ is not None and not isinstance(mount_point_, (bytes, str)):
-            raise TypeError(f'Expected mount_point_ to be a str, received: {type(mount_point_)}')
+            raise TypeError(
+                f'Expected mount_point_ to be a str, received: {type(mount_point_)}'
+            )
 
         if read_only_ is not None and not isinstance(read_only_, bool):
-            raise TypeError(f'Expected read_only_ to be a bool, received: {type(read_only_)}')
+            raise TypeError(
+                f'Expected read_only_ to be a bool, received: {type(read_only_)}'
+            )
 
         self.mount_point = mount_point_
         self.read_only = read_only_
@@ -7216,10 +10352,39 @@ class FilesystemAttachmentInfo(Type):
 
 
 class FilesystemDetails(Type):
-    _toSchema = {'filesystem_tag': 'filesystem-tag', 'info': 'info', 'life': 'life', 'machine_attachments': 'machine-attachments', 'status': 'status', 'storage': 'storage', 'unit_attachments': 'unit-attachments', 'volume_tag': 'volume-tag'}
-    _toPy = {'filesystem-tag': 'filesystem_tag', 'info': 'info', 'life': 'life', 'machine-attachments': 'machine_attachments', 'status': 'status', 'storage': 'storage', 'unit-attachments': 'unit_attachments', 'volume-tag': 'volume_tag'}
+    _toSchema = {
+        'filesystem_tag': 'filesystem-tag',
+        'info': 'info',
+        'life': 'life',
+        'machine_attachments': 'machine-attachments',
+        'status': 'status',
+        'storage': 'storage',
+        'unit_attachments': 'unit-attachments',
+        'volume_tag': 'volume-tag',
+    }
+    _toPy = {
+        'filesystem-tag': 'filesystem_tag',
+        'info': 'info',
+        'life': 'life',
+        'machine-attachments': 'machine_attachments',
+        'status': 'status',
+        'storage': 'storage',
+        'unit-attachments': 'unit_attachments',
+        'volume-tag': 'volume_tag',
+    }
 
-    def __init__(self, filesystem_tag=None, info=None, life=None, machine_attachments=None, status=None, storage=None, unit_attachments=None, volume_tag=None, **unknown_fields):
+    def __init__(
+        self,
+        filesystem_tag=None,
+        info=None,
+        life=None,
+        machine_attachments=None,
+        status=None,
+        storage=None,
+        unit_attachments=None,
+        volume_tag=None,
+        **unknown_fields,
+    ):
         """
         filesystem_tag : str
         info : FilesystemInfo
@@ -7233,36 +10398,60 @@ class FilesystemDetails(Type):
         filesystem_tag_ = filesystem_tag
         info_ = FilesystemInfo.from_json(info) if info else None
         life_ = life
-        machine_attachments_ = {k: FilesystemAttachmentDetails.from_json(v) for k, v in (machine_attachments or {}).items()}
+        machine_attachments_ = {
+            k: FilesystemAttachmentDetails.from_json(v)
+            for k, v in (machine_attachments or {}).items()
+        }
         status_ = EntityStatus.from_json(status) if status else None
         storage_ = StorageDetails.from_json(storage) if storage else None
-        unit_attachments_ = {k: FilesystemAttachmentDetails.from_json(v) for k, v in (unit_attachments or {}).items()}
+        unit_attachments_ = {
+            k: FilesystemAttachmentDetails.from_json(v)
+            for k, v in (unit_attachments or {}).items()
+        }
         volume_tag_ = volume_tag
 
         # Validate arguments against known Juju API types.
-        if filesystem_tag_ is not None and not isinstance(filesystem_tag_, (bytes, str)):
-            raise TypeError(f'Expected filesystem_tag_ to be a str, received: {type(filesystem_tag_)}')
+        if filesystem_tag_ is not None and not isinstance(
+            filesystem_tag_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected filesystem_tag_ to be a str, received: {type(filesystem_tag_)}'
+            )
 
         if info_ is not None and not isinstance(info_, (dict, FilesystemInfo)):
-            raise TypeError(f'Expected info_ to be a FilesystemInfo, received: {type(info_)}')
+            raise TypeError(
+                f'Expected info_ to be a FilesystemInfo, received: {type(info_)}'
+            )
 
         if life_ is not None and not isinstance(life_, (bytes, str)):
             raise TypeError(f'Expected life_ to be a str, received: {type(life_)}')
 
-        if machine_attachments_ is not None and not isinstance(machine_attachments_, dict):
-            raise TypeError(f'Expected machine_attachments_ to be a Mapping, received: {type(machine_attachments_)}')
+        if machine_attachments_ is not None and not isinstance(
+            machine_attachments_, dict
+        ):
+            raise TypeError(
+                f'Expected machine_attachments_ to be a Mapping, received: {type(machine_attachments_)}'
+            )
 
         if status_ is not None and not isinstance(status_, (dict, EntityStatus)):
-            raise TypeError(f'Expected status_ to be a EntityStatus, received: {type(status_)}')
+            raise TypeError(
+                f'Expected status_ to be a EntityStatus, received: {type(status_)}'
+            )
 
         if storage_ is not None and not isinstance(storage_, (dict, StorageDetails)):
-            raise TypeError(f'Expected storage_ to be a StorageDetails, received: {type(storage_)}')
+            raise TypeError(
+                f'Expected storage_ to be a StorageDetails, received: {type(storage_)}'
+            )
 
         if unit_attachments_ is not None and not isinstance(unit_attachments_, dict):
-            raise TypeError(f'Expected unit_attachments_ to be a Mapping, received: {type(unit_attachments_)}')
+            raise TypeError(
+                f'Expected unit_attachments_ to be a Mapping, received: {type(unit_attachments_)}'
+            )
 
         if volume_tag_ is not None and not isinstance(volume_tag_, (bytes, str)):
-            raise TypeError(f'Expected volume_tag_ to be a str, received: {type(volume_tag_)}')
+            raise TypeError(
+                f'Expected volume_tag_ to be a str, received: {type(volume_tag_)}'
+            )
 
         self.filesystem_tag = filesystem_tag_
         self.info = info_
@@ -7292,7 +10481,9 @@ class FilesystemDetailsListResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if result_ is not None and not isinstance(result_, (bytes, str, list)):
-            raise TypeError(f'Expected result_ to be a Sequence, received: {type(result_)}')
+            raise TypeError(
+                f'Expected result_ to be a Sequence, received: {type(result_)}'
+            )
 
         self.error = error_
         self.result = result_
@@ -7311,7 +10502,9 @@ class FilesystemDetailsListResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -7329,7 +10522,9 @@ class FilesystemFilter(Type):
 
         # Validate arguments against known Juju API types.
         if machines_ is not None and not isinstance(machines_, (bytes, str, list)):
-            raise TypeError(f'Expected machines_ to be a Sequence, received: {type(machines_)}')
+            raise TypeError(
+                f'Expected machines_ to be a Sequence, received: {type(machines_)}'
+            )
 
         self.machines = machines_
         self.unknown_fields = unknown_fields
@@ -7347,7 +10542,9 @@ class FilesystemFilters(Type):
 
         # Validate arguments against known Juju API types.
         if filters_ is not None and not isinstance(filters_, (bytes, str, list)):
-            raise TypeError(f'Expected filters_ to be a Sequence, received: {type(filters_)}')
+            raise TypeError(
+                f'Expected filters_ to be a Sequence, received: {type(filters_)}'
+            )
 
         self.filters = filters_
         self.unknown_fields = unknown_fields
@@ -7369,7 +10566,9 @@ class FilesystemInfo(Type):
 
         # Validate arguments against known Juju API types.
         if filesystem_id_ is not None and not isinstance(filesystem_id_, (bytes, str)):
-            raise TypeError(f'Expected filesystem_id_ to be a str, received: {type(filesystem_id_)}')
+            raise TypeError(
+                f'Expected filesystem_id_ to be a str, received: {type(filesystem_id_)}'
+            )
 
         if pool_ is not None and not isinstance(pool_, (bytes, str)):
             raise TypeError(f'Expected pool_ to be a str, received: {type(pool_)}')
@@ -7384,10 +10583,30 @@ class FilesystemInfo(Type):
 
 
 class FindToolsParams(Type):
-    _toSchema = {'agentstream': 'agentstream', 'arch': 'arch', 'major': 'major', 'number': 'number', 'os_type': 'os-type'}
-    _toPy = {'agentstream': 'agentstream', 'arch': 'arch', 'major': 'major', 'number': 'number', 'os-type': 'os_type'}
+    _toSchema = {
+        'agentstream': 'agentstream',
+        'arch': 'arch',
+        'major': 'major',
+        'number': 'number',
+        'os_type': 'os-type',
+    }
+    _toPy = {
+        'agentstream': 'agentstream',
+        'arch': 'arch',
+        'major': 'major',
+        'number': 'number',
+        'os-type': 'os_type',
+    }
 
-    def __init__(self, agentstream=None, arch=None, major=None, number=None, os_type=None, **unknown_fields):
+    def __init__(
+        self,
+        agentstream=None,
+        arch=None,
+        major=None,
+        number=None,
+        os_type=None,
+        **unknown_fields,
+    ):
         """
         agentstream : str
         arch : str
@@ -7403,7 +10622,9 @@ class FindToolsParams(Type):
 
         # Validate arguments against known Juju API types.
         if agentstream_ is not None and not isinstance(agentstream_, (bytes, str)):
-            raise TypeError(f'Expected agentstream_ to be a str, received: {type(agentstream_)}')
+            raise TypeError(
+                f'Expected agentstream_ to be a str, received: {type(agentstream_)}'
+            )
 
         if arch_ is not None and not isinstance(arch_, (bytes, str)):
             raise TypeError(f'Expected arch_ to be a str, received: {type(arch_)}')
@@ -7412,10 +10633,14 @@ class FindToolsParams(Type):
             raise TypeError(f'Expected major_ to be a int, received: {type(major_)}')
 
         if number_ is not None and not isinstance(number_, (dict, Number)):
-            raise TypeError(f'Expected number_ to be a Number, received: {type(number_)}')
+            raise TypeError(
+                f'Expected number_ to be a Number, received: {type(number_)}'
+            )
 
         if os_type_ is not None and not isinstance(os_type_, (bytes, str)):
-            raise TypeError(f'Expected os_type_ to be a str, received: {type(os_type_)}')
+            raise TypeError(
+                f'Expected os_type_ to be a str, received: {type(os_type_)}'
+            )
 
         self.agentstream = agentstream_
         self.arch = arch_
@@ -7442,7 +10667,9 @@ class FindToolsResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if list__ is not None and not isinstance(list__, (bytes, str, list)):
-            raise TypeError(f'Expected list__ to be a Sequence, received: {type(list__)}')
+            raise TypeError(
+                f'Expected list__ to be a Sequence, received: {type(list__)}'
+            )
 
         self.error = error_
         self.list_ = list__
@@ -7463,10 +10690,16 @@ class FirewallRule(Type):
 
         # Validate arguments against known Juju API types.
         if known_service_ is not None and not isinstance(known_service_, (bytes, str)):
-            raise TypeError(f'Expected known_service_ to be a str, received: {type(known_service_)}')
+            raise TypeError(
+                f'Expected known_service_ to be a str, received: {type(known_service_)}'
+            )
 
-        if whitelist_cidrs_ is not None and not isinstance(whitelist_cidrs_, (bytes, str, list)):
-            raise TypeError(f'Expected whitelist_cidrs_ to be a Sequence, received: {type(whitelist_cidrs_)}')
+        if whitelist_cidrs_ is not None and not isinstance(
+            whitelist_cidrs_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected whitelist_cidrs_ to be a Sequence, received: {type(whitelist_cidrs_)}'
+            )
 
         self.known_service = known_service_
         self.whitelist_cidrs = whitelist_cidrs_
@@ -7492,10 +10725,48 @@ class FirewallRuleArgs(Type):
 
 
 class FullStatus(Type):
-    _toSchema = {'applications': 'applications', 'branches': 'branches', 'controller_timestamp': 'controller-timestamp', 'filesystems': 'filesystems', 'machines': 'machines', 'model': 'model', 'offers': 'offers', 'relations': 'relations', 'remote_applications': 'remote-applications', 'storage': 'storage', 'volumes': 'volumes'}
-    _toPy = {'applications': 'applications', 'branches': 'branches', 'controller-timestamp': 'controller_timestamp', 'filesystems': 'filesystems', 'machines': 'machines', 'model': 'model', 'offers': 'offers', 'relations': 'relations', 'remote-applications': 'remote_applications', 'storage': 'storage', 'volumes': 'volumes'}
+    _toSchema = {
+        'applications': 'applications',
+        'branches': 'branches',
+        'controller_timestamp': 'controller-timestamp',
+        'filesystems': 'filesystems',
+        'machines': 'machines',
+        'model': 'model',
+        'offers': 'offers',
+        'relations': 'relations',
+        'remote_applications': 'remote-applications',
+        'storage': 'storage',
+        'volumes': 'volumes',
+    }
+    _toPy = {
+        'applications': 'applications',
+        'branches': 'branches',
+        'controller-timestamp': 'controller_timestamp',
+        'filesystems': 'filesystems',
+        'machines': 'machines',
+        'model': 'model',
+        'offers': 'offers',
+        'relations': 'relations',
+        'remote-applications': 'remote_applications',
+        'storage': 'storage',
+        'volumes': 'volumes',
+    }
 
-    def __init__(self, applications=None, branches=None, controller_timestamp=None, filesystems=None, machines=None, model=None, offers=None, relations=None, remote_applications=None, storage=None, volumes=None, **unknown_fields):
+    def __init__(
+        self,
+        applications=None,
+        branches=None,
+        controller_timestamp=None,
+        filesystems=None,
+        machines=None,
+        model=None,
+        offers=None,
+        relations=None,
+        remote_applications=None,
+        storage=None,
+        volumes=None,
+        **unknown_fields,
+    ):
         """
         applications : typing.Mapping[str, ~ApplicationStatus]
         branches : typing.Mapping[str, ~BranchStatus]
@@ -7509,51 +10780,86 @@ class FullStatus(Type):
         storage : typing.Sequence[~StorageDetails]
         volumes : typing.Sequence[~VolumeDetails]
         """
-        applications_ = {k: ApplicationStatus.from_json(v) for k, v in (applications or {}).items()}
+        applications_ = {
+            k: ApplicationStatus.from_json(v) for k, v in (applications or {}).items()
+        }
         branches_ = {k: BranchStatus.from_json(v) for k, v in (branches or {}).items()}
         controller_timestamp_ = controller_timestamp
         filesystems_ = [FilesystemDetails.from_json(o) for o in filesystems or []]
         machines_ = {k: MachineStatus.from_json(v) for k, v in (machines or {}).items()}
         model_ = ModelStatusInfo.from_json(model) if model else None
-        offers_ = {k: ApplicationOfferStatus.from_json(v) for k, v in (offers or {}).items()}
+        offers_ = {
+            k: ApplicationOfferStatus.from_json(v) for k, v in (offers or {}).items()
+        }
         relations_ = [RelationStatus.from_json(o) for o in relations or []]
-        remote_applications_ = {k: RemoteApplicationStatus.from_json(v) for k, v in (remote_applications or {}).items()}
+        remote_applications_ = {
+            k: RemoteApplicationStatus.from_json(v)
+            for k, v in (remote_applications or {}).items()
+        }
         storage_ = [StorageDetails.from_json(o) for o in storage or []]
         volumes_ = [VolumeDetails.from_json(o) for o in volumes or []]
 
         # Validate arguments against known Juju API types.
         if applications_ is not None and not isinstance(applications_, dict):
-            raise TypeError(f'Expected applications_ to be a Mapping, received: {type(applications_)}')
+            raise TypeError(
+                f'Expected applications_ to be a Mapping, received: {type(applications_)}'
+            )
 
         if branches_ is not None and not isinstance(branches_, dict):
-            raise TypeError(f'Expected branches_ to be a Mapping, received: {type(branches_)}')
+            raise TypeError(
+                f'Expected branches_ to be a Mapping, received: {type(branches_)}'
+            )
 
-        if controller_timestamp_ is not None and not isinstance(controller_timestamp_, (bytes, str)):
-            raise TypeError(f'Expected controller_timestamp_ to be a str, received: {type(controller_timestamp_)}')
+        if controller_timestamp_ is not None and not isinstance(
+            controller_timestamp_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected controller_timestamp_ to be a str, received: {type(controller_timestamp_)}'
+            )
 
-        if filesystems_ is not None and not isinstance(filesystems_, (bytes, str, list)):
-            raise TypeError(f'Expected filesystems_ to be a Sequence, received: {type(filesystems_)}')
+        if filesystems_ is not None and not isinstance(
+            filesystems_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected filesystems_ to be a Sequence, received: {type(filesystems_)}'
+            )
 
         if machines_ is not None and not isinstance(machines_, dict):
-            raise TypeError(f'Expected machines_ to be a Mapping, received: {type(machines_)}')
+            raise TypeError(
+                f'Expected machines_ to be a Mapping, received: {type(machines_)}'
+            )
 
         if model_ is not None and not isinstance(model_, (dict, ModelStatusInfo)):
-            raise TypeError(f'Expected model_ to be a ModelStatusInfo, received: {type(model_)}')
+            raise TypeError(
+                f'Expected model_ to be a ModelStatusInfo, received: {type(model_)}'
+            )
 
         if offers_ is not None and not isinstance(offers_, dict):
-            raise TypeError(f'Expected offers_ to be a Mapping, received: {type(offers_)}')
+            raise TypeError(
+                f'Expected offers_ to be a Mapping, received: {type(offers_)}'
+            )
 
         if relations_ is not None and not isinstance(relations_, (bytes, str, list)):
-            raise TypeError(f'Expected relations_ to be a Sequence, received: {type(relations_)}')
+            raise TypeError(
+                f'Expected relations_ to be a Sequence, received: {type(relations_)}'
+            )
 
-        if remote_applications_ is not None and not isinstance(remote_applications_, dict):
-            raise TypeError(f'Expected remote_applications_ to be a Mapping, received: {type(remote_applications_)}')
+        if remote_applications_ is not None and not isinstance(
+            remote_applications_, dict
+        ):
+            raise TypeError(
+                f'Expected remote_applications_ to be a Mapping, received: {type(remote_applications_)}'
+            )
 
         if storage_ is not None and not isinstance(storage_, (bytes, str, list)):
-            raise TypeError(f'Expected storage_ to be a Sequence, received: {type(storage_)}')
+            raise TypeError(
+                f'Expected storage_ to be a Sequence, received: {type(storage_)}'
+            )
 
         if volumes_ is not None and not isinstance(volumes_, (bytes, str, list)):
-            raise TypeError(f'Expected volumes_ to be a Sequence, received: {type(volumes_)}')
+            raise TypeError(
+                f'Expected volumes_ to be a Sequence, received: {type(volumes_)}'
+            )
 
         self.applications = applications_
         self.branches = branches_
@@ -7570,10 +10876,36 @@ class FullStatus(Type):
 
 
 class Generation(Type):
-    _toSchema = {'applications': 'applications', 'branch': 'branch', 'completed': 'completed', 'completed_by': 'completed-by', 'created': 'created', 'created_by': 'created-by', 'generation_id': 'generation-id'}
-    _toPy = {'applications': 'applications', 'branch': 'branch', 'completed': 'completed', 'completed-by': 'completed_by', 'created': 'created', 'created-by': 'created_by', 'generation-id': 'generation_id'}
+    _toSchema = {
+        'applications': 'applications',
+        'branch': 'branch',
+        'completed': 'completed',
+        'completed_by': 'completed-by',
+        'created': 'created',
+        'created_by': 'created-by',
+        'generation_id': 'generation-id',
+    }
+    _toPy = {
+        'applications': 'applications',
+        'branch': 'branch',
+        'completed': 'completed',
+        'completed-by': 'completed_by',
+        'created': 'created',
+        'created-by': 'created_by',
+        'generation-id': 'generation_id',
+    }
 
-    def __init__(self, applications=None, branch=None, completed=None, completed_by=None, created=None, created_by=None, generation_id=None, **unknown_fields):
+    def __init__(
+        self,
+        applications=None,
+        branch=None,
+        completed=None,
+        completed_by=None,
+        created=None,
+        created_by=None,
+        generation_id=None,
+        **unknown_fields,
+    ):
         """
         applications : typing.Sequence[~GenerationApplication]
         branch : str
@@ -7592,26 +10924,40 @@ class Generation(Type):
         generation_id_ = generation_id
 
         # Validate arguments against known Juju API types.
-        if applications_ is not None and not isinstance(applications_, (bytes, str, list)):
-            raise TypeError(f'Expected applications_ to be a Sequence, received: {type(applications_)}')
+        if applications_ is not None and not isinstance(
+            applications_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected applications_ to be a Sequence, received: {type(applications_)}'
+            )
 
         if branch_ is not None and not isinstance(branch_, (bytes, str)):
             raise TypeError(f'Expected branch_ to be a str, received: {type(branch_)}')
 
         if completed_ is not None and not isinstance(completed_, int):
-            raise TypeError(f'Expected completed_ to be a int, received: {type(completed_)}')
+            raise TypeError(
+                f'Expected completed_ to be a int, received: {type(completed_)}'
+            )
 
         if completed_by_ is not None and not isinstance(completed_by_, (bytes, str)):
-            raise TypeError(f'Expected completed_by_ to be a str, received: {type(completed_by_)}')
+            raise TypeError(
+                f'Expected completed_by_ to be a str, received: {type(completed_by_)}'
+            )
 
         if created_ is not None and not isinstance(created_, int):
-            raise TypeError(f'Expected created_ to be a int, received: {type(created_)}')
+            raise TypeError(
+                f'Expected created_ to be a int, received: {type(created_)}'
+            )
 
         if created_by_ is not None and not isinstance(created_by_, (bytes, str)):
-            raise TypeError(f'Expected created_by_ to be a str, received: {type(created_by_)}')
+            raise TypeError(
+                f'Expected created_by_ to be a str, received: {type(created_by_)}'
+            )
 
         if generation_id_ is not None and not isinstance(generation_id_, int):
-            raise TypeError(f'Expected generation_id_ to be a int, received: {type(generation_id_)}')
+            raise TypeError(
+                f'Expected generation_id_ to be a int, received: {type(generation_id_)}'
+            )
 
         self.applications = applications_
         self.branch = branch_
@@ -7624,10 +10970,30 @@ class Generation(Type):
 
 
 class GenerationApplication(Type):
-    _toSchema = {'application': 'application', 'config': 'config', 'pending': 'pending', 'progress': 'progress', 'tracking': 'tracking'}
-    _toPy = {'application': 'application', 'config': 'config', 'pending': 'pending', 'progress': 'progress', 'tracking': 'tracking'}
+    _toSchema = {
+        'application': 'application',
+        'config': 'config',
+        'pending': 'pending',
+        'progress': 'progress',
+        'tracking': 'tracking',
+    }
+    _toPy = {
+        'application': 'application',
+        'config': 'config',
+        'pending': 'pending',
+        'progress': 'progress',
+        'tracking': 'tracking',
+    }
 
-    def __init__(self, application=None, config=None, pending=None, progress=None, tracking=None, **unknown_fields):
+    def __init__(
+        self,
+        application=None,
+        config=None,
+        pending=None,
+        progress=None,
+        tracking=None,
+        **unknown_fields,
+    ):
         """
         application : str
         config : typing.Mapping[str, typing.Any]
@@ -7643,19 +11009,29 @@ class GenerationApplication(Type):
 
         # Validate arguments against known Juju API types.
         if application_ is not None and not isinstance(application_, (bytes, str)):
-            raise TypeError(f'Expected application_ to be a str, received: {type(application_)}')
+            raise TypeError(
+                f'Expected application_ to be a str, received: {type(application_)}'
+            )
 
         if config_ is not None and not isinstance(config_, dict):
-            raise TypeError(f'Expected config_ to be a Mapping, received: {type(config_)}')
+            raise TypeError(
+                f'Expected config_ to be a Mapping, received: {type(config_)}'
+            )
 
         if pending_ is not None and not isinstance(pending_, (bytes, str, list)):
-            raise TypeError(f'Expected pending_ to be a Sequence, received: {type(pending_)}')
+            raise TypeError(
+                f'Expected pending_ to be a Sequence, received: {type(pending_)}'
+            )
 
         if progress_ is not None and not isinstance(progress_, (bytes, str)):
-            raise TypeError(f'Expected progress_ to be a str, received: {type(progress_)}')
+            raise TypeError(
+                f'Expected progress_ to be a str, received: {type(progress_)}'
+            )
 
         if tracking_ is not None and not isinstance(tracking_, (bytes, str, list)):
-            raise TypeError(f'Expected tracking_ to be a Sequence, received: {type(tracking_)}')
+            raise TypeError(
+                f'Expected tracking_ to be a Sequence, received: {type(tracking_)}'
+            )
 
         self.application = application_
         self.config = config_
@@ -7677,7 +11053,9 @@ class GenerationId(Type):
 
         # Validate arguments against known Juju API types.
         if generation_id_ is not None and not isinstance(generation_id_, int):
-            raise TypeError(f'Expected generation_id_ to be a int, received: {type(generation_id_)}')
+            raise TypeError(
+                f'Expected generation_id_ to be a int, received: {type(generation_id_)}'
+            )
 
         self.generation_id = generation_id_
         self.unknown_fields = unknown_fields
@@ -7700,7 +11078,9 @@ class GenerationResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if generation_ is not None and not isinstance(generation_, (dict, Generation)):
-            raise TypeError(f'Expected generation_ to be a Generation, received: {type(generation_)}')
+            raise TypeError(
+                f'Expected generation_ to be a Generation, received: {type(generation_)}'
+            )
 
         self.error = error_
         self.generation = generation_
@@ -7719,7 +11099,9 @@ class GetConstraintsResults(Type):
 
         # Validate arguments against known Juju API types.
         if constraints_ is not None and not isinstance(constraints_, (dict, Value)):
-            raise TypeError(f'Expected constraints_ to be a Value, received: {type(constraints_)}')
+            raise TypeError(
+                f'Expected constraints_ to be a Value, received: {type(constraints_)}'
+            )
 
         self.constraints = constraints_
         self.unknown_fields = unknown_fields
@@ -7740,8 +11122,12 @@ class GrantRevokeUserSecretArg(Type):
         uri_ = uri
 
         # Validate arguments against known Juju API types.
-        if applications_ is not None and not isinstance(applications_, (bytes, str, list)):
-            raise TypeError(f'Expected applications_ to be a Sequence, received: {type(applications_)}')
+        if applications_ is not None and not isinstance(
+            applications_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected applications_ to be a Sequence, received: {type(applications_)}'
+            )
 
         if label_ is not None and not isinstance(label_, (bytes, str)):
             raise TypeError(f'Expected label_ to be a str, received: {type(label_)}')
@@ -7756,10 +11142,42 @@ class GrantRevokeUserSecretArg(Type):
 
 
 class HardwareCharacteristics(Type):
-    _toSchema = {'arch': 'arch', 'availability_zone': 'availability-zone', 'cpu_cores': 'cpu-cores', 'cpu_power': 'cpu-power', 'mem': 'mem', 'root_disk': 'root-disk', 'root_disk_source': 'root-disk-source', 'tags': 'tags', 'virt_type': 'virt-type'}
-    _toPy = {'arch': 'arch', 'availability-zone': 'availability_zone', 'cpu-cores': 'cpu_cores', 'cpu-power': 'cpu_power', 'mem': 'mem', 'root-disk': 'root_disk', 'root-disk-source': 'root_disk_source', 'tags': 'tags', 'virt-type': 'virt_type'}
+    _toSchema = {
+        'arch': 'arch',
+        'availability_zone': 'availability-zone',
+        'cpu_cores': 'cpu-cores',
+        'cpu_power': 'cpu-power',
+        'mem': 'mem',
+        'root_disk': 'root-disk',
+        'root_disk_source': 'root-disk-source',
+        'tags': 'tags',
+        'virt_type': 'virt-type',
+    }
+    _toPy = {
+        'arch': 'arch',
+        'availability-zone': 'availability_zone',
+        'cpu-cores': 'cpu_cores',
+        'cpu-power': 'cpu_power',
+        'mem': 'mem',
+        'root-disk': 'root_disk',
+        'root-disk-source': 'root_disk_source',
+        'tags': 'tags',
+        'virt-type': 'virt_type',
+    }
 
-    def __init__(self, arch=None, availability_zone=None, cpu_cores=None, cpu_power=None, mem=None, root_disk=None, root_disk_source=None, tags=None, virt_type=None, **unknown_fields):
+    def __init__(
+        self,
+        arch=None,
+        availability_zone=None,
+        cpu_cores=None,
+        cpu_power=None,
+        mem=None,
+        root_disk=None,
+        root_disk_source=None,
+        tags=None,
+        virt_type=None,
+        **unknown_fields,
+    ):
         """
         arch : str
         availability_zone : str
@@ -7785,29 +11203,45 @@ class HardwareCharacteristics(Type):
         if arch_ is not None and not isinstance(arch_, (bytes, str)):
             raise TypeError(f'Expected arch_ to be a str, received: {type(arch_)}')
 
-        if availability_zone_ is not None and not isinstance(availability_zone_, (bytes, str)):
-            raise TypeError(f'Expected availability_zone_ to be a str, received: {type(availability_zone_)}')
+        if availability_zone_ is not None and not isinstance(
+            availability_zone_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected availability_zone_ to be a str, received: {type(availability_zone_)}'
+            )
 
         if cpu_cores_ is not None and not isinstance(cpu_cores_, int):
-            raise TypeError(f'Expected cpu_cores_ to be a int, received: {type(cpu_cores_)}')
+            raise TypeError(
+                f'Expected cpu_cores_ to be a int, received: {type(cpu_cores_)}'
+            )
 
         if cpu_power_ is not None and not isinstance(cpu_power_, int):
-            raise TypeError(f'Expected cpu_power_ to be a int, received: {type(cpu_power_)}')
+            raise TypeError(
+                f'Expected cpu_power_ to be a int, received: {type(cpu_power_)}'
+            )
 
         if mem_ is not None and not isinstance(mem_, int):
             raise TypeError(f'Expected mem_ to be a int, received: {type(mem_)}')
 
         if root_disk_ is not None and not isinstance(root_disk_, int):
-            raise TypeError(f'Expected root_disk_ to be a int, received: {type(root_disk_)}')
+            raise TypeError(
+                f'Expected root_disk_ to be a int, received: {type(root_disk_)}'
+            )
 
-        if root_disk_source_ is not None and not isinstance(root_disk_source_, (bytes, str)):
-            raise TypeError(f'Expected root_disk_source_ to be a str, received: {type(root_disk_source_)}')
+        if root_disk_source_ is not None and not isinstance(
+            root_disk_source_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected root_disk_source_ to be a str, received: {type(root_disk_source_)}'
+            )
 
         if tags_ is not None and not isinstance(tags_, (bytes, str, list)):
             raise TypeError(f'Expected tags_ to be a Sequence, received: {type(tags_)}')
 
         if virt_type_ is not None and not isinstance(virt_type_, (bytes, str)):
-            raise TypeError(f'Expected virt_type_ to be a str, received: {type(virt_type_)}')
+            raise TypeError(
+                f'Expected virt_type_ to be a str, received: {type(virt_type_)}'
+            )
 
         self.arch = arch_
         self.availability_zone = availability_zone_
@@ -7838,7 +11272,9 @@ class History(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if statuses_ is not None and not isinstance(statuses_, (bytes, str, list)):
-            raise TypeError(f'Expected statuses_ to be a Sequence, received: {type(statuses_)}')
+            raise TypeError(
+                f'Expected statuses_ to be a Sequence, received: {type(statuses_)}'
+            )
 
         self.error = error_
         self.statuses = statuses_
@@ -7846,10 +11282,45 @@ class History(Type):
 
 
 class HostPort(Type):
-    _toSchema = {'address': 'Address', 'cidr': 'cidr', 'config_type': 'config-type', 'is_secondary': 'is-secondary', 'port': 'port', 'scope': 'scope', 'space_id': 'space-id', 'space_name': 'space-name', 'type_': 'type', 'value': 'value'}
-    _toPy = {'Address': 'address', 'cidr': 'cidr', 'config-type': 'config_type', 'is-secondary': 'is_secondary', 'port': 'port', 'scope': 'scope', 'space-id': 'space_id', 'space-name': 'space_name', 'type': 'type_', 'value': 'value'}
+    _toSchema = {
+        'address': 'Address',
+        'cidr': 'cidr',
+        'config_type': 'config-type',
+        'is_secondary': 'is-secondary',
+        'port': 'port',
+        'scope': 'scope',
+        'space_id': 'space-id',
+        'space_name': 'space-name',
+        'type_': 'type',
+        'value': 'value',
+    }
+    _toPy = {
+        'Address': 'address',
+        'cidr': 'cidr',
+        'config-type': 'config_type',
+        'is-secondary': 'is_secondary',
+        'port': 'port',
+        'scope': 'scope',
+        'space-id': 'space_id',
+        'space-name': 'space_name',
+        'type': 'type_',
+        'value': 'value',
+    }
 
-    def __init__(self, address=None, cidr=None, config_type=None, is_secondary=None, port=None, scope=None, space_id=None, space_name=None, type_=None, value=None, **unknown_fields):
+    def __init__(
+        self,
+        address=None,
+        cidr=None,
+        config_type=None,
+        is_secondary=None,
+        port=None,
+        scope=None,
+        space_id=None,
+        space_name=None,
+        type_=None,
+        value=None,
+        **unknown_fields,
+    ):
         """
         address : Address
         cidr : str
@@ -7875,16 +11346,22 @@ class HostPort(Type):
 
         # Validate arguments against known Juju API types.
         if address_ is not None and not isinstance(address_, (dict, Address)):
-            raise TypeError(f'Expected address_ to be a Address, received: {type(address_)}')
+            raise TypeError(
+                f'Expected address_ to be a Address, received: {type(address_)}'
+            )
 
         if cidr_ is not None and not isinstance(cidr_, (bytes, str)):
             raise TypeError(f'Expected cidr_ to be a str, received: {type(cidr_)}')
 
         if config_type_ is not None and not isinstance(config_type_, (bytes, str)):
-            raise TypeError(f'Expected config_type_ to be a str, received: {type(config_type_)}')
+            raise TypeError(
+                f'Expected config_type_ to be a str, received: {type(config_type_)}'
+            )
 
         if is_secondary_ is not None and not isinstance(is_secondary_, bool):
-            raise TypeError(f'Expected is_secondary_ to be a bool, received: {type(is_secondary_)}')
+            raise TypeError(
+                f'Expected is_secondary_ to be a bool, received: {type(is_secondary_)}'
+            )
 
         if port_ is not None and not isinstance(port_, int):
             raise TypeError(f'Expected port_ to be a int, received: {type(port_)}')
@@ -7893,10 +11370,14 @@ class HostPort(Type):
             raise TypeError(f'Expected scope_ to be a str, received: {type(scope_)}')
 
         if space_id_ is not None and not isinstance(space_id_, (bytes, str)):
-            raise TypeError(f'Expected space_id_ to be a str, received: {type(space_id_)}')
+            raise TypeError(
+                f'Expected space_id_ to be a str, received: {type(space_id_)}'
+            )
 
         if space_name_ is not None and not isinstance(space_name_, (bytes, str)):
-            raise TypeError(f'Expected space_name_ to be a str, received: {type(space_name_)}')
+            raise TypeError(
+                f'Expected space_name_ to be a str, received: {type(space_name_)}'
+            )
 
         if type__ is not None and not isinstance(type__, (bytes, str)):
             raise TypeError(f'Expected type__ to be a str, received: {type(type__)}')
@@ -7918,10 +11399,30 @@ class HostPort(Type):
 
 
 class HostedModelConfig(Type):
-    _toSchema = {'cloud_spec': 'cloud-spec', 'config': 'config', 'error': 'error', 'name': 'name', 'owner': 'owner'}
-    _toPy = {'cloud-spec': 'cloud_spec', 'config': 'config', 'error': 'error', 'name': 'name', 'owner': 'owner'}
+    _toSchema = {
+        'cloud_spec': 'cloud-spec',
+        'config': 'config',
+        'error': 'error',
+        'name': 'name',
+        'owner': 'owner',
+    }
+    _toPy = {
+        'cloud-spec': 'cloud_spec',
+        'config': 'config',
+        'error': 'error',
+        'name': 'name',
+        'owner': 'owner',
+    }
 
-    def __init__(self, cloud_spec=None, config=None, error=None, name=None, owner=None, **unknown_fields):
+    def __init__(
+        self,
+        cloud_spec=None,
+        config=None,
+        error=None,
+        name=None,
+        owner=None,
+        **unknown_fields,
+    ):
         """
         cloud_spec : CloudSpec
         config : typing.Mapping[str, typing.Any]
@@ -7937,10 +11438,14 @@ class HostedModelConfig(Type):
 
         # Validate arguments against known Juju API types.
         if cloud_spec_ is not None and not isinstance(cloud_spec_, (dict, CloudSpec)):
-            raise TypeError(f'Expected cloud_spec_ to be a CloudSpec, received: {type(cloud_spec_)}')
+            raise TypeError(
+                f'Expected cloud_spec_ to be a CloudSpec, received: {type(cloud_spec_)}'
+            )
 
         if config_ is not None and not isinstance(config_, dict):
-            raise TypeError(f'Expected config_ to be a Mapping, received: {type(config_)}')
+            raise TypeError(
+                f'Expected config_ to be a Mapping, received: {type(config_)}'
+            )
 
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
@@ -7971,17 +11476,42 @@ class HostedModelConfigsResults(Type):
 
         # Validate arguments against known Juju API types.
         if models_ is not None and not isinstance(models_, (bytes, str, list)):
-            raise TypeError(f'Expected models_ to be a Sequence, received: {type(models_)}')
+            raise TypeError(
+                f'Expected models_ to be a Sequence, received: {type(models_)}'
+            )
 
         self.models = models_
         self.unknown_fields = unknown_fields
 
 
 class ImageMetadataFilter(Type):
-    _toSchema = {'arches': 'arches', 'region': 'region', 'root_storage_type': 'root-storage-type', 'stream': 'stream', 'versions': 'versions', 'virt_type': 'virt-type'}
-    _toPy = {'arches': 'arches', 'region': 'region', 'root-storage-type': 'root_storage_type', 'stream': 'stream', 'versions': 'versions', 'virt-type': 'virt_type'}
+    _toSchema = {
+        'arches': 'arches',
+        'region': 'region',
+        'root_storage_type': 'root-storage-type',
+        'stream': 'stream',
+        'versions': 'versions',
+        'virt_type': 'virt-type',
+    }
+    _toPy = {
+        'arches': 'arches',
+        'region': 'region',
+        'root-storage-type': 'root_storage_type',
+        'stream': 'stream',
+        'versions': 'versions',
+        'virt-type': 'virt_type',
+    }
 
-    def __init__(self, arches=None, region=None, root_storage_type=None, stream=None, versions=None, virt_type=None, **unknown_fields):
+    def __init__(
+        self,
+        arches=None,
+        region=None,
+        root_storage_type=None,
+        stream=None,
+        versions=None,
+        virt_type=None,
+        **unknown_fields,
+    ):
         """
         arches : typing.Sequence[str]
         region : str
@@ -7999,22 +11529,32 @@ class ImageMetadataFilter(Type):
 
         # Validate arguments against known Juju API types.
         if arches_ is not None and not isinstance(arches_, (bytes, str, list)):
-            raise TypeError(f'Expected arches_ to be a Sequence, received: {type(arches_)}')
+            raise TypeError(
+                f'Expected arches_ to be a Sequence, received: {type(arches_)}'
+            )
 
         if region_ is not None and not isinstance(region_, (bytes, str)):
             raise TypeError(f'Expected region_ to be a str, received: {type(region_)}')
 
-        if root_storage_type_ is not None and not isinstance(root_storage_type_, (bytes, str)):
-            raise TypeError(f'Expected root_storage_type_ to be a str, received: {type(root_storage_type_)}')
+        if root_storage_type_ is not None and not isinstance(
+            root_storage_type_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected root_storage_type_ to be a str, received: {type(root_storage_type_)}'
+            )
 
         if stream_ is not None and not isinstance(stream_, (bytes, str)):
             raise TypeError(f'Expected stream_ to be a str, received: {type(stream_)}')
 
         if versions_ is not None and not isinstance(versions_, (bytes, str, list)):
-            raise TypeError(f'Expected versions_ to be a Sequence, received: {type(versions_)}')
+            raise TypeError(
+                f'Expected versions_ to be a Sequence, received: {type(versions_)}'
+            )
 
         if virt_type_ is not None and not isinstance(virt_type_, (bytes, str)):
-            raise TypeError(f'Expected virt_type_ to be a str, received: {type(virt_type_)}')
+            raise TypeError(
+                f'Expected virt_type_ to be a str, received: {type(virt_type_)}'
+            )
 
         self.arches = arches_
         self.region = region_
@@ -8037,17 +11577,36 @@ class ImportStorageDetails(Type):
 
         # Validate arguments against known Juju API types.
         if storage_tag_ is not None and not isinstance(storage_tag_, (bytes, str)):
-            raise TypeError(f'Expected storage_tag_ to be a str, received: {type(storage_tag_)}')
+            raise TypeError(
+                f'Expected storage_tag_ to be a str, received: {type(storage_tag_)}'
+            )
 
         self.storage_tag = storage_tag_
         self.unknown_fields = unknown_fields
 
 
 class ImportStorageParams(Type):
-    _toSchema = {'kind': 'kind', 'pool': 'pool', 'provider_id': 'provider-id', 'storage_name': 'storage-name'}
-    _toPy = {'kind': 'kind', 'pool': 'pool', 'provider-id': 'provider_id', 'storage-name': 'storage_name'}
+    _toSchema = {
+        'kind': 'kind',
+        'pool': 'pool',
+        'provider_id': 'provider-id',
+        'storage_name': 'storage-name',
+    }
+    _toPy = {
+        'kind': 'kind',
+        'pool': 'pool',
+        'provider-id': 'provider_id',
+        'storage-name': 'storage_name',
+    }
 
-    def __init__(self, kind=None, pool=None, provider_id=None, storage_name=None, **unknown_fields):
+    def __init__(
+        self,
+        kind=None,
+        pool=None,
+        provider_id=None,
+        storage_name=None,
+        **unknown_fields,
+    ):
         """
         kind : int
         pool : str
@@ -8067,10 +11626,14 @@ class ImportStorageParams(Type):
             raise TypeError(f'Expected pool_ to be a str, received: {type(pool_)}')
 
         if provider_id_ is not None and not isinstance(provider_id_, (bytes, str)):
-            raise TypeError(f'Expected provider_id_ to be a str, received: {type(provider_id_)}')
+            raise TypeError(
+                f'Expected provider_id_ to be a str, received: {type(provider_id_)}'
+            )
 
         if storage_name_ is not None and not isinstance(storage_name_, (bytes, str)):
-            raise TypeError(f'Expected storage_name_ to be a str, received: {type(storage_name_)}')
+            raise TypeError(
+                f'Expected storage_name_ to be a str, received: {type(storage_name_)}'
+            )
 
         self.kind = kind_
         self.pool = pool_
@@ -8095,8 +11658,12 @@ class ImportStorageResult(Type):
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
-        if result_ is not None and not isinstance(result_, (dict, ImportStorageDetails)):
-            raise TypeError(f'Expected result_ to be a ImportStorageDetails, received: {type(result_)}')
+        if result_ is not None and not isinstance(
+            result_, (dict, ImportStorageDetails)
+        ):
+            raise TypeError(
+                f'Expected result_ to be a ImportStorageDetails, received: {type(result_)}'
+            )
 
         self.error = error_
         self.result = result_
@@ -8115,7 +11682,9 @@ class ImportStorageResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -8133,14 +11702,20 @@ class InitiateMigrationArgs(Type):
 
         # Validate arguments against known Juju API types.
         if specs_ is not None and not isinstance(specs_, (bytes, str, list)):
-            raise TypeError(f'Expected specs_ to be a Sequence, received: {type(specs_)}')
+            raise TypeError(
+                f'Expected specs_ to be a Sequence, received: {type(specs_)}'
+            )
 
         self.specs = specs_
         self.unknown_fields = unknown_fields
 
 
 class InitiateMigrationResult(Type):
-    _toSchema = {'error': 'error', 'migration_id': 'migration-id', 'model_tag': 'model-tag'}
+    _toSchema = {
+        'error': 'error',
+        'migration_id': 'migration-id',
+        'model_tag': 'model-tag',
+    }
     _toPy = {'error': 'error', 'migration-id': 'migration_id', 'model-tag': 'model_tag'}
 
     def __init__(self, error=None, migration_id=None, model_tag=None, **unknown_fields):
@@ -8158,10 +11733,14 @@ class InitiateMigrationResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if migration_id_ is not None and not isinstance(migration_id_, (bytes, str)):
-            raise TypeError(f'Expected migration_id_ to be a str, received: {type(migration_id_)}')
+            raise TypeError(
+                f'Expected migration_id_ to be a str, received: {type(migration_id_)}'
+            )
 
         if model_tag_ is not None and not isinstance(model_tag_, (bytes, str)):
-            raise TypeError(f'Expected model_tag_ to be a str, received: {type(model_tag_)}')
+            raise TypeError(
+                f'Expected model_tag_ to be a str, received: {type(model_tag_)}'
+            )
 
         self.error = error_
         self.migration_id = migration_id_
@@ -8181,17 +11760,45 @@ class InitiateMigrationResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
 
 
 class InstanceType(Type):
-    _toSchema = {'arches': 'arches', 'cost': 'cost', 'cpu_cores': 'cpu-cores', 'memory': 'memory', 'name': 'name', 'root_disk': 'root-disk', 'virt_type': 'virt-type'}
-    _toPy = {'arches': 'arches', 'cost': 'cost', 'cpu-cores': 'cpu_cores', 'memory': 'memory', 'name': 'name', 'root-disk': 'root_disk', 'virt-type': 'virt_type'}
+    _toSchema = {
+        'arches': 'arches',
+        'cost': 'cost',
+        'cpu_cores': 'cpu-cores',
+        'memory': 'memory',
+        'name': 'name',
+        'root_disk': 'root-disk',
+        'virt_type': 'virt-type',
+    }
+    _toPy = {
+        'arches': 'arches',
+        'cost': 'cost',
+        'cpu-cores': 'cpu_cores',
+        'memory': 'memory',
+        'name': 'name',
+        'root-disk': 'root_disk',
+        'virt-type': 'virt_type',
+    }
 
-    def __init__(self, arches=None, cost=None, cpu_cores=None, memory=None, name=None, root_disk=None, virt_type=None, **unknown_fields):
+    def __init__(
+        self,
+        arches=None,
+        cost=None,
+        cpu_cores=None,
+        memory=None,
+        name=None,
+        root_disk=None,
+        virt_type=None,
+        **unknown_fields,
+    ):
         """
         arches : typing.Sequence[str]
         cost : int
@@ -8211,13 +11818,17 @@ class InstanceType(Type):
 
         # Validate arguments against known Juju API types.
         if arches_ is not None and not isinstance(arches_, (bytes, str, list)):
-            raise TypeError(f'Expected arches_ to be a Sequence, received: {type(arches_)}')
+            raise TypeError(
+                f'Expected arches_ to be a Sequence, received: {type(arches_)}'
+            )
 
         if cost_ is not None and not isinstance(cost_, int):
             raise TypeError(f'Expected cost_ to be a int, received: {type(cost_)}')
 
         if cpu_cores_ is not None and not isinstance(cpu_cores_, int):
-            raise TypeError(f'Expected cpu_cores_ to be a int, received: {type(cpu_cores_)}')
+            raise TypeError(
+                f'Expected cpu_cores_ to be a int, received: {type(cpu_cores_)}'
+            )
 
         if memory_ is not None and not isinstance(memory_, int):
             raise TypeError(f'Expected memory_ to be a int, received: {type(memory_)}')
@@ -8226,10 +11837,14 @@ class InstanceType(Type):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
 
         if root_disk_ is not None and not isinstance(root_disk_, int):
-            raise TypeError(f'Expected root_disk_ to be a int, received: {type(root_disk_)}')
+            raise TypeError(
+                f'Expected root_disk_ to be a int, received: {type(root_disk_)}'
+            )
 
         if virt_type_ is not None and not isinstance(virt_type_, (bytes, str)):
-            raise TypeError(f'Expected virt_type_ to be a str, received: {type(virt_type_)}')
+            raise TypeError(
+                f'Expected virt_type_ to be a str, received: {type(virt_type_)}'
+            )
 
         self.arches = arches_
         self.cost = cost_
@@ -8242,10 +11857,30 @@ class InstanceType(Type):
 
 
 class InstanceTypesResult(Type):
-    _toSchema = {'cost_currency': 'cost-currency', 'cost_divisor': 'cost-divisor', 'cost_unit': 'cost-unit', 'error': 'error', 'instance_types': 'instance-types'}
-    _toPy = {'cost-currency': 'cost_currency', 'cost-divisor': 'cost_divisor', 'cost-unit': 'cost_unit', 'error': 'error', 'instance-types': 'instance_types'}
+    _toSchema = {
+        'cost_currency': 'cost-currency',
+        'cost_divisor': 'cost-divisor',
+        'cost_unit': 'cost-unit',
+        'error': 'error',
+        'instance_types': 'instance-types',
+    }
+    _toPy = {
+        'cost-currency': 'cost_currency',
+        'cost-divisor': 'cost_divisor',
+        'cost-unit': 'cost_unit',
+        'error': 'error',
+        'instance-types': 'instance_types',
+    }
 
-    def __init__(self, cost_currency=None, cost_divisor=None, cost_unit=None, error=None, instance_types=None, **unknown_fields):
+    def __init__(
+        self,
+        cost_currency=None,
+        cost_divisor=None,
+        cost_unit=None,
+        error=None,
+        instance_types=None,
+        **unknown_fields,
+    ):
         """
         cost_currency : str
         cost_divisor : int
@@ -8261,19 +11896,29 @@ class InstanceTypesResult(Type):
 
         # Validate arguments against known Juju API types.
         if cost_currency_ is not None and not isinstance(cost_currency_, (bytes, str)):
-            raise TypeError(f'Expected cost_currency_ to be a str, received: {type(cost_currency_)}')
+            raise TypeError(
+                f'Expected cost_currency_ to be a str, received: {type(cost_currency_)}'
+            )
 
         if cost_divisor_ is not None and not isinstance(cost_divisor_, int):
-            raise TypeError(f'Expected cost_divisor_ to be a int, received: {type(cost_divisor_)}')
+            raise TypeError(
+                f'Expected cost_divisor_ to be a int, received: {type(cost_divisor_)}'
+            )
 
         if cost_unit_ is not None and not isinstance(cost_unit_, (bytes, str)):
-            raise TypeError(f'Expected cost_unit_ to be a str, received: {type(cost_unit_)}')
+            raise TypeError(
+                f'Expected cost_unit_ to be a str, received: {type(cost_unit_)}'
+            )
 
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
-        if instance_types_ is not None and not isinstance(instance_types_, (bytes, str, list)):
-            raise TypeError(f'Expected instance_types_ to be a Sequence, received: {type(instance_types_)}')
+        if instance_types_ is not None and not isinstance(
+            instance_types_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected instance_types_ to be a Sequence, received: {type(instance_types_)}'
+            )
 
         self.cost_currency = cost_currency_
         self.cost_divisor = cost_divisor_
@@ -8295,7 +11940,9 @@ class InstanceTypesResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -8355,7 +12002,9 @@ class IsMeteredResult(Type):
 
         # Validate arguments against known Juju API types.
         if metered_ is not None and not isinstance(metered_, bool):
-            raise TypeError(f'Expected metered_ to be a bool, received: {type(metered_)}')
+            raise TypeError(
+                f'Expected metered_ to be a bool, received: {type(metered_)}'
+            )
 
         self.metered = metered_
         self.unknown_fields = unknown_fields
@@ -8377,13 +12026,19 @@ class LXDProfile(Type):
 
         # Validate arguments against known Juju API types.
         if config_ is not None and not isinstance(config_, dict):
-            raise TypeError(f'Expected config_ to be a Mapping, received: {type(config_)}')
+            raise TypeError(
+                f'Expected config_ to be a Mapping, received: {type(config_)}'
+            )
 
         if description_ is not None and not isinstance(description_, (bytes, str)):
-            raise TypeError(f'Expected description_ to be a str, received: {type(description_)}')
+            raise TypeError(
+                f'Expected description_ to be a str, received: {type(description_)}'
+            )
 
         if devices_ is not None and not isinstance(devices_, dict):
-            raise TypeError(f'Expected devices_ to be a Mapping, received: {type(devices_)}')
+            raise TypeError(
+                f'Expected devices_ to be a Mapping, received: {type(devices_)}'
+            )
 
         self.config = config_
         self.description = description_
@@ -8403,7 +12058,9 @@ class ListCloudImageMetadataResult(Type):
 
         # Validate arguments against known Juju API types.
         if result_ is not None and not isinstance(result_, (bytes, str, list)):
-            raise TypeError(f'Expected result_ to be a Sequence, received: {type(result_)}')
+            raise TypeError(
+                f'Expected result_ to be a Sequence, received: {type(result_)}'
+            )
 
         self.result = result_
         self.unknown_fields = unknown_fields
@@ -8422,11 +12079,17 @@ class ListCloudInfo(Type):
         user_access_ = user_access
 
         # Validate arguments against known Juju API types.
-        if clouddetails_ is not None and not isinstance(clouddetails_, (dict, CloudDetails)):
-            raise TypeError(f'Expected clouddetails_ to be a CloudDetails, received: {type(clouddetails_)}')
+        if clouddetails_ is not None and not isinstance(
+            clouddetails_, (dict, CloudDetails)
+        ):
+            raise TypeError(
+                f'Expected clouddetails_ to be a CloudDetails, received: {type(clouddetails_)}'
+            )
 
         if user_access_ is not None and not isinstance(user_access_, (bytes, str)):
-            raise TypeError(f'Expected user_access_ to be a str, received: {type(user_access_)}')
+            raise TypeError(
+                f'Expected user_access_ to be a str, received: {type(user_access_)}'
+            )
 
         self.clouddetails = clouddetails_
         self.user_access = user_access_
@@ -8450,7 +12113,9 @@ class ListCloudInfoResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if result_ is not None and not isinstance(result_, (dict, ListCloudInfo)):
-            raise TypeError(f'Expected result_ to be a ListCloudInfo, received: {type(result_)}')
+            raise TypeError(
+                f'Expected result_ to be a ListCloudInfo, received: {type(result_)}'
+            )
 
         self.error = error_
         self.result = result_
@@ -8469,7 +12134,9 @@ class ListCloudInfoResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -8492,7 +12159,9 @@ class ListCloudsRequest(Type):
             raise TypeError(f'Expected all__ to be a bool, received: {type(all__)}')
 
         if user_tag_ is not None and not isinstance(user_tag_, (bytes, str)):
-            raise TypeError(f'Expected user_tag_ to be a str, received: {type(user_tag_)}')
+            raise TypeError(
+                f'Expected user_tag_ to be a str, received: {type(user_tag_)}'
+            )
 
         self.all_ = all__
         self.user_tag = user_tag_
@@ -8511,7 +12180,9 @@ class ListFirewallRulesResults(Type):
 
         # Validate arguments against known Juju API types.
         if rules_ is not None and not isinstance(rules_, (bytes, str, list)):
-            raise TypeError(f'Expected rules_ to be a Sequence, received: {type(rules_)}')
+            raise TypeError(
+                f'Expected rules_ to be a Sequence, received: {type(rules_)}'
+            )
 
         self.rules = rules_
         self.unknown_fields = unknown_fields
@@ -8529,7 +12200,9 @@ class ListResourcesArgs(Type):
 
         # Validate arguments against known Juju API types.
         if entities_ is not None and not isinstance(entities_, (bytes, str, list)):
-            raise TypeError(f'Expected entities_ to be a Sequence, received: {type(entities_)}')
+            raise TypeError(
+                f'Expected entities_ to be a Sequence, received: {type(entities_)}'
+            )
 
         self.entities = entities_
         self.unknown_fields = unknown_fields
@@ -8549,7 +12222,9 @@ class ListSSHKeys(Type):
 
         # Validate arguments against known Juju API types.
         if entities_ is not None and not isinstance(entities_, (dict, Entities)):
-            raise TypeError(f'Expected entities_ to be a Entities, received: {type(entities_)}')
+            raise TypeError(
+                f'Expected entities_ to be a Entities, received: {type(entities_)}'
+            )
 
         if mode_ is not None and not isinstance(mode_, bool):
             raise TypeError(f'Expected mode_ to be a bool, received: {type(mode_)}')
@@ -8573,7 +12248,9 @@ class ListSecretBackendsArgs(Type):
 
         # Validate arguments against known Juju API types.
         if names_ is not None and not isinstance(names_, (bytes, str, list)):
-            raise TypeError(f'Expected names_ to be a Sequence, received: {type(names_)}')
+            raise TypeError(
+                f'Expected names_ to be a Sequence, received: {type(names_)}'
+            )
 
         if reveal_ is not None and not isinstance(reveal_, bool):
             raise TypeError(f'Expected reveal_ to be a bool, received: {type(reveal_)}')
@@ -8595,17 +12272,63 @@ class ListSecretBackendsResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
 
 
 class ListSecretResult(Type):
-    _toSchema = {'create_time': 'create-time', 'description': 'description', 'label': 'label', 'latest_expire_time': 'latest-expire-time', 'latest_revision': 'latest-revision', 'next_rotate_time': 'next-rotate-time', 'owner_tag': 'owner-tag', 'revisions': 'revisions', 'rotate_policy': 'rotate-policy', 'update_time': 'update-time', 'uri': 'uri', 'value': 'value', 'version': 'version'}
-    _toPy = {'create-time': 'create_time', 'description': 'description', 'label': 'label', 'latest-expire-time': 'latest_expire_time', 'latest-revision': 'latest_revision', 'next-rotate-time': 'next_rotate_time', 'owner-tag': 'owner_tag', 'revisions': 'revisions', 'rotate-policy': 'rotate_policy', 'update-time': 'update_time', 'uri': 'uri', 'value': 'value', 'version': 'version'}
+    _toSchema = {
+        'create_time': 'create-time',
+        'description': 'description',
+        'label': 'label',
+        'latest_expire_time': 'latest-expire-time',
+        'latest_revision': 'latest-revision',
+        'next_rotate_time': 'next-rotate-time',
+        'owner_tag': 'owner-tag',
+        'revisions': 'revisions',
+        'rotate_policy': 'rotate-policy',
+        'update_time': 'update-time',
+        'uri': 'uri',
+        'value': 'value',
+        'version': 'version',
+    }
+    _toPy = {
+        'create-time': 'create_time',
+        'description': 'description',
+        'label': 'label',
+        'latest-expire-time': 'latest_expire_time',
+        'latest-revision': 'latest_revision',
+        'next-rotate-time': 'next_rotate_time',
+        'owner-tag': 'owner_tag',
+        'revisions': 'revisions',
+        'rotate-policy': 'rotate_policy',
+        'update-time': 'update_time',
+        'uri': 'uri',
+        'value': 'value',
+        'version': 'version',
+    }
 
-    def __init__(self, create_time=None, description=None, label=None, latest_expire_time=None, latest_revision=None, next_rotate_time=None, owner_tag=None, revisions=None, rotate_policy=None, update_time=None, uri=None, value=None, version=None, **unknown_fields):
+    def __init__(
+        self,
+        create_time=None,
+        description=None,
+        label=None,
+        latest_expire_time=None,
+        latest_revision=None,
+        next_rotate_time=None,
+        owner_tag=None,
+        revisions=None,
+        rotate_policy=None,
+        update_time=None,
+        uri=None,
+        value=None,
+        version=None,
+        **unknown_fields,
+    ):
         """
         create_time : str
         description : str
@@ -8637,43 +12360,69 @@ class ListSecretResult(Type):
 
         # Validate arguments against known Juju API types.
         if create_time_ is not None and not isinstance(create_time_, (bytes, str)):
-            raise TypeError(f'Expected create_time_ to be a str, received: {type(create_time_)}')
+            raise TypeError(
+                f'Expected create_time_ to be a str, received: {type(create_time_)}'
+            )
 
         if description_ is not None and not isinstance(description_, (bytes, str)):
-            raise TypeError(f'Expected description_ to be a str, received: {type(description_)}')
+            raise TypeError(
+                f'Expected description_ to be a str, received: {type(description_)}'
+            )
 
         if label_ is not None and not isinstance(label_, (bytes, str)):
             raise TypeError(f'Expected label_ to be a str, received: {type(label_)}')
 
-        if latest_expire_time_ is not None and not isinstance(latest_expire_time_, (bytes, str)):
-            raise TypeError(f'Expected latest_expire_time_ to be a str, received: {type(latest_expire_time_)}')
+        if latest_expire_time_ is not None and not isinstance(
+            latest_expire_time_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected latest_expire_time_ to be a str, received: {type(latest_expire_time_)}'
+            )
 
         if latest_revision_ is not None and not isinstance(latest_revision_, int):
-            raise TypeError(f'Expected latest_revision_ to be a int, received: {type(latest_revision_)}')
+            raise TypeError(
+                f'Expected latest_revision_ to be a int, received: {type(latest_revision_)}'
+            )
 
-        if next_rotate_time_ is not None and not isinstance(next_rotate_time_, (bytes, str)):
-            raise TypeError(f'Expected next_rotate_time_ to be a str, received: {type(next_rotate_time_)}')
+        if next_rotate_time_ is not None and not isinstance(
+            next_rotate_time_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected next_rotate_time_ to be a str, received: {type(next_rotate_time_)}'
+            )
 
         if owner_tag_ is not None and not isinstance(owner_tag_, (bytes, str)):
-            raise TypeError(f'Expected owner_tag_ to be a str, received: {type(owner_tag_)}')
+            raise TypeError(
+                f'Expected owner_tag_ to be a str, received: {type(owner_tag_)}'
+            )
 
         if revisions_ is not None and not isinstance(revisions_, (bytes, str, list)):
-            raise TypeError(f'Expected revisions_ to be a Sequence, received: {type(revisions_)}')
+            raise TypeError(
+                f'Expected revisions_ to be a Sequence, received: {type(revisions_)}'
+            )
 
         if rotate_policy_ is not None and not isinstance(rotate_policy_, (bytes, str)):
-            raise TypeError(f'Expected rotate_policy_ to be a str, received: {type(rotate_policy_)}')
+            raise TypeError(
+                f'Expected rotate_policy_ to be a str, received: {type(rotate_policy_)}'
+            )
 
         if update_time_ is not None and not isinstance(update_time_, (bytes, str)):
-            raise TypeError(f'Expected update_time_ to be a str, received: {type(update_time_)}')
+            raise TypeError(
+                f'Expected update_time_ to be a str, received: {type(update_time_)}'
+            )
 
         if uri_ is not None and not isinstance(uri_, (bytes, str)):
             raise TypeError(f'Expected uri_ to be a str, received: {type(uri_)}')
 
         if value_ is not None and not isinstance(value_, (dict, SecretValueResult)):
-            raise TypeError(f'Expected value_ to be a SecretValueResult, received: {type(value_)}')
+            raise TypeError(
+                f'Expected value_ to be a SecretValueResult, received: {type(value_)}'
+            )
 
         if version_ is not None and not isinstance(version_, int):
-            raise TypeError(f'Expected version_ to be a int, received: {type(version_)}')
+            raise TypeError(
+                f'Expected version_ to be a int, received: {type(version_)}'
+            )
 
         self.create_time = create_time_
         self.description = description_
@@ -8703,7 +12452,9 @@ class ListSecretResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -8723,10 +12474,14 @@ class ListSecretsArgs(Type):
 
         # Validate arguments against known Juju API types.
         if filter__ is not None and not isinstance(filter__, (dict, SecretsFilter)):
-            raise TypeError(f'Expected filter__ to be a SecretsFilter, received: {type(filter__)}')
+            raise TypeError(
+                f'Expected filter__ to be a SecretsFilter, received: {type(filter__)}'
+            )
 
         if show_secrets_ is not None and not isinstance(show_secrets_, bool):
-            raise TypeError(f'Expected show_secrets_ to be a bool, received: {type(show_secrets_)}')
+            raise TypeError(
+                f'Expected show_secrets_ to be a bool, received: {type(show_secrets_)}'
+            )
 
         self.filter_ = filter__
         self.show_secrets = show_secrets_
@@ -8745,7 +12500,9 @@ class ListSpacesResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -8763,17 +12520,51 @@ class ListSubnetsResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
 
 
 class LoginRequest(Type):
-    _toSchema = {'auth_tag': 'auth-tag', 'bakery_version': 'bakery-version', 'cli_args': 'cli-args', 'client_version': 'client-version', 'credentials': 'credentials', 'macaroons': 'macaroons', 'nonce': 'nonce', 'token': 'token', 'user_data': 'user-data'}
-    _toPy = {'auth-tag': 'auth_tag', 'bakery-version': 'bakery_version', 'cli-args': 'cli_args', 'client-version': 'client_version', 'credentials': 'credentials', 'macaroons': 'macaroons', 'nonce': 'nonce', 'token': 'token', 'user-data': 'user_data'}
+    _toSchema = {
+        'auth_tag': 'auth-tag',
+        'bakery_version': 'bakery-version',
+        'cli_args': 'cli-args',
+        'client_version': 'client-version',
+        'credentials': 'credentials',
+        'macaroons': 'macaroons',
+        'nonce': 'nonce',
+        'token': 'token',
+        'user_data': 'user-data',
+    }
+    _toPy = {
+        'auth-tag': 'auth_tag',
+        'bakery-version': 'bakery_version',
+        'cli-args': 'cli_args',
+        'client-version': 'client_version',
+        'credentials': 'credentials',
+        'macaroons': 'macaroons',
+        'nonce': 'nonce',
+        'token': 'token',
+        'user-data': 'user_data',
+    }
 
-    def __init__(self, auth_tag=None, bakery_version=None, cli_args=None, client_version=None, credentials=None, macaroons=None, nonce=None, token=None, user_data=None, **unknown_fields):
+    def __init__(
+        self,
+        auth_tag=None,
+        bakery_version=None,
+        cli_args=None,
+        client_version=None,
+        credentials=None,
+        macaroons=None,
+        nonce=None,
+        token=None,
+        user_data=None,
+        **unknown_fields,
+    ):
         """
         auth_tag : str
         bakery_version : int
@@ -8797,22 +12588,36 @@ class LoginRequest(Type):
 
         # Validate arguments against known Juju API types.
         if auth_tag_ is not None and not isinstance(auth_tag_, (bytes, str)):
-            raise TypeError(f'Expected auth_tag_ to be a str, received: {type(auth_tag_)}')
+            raise TypeError(
+                f'Expected auth_tag_ to be a str, received: {type(auth_tag_)}'
+            )
 
         if bakery_version_ is not None and not isinstance(bakery_version_, int):
-            raise TypeError(f'Expected bakery_version_ to be a int, received: {type(bakery_version_)}')
+            raise TypeError(
+                f'Expected bakery_version_ to be a int, received: {type(bakery_version_)}'
+            )
 
         if cli_args_ is not None and not isinstance(cli_args_, (bytes, str)):
-            raise TypeError(f'Expected cli_args_ to be a str, received: {type(cli_args_)}')
+            raise TypeError(
+                f'Expected cli_args_ to be a str, received: {type(cli_args_)}'
+            )
 
-        if client_version_ is not None and not isinstance(client_version_, (bytes, str)):
-            raise TypeError(f'Expected client_version_ to be a str, received: {type(client_version_)}')
+        if client_version_ is not None and not isinstance(
+            client_version_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected client_version_ to be a str, received: {type(client_version_)}'
+            )
 
         if credentials_ is not None and not isinstance(credentials_, (bytes, str)):
-            raise TypeError(f'Expected credentials_ to be a str, received: {type(credentials_)}')
+            raise TypeError(
+                f'Expected credentials_ to be a str, received: {type(credentials_)}'
+            )
 
         if macaroons_ is not None and not isinstance(macaroons_, (bytes, str, list)):
-            raise TypeError(f'Expected macaroons_ to be a Sequence, received: {type(macaroons_)}')
+            raise TypeError(
+                f'Expected macaroons_ to be a Sequence, received: {type(macaroons_)}'
+            )
 
         if nonce_ is not None and not isinstance(nonce_, (bytes, str)):
             raise TypeError(f'Expected nonce_ to be a str, received: {type(nonce_)}')
@@ -8821,7 +12626,9 @@ class LoginRequest(Type):
             raise TypeError(f'Expected token_ to be a str, received: {type(token_)}')
 
         if user_data_ is not None and not isinstance(user_data_, (bytes, str)):
-            raise TypeError(f'Expected user_data_ to be a str, received: {type(user_data_)}')
+            raise TypeError(
+                f'Expected user_data_ to be a str, received: {type(user_data_)}'
+            )
 
         self.auth_tag = auth_tag_
         self.bakery_version = bakery_version_
@@ -8836,10 +12643,45 @@ class LoginRequest(Type):
 
 
 class LoginResult(Type):
-    _toSchema = {'bakery_discharge_required': 'bakery-discharge-required', 'controller_tag': 'controller-tag', 'discharge_required': 'discharge-required', 'discharge_required_error': 'discharge-required-error', 'facades': 'facades', 'model_tag': 'model-tag', 'public_dns_name': 'public-dns-name', 'server_version': 'server-version', 'servers': 'servers', 'user_info': 'user-info'}
-    _toPy = {'bakery-discharge-required': 'bakery_discharge_required', 'controller-tag': 'controller_tag', 'discharge-required': 'discharge_required', 'discharge-required-error': 'discharge_required_error', 'facades': 'facades', 'model-tag': 'model_tag', 'public-dns-name': 'public_dns_name', 'server-version': 'server_version', 'servers': 'servers', 'user-info': 'user_info'}
+    _toSchema = {
+        'bakery_discharge_required': 'bakery-discharge-required',
+        'controller_tag': 'controller-tag',
+        'discharge_required': 'discharge-required',
+        'discharge_required_error': 'discharge-required-error',
+        'facades': 'facades',
+        'model_tag': 'model-tag',
+        'public_dns_name': 'public-dns-name',
+        'server_version': 'server-version',
+        'servers': 'servers',
+        'user_info': 'user-info',
+    }
+    _toPy = {
+        'bakery-discharge-required': 'bakery_discharge_required',
+        'controller-tag': 'controller_tag',
+        'discharge-required': 'discharge_required',
+        'discharge-required-error': 'discharge_required_error',
+        'facades': 'facades',
+        'model-tag': 'model_tag',
+        'public-dns-name': 'public_dns_name',
+        'server-version': 'server_version',
+        'servers': 'servers',
+        'user-info': 'user_info',
+    }
 
-    def __init__(self, bakery_discharge_required=None, controller_tag=None, discharge_required=None, discharge_required_error=None, facades=None, model_tag=None, public_dns_name=None, server_version=None, servers=None, user_info=None, **unknown_fields):
+    def __init__(
+        self,
+        bakery_discharge_required=None,
+        controller_tag=None,
+        discharge_required=None,
+        discharge_required_error=None,
+        facades=None,
+        model_tag=None,
+        public_dns_name=None,
+        server_version=None,
+        servers=None,
+        user_info=None,
+        **unknown_fields,
+    ):
         """
         bakery_discharge_required : Macaroon
         controller_tag : str
@@ -8852,9 +12694,15 @@ class LoginResult(Type):
         servers : typing.Sequence[~HostPort]
         user_info : AuthUserInfo
         """
-        bakery_discharge_required_ = Macaroon.from_json(bakery_discharge_required) if bakery_discharge_required else None
+        bakery_discharge_required_ = (
+            Macaroon.from_json(bakery_discharge_required)
+            if bakery_discharge_required
+            else None
+        )
         controller_tag_ = controller_tag
-        discharge_required_ = Macaroon.from_json(discharge_required) if discharge_required else None
+        discharge_required_ = (
+            Macaroon.from_json(discharge_required) if discharge_required else None
+        )
         discharge_required_error_ = discharge_required_error
         facades_ = [FacadeVersions.from_json(o) for o in facades or []]
         model_tag_ = model_tag
@@ -8864,35 +12712,67 @@ class LoginResult(Type):
         user_info_ = AuthUserInfo.from_json(user_info) if user_info else None
 
         # Validate arguments against known Juju API types.
-        if bakery_discharge_required_ is not None and not isinstance(bakery_discharge_required_, (dict, Macaroon)):
-            raise TypeError(f'Expected bakery_discharge_required_ to be a Macaroon, received: {type(bakery_discharge_required_)}')
+        if bakery_discharge_required_ is not None and not isinstance(
+            bakery_discharge_required_, (dict, Macaroon)
+        ):
+            raise TypeError(
+                f'Expected bakery_discharge_required_ to be a Macaroon, received: {type(bakery_discharge_required_)}'
+            )
 
-        if controller_tag_ is not None and not isinstance(controller_tag_, (bytes, str)):
-            raise TypeError(f'Expected controller_tag_ to be a str, received: {type(controller_tag_)}')
+        if controller_tag_ is not None and not isinstance(
+            controller_tag_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected controller_tag_ to be a str, received: {type(controller_tag_)}'
+            )
 
-        if discharge_required_ is not None and not isinstance(discharge_required_, (dict, Macaroon)):
-            raise TypeError(f'Expected discharge_required_ to be a Macaroon, received: {type(discharge_required_)}')
+        if discharge_required_ is not None and not isinstance(
+            discharge_required_, (dict, Macaroon)
+        ):
+            raise TypeError(
+                f'Expected discharge_required_ to be a Macaroon, received: {type(discharge_required_)}'
+            )
 
-        if discharge_required_error_ is not None and not isinstance(discharge_required_error_, (bytes, str)):
-            raise TypeError(f'Expected discharge_required_error_ to be a str, received: {type(discharge_required_error_)}')
+        if discharge_required_error_ is not None and not isinstance(
+            discharge_required_error_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected discharge_required_error_ to be a str, received: {type(discharge_required_error_)}'
+            )
 
         if facades_ is not None and not isinstance(facades_, (bytes, str, list)):
-            raise TypeError(f'Expected facades_ to be a Sequence, received: {type(facades_)}')
+            raise TypeError(
+                f'Expected facades_ to be a Sequence, received: {type(facades_)}'
+            )
 
         if model_tag_ is not None and not isinstance(model_tag_, (bytes, str)):
-            raise TypeError(f'Expected model_tag_ to be a str, received: {type(model_tag_)}')
+            raise TypeError(
+                f'Expected model_tag_ to be a str, received: {type(model_tag_)}'
+            )
 
-        if public_dns_name_ is not None and not isinstance(public_dns_name_, (bytes, str)):
-            raise TypeError(f'Expected public_dns_name_ to be a str, received: {type(public_dns_name_)}')
+        if public_dns_name_ is not None and not isinstance(
+            public_dns_name_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected public_dns_name_ to be a str, received: {type(public_dns_name_)}'
+            )
 
-        if server_version_ is not None and not isinstance(server_version_, (bytes, str)):
-            raise TypeError(f'Expected server_version_ to be a str, received: {type(server_version_)}')
+        if server_version_ is not None and not isinstance(
+            server_version_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected server_version_ to be a str, received: {type(server_version_)}'
+            )
 
         if servers_ is not None and not isinstance(servers_, (bytes, str, list)):
-            raise TypeError(f'Expected servers_ to be a Sequence, received: {type(servers_)}')
+            raise TypeError(
+                f'Expected servers_ to be a Sequence, received: {type(servers_)}'
+            )
 
         if user_info_ is not None and not isinstance(user_info_, (dict, AuthUserInfo)):
-            raise TypeError(f'Expected user_info_ to be a AuthUserInfo, received: {type(user_info_)}')
+            raise TypeError(
+                f'Expected user_info_ to be a AuthUserInfo, received: {type(user_info_)}'
+            )
 
         self.bakery_discharge_required = bakery_discharge_required_
         self.controller_tag = controller_tag_
@@ -8912,17 +12792,44 @@ class Macaroon(Type):
     _toPy = {}
 
     def __init__(self, **unknown_fields):
-        """
-
-        """
+        """ """
         self.unknown_fields = unknown_fields
 
 
 class MachineHardware(Type):
-    _toSchema = {'arch': 'arch', 'availability_zone': 'availability-zone', 'cores': 'cores', 'cpu_power': 'cpu-power', 'mem': 'mem', 'root_disk': 'root-disk', 'tags': 'tags', 'virt_type': 'virt-type'}
-    _toPy = {'arch': 'arch', 'availability-zone': 'availability_zone', 'cores': 'cores', 'cpu-power': 'cpu_power', 'mem': 'mem', 'root-disk': 'root_disk', 'tags': 'tags', 'virt-type': 'virt_type'}
+    _toSchema = {
+        'arch': 'arch',
+        'availability_zone': 'availability-zone',
+        'cores': 'cores',
+        'cpu_power': 'cpu-power',
+        'mem': 'mem',
+        'root_disk': 'root-disk',
+        'tags': 'tags',
+        'virt_type': 'virt-type',
+    }
+    _toPy = {
+        'arch': 'arch',
+        'availability-zone': 'availability_zone',
+        'cores': 'cores',
+        'cpu-power': 'cpu_power',
+        'mem': 'mem',
+        'root-disk': 'root_disk',
+        'tags': 'tags',
+        'virt-type': 'virt_type',
+    }
 
-    def __init__(self, arch=None, availability_zone=None, cores=None, cpu_power=None, mem=None, root_disk=None, tags=None, virt_type=None, **unknown_fields):
+    def __init__(
+        self,
+        arch=None,
+        availability_zone=None,
+        cores=None,
+        cpu_power=None,
+        mem=None,
+        root_disk=None,
+        tags=None,
+        virt_type=None,
+        **unknown_fields,
+    ):
         """
         arch : str
         availability_zone : str
@@ -8946,26 +12853,36 @@ class MachineHardware(Type):
         if arch_ is not None and not isinstance(arch_, (bytes, str)):
             raise TypeError(f'Expected arch_ to be a str, received: {type(arch_)}')
 
-        if availability_zone_ is not None and not isinstance(availability_zone_, (bytes, str)):
-            raise TypeError(f'Expected availability_zone_ to be a str, received: {type(availability_zone_)}')
+        if availability_zone_ is not None and not isinstance(
+            availability_zone_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected availability_zone_ to be a str, received: {type(availability_zone_)}'
+            )
 
         if cores_ is not None and not isinstance(cores_, int):
             raise TypeError(f'Expected cores_ to be a int, received: {type(cores_)}')
 
         if cpu_power_ is not None and not isinstance(cpu_power_, int):
-            raise TypeError(f'Expected cpu_power_ to be a int, received: {type(cpu_power_)}')
+            raise TypeError(
+                f'Expected cpu_power_ to be a int, received: {type(cpu_power_)}'
+            )
 
         if mem_ is not None and not isinstance(mem_, int):
             raise TypeError(f'Expected mem_ to be a int, received: {type(mem_)}')
 
         if root_disk_ is not None and not isinstance(root_disk_, int):
-            raise TypeError(f'Expected root_disk_ to be a int, received: {type(root_disk_)}')
+            raise TypeError(
+                f'Expected root_disk_ to be a int, received: {type(root_disk_)}'
+            )
 
         if tags_ is not None and not isinstance(tags_, (bytes, str, list)):
             raise TypeError(f'Expected tags_ to be a Sequence, received: {type(tags_)}')
 
         if virt_type_ is not None and not isinstance(virt_type_, (bytes, str)):
-            raise TypeError(f'Expected virt_type_ to be a str, received: {type(virt_type_)}')
+            raise TypeError(
+                f'Expected virt_type_ to be a str, received: {type(virt_type_)}'
+            )
 
         self.arch = arch_
         self.availability_zone = availability_zone_
@@ -8979,10 +12896,72 @@ class MachineHardware(Type):
 
 
 class MachineStatus(Type):
-    _toSchema = {'agent_status': 'agent-status', 'base': 'base', 'constraints': 'constraints', 'containers': 'containers', 'display_name': 'display-name', 'dns_name': 'dns-name', 'hardware': 'hardware', 'has_vote': 'has-vote', 'hostname': 'hostname', 'id_': 'id', 'instance_id': 'instance-id', 'instance_status': 'instance-status', 'ip_addresses': 'ip-addresses', 'jobs': 'jobs', 'lxd_profiles': 'lxd-profiles', 'modification_status': 'modification-status', 'network_interfaces': 'network-interfaces', 'primary_controller_machine': 'primary-controller-machine', 'wants_vote': 'wants-vote'}
-    _toPy = {'agent-status': 'agent_status', 'base': 'base', 'constraints': 'constraints', 'containers': 'containers', 'display-name': 'display_name', 'dns-name': 'dns_name', 'hardware': 'hardware', 'has-vote': 'has_vote', 'hostname': 'hostname', 'id': 'id_', 'instance-id': 'instance_id', 'instance-status': 'instance_status', 'ip-addresses': 'ip_addresses', 'jobs': 'jobs', 'lxd-profiles': 'lxd_profiles', 'modification-status': 'modification_status', 'network-interfaces': 'network_interfaces', 'primary-controller-machine': 'primary_controller_machine', 'wants-vote': 'wants_vote'}
+    _toSchema = {
+        'agent_status': 'agent-status',
+        'base': 'base',
+        'constraints': 'constraints',
+        'containers': 'containers',
+        'display_name': 'display-name',
+        'dns_name': 'dns-name',
+        'hardware': 'hardware',
+        'has_vote': 'has-vote',
+        'hostname': 'hostname',
+        'id_': 'id',
+        'instance_id': 'instance-id',
+        'instance_status': 'instance-status',
+        'ip_addresses': 'ip-addresses',
+        'jobs': 'jobs',
+        'lxd_profiles': 'lxd-profiles',
+        'modification_status': 'modification-status',
+        'network_interfaces': 'network-interfaces',
+        'primary_controller_machine': 'primary-controller-machine',
+        'wants_vote': 'wants-vote',
+    }
+    _toPy = {
+        'agent-status': 'agent_status',
+        'base': 'base',
+        'constraints': 'constraints',
+        'containers': 'containers',
+        'display-name': 'display_name',
+        'dns-name': 'dns_name',
+        'hardware': 'hardware',
+        'has-vote': 'has_vote',
+        'hostname': 'hostname',
+        'id': 'id_',
+        'instance-id': 'instance_id',
+        'instance-status': 'instance_status',
+        'ip-addresses': 'ip_addresses',
+        'jobs': 'jobs',
+        'lxd-profiles': 'lxd_profiles',
+        'modification-status': 'modification_status',
+        'network-interfaces': 'network_interfaces',
+        'primary-controller-machine': 'primary_controller_machine',
+        'wants-vote': 'wants_vote',
+    }
 
-    def __init__(self, agent_status=None, base=None, constraints=None, containers=None, display_name=None, dns_name=None, hardware=None, has_vote=None, hostname=None, id_=None, instance_id=None, instance_status=None, ip_addresses=None, jobs=None, lxd_profiles=None, modification_status=None, network_interfaces=None, primary_controller_machine=None, wants_vote=None, **unknown_fields):
+    def __init__(
+        self,
+        agent_status=None,
+        base=None,
+        constraints=None,
+        containers=None,
+        display_name=None,
+        dns_name=None,
+        hardware=None,
+        has_vote=None,
+        hostname=None,
+        id_=None,
+        instance_id=None,
+        instance_status=None,
+        ip_addresses=None,
+        jobs=None,
+        lxd_profiles=None,
+        modification_status=None,
+        network_interfaces=None,
+        primary_controller_machine=None,
+        wants_vote=None,
+        **unknown_fields,
+    ):
         """
         agent_status : DetailedStatus
         base : Base
@@ -9007,7 +12986,9 @@ class MachineStatus(Type):
         agent_status_ = DetailedStatus.from_json(agent_status) if agent_status else None
         base_ = Base.from_json(base) if base else None
         constraints_ = constraints
-        containers_ = {k: MachineStatus.from_json(v) for k, v in (containers or {}).items()}
+        containers_ = {
+            k: MachineStatus.from_json(v) for k, v in (containers or {}).items()
+        }
         display_name_ = display_name
         dns_name_ = dns_name
         hardware_ = hardware
@@ -9015,72 +12996,127 @@ class MachineStatus(Type):
         hostname_ = hostname
         id__ = id_
         instance_id_ = instance_id
-        instance_status_ = DetailedStatus.from_json(instance_status) if instance_status else None
+        instance_status_ = (
+            DetailedStatus.from_json(instance_status) if instance_status else None
+        )
         ip_addresses_ = ip_addresses
         jobs_ = jobs
-        lxd_profiles_ = {k: LXDProfile.from_json(v) for k, v in (lxd_profiles or {}).items()}
-        modification_status_ = DetailedStatus.from_json(modification_status) if modification_status else None
-        network_interfaces_ = {k: NetworkInterface.from_json(v) for k, v in (network_interfaces or {}).items()}
+        lxd_profiles_ = {
+            k: LXDProfile.from_json(v) for k, v in (lxd_profiles or {}).items()
+        }
+        modification_status_ = (
+            DetailedStatus.from_json(modification_status)
+            if modification_status
+            else None
+        )
+        network_interfaces_ = {
+            k: NetworkInterface.from_json(v)
+            for k, v in (network_interfaces or {}).items()
+        }
         primary_controller_machine_ = primary_controller_machine
         wants_vote_ = wants_vote
 
         # Validate arguments against known Juju API types.
-        if agent_status_ is not None and not isinstance(agent_status_, (dict, DetailedStatus)):
-            raise TypeError(f'Expected agent_status_ to be a DetailedStatus, received: {type(agent_status_)}')
+        if agent_status_ is not None and not isinstance(
+            agent_status_, (dict, DetailedStatus)
+        ):
+            raise TypeError(
+                f'Expected agent_status_ to be a DetailedStatus, received: {type(agent_status_)}'
+            )
 
         if base_ is not None and not isinstance(base_, (dict, Base)):
             raise TypeError(f'Expected base_ to be a Base, received: {type(base_)}')
 
         if constraints_ is not None and not isinstance(constraints_, (bytes, str)):
-            raise TypeError(f'Expected constraints_ to be a str, received: {type(constraints_)}')
+            raise TypeError(
+                f'Expected constraints_ to be a str, received: {type(constraints_)}'
+            )
 
         if containers_ is not None and not isinstance(containers_, dict):
-            raise TypeError(f'Expected containers_ to be a Mapping, received: {type(containers_)}')
+            raise TypeError(
+                f'Expected containers_ to be a Mapping, received: {type(containers_)}'
+            )
 
         if display_name_ is not None and not isinstance(display_name_, (bytes, str)):
-            raise TypeError(f'Expected display_name_ to be a str, received: {type(display_name_)}')
+            raise TypeError(
+                f'Expected display_name_ to be a str, received: {type(display_name_)}'
+            )
 
         if dns_name_ is not None and not isinstance(dns_name_, (bytes, str)):
-            raise TypeError(f'Expected dns_name_ to be a str, received: {type(dns_name_)}')
+            raise TypeError(
+                f'Expected dns_name_ to be a str, received: {type(dns_name_)}'
+            )
 
         if hardware_ is not None and not isinstance(hardware_, (bytes, str)):
-            raise TypeError(f'Expected hardware_ to be a str, received: {type(hardware_)}')
+            raise TypeError(
+                f'Expected hardware_ to be a str, received: {type(hardware_)}'
+            )
 
         if has_vote_ is not None and not isinstance(has_vote_, bool):
-            raise TypeError(f'Expected has_vote_ to be a bool, received: {type(has_vote_)}')
+            raise TypeError(
+                f'Expected has_vote_ to be a bool, received: {type(has_vote_)}'
+            )
 
         if hostname_ is not None and not isinstance(hostname_, (bytes, str)):
-            raise TypeError(f'Expected hostname_ to be a str, received: {type(hostname_)}')
+            raise TypeError(
+                f'Expected hostname_ to be a str, received: {type(hostname_)}'
+            )
 
         if id__ is not None and not isinstance(id__, (bytes, str)):
             raise TypeError(f'Expected id__ to be a str, received: {type(id__)}')
 
         if instance_id_ is not None and not isinstance(instance_id_, (bytes, str)):
-            raise TypeError(f'Expected instance_id_ to be a str, received: {type(instance_id_)}')
+            raise TypeError(
+                f'Expected instance_id_ to be a str, received: {type(instance_id_)}'
+            )
 
-        if instance_status_ is not None and not isinstance(instance_status_, (dict, DetailedStatus)):
-            raise TypeError(f'Expected instance_status_ to be a DetailedStatus, received: {type(instance_status_)}')
+        if instance_status_ is not None and not isinstance(
+            instance_status_, (dict, DetailedStatus)
+        ):
+            raise TypeError(
+                f'Expected instance_status_ to be a DetailedStatus, received: {type(instance_status_)}'
+            )
 
-        if ip_addresses_ is not None and not isinstance(ip_addresses_, (bytes, str, list)):
-            raise TypeError(f'Expected ip_addresses_ to be a Sequence, received: {type(ip_addresses_)}')
+        if ip_addresses_ is not None and not isinstance(
+            ip_addresses_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected ip_addresses_ to be a Sequence, received: {type(ip_addresses_)}'
+            )
 
         if jobs_ is not None and not isinstance(jobs_, (bytes, str, list)):
             raise TypeError(f'Expected jobs_ to be a Sequence, received: {type(jobs_)}')
 
         if lxd_profiles_ is not None and not isinstance(lxd_profiles_, dict):
-            raise TypeError(f'Expected lxd_profiles_ to be a Mapping, received: {type(lxd_profiles_)}')
+            raise TypeError(
+                f'Expected lxd_profiles_ to be a Mapping, received: {type(lxd_profiles_)}'
+            )
 
-        if modification_status_ is not None and not isinstance(modification_status_, (dict, DetailedStatus)):
-            raise TypeError(f'Expected modification_status_ to be a DetailedStatus, received: {type(modification_status_)}')
+        if modification_status_ is not None and not isinstance(
+            modification_status_, (dict, DetailedStatus)
+        ):
+            raise TypeError(
+                f'Expected modification_status_ to be a DetailedStatus, received: {type(modification_status_)}'
+            )
 
-        if network_interfaces_ is not None and not isinstance(network_interfaces_, dict):
-            raise TypeError(f'Expected network_interfaces_ to be a Mapping, received: {type(network_interfaces_)}')
+        if network_interfaces_ is not None and not isinstance(
+            network_interfaces_, dict
+        ):
+            raise TypeError(
+                f'Expected network_interfaces_ to be a Mapping, received: {type(network_interfaces_)}'
+            )
 
-        if primary_controller_machine_ is not None and not isinstance(primary_controller_machine_, bool):
-            raise TypeError(f'Expected primary_controller_machine_ to be a bool, received: {type(primary_controller_machine_)}')
+        if primary_controller_machine_ is not None and not isinstance(
+            primary_controller_machine_, bool
+        ):
+            raise TypeError(
+                f'Expected primary_controller_machine_ to be a bool, received: {type(primary_controller_machine_)}'
+            )
 
         if wants_vote_ is not None and not isinstance(wants_vote_, bool):
-            raise TypeError(f'Expected wants_vote_ to be a bool, received: {type(wants_vote_)}')
+            raise TypeError(
+                f'Expected wants_vote_ to be a bool, received: {type(wants_vote_)}'
+            )
 
         self.agent_status = agent_status_
         self.base = base_
@@ -9121,7 +13157,9 @@ class MapResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if result_ is not None and not isinstance(result_, dict):
-            raise TypeError(f'Expected result_ to be a Mapping, received: {type(result_)}')
+            raise TypeError(
+                f'Expected result_ to be a Mapping, received: {type(result_)}'
+            )
 
         self.error = error_
         self.result = result_
@@ -9140,7 +13178,9 @@ class MapResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -9158,7 +13198,9 @@ class MetadataImageIds(Type):
 
         # Validate arguments against known Juju API types.
         if image_ids_ is not None and not isinstance(image_ids_, (bytes, str, list)):
-            raise TypeError(f'Expected image_ids_ to be a Sequence, received: {type(image_ids_)}')
+            raise TypeError(
+                f'Expected image_ids_ to be a Sequence, received: {type(image_ids_)}'
+            )
 
         self.image_ids = image_ids_
         self.unknown_fields = unknown_fields
@@ -9176,7 +13218,9 @@ class MetadataSaveParams(Type):
 
         # Validate arguments against known Juju API types.
         if metadata_ is not None and not isinstance(metadata_, (bytes, str, list)):
-            raise TypeError(f'Expected metadata_ to be a Sequence, received: {type(metadata_)}')
+            raise TypeError(
+                f'Expected metadata_ to be a Sequence, received: {type(metadata_)}'
+            )
 
         self.metadata = metadata_
         self.unknown_fields = unknown_fields
@@ -9199,7 +13243,9 @@ class MeterStatus(Type):
             raise TypeError(f'Expected color_ to be a str, received: {type(color_)}')
 
         if message_ is not None and not isinstance(message_, (bytes, str)):
-            raise TypeError(f'Expected message_ to be a str, received: {type(message_)}')
+            raise TypeError(
+                f'Expected message_ to be a str, received: {type(message_)}'
+            )
 
         self.color = color_
         self.message = message_
@@ -9248,17 +13294,33 @@ class MeterStatusParams(Type):
 
         # Validate arguments against known Juju API types.
         if statues_ is not None and not isinstance(statues_, (bytes, str, list)):
-            raise TypeError(f'Expected statues_ to be a Sequence, received: {type(statues_)}')
+            raise TypeError(
+                f'Expected statues_ to be a Sequence, received: {type(statues_)}'
+            )
 
         self.statues = statues_
         self.unknown_fields = unknown_fields
 
 
 class MetricResult(Type):
-    _toSchema = {'key': 'key', 'labels': 'labels', 'time': 'time', 'unit': 'unit', 'value': 'value'}
-    _toPy = {'key': 'key', 'labels': 'labels', 'time': 'time', 'unit': 'unit', 'value': 'value'}
+    _toSchema = {
+        'key': 'key',
+        'labels': 'labels',
+        'time': 'time',
+        'unit': 'unit',
+        'value': 'value',
+    }
+    _toPy = {
+        'key': 'key',
+        'labels': 'labels',
+        'time': 'time',
+        'unit': 'unit',
+        'value': 'value',
+    }
 
-    def __init__(self, key=None, labels=None, time=None, unit=None, value=None, **unknown_fields):
+    def __init__(
+        self, key=None, labels=None, time=None, unit=None, value=None, **unknown_fields
+    ):
         """
         key : str
         labels : typing.Mapping[str, str]
@@ -9277,7 +13339,9 @@ class MetricResult(Type):
             raise TypeError(f'Expected key_ to be a str, received: {type(key_)}')
 
         if labels_ is not None and not isinstance(labels_, dict):
-            raise TypeError(f'Expected labels_ to be a Mapping, received: {type(labels_)}')
+            raise TypeError(
+                f'Expected labels_ to be a Mapping, received: {type(labels_)}'
+            )
 
         if time_ is not None and not isinstance(time_, (bytes, str)):
             raise TypeError(f'Expected time_ to be a str, received: {type(time_)}')
@@ -9308,7 +13372,9 @@ class MetricResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -9324,14 +13390,22 @@ class MigrationSpec(Type):
         target_info : MigrationTargetInfo
         """
         model_tag_ = model_tag
-        target_info_ = MigrationTargetInfo.from_json(target_info) if target_info else None
+        target_info_ = (
+            MigrationTargetInfo.from_json(target_info) if target_info else None
+        )
 
         # Validate arguments against known Juju API types.
         if model_tag_ is not None and not isinstance(model_tag_, (bytes, str)):
-            raise TypeError(f'Expected model_tag_ to be a str, received: {type(model_tag_)}')
+            raise TypeError(
+                f'Expected model_tag_ to be a str, received: {type(model_tag_)}'
+            )
 
-        if target_info_ is not None and not isinstance(target_info_, (dict, MigrationTargetInfo)):
-            raise TypeError(f'Expected target_info_ to be a MigrationTargetInfo, received: {type(target_info_)}')
+        if target_info_ is not None and not isinstance(
+            target_info_, (dict, MigrationTargetInfo)
+        ):
+            raise TypeError(
+                f'Expected target_info_ to be a MigrationTargetInfo, received: {type(target_info_)}'
+            )
 
         self.model_tag = model_tag_
         self.target_info = target_info_
@@ -9339,10 +13413,36 @@ class MigrationSpec(Type):
 
 
 class MigrationTargetInfo(Type):
-    _toSchema = {'addrs': 'addrs', 'auth_tag': 'auth-tag', 'ca_cert': 'ca-cert', 'controller_alias': 'controller-alias', 'controller_tag': 'controller-tag', 'macaroons': 'macaroons', 'password': 'password'}
-    _toPy = {'addrs': 'addrs', 'auth-tag': 'auth_tag', 'ca-cert': 'ca_cert', 'controller-alias': 'controller_alias', 'controller-tag': 'controller_tag', 'macaroons': 'macaroons', 'password': 'password'}
+    _toSchema = {
+        'addrs': 'addrs',
+        'auth_tag': 'auth-tag',
+        'ca_cert': 'ca-cert',
+        'controller_alias': 'controller-alias',
+        'controller_tag': 'controller-tag',
+        'macaroons': 'macaroons',
+        'password': 'password',
+    }
+    _toPy = {
+        'addrs': 'addrs',
+        'auth-tag': 'auth_tag',
+        'ca-cert': 'ca_cert',
+        'controller-alias': 'controller_alias',
+        'controller-tag': 'controller_tag',
+        'macaroons': 'macaroons',
+        'password': 'password',
+    }
 
-    def __init__(self, addrs=None, auth_tag=None, ca_cert=None, controller_alias=None, controller_tag=None, macaroons=None, password=None, **unknown_fields):
+    def __init__(
+        self,
+        addrs=None,
+        auth_tag=None,
+        ca_cert=None,
+        controller_alias=None,
+        controller_tag=None,
+        macaroons=None,
+        password=None,
+        **unknown_fields,
+    ):
         """
         addrs : typing.Sequence[str]
         auth_tag : str
@@ -9362,25 +13462,43 @@ class MigrationTargetInfo(Type):
 
         # Validate arguments against known Juju API types.
         if addrs_ is not None and not isinstance(addrs_, (bytes, str, list)):
-            raise TypeError(f'Expected addrs_ to be a Sequence, received: {type(addrs_)}')
+            raise TypeError(
+                f'Expected addrs_ to be a Sequence, received: {type(addrs_)}'
+            )
 
         if auth_tag_ is not None and not isinstance(auth_tag_, (bytes, str)):
-            raise TypeError(f'Expected auth_tag_ to be a str, received: {type(auth_tag_)}')
+            raise TypeError(
+                f'Expected auth_tag_ to be a str, received: {type(auth_tag_)}'
+            )
 
         if ca_cert_ is not None and not isinstance(ca_cert_, (bytes, str)):
-            raise TypeError(f'Expected ca_cert_ to be a str, received: {type(ca_cert_)}')
+            raise TypeError(
+                f'Expected ca_cert_ to be a str, received: {type(ca_cert_)}'
+            )
 
-        if controller_alias_ is not None and not isinstance(controller_alias_, (bytes, str)):
-            raise TypeError(f'Expected controller_alias_ to be a str, received: {type(controller_alias_)}')
+        if controller_alias_ is not None and not isinstance(
+            controller_alias_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected controller_alias_ to be a str, received: {type(controller_alias_)}'
+            )
 
-        if controller_tag_ is not None and not isinstance(controller_tag_, (bytes, str)):
-            raise TypeError(f'Expected controller_tag_ to be a str, received: {type(controller_tag_)}')
+        if controller_tag_ is not None and not isinstance(
+            controller_tag_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected controller_tag_ to be a str, received: {type(controller_tag_)}'
+            )
 
         if macaroons_ is not None and not isinstance(macaroons_, (bytes, str)):
-            raise TypeError(f'Expected macaroons_ to be a str, received: {type(macaroons_)}')
+            raise TypeError(
+                f'Expected macaroons_ to be a str, received: {type(macaroons_)}'
+            )
 
         if password_ is not None and not isinstance(password_, (bytes, str)):
-            raise TypeError(f'Expected password_ to be a str, received: {type(password_)}')
+            raise TypeError(
+                f'Expected password_ to be a str, received: {type(password_)}'
+            )
 
         self.addrs = addrs_
         self.auth_tag = auth_tag_
@@ -9393,10 +13511,17 @@ class MigrationTargetInfo(Type):
 
 
 class Model(Type):
-    _toSchema = {'name': 'name', 'owner_tag': 'owner-tag', 'type_': 'type', 'uuid': 'uuid'}
+    _toSchema = {
+        'name': 'name',
+        'owner_tag': 'owner-tag',
+        'type_': 'type',
+        'uuid': 'uuid',
+    }
     _toPy = {'name': 'name', 'owner-tag': 'owner_tag', 'type': 'type_', 'uuid': 'uuid'}
 
-    def __init__(self, name=None, owner_tag=None, type_=None, uuid=None, **unknown_fields):
+    def __init__(
+        self, name=None, owner_tag=None, type_=None, uuid=None, **unknown_fields
+    ):
         """
         name : str
         owner_tag : str
@@ -9413,7 +13538,9 @@ class Model(Type):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
 
         if owner_tag_ is not None and not isinstance(owner_tag_, (bytes, str)):
-            raise TypeError(f'Expected owner_tag_ to be a str, received: {type(owner_tag_)}')
+            raise TypeError(
+                f'Expected owner_tag_ to be a str, received: {type(owner_tag_)}'
+            )
 
         if type__ is not None and not isinstance(type__, (bytes, str)):
             raise TypeError(f'Expected type__ to be a str, received: {type(type__)}')
@@ -9471,10 +13598,22 @@ class ModelApplicationInfo(Type):
 
 
 class ModelBlockInfo(Type):
-    _toSchema = {'blocks': 'blocks', 'model_uuid': 'model-uuid', 'name': 'name', 'owner_tag': 'owner-tag'}
-    _toPy = {'blocks': 'blocks', 'model-uuid': 'model_uuid', 'name': 'name', 'owner-tag': 'owner_tag'}
+    _toSchema = {
+        'blocks': 'blocks',
+        'model_uuid': 'model-uuid',
+        'name': 'name',
+        'owner_tag': 'owner-tag',
+    }
+    _toPy = {
+        'blocks': 'blocks',
+        'model-uuid': 'model_uuid',
+        'name': 'name',
+        'owner-tag': 'owner_tag',
+    }
 
-    def __init__(self, blocks=None, model_uuid=None, name=None, owner_tag=None, **unknown_fields):
+    def __init__(
+        self, blocks=None, model_uuid=None, name=None, owner_tag=None, **unknown_fields
+    ):
         """
         blocks : typing.Sequence[str]
         model_uuid : str
@@ -9488,16 +13627,22 @@ class ModelBlockInfo(Type):
 
         # Validate arguments against known Juju API types.
         if blocks_ is not None and not isinstance(blocks_, (bytes, str, list)):
-            raise TypeError(f'Expected blocks_ to be a Sequence, received: {type(blocks_)}')
+            raise TypeError(
+                f'Expected blocks_ to be a Sequence, received: {type(blocks_)}'
+            )
 
         if model_uuid_ is not None and not isinstance(model_uuid_, (bytes, str)):
-            raise TypeError(f'Expected model_uuid_ to be a str, received: {type(model_uuid_)}')
+            raise TypeError(
+                f'Expected model_uuid_ to be a str, received: {type(model_uuid_)}'
+            )
 
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
 
         if owner_tag_ is not None and not isinstance(owner_tag_, (bytes, str)):
-            raise TypeError(f'Expected owner_tag_ to be a str, received: {type(owner_tag_)}')
+            raise TypeError(
+                f'Expected owner_tag_ to be a str, received: {type(owner_tag_)}'
+            )
 
         self.blocks = blocks_
         self.model_uuid = model_uuid_
@@ -9518,7 +13663,9 @@ class ModelBlockInfoList(Type):
 
         # Validate arguments against known Juju API types.
         if models_ is not None and not isinstance(models_, (bytes, str, list)):
-            raise TypeError(f'Expected models_ to be a Sequence, received: {type(models_)}')
+            raise TypeError(
+                f'Expected models_ to be a Sequence, received: {type(models_)}'
+            )
 
         self.models = models_
         self.unknown_fields = unknown_fields
@@ -9536,17 +13683,42 @@ class ModelConfigResults(Type):
 
         # Validate arguments against known Juju API types.
         if config_ is not None and not isinstance(config_, dict):
-            raise TypeError(f'Expected config_ to be a Mapping, received: {type(config_)}')
+            raise TypeError(
+                f'Expected config_ to be a Mapping, received: {type(config_)}'
+            )
 
         self.config = config_
         self.unknown_fields = unknown_fields
 
 
 class ModelCreateArgs(Type):
-    _toSchema = {'cloud_tag': 'cloud-tag', 'config': 'config', 'credential': 'credential', 'name': 'name', 'owner_tag': 'owner-tag', 'region': 'region'}
-    _toPy = {'cloud-tag': 'cloud_tag', 'config': 'config', 'credential': 'credential', 'name': 'name', 'owner-tag': 'owner_tag', 'region': 'region'}
+    _toSchema = {
+        'cloud_tag': 'cloud-tag',
+        'config': 'config',
+        'credential': 'credential',
+        'name': 'name',
+        'owner_tag': 'owner-tag',
+        'region': 'region',
+    }
+    _toPy = {
+        'cloud-tag': 'cloud_tag',
+        'config': 'config',
+        'credential': 'credential',
+        'name': 'name',
+        'owner-tag': 'owner_tag',
+        'region': 'region',
+    }
 
-    def __init__(self, cloud_tag=None, config=None, credential=None, name=None, owner_tag=None, region=None, **unknown_fields):
+    def __init__(
+        self,
+        cloud_tag=None,
+        config=None,
+        credential=None,
+        name=None,
+        owner_tag=None,
+        region=None,
+        **unknown_fields,
+    ):
         """
         cloud_tag : str
         config : typing.Mapping[str, typing.Any]
@@ -9564,19 +13736,27 @@ class ModelCreateArgs(Type):
 
         # Validate arguments against known Juju API types.
         if cloud_tag_ is not None and not isinstance(cloud_tag_, (bytes, str)):
-            raise TypeError(f'Expected cloud_tag_ to be a str, received: {type(cloud_tag_)}')
+            raise TypeError(
+                f'Expected cloud_tag_ to be a str, received: {type(cloud_tag_)}'
+            )
 
         if config_ is not None and not isinstance(config_, dict):
-            raise TypeError(f'Expected config_ to be a Mapping, received: {type(config_)}')
+            raise TypeError(
+                f'Expected config_ to be a Mapping, received: {type(config_)}'
+            )
 
         if credential_ is not None and not isinstance(credential_, (bytes, str)):
-            raise TypeError(f'Expected credential_ to be a str, received: {type(credential_)}')
+            raise TypeError(
+                f'Expected credential_ to be a str, received: {type(credential_)}'
+            )
 
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
 
         if owner_tag_ is not None and not isinstance(owner_tag_, (bytes, str)):
-            raise TypeError(f'Expected owner_tag_ to be a str, received: {type(owner_tag_)}')
+            raise TypeError(
+                f'Expected owner_tag_ to be a str, received: {type(owner_tag_)}'
+            )
 
         if region_ is not None and not isinstance(region_, (bytes, str)):
             raise TypeError(f'Expected region_ to be a str, received: {type(region_)}')
@@ -9591,10 +13771,20 @@ class ModelCreateArgs(Type):
 
 
 class ModelDefaultValues(Type):
-    _toSchema = {'cloud_region': 'cloud-region', 'cloud_tag': 'cloud-tag', 'config': 'config'}
-    _toPy = {'cloud-region': 'cloud_region', 'cloud-tag': 'cloud_tag', 'config': 'config'}
+    _toSchema = {
+        'cloud_region': 'cloud-region',
+        'cloud_tag': 'cloud-tag',
+        'config': 'config',
+    }
+    _toPy = {
+        'cloud-region': 'cloud_region',
+        'cloud-tag': 'cloud_tag',
+        'config': 'config',
+    }
 
-    def __init__(self, cloud_region=None, cloud_tag=None, config=None, **unknown_fields):
+    def __init__(
+        self, cloud_region=None, cloud_tag=None, config=None, **unknown_fields
+    ):
         """
         cloud_region : str
         cloud_tag : str
@@ -9606,13 +13796,19 @@ class ModelDefaultValues(Type):
 
         # Validate arguments against known Juju API types.
         if cloud_region_ is not None and not isinstance(cloud_region_, (bytes, str)):
-            raise TypeError(f'Expected cloud_region_ to be a str, received: {type(cloud_region_)}')
+            raise TypeError(
+                f'Expected cloud_region_ to be a str, received: {type(cloud_region_)}'
+            )
 
         if cloud_tag_ is not None and not isinstance(cloud_tag_, (bytes, str)):
-            raise TypeError(f'Expected cloud_tag_ to be a str, received: {type(cloud_tag_)}')
+            raise TypeError(
+                f'Expected cloud_tag_ to be a str, received: {type(cloud_tag_)}'
+            )
 
         if config_ is not None and not isinstance(config_, dict):
-            raise TypeError(f'Expected config_ to be a Mapping, received: {type(config_)}')
+            raise TypeError(
+                f'Expected config_ to be a Mapping, received: {type(config_)}'
+            )
 
         self.cloud_region = cloud_region_
         self.cloud_tag = cloud_tag_
@@ -9636,7 +13832,9 @@ class ModelDefaults(Type):
 
         # Validate arguments against known Juju API types.
         if regions_ is not None and not isinstance(regions_, (bytes, str, list)):
-            raise TypeError(f'Expected regions_ to be a Sequence, received: {type(regions_)}')
+            raise TypeError(
+                f'Expected regions_ to be a Sequence, received: {type(regions_)}'
+            )
 
         self.controller = controller_
         self.default = default_
@@ -9658,7 +13856,9 @@ class ModelDefaultsResult(Type):
 
         # Validate arguments against known Juju API types.
         if config_ is not None and not isinstance(config_, dict):
-            raise TypeError(f'Expected config_ to be a Mapping, received: {type(config_)}')
+            raise TypeError(
+                f'Expected config_ to be a Mapping, received: {type(config_)}'
+            )
 
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
@@ -9680,7 +13880,9 @@ class ModelDefaultsResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -9711,10 +13913,30 @@ class ModelEntityCount(Type):
 
 
 class ModelFilesystemInfo(Type):
-    _toSchema = {'detachable': 'detachable', 'id_': 'id', 'message': 'message', 'provider_id': 'provider-id', 'status': 'status'}
-    _toPy = {'detachable': 'detachable', 'id': 'id_', 'message': 'message', 'provider-id': 'provider_id', 'status': 'status'}
+    _toSchema = {
+        'detachable': 'detachable',
+        'id_': 'id',
+        'message': 'message',
+        'provider_id': 'provider-id',
+        'status': 'status',
+    }
+    _toPy = {
+        'detachable': 'detachable',
+        'id': 'id_',
+        'message': 'message',
+        'provider-id': 'provider_id',
+        'status': 'status',
+    }
 
-    def __init__(self, detachable=None, id_=None, message=None, provider_id=None, status=None, **unknown_fields):
+    def __init__(
+        self,
+        detachable=None,
+        id_=None,
+        message=None,
+        provider_id=None,
+        status=None,
+        **unknown_fields,
+    ):
         """
         detachable : bool
         id_ : str
@@ -9730,16 +13952,22 @@ class ModelFilesystemInfo(Type):
 
         # Validate arguments against known Juju API types.
         if detachable_ is not None and not isinstance(detachable_, bool):
-            raise TypeError(f'Expected detachable_ to be a bool, received: {type(detachable_)}')
+            raise TypeError(
+                f'Expected detachable_ to be a bool, received: {type(detachable_)}'
+            )
 
         if id__ is not None and not isinstance(id__, (bytes, str)):
             raise TypeError(f'Expected id__ to be a str, received: {type(id__)}')
 
         if message_ is not None and not isinstance(message_, (bytes, str)):
-            raise TypeError(f'Expected message_ to be a str, received: {type(message_)}')
+            raise TypeError(
+                f'Expected message_ to be a str, received: {type(message_)}'
+            )
 
         if provider_id_ is not None and not isinstance(provider_id_, (bytes, str)):
-            raise TypeError(f'Expected provider_id_ to be a str, received: {type(provider_id_)}')
+            raise TypeError(
+                f'Expected provider_id_ to be a str, received: {type(provider_id_)}'
+            )
 
         if status_ is not None and not isinstance(status_, (bytes, str)):
             raise TypeError(f'Expected status_ to be a str, received: {type(status_)}')
@@ -9753,10 +13981,81 @@ class ModelFilesystemInfo(Type):
 
 
 class ModelInfo(Type):
-    _toSchema = {'agent_version': 'agent-version', 'cloud_credential_tag': 'cloud-credential-tag', 'cloud_credential_validity': 'cloud-credential-validity', 'cloud_region': 'cloud-region', 'cloud_tag': 'cloud-tag', 'controller_uuid': 'controller-uuid', 'default_base': 'default-base', 'default_series': 'default-series', 'is_controller': 'is-controller', 'life': 'life', 'machines': 'machines', 'migration': 'migration', 'name': 'name', 'owner_tag': 'owner-tag', 'provider_type': 'provider-type', 'secret_backends': 'secret-backends', 'sla': 'sla', 'status': 'status', 'supported_features': 'supported-features', 'type_': 'type', 'users': 'users', 'uuid': 'uuid'}
-    _toPy = {'agent-version': 'agent_version', 'cloud-credential-tag': 'cloud_credential_tag', 'cloud-credential-validity': 'cloud_credential_validity', 'cloud-region': 'cloud_region', 'cloud-tag': 'cloud_tag', 'controller-uuid': 'controller_uuid', 'default-base': 'default_base', 'default-series': 'default_series', 'is-controller': 'is_controller', 'life': 'life', 'machines': 'machines', 'migration': 'migration', 'name': 'name', 'owner-tag': 'owner_tag', 'provider-type': 'provider_type', 'secret-backends': 'secret_backends', 'sla': 'sla', 'status': 'status', 'supported-features': 'supported_features', 'type': 'type_', 'users': 'users', 'uuid': 'uuid'}
+    _toSchema = {
+        'agent_version': 'agent-version',
+        'cloud_credential_tag': 'cloud-credential-tag',
+        'cloud_credential_validity': 'cloud-credential-validity',
+        'cloud_region': 'cloud-region',
+        'cloud_tag': 'cloud-tag',
+        'controller_uuid': 'controller-uuid',
+        'default_base': 'default-base',
+        'default_series': 'default-series',
+        'is_controller': 'is-controller',
+        'life': 'life',
+        'machines': 'machines',
+        'migration': 'migration',
+        'name': 'name',
+        'owner_tag': 'owner-tag',
+        'provider_type': 'provider-type',
+        'secret_backends': 'secret-backends',
+        'sla': 'sla',
+        'status': 'status',
+        'supported_features': 'supported-features',
+        'type_': 'type',
+        'users': 'users',
+        'uuid': 'uuid',
+    }
+    _toPy = {
+        'agent-version': 'agent_version',
+        'cloud-credential-tag': 'cloud_credential_tag',
+        'cloud-credential-validity': 'cloud_credential_validity',
+        'cloud-region': 'cloud_region',
+        'cloud-tag': 'cloud_tag',
+        'controller-uuid': 'controller_uuid',
+        'default-base': 'default_base',
+        'default-series': 'default_series',
+        'is-controller': 'is_controller',
+        'life': 'life',
+        'machines': 'machines',
+        'migration': 'migration',
+        'name': 'name',
+        'owner-tag': 'owner_tag',
+        'provider-type': 'provider_type',
+        'secret-backends': 'secret_backends',
+        'sla': 'sla',
+        'status': 'status',
+        'supported-features': 'supported_features',
+        'type': 'type_',
+        'users': 'users',
+        'uuid': 'uuid',
+    }
 
-    def __init__(self, agent_version=None, cloud_credential_tag=None, cloud_credential_validity=None, cloud_region=None, cloud_tag=None, controller_uuid=None, default_base=None, default_series=None, is_controller=None, life=None, machines=None, migration=None, name=None, owner_tag=None, provider_type=None, secret_backends=None, sla=None, status=None, supported_features=None, type_=None, users=None, uuid=None, **unknown_fields):
+    def __init__(
+        self,
+        agent_version=None,
+        cloud_credential_tag=None,
+        cloud_credential_validity=None,
+        cloud_region=None,
+        cloud_tag=None,
+        controller_uuid=None,
+        default_base=None,
+        default_series=None,
+        is_controller=None,
+        life=None,
+        machines=None,
+        migration=None,
+        name=None,
+        owner_tag=None,
+        provider_type=None,
+        secret_backends=None,
+        sla=None,
+        status=None,
+        supported_features=None,
+        type_=None,
+        users=None,
+        uuid=None,
+        **unknown_fields,
+    ):
         """
         agent_version : Number
         cloud_credential_tag : str
@@ -9796,77 +14095,133 @@ class ModelInfo(Type):
         name_ = name
         owner_tag_ = owner_tag
         provider_type_ = provider_type
-        secret_backends_ = [SecretBackendResult.from_json(o) for o in secret_backends or []]
+        secret_backends_ = [
+            SecretBackendResult.from_json(o) for o in secret_backends or []
+        ]
         sla_ = ModelSLAInfo.from_json(sla) if sla else None
         status_ = EntityStatus.from_json(status) if status else None
-        supported_features_ = [SupportedFeature.from_json(o) for o in supported_features or []]
+        supported_features_ = [
+            SupportedFeature.from_json(o) for o in supported_features or []
+        ]
         type__ = type_
         users_ = [ModelUserInfo.from_json(o) for o in users or []]
         uuid_ = uuid
 
         # Validate arguments against known Juju API types.
-        if agent_version_ is not None and not isinstance(agent_version_, (dict, Number)):
-            raise TypeError(f'Expected agent_version_ to be a Number, received: {type(agent_version_)}')
+        if agent_version_ is not None and not isinstance(
+            agent_version_, (dict, Number)
+        ):
+            raise TypeError(
+                f'Expected agent_version_ to be a Number, received: {type(agent_version_)}'
+            )
 
-        if cloud_credential_tag_ is not None and not isinstance(cloud_credential_tag_, (bytes, str)):
-            raise TypeError(f'Expected cloud_credential_tag_ to be a str, received: {type(cloud_credential_tag_)}')
+        if cloud_credential_tag_ is not None and not isinstance(
+            cloud_credential_tag_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected cloud_credential_tag_ to be a str, received: {type(cloud_credential_tag_)}'
+            )
 
-        if cloud_credential_validity_ is not None and not isinstance(cloud_credential_validity_, bool):
-            raise TypeError(f'Expected cloud_credential_validity_ to be a bool, received: {type(cloud_credential_validity_)}')
+        if cloud_credential_validity_ is not None and not isinstance(
+            cloud_credential_validity_, bool
+        ):
+            raise TypeError(
+                f'Expected cloud_credential_validity_ to be a bool, received: {type(cloud_credential_validity_)}'
+            )
 
         if cloud_region_ is not None and not isinstance(cloud_region_, (bytes, str)):
-            raise TypeError(f'Expected cloud_region_ to be a str, received: {type(cloud_region_)}')
+            raise TypeError(
+                f'Expected cloud_region_ to be a str, received: {type(cloud_region_)}'
+            )
 
         if cloud_tag_ is not None and not isinstance(cloud_tag_, (bytes, str)):
-            raise TypeError(f'Expected cloud_tag_ to be a str, received: {type(cloud_tag_)}')
+            raise TypeError(
+                f'Expected cloud_tag_ to be a str, received: {type(cloud_tag_)}'
+            )
 
-        if controller_uuid_ is not None and not isinstance(controller_uuid_, (bytes, str)):
-            raise TypeError(f'Expected controller_uuid_ to be a str, received: {type(controller_uuid_)}')
+        if controller_uuid_ is not None and not isinstance(
+            controller_uuid_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected controller_uuid_ to be a str, received: {type(controller_uuid_)}'
+            )
 
         if default_base_ is not None and not isinstance(default_base_, (bytes, str)):
-            raise TypeError(f'Expected default_base_ to be a str, received: {type(default_base_)}')
+            raise TypeError(
+                f'Expected default_base_ to be a str, received: {type(default_base_)}'
+            )
 
-        if default_series_ is not None and not isinstance(default_series_, (bytes, str)):
-            raise TypeError(f'Expected default_series_ to be a str, received: {type(default_series_)}')
+        if default_series_ is not None and not isinstance(
+            default_series_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected default_series_ to be a str, received: {type(default_series_)}'
+            )
 
         if is_controller_ is not None and not isinstance(is_controller_, bool):
-            raise TypeError(f'Expected is_controller_ to be a bool, received: {type(is_controller_)}')
+            raise TypeError(
+                f'Expected is_controller_ to be a bool, received: {type(is_controller_)}'
+            )
 
         if life_ is not None and not isinstance(life_, (bytes, str)):
             raise TypeError(f'Expected life_ to be a str, received: {type(life_)}')
 
         if machines_ is not None and not isinstance(machines_, (bytes, str, list)):
-            raise TypeError(f'Expected machines_ to be a Sequence, received: {type(machines_)}')
+            raise TypeError(
+                f'Expected machines_ to be a Sequence, received: {type(machines_)}'
+            )
 
-        if migration_ is not None and not isinstance(migration_, (dict, ModelMigrationStatus)):
-            raise TypeError(f'Expected migration_ to be a ModelMigrationStatus, received: {type(migration_)}')
+        if migration_ is not None and not isinstance(
+            migration_, (dict, ModelMigrationStatus)
+        ):
+            raise TypeError(
+                f'Expected migration_ to be a ModelMigrationStatus, received: {type(migration_)}'
+            )
 
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
 
         if owner_tag_ is not None and not isinstance(owner_tag_, (bytes, str)):
-            raise TypeError(f'Expected owner_tag_ to be a str, received: {type(owner_tag_)}')
+            raise TypeError(
+                f'Expected owner_tag_ to be a str, received: {type(owner_tag_)}'
+            )
 
         if provider_type_ is not None and not isinstance(provider_type_, (bytes, str)):
-            raise TypeError(f'Expected provider_type_ to be a str, received: {type(provider_type_)}')
+            raise TypeError(
+                f'Expected provider_type_ to be a str, received: {type(provider_type_)}'
+            )
 
-        if secret_backends_ is not None and not isinstance(secret_backends_, (bytes, str, list)):
-            raise TypeError(f'Expected secret_backends_ to be a Sequence, received: {type(secret_backends_)}')
+        if secret_backends_ is not None and not isinstance(
+            secret_backends_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected secret_backends_ to be a Sequence, received: {type(secret_backends_)}'
+            )
 
         if sla_ is not None and not isinstance(sla_, (dict, ModelSLAInfo)):
-            raise TypeError(f'Expected sla_ to be a ModelSLAInfo, received: {type(sla_)}')
+            raise TypeError(
+                f'Expected sla_ to be a ModelSLAInfo, received: {type(sla_)}'
+            )
 
         if status_ is not None and not isinstance(status_, (dict, EntityStatus)):
-            raise TypeError(f'Expected status_ to be a EntityStatus, received: {type(status_)}')
+            raise TypeError(
+                f'Expected status_ to be a EntityStatus, received: {type(status_)}'
+            )
 
-        if supported_features_ is not None and not isinstance(supported_features_, (bytes, str, list)):
-            raise TypeError(f'Expected supported_features_ to be a Sequence, received: {type(supported_features_)}')
+        if supported_features_ is not None and not isinstance(
+            supported_features_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected supported_features_ to be a Sequence, received: {type(supported_features_)}'
+            )
 
         if type__ is not None and not isinstance(type__, (bytes, str)):
             raise TypeError(f'Expected type__ to be a str, received: {type(type__)}')
 
         if users_ is not None and not isinstance(users_, (bytes, str, list)):
-            raise TypeError(f'Expected users_ to be a Sequence, received: {type(users_)}')
+            raise TypeError(
+                f'Expected users_ to be a Sequence, received: {type(users_)}'
+            )
 
         if uuid_ is not None and not isinstance(uuid_, (bytes, str)):
             raise TypeError(f'Expected uuid_ to be a str, received: {type(uuid_)}')
@@ -9913,7 +14268,9 @@ class ModelInfoResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if result_ is not None and not isinstance(result_, (dict, ModelInfo)):
-            raise TypeError(f'Expected result_ to be a ModelInfo, received: {type(result_)}')
+            raise TypeError(
+                f'Expected result_ to be a ModelInfo, received: {type(result_)}'
+            )
 
         self.error = error_
         self.result = result_
@@ -9932,7 +14289,9 @@ class ModelInfoResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -9964,21 +14323,59 @@ class ModelInstanceTypesConstraints(Type):
         """
         constraints : typing.Sequence[~ModelInstanceTypesConstraint]
         """
-        constraints_ = [ModelInstanceTypesConstraint.from_json(o) for o in constraints or []]
+        constraints_ = [
+            ModelInstanceTypesConstraint.from_json(o) for o in constraints or []
+        ]
 
         # Validate arguments against known Juju API types.
-        if constraints_ is not None and not isinstance(constraints_, (bytes, str, list)):
-            raise TypeError(f'Expected constraints_ to be a Sequence, received: {type(constraints_)}')
+        if constraints_ is not None and not isinstance(
+            constraints_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected constraints_ to be a Sequence, received: {type(constraints_)}'
+            )
 
         self.constraints = constraints_
         self.unknown_fields = unknown_fields
 
 
 class ModelMachineInfo(Type):
-    _toSchema = {'display_name': 'display-name', 'ha_primary': 'ha-primary', 'hardware': 'hardware', 'has_vote': 'has-vote', 'id_': 'id', 'instance_id': 'instance-id', 'message': 'message', 'status': 'status', 'wants_vote': 'wants-vote'}
-    _toPy = {'display-name': 'display_name', 'ha-primary': 'ha_primary', 'hardware': 'hardware', 'has-vote': 'has_vote', 'id': 'id_', 'instance-id': 'instance_id', 'message': 'message', 'status': 'status', 'wants-vote': 'wants_vote'}
+    _toSchema = {
+        'display_name': 'display-name',
+        'ha_primary': 'ha-primary',
+        'hardware': 'hardware',
+        'has_vote': 'has-vote',
+        'id_': 'id',
+        'instance_id': 'instance-id',
+        'message': 'message',
+        'status': 'status',
+        'wants_vote': 'wants-vote',
+    }
+    _toPy = {
+        'display-name': 'display_name',
+        'ha-primary': 'ha_primary',
+        'hardware': 'hardware',
+        'has-vote': 'has_vote',
+        'id': 'id_',
+        'instance-id': 'instance_id',
+        'message': 'message',
+        'status': 'status',
+        'wants-vote': 'wants_vote',
+    }
 
-    def __init__(self, display_name=None, ha_primary=None, hardware=None, has_vote=None, id_=None, instance_id=None, message=None, status=None, wants_vote=None, **unknown_fields):
+    def __init__(
+        self,
+        display_name=None,
+        ha_primary=None,
+        hardware=None,
+        has_vote=None,
+        id_=None,
+        instance_id=None,
+        message=None,
+        status=None,
+        wants_vote=None,
+        **unknown_fields,
+    ):
         """
         display_name : str
         ha_primary : bool
@@ -10002,31 +14399,45 @@ class ModelMachineInfo(Type):
 
         # Validate arguments against known Juju API types.
         if display_name_ is not None and not isinstance(display_name_, (bytes, str)):
-            raise TypeError(f'Expected display_name_ to be a str, received: {type(display_name_)}')
+            raise TypeError(
+                f'Expected display_name_ to be a str, received: {type(display_name_)}'
+            )
 
         if ha_primary_ is not None and not isinstance(ha_primary_, bool):
-            raise TypeError(f'Expected ha_primary_ to be a bool, received: {type(ha_primary_)}')
+            raise TypeError(
+                f'Expected ha_primary_ to be a bool, received: {type(ha_primary_)}'
+            )
 
         if hardware_ is not None and not isinstance(hardware_, (dict, MachineHardware)):
-            raise TypeError(f'Expected hardware_ to be a MachineHardware, received: {type(hardware_)}')
+            raise TypeError(
+                f'Expected hardware_ to be a MachineHardware, received: {type(hardware_)}'
+            )
 
         if has_vote_ is not None and not isinstance(has_vote_, bool):
-            raise TypeError(f'Expected has_vote_ to be a bool, received: {type(has_vote_)}')
+            raise TypeError(
+                f'Expected has_vote_ to be a bool, received: {type(has_vote_)}'
+            )
 
         if id__ is not None and not isinstance(id__, (bytes, str)):
             raise TypeError(f'Expected id__ to be a str, received: {type(id__)}')
 
         if instance_id_ is not None and not isinstance(instance_id_, (bytes, str)):
-            raise TypeError(f'Expected instance_id_ to be a str, received: {type(instance_id_)}')
+            raise TypeError(
+                f'Expected instance_id_ to be a str, received: {type(instance_id_)}'
+            )
 
         if message_ is not None and not isinstance(message_, (bytes, str)):
-            raise TypeError(f'Expected message_ to be a str, received: {type(message_)}')
+            raise TypeError(
+                f'Expected message_ to be a str, received: {type(message_)}'
+            )
 
         if status_ is not None and not isinstance(status_, (bytes, str)):
             raise TypeError(f'Expected status_ to be a str, received: {type(status_)}')
 
         if wants_vote_ is not None and not isinstance(wants_vote_, bool):
-            raise TypeError(f'Expected wants_vote_ to be a bool, received: {type(wants_vote_)}')
+            raise TypeError(
+                f'Expected wants_vote_ to be a bool, received: {type(wants_vote_)}'
+            )
 
         self.display_name = display_name_
         self.ha_primary = ha_primary_
@@ -10082,17 +14493,31 @@ class ModelParam(Type):
 
         # Validate arguments against known Juju API types.
         if model_tag_ is not None and not isinstance(model_tag_, (bytes, str)):
-            raise TypeError(f'Expected model_tag_ to be a str, received: {type(model_tag_)}')
+            raise TypeError(
+                f'Expected model_tag_ to be a str, received: {type(model_tag_)}'
+            )
 
         self.model_tag = model_tag_
         self.unknown_fields = unknown_fields
 
 
 class ModelSLA(Type):
-    _toSchema = {'creds': 'creds', 'level': 'level', 'modelslainfo': 'ModelSLAInfo', 'owner': 'owner'}
-    _toPy = {'ModelSLAInfo': 'modelslainfo', 'creds': 'creds', 'level': 'level', 'owner': 'owner'}
+    _toSchema = {
+        'creds': 'creds',
+        'level': 'level',
+        'modelslainfo': 'ModelSLAInfo',
+        'owner': 'owner',
+    }
+    _toPy = {
+        'ModelSLAInfo': 'modelslainfo',
+        'creds': 'creds',
+        'level': 'level',
+        'owner': 'owner',
+    }
 
-    def __init__(self, modelslainfo=None, creds=None, level=None, owner=None, **unknown_fields):
+    def __init__(
+        self, modelslainfo=None, creds=None, level=None, owner=None, **unknown_fields
+    ):
         """
         modelslainfo : ModelSLAInfo
         creds : typing.Sequence[int]
@@ -10105,11 +14530,17 @@ class ModelSLA(Type):
         owner_ = owner
 
         # Validate arguments against known Juju API types.
-        if modelslainfo_ is not None and not isinstance(modelslainfo_, (dict, ModelSLAInfo)):
-            raise TypeError(f'Expected modelslainfo_ to be a ModelSLAInfo, received: {type(modelslainfo_)}')
+        if modelslainfo_ is not None and not isinstance(
+            modelslainfo_, (dict, ModelSLAInfo)
+        ):
+            raise TypeError(
+                f'Expected modelslainfo_ to be a ModelSLAInfo, received: {type(modelslainfo_)}'
+            )
 
         if creds_ is not None and not isinstance(creds_, (bytes, str, list)):
-            raise TypeError(f'Expected creds_ to be a Sequence, received: {type(creds_)}')
+            raise TypeError(
+                f'Expected creds_ to be a Sequence, received: {type(creds_)}'
+            )
 
         if level_ is not None and not isinstance(level_, (bytes, str)):
             raise TypeError(f'Expected level_ to be a str, received: {type(level_)}')
@@ -10160,7 +14591,9 @@ class ModelSequencesResult(Type):
 
         # Validate arguments against known Juju API types.
         if sequences_ is not None and not isinstance(sequences_, dict):
-            raise TypeError(f'Expected sequences_ to be a Mapping, received: {type(sequences_)}')
+            raise TypeError(
+                f'Expected sequences_ to be a Mapping, received: {type(sequences_)}'
+            )
 
         self.sequences = sequences_
         self.unknown_fields = unknown_fields
@@ -10178,17 +14611,60 @@ class ModelSet(Type):
 
         # Validate arguments against known Juju API types.
         if config_ is not None and not isinstance(config_, dict):
-            raise TypeError(f'Expected config_ to be a Mapping, received: {type(config_)}')
+            raise TypeError(
+                f'Expected config_ to be a Mapping, received: {type(config_)}'
+            )
 
         self.config = config_
         self.unknown_fields = unknown_fields
 
 
 class ModelStatus(Type):
-    _toSchema = {'application_count': 'application-count', 'applications': 'applications', 'error': 'error', 'filesystems': 'filesystems', 'hosted_machine_count': 'hosted-machine-count', 'life': 'life', 'machines': 'machines', 'model_tag': 'model-tag', 'owner_tag': 'owner-tag', 'type_': 'type', 'unit_count': 'unit-count', 'volumes': 'volumes'}
-    _toPy = {'application-count': 'application_count', 'applications': 'applications', 'error': 'error', 'filesystems': 'filesystems', 'hosted-machine-count': 'hosted_machine_count', 'life': 'life', 'machines': 'machines', 'model-tag': 'model_tag', 'owner-tag': 'owner_tag', 'type': 'type_', 'unit-count': 'unit_count', 'volumes': 'volumes'}
+    _toSchema = {
+        'application_count': 'application-count',
+        'applications': 'applications',
+        'error': 'error',
+        'filesystems': 'filesystems',
+        'hosted_machine_count': 'hosted-machine-count',
+        'life': 'life',
+        'machines': 'machines',
+        'model_tag': 'model-tag',
+        'owner_tag': 'owner-tag',
+        'type_': 'type',
+        'unit_count': 'unit-count',
+        'volumes': 'volumes',
+    }
+    _toPy = {
+        'application-count': 'application_count',
+        'applications': 'applications',
+        'error': 'error',
+        'filesystems': 'filesystems',
+        'hosted-machine-count': 'hosted_machine_count',
+        'life': 'life',
+        'machines': 'machines',
+        'model-tag': 'model_tag',
+        'owner-tag': 'owner_tag',
+        'type': 'type_',
+        'unit-count': 'unit_count',
+        'volumes': 'volumes',
+    }
 
-    def __init__(self, application_count=None, applications=None, error=None, filesystems=None, hosted_machine_count=None, life=None, machines=None, model_tag=None, owner_tag=None, type_=None, unit_count=None, volumes=None, **unknown_fields):
+    def __init__(
+        self,
+        application_count=None,
+        applications=None,
+        error=None,
+        filesystems=None,
+        hosted_machine_count=None,
+        life=None,
+        machines=None,
+        model_tag=None,
+        owner_tag=None,
+        type_=None,
+        unit_count=None,
+        volumes=None,
+        **unknown_fields,
+    ):
         """
         application_count : int
         applications : typing.Sequence[~ModelApplicationInfo]
@@ -10218,40 +14694,64 @@ class ModelStatus(Type):
 
         # Validate arguments against known Juju API types.
         if application_count_ is not None and not isinstance(application_count_, int):
-            raise TypeError(f'Expected application_count_ to be a int, received: {type(application_count_)}')
+            raise TypeError(
+                f'Expected application_count_ to be a int, received: {type(application_count_)}'
+            )
 
-        if applications_ is not None and not isinstance(applications_, (bytes, str, list)):
-            raise TypeError(f'Expected applications_ to be a Sequence, received: {type(applications_)}')
+        if applications_ is not None and not isinstance(
+            applications_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected applications_ to be a Sequence, received: {type(applications_)}'
+            )
 
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
-        if filesystems_ is not None and not isinstance(filesystems_, (bytes, str, list)):
-            raise TypeError(f'Expected filesystems_ to be a Sequence, received: {type(filesystems_)}')
+        if filesystems_ is not None and not isinstance(
+            filesystems_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected filesystems_ to be a Sequence, received: {type(filesystems_)}'
+            )
 
-        if hosted_machine_count_ is not None and not isinstance(hosted_machine_count_, int):
-            raise TypeError(f'Expected hosted_machine_count_ to be a int, received: {type(hosted_machine_count_)}')
+        if hosted_machine_count_ is not None and not isinstance(
+            hosted_machine_count_, int
+        ):
+            raise TypeError(
+                f'Expected hosted_machine_count_ to be a int, received: {type(hosted_machine_count_)}'
+            )
 
         if life_ is not None and not isinstance(life_, (bytes, str)):
             raise TypeError(f'Expected life_ to be a str, received: {type(life_)}')
 
         if machines_ is not None and not isinstance(machines_, (bytes, str, list)):
-            raise TypeError(f'Expected machines_ to be a Sequence, received: {type(machines_)}')
+            raise TypeError(
+                f'Expected machines_ to be a Sequence, received: {type(machines_)}'
+            )
 
         if model_tag_ is not None and not isinstance(model_tag_, (bytes, str)):
-            raise TypeError(f'Expected model_tag_ to be a str, received: {type(model_tag_)}')
+            raise TypeError(
+                f'Expected model_tag_ to be a str, received: {type(model_tag_)}'
+            )
 
         if owner_tag_ is not None and not isinstance(owner_tag_, (bytes, str)):
-            raise TypeError(f'Expected owner_tag_ to be a str, received: {type(owner_tag_)}')
+            raise TypeError(
+                f'Expected owner_tag_ to be a str, received: {type(owner_tag_)}'
+            )
 
         if type__ is not None and not isinstance(type__, (bytes, str)):
             raise TypeError(f'Expected type__ to be a str, received: {type(type__)}')
 
         if unit_count_ is not None and not isinstance(unit_count_, int):
-            raise TypeError(f'Expected unit_count_ to be a int, received: {type(unit_count_)}')
+            raise TypeError(
+                f'Expected unit_count_ to be a int, received: {type(unit_count_)}'
+            )
 
         if volumes_ is not None and not isinstance(volumes_, (bytes, str, list)):
-            raise TypeError(f'Expected volumes_ to be a Sequence, received: {type(volumes_)}')
+            raise TypeError(
+                f'Expected volumes_ to be a Sequence, received: {type(volumes_)}'
+            )
 
         self.application_count = application_count_
         self.applications = applications_
@@ -10269,10 +14769,42 @@ class ModelStatus(Type):
 
 
 class ModelStatusInfo(Type):
-    _toSchema = {'available_version': 'available-version', 'cloud_tag': 'cloud-tag', 'meter_status': 'meter-status', 'model_status': 'model-status', 'name': 'name', 'region': 'region', 'sla': 'sla', 'type_': 'type', 'version': 'version'}
-    _toPy = {'available-version': 'available_version', 'cloud-tag': 'cloud_tag', 'meter-status': 'meter_status', 'model-status': 'model_status', 'name': 'name', 'region': 'region', 'sla': 'sla', 'type': 'type_', 'version': 'version'}
+    _toSchema = {
+        'available_version': 'available-version',
+        'cloud_tag': 'cloud-tag',
+        'meter_status': 'meter-status',
+        'model_status': 'model-status',
+        'name': 'name',
+        'region': 'region',
+        'sla': 'sla',
+        'type_': 'type',
+        'version': 'version',
+    }
+    _toPy = {
+        'available-version': 'available_version',
+        'cloud-tag': 'cloud_tag',
+        'meter-status': 'meter_status',
+        'model-status': 'model_status',
+        'name': 'name',
+        'region': 'region',
+        'sla': 'sla',
+        'type': 'type_',
+        'version': 'version',
+    }
 
-    def __init__(self, available_version=None, cloud_tag=None, meter_status=None, model_status=None, name=None, region=None, sla=None, type_=None, version=None, **unknown_fields):
+    def __init__(
+        self,
+        available_version=None,
+        cloud_tag=None,
+        meter_status=None,
+        model_status=None,
+        name=None,
+        region=None,
+        sla=None,
+        type_=None,
+        version=None,
+        **unknown_fields,
+    ):
         """
         available_version : str
         cloud_tag : str
@@ -10295,17 +14827,31 @@ class ModelStatusInfo(Type):
         version_ = version
 
         # Validate arguments against known Juju API types.
-        if available_version_ is not None and not isinstance(available_version_, (bytes, str)):
-            raise TypeError(f'Expected available_version_ to be a str, received: {type(available_version_)}')
+        if available_version_ is not None and not isinstance(
+            available_version_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected available_version_ to be a str, received: {type(available_version_)}'
+            )
 
         if cloud_tag_ is not None and not isinstance(cloud_tag_, (bytes, str)):
-            raise TypeError(f'Expected cloud_tag_ to be a str, received: {type(cloud_tag_)}')
+            raise TypeError(
+                f'Expected cloud_tag_ to be a str, received: {type(cloud_tag_)}'
+            )
 
-        if meter_status_ is not None and not isinstance(meter_status_, (dict, MeterStatus)):
-            raise TypeError(f'Expected meter_status_ to be a MeterStatus, received: {type(meter_status_)}')
+        if meter_status_ is not None and not isinstance(
+            meter_status_, (dict, MeterStatus)
+        ):
+            raise TypeError(
+                f'Expected meter_status_ to be a MeterStatus, received: {type(meter_status_)}'
+            )
 
-        if model_status_ is not None and not isinstance(model_status_, (dict, DetailedStatus)):
-            raise TypeError(f'Expected model_status_ to be a DetailedStatus, received: {type(model_status_)}')
+        if model_status_ is not None and not isinstance(
+            model_status_, (dict, DetailedStatus)
+        ):
+            raise TypeError(
+                f'Expected model_status_ to be a DetailedStatus, received: {type(model_status_)}'
+            )
 
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
@@ -10320,7 +14866,9 @@ class ModelStatusInfo(Type):
             raise TypeError(f'Expected type__ to be a str, received: {type(type__)}')
 
         if version_ is not None and not isinstance(version_, (bytes, str)):
-            raise TypeError(f'Expected version_ to be a str, received: {type(version_)}')
+            raise TypeError(
+                f'Expected version_ to be a str, received: {type(version_)}'
+            )
 
         self.available_version = available_version_
         self.cloud_tag = cloud_tag_
@@ -10346,7 +14894,9 @@ class ModelStatusResults(Type):
 
         # Validate arguments against known Juju API types.
         if models_ is not None and not isinstance(models_, (bytes, str, list)):
-            raise TypeError(f'Expected models_ to be a Sequence, received: {type(models_)}')
+            raise TypeError(
+                f'Expected models_ to be a Sequence, received: {type(models_)}'
+            )
 
         self.models = models_
         self.unknown_fields = unknown_fields
@@ -10369,7 +14919,9 @@ class ModelSummariesRequest(Type):
             raise TypeError(f'Expected all__ to be a bool, received: {type(all__)}')
 
         if user_tag_ is not None and not isinstance(user_tag_, (bytes, str)):
-            raise TypeError(f'Expected user_tag_ to be a str, received: {type(user_tag_)}')
+            raise TypeError(
+                f'Expected user_tag_ to be a str, received: {type(user_tag_)}'
+            )
 
         self.all_ = all__
         self.user_tag = user_tag_
@@ -10377,10 +14929,72 @@ class ModelSummariesRequest(Type):
 
 
 class ModelSummary(Type):
-    _toSchema = {'agent_version': 'agent-version', 'cloud_credential_tag': 'cloud-credential-tag', 'cloud_region': 'cloud-region', 'cloud_tag': 'cloud-tag', 'controller_uuid': 'controller-uuid', 'counts': 'counts', 'default_series': 'default-series', 'is_controller': 'is-controller', 'last_connection': 'last-connection', 'life': 'life', 'migration': 'migration', 'name': 'name', 'owner_tag': 'owner-tag', 'provider_type': 'provider-type', 'sla': 'sla', 'status': 'status', 'type_': 'type', 'user_access': 'user-access', 'uuid': 'uuid'}
-    _toPy = {'agent-version': 'agent_version', 'cloud-credential-tag': 'cloud_credential_tag', 'cloud-region': 'cloud_region', 'cloud-tag': 'cloud_tag', 'controller-uuid': 'controller_uuid', 'counts': 'counts', 'default-series': 'default_series', 'is-controller': 'is_controller', 'last-connection': 'last_connection', 'life': 'life', 'migration': 'migration', 'name': 'name', 'owner-tag': 'owner_tag', 'provider-type': 'provider_type', 'sla': 'sla', 'status': 'status', 'type': 'type_', 'user-access': 'user_access', 'uuid': 'uuid'}
+    _toSchema = {
+        'agent_version': 'agent-version',
+        'cloud_credential_tag': 'cloud-credential-tag',
+        'cloud_region': 'cloud-region',
+        'cloud_tag': 'cloud-tag',
+        'controller_uuid': 'controller-uuid',
+        'counts': 'counts',
+        'default_series': 'default-series',
+        'is_controller': 'is-controller',
+        'last_connection': 'last-connection',
+        'life': 'life',
+        'migration': 'migration',
+        'name': 'name',
+        'owner_tag': 'owner-tag',
+        'provider_type': 'provider-type',
+        'sla': 'sla',
+        'status': 'status',
+        'type_': 'type',
+        'user_access': 'user-access',
+        'uuid': 'uuid',
+    }
+    _toPy = {
+        'agent-version': 'agent_version',
+        'cloud-credential-tag': 'cloud_credential_tag',
+        'cloud-region': 'cloud_region',
+        'cloud-tag': 'cloud_tag',
+        'controller-uuid': 'controller_uuid',
+        'counts': 'counts',
+        'default-series': 'default_series',
+        'is-controller': 'is_controller',
+        'last-connection': 'last_connection',
+        'life': 'life',
+        'migration': 'migration',
+        'name': 'name',
+        'owner-tag': 'owner_tag',
+        'provider-type': 'provider_type',
+        'sla': 'sla',
+        'status': 'status',
+        'type': 'type_',
+        'user-access': 'user_access',
+        'uuid': 'uuid',
+    }
 
-    def __init__(self, agent_version=None, cloud_credential_tag=None, cloud_region=None, cloud_tag=None, controller_uuid=None, counts=None, default_series=None, is_controller=None, last_connection=None, life=None, migration=None, name=None, owner_tag=None, provider_type=None, sla=None, status=None, type_=None, user_access=None, uuid=None, **unknown_fields):
+    def __init__(
+        self,
+        agent_version=None,
+        cloud_credential_tag=None,
+        cloud_region=None,
+        cloud_tag=None,
+        controller_uuid=None,
+        counts=None,
+        default_series=None,
+        is_controller=None,
+        last_connection=None,
+        life=None,
+        migration=None,
+        name=None,
+        owner_tag=None,
+        provider_type=None,
+        sla=None,
+        status=None,
+        type_=None,
+        user_access=None,
+        uuid=None,
+        **unknown_fields,
+    ):
         """
         agent_version : Number
         cloud_credential_tag : str
@@ -10423,59 +15037,101 @@ class ModelSummary(Type):
         uuid_ = uuid
 
         # Validate arguments against known Juju API types.
-        if agent_version_ is not None and not isinstance(agent_version_, (dict, Number)):
-            raise TypeError(f'Expected agent_version_ to be a Number, received: {type(agent_version_)}')
+        if agent_version_ is not None and not isinstance(
+            agent_version_, (dict, Number)
+        ):
+            raise TypeError(
+                f'Expected agent_version_ to be a Number, received: {type(agent_version_)}'
+            )
 
-        if cloud_credential_tag_ is not None and not isinstance(cloud_credential_tag_, (bytes, str)):
-            raise TypeError(f'Expected cloud_credential_tag_ to be a str, received: {type(cloud_credential_tag_)}')
+        if cloud_credential_tag_ is not None and not isinstance(
+            cloud_credential_tag_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected cloud_credential_tag_ to be a str, received: {type(cloud_credential_tag_)}'
+            )
 
         if cloud_region_ is not None and not isinstance(cloud_region_, (bytes, str)):
-            raise TypeError(f'Expected cloud_region_ to be a str, received: {type(cloud_region_)}')
+            raise TypeError(
+                f'Expected cloud_region_ to be a str, received: {type(cloud_region_)}'
+            )
 
         if cloud_tag_ is not None and not isinstance(cloud_tag_, (bytes, str)):
-            raise TypeError(f'Expected cloud_tag_ to be a str, received: {type(cloud_tag_)}')
+            raise TypeError(
+                f'Expected cloud_tag_ to be a str, received: {type(cloud_tag_)}'
+            )
 
-        if controller_uuid_ is not None and not isinstance(controller_uuid_, (bytes, str)):
-            raise TypeError(f'Expected controller_uuid_ to be a str, received: {type(controller_uuid_)}')
+        if controller_uuid_ is not None and not isinstance(
+            controller_uuid_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected controller_uuid_ to be a str, received: {type(controller_uuid_)}'
+            )
 
         if counts_ is not None and not isinstance(counts_, (bytes, str, list)):
-            raise TypeError(f'Expected counts_ to be a Sequence, received: {type(counts_)}')
+            raise TypeError(
+                f'Expected counts_ to be a Sequence, received: {type(counts_)}'
+            )
 
-        if default_series_ is not None and not isinstance(default_series_, (bytes, str)):
-            raise TypeError(f'Expected default_series_ to be a str, received: {type(default_series_)}')
+        if default_series_ is not None and not isinstance(
+            default_series_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected default_series_ to be a str, received: {type(default_series_)}'
+            )
 
         if is_controller_ is not None and not isinstance(is_controller_, bool):
-            raise TypeError(f'Expected is_controller_ to be a bool, received: {type(is_controller_)}')
+            raise TypeError(
+                f'Expected is_controller_ to be a bool, received: {type(is_controller_)}'
+            )
 
-        if last_connection_ is not None and not isinstance(last_connection_, (bytes, str)):
-            raise TypeError(f'Expected last_connection_ to be a str, received: {type(last_connection_)}')
+        if last_connection_ is not None and not isinstance(
+            last_connection_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected last_connection_ to be a str, received: {type(last_connection_)}'
+            )
 
         if life_ is not None and not isinstance(life_, (bytes, str)):
             raise TypeError(f'Expected life_ to be a str, received: {type(life_)}')
 
-        if migration_ is not None and not isinstance(migration_, (dict, ModelMigrationStatus)):
-            raise TypeError(f'Expected migration_ to be a ModelMigrationStatus, received: {type(migration_)}')
+        if migration_ is not None and not isinstance(
+            migration_, (dict, ModelMigrationStatus)
+        ):
+            raise TypeError(
+                f'Expected migration_ to be a ModelMigrationStatus, received: {type(migration_)}'
+            )
 
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
 
         if owner_tag_ is not None and not isinstance(owner_tag_, (bytes, str)):
-            raise TypeError(f'Expected owner_tag_ to be a str, received: {type(owner_tag_)}')
+            raise TypeError(
+                f'Expected owner_tag_ to be a str, received: {type(owner_tag_)}'
+            )
 
         if provider_type_ is not None and not isinstance(provider_type_, (bytes, str)):
-            raise TypeError(f'Expected provider_type_ to be a str, received: {type(provider_type_)}')
+            raise TypeError(
+                f'Expected provider_type_ to be a str, received: {type(provider_type_)}'
+            )
 
         if sla_ is not None and not isinstance(sla_, (dict, ModelSLAInfo)):
-            raise TypeError(f'Expected sla_ to be a ModelSLAInfo, received: {type(sla_)}')
+            raise TypeError(
+                f'Expected sla_ to be a ModelSLAInfo, received: {type(sla_)}'
+            )
 
         if status_ is not None and not isinstance(status_, (dict, EntityStatus)):
-            raise TypeError(f'Expected status_ to be a EntityStatus, received: {type(status_)}')
+            raise TypeError(
+                f'Expected status_ to be a EntityStatus, received: {type(status_)}'
+            )
 
         if type__ is not None and not isinstance(type__, (bytes, str)):
             raise TypeError(f'Expected type__ to be a str, received: {type(type__)}')
 
         if user_access_ is not None and not isinstance(user_access_, (bytes, str)):
-            raise TypeError(f'Expected user_access_ to be a str, received: {type(user_access_)}')
+            raise TypeError(
+                f'Expected user_access_ to be a str, received: {type(user_access_)}'
+            )
 
         if uuid_ is not None and not isinstance(uuid_, (bytes, str)):
             raise TypeError(f'Expected uuid_ to be a str, received: {type(uuid_)}')
@@ -10519,7 +15175,9 @@ class ModelSummaryResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if result_ is not None and not isinstance(result_, (dict, ModelSummary)):
-            raise TypeError(f'Expected result_ to be a ModelSummary, received: {type(result_)}')
+            raise TypeError(
+                f'Expected result_ to be a ModelSummary, received: {type(result_)}'
+            )
 
         self.error = error_
         self.result = result_
@@ -10538,7 +15196,9 @@ class ModelSummaryResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -10549,9 +15209,7 @@ class ModelTag(Type):
     _toPy = {}
 
     def __init__(self, **unknown_fields):
-        """
-
-        """
+        """ """
         self.unknown_fields = unknown_fields
 
 
@@ -10574,7 +15232,11 @@ class ModelUnset(Type):
 
 
 class ModelUnsetKeys(Type):
-    _toSchema = {'cloud_region': 'cloud-region', 'cloud_tag': 'cloud-tag', 'keys': 'keys'}
+    _toSchema = {
+        'cloud_region': 'cloud-region',
+        'cloud_tag': 'cloud-tag',
+        'keys': 'keys',
+    }
     _toPy = {'cloud-region': 'cloud_region', 'cloud-tag': 'cloud_tag', 'keys': 'keys'}
 
     def __init__(self, cloud_region=None, cloud_tag=None, keys=None, **unknown_fields):
@@ -10589,10 +15251,14 @@ class ModelUnsetKeys(Type):
 
         # Validate arguments against known Juju API types.
         if cloud_region_ is not None and not isinstance(cloud_region_, (bytes, str)):
-            raise TypeError(f'Expected cloud_region_ to be a str, received: {type(cloud_region_)}')
+            raise TypeError(
+                f'Expected cloud_region_ to be a str, received: {type(cloud_region_)}'
+            )
 
         if cloud_tag_ is not None and not isinstance(cloud_tag_, (bytes, str)):
-            raise TypeError(f'Expected cloud_tag_ to be a str, received: {type(cloud_tag_)}')
+            raise TypeError(
+                f'Expected cloud_tag_ to be a str, received: {type(cloud_tag_)}'
+            )
 
         if keys_ is not None and not isinstance(keys_, (bytes, str, list)):
             raise TypeError(f'Expected keys_ to be a Sequence, received: {type(keys_)}')
@@ -10604,10 +15270,30 @@ class ModelUnsetKeys(Type):
 
 
 class ModelUserInfo(Type):
-    _toSchema = {'access': 'access', 'display_name': 'display-name', 'last_connection': 'last-connection', 'model_tag': 'model-tag', 'user': 'user'}
-    _toPy = {'access': 'access', 'display-name': 'display_name', 'last-connection': 'last_connection', 'model-tag': 'model_tag', 'user': 'user'}
+    _toSchema = {
+        'access': 'access',
+        'display_name': 'display-name',
+        'last_connection': 'last-connection',
+        'model_tag': 'model-tag',
+        'user': 'user',
+    }
+    _toPy = {
+        'access': 'access',
+        'display-name': 'display_name',
+        'last-connection': 'last_connection',
+        'model-tag': 'model_tag',
+        'user': 'user',
+    }
 
-    def __init__(self, access=None, display_name=None, last_connection=None, model_tag=None, user=None, **unknown_fields):
+    def __init__(
+        self,
+        access=None,
+        display_name=None,
+        last_connection=None,
+        model_tag=None,
+        user=None,
+        **unknown_fields,
+    ):
         """
         access : str
         display_name : str
@@ -10626,13 +15312,21 @@ class ModelUserInfo(Type):
             raise TypeError(f'Expected access_ to be a str, received: {type(access_)}')
 
         if display_name_ is not None and not isinstance(display_name_, (bytes, str)):
-            raise TypeError(f'Expected display_name_ to be a str, received: {type(display_name_)}')
+            raise TypeError(
+                f'Expected display_name_ to be a str, received: {type(display_name_)}'
+            )
 
-        if last_connection_ is not None and not isinstance(last_connection_, (bytes, str)):
-            raise TypeError(f'Expected last_connection_ to be a str, received: {type(last_connection_)}')
+        if last_connection_ is not None and not isinstance(
+            last_connection_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected last_connection_ to be a str, received: {type(last_connection_)}'
+            )
 
         if model_tag_ is not None and not isinstance(model_tag_, (bytes, str)):
-            raise TypeError(f'Expected model_tag_ to be a str, received: {type(model_tag_)}')
+            raise TypeError(
+                f'Expected model_tag_ to be a str, received: {type(model_tag_)}'
+            )
 
         if user_ is not None and not isinstance(user_, (bytes, str)):
             raise TypeError(f'Expected user_ to be a str, received: {type(user_)}')
@@ -10662,7 +15356,9 @@ class ModelUserInfoResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if result_ is not None and not isinstance(result_, (dict, ModelUserInfo)):
-            raise TypeError(f'Expected result_ to be a ModelUserInfo, received: {type(result_)}')
+            raise TypeError(
+                f'Expected result_ to be a ModelUserInfo, received: {type(result_)}'
+            )
 
         self.error = error_
         self.result = result_
@@ -10681,17 +15377,39 @@ class ModelUserInfoResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
 
 
 class ModelVolumeInfo(Type):
-    _toSchema = {'detachable': 'detachable', 'id_': 'id', 'message': 'message', 'provider_id': 'provider-id', 'status': 'status'}
-    _toPy = {'detachable': 'detachable', 'id': 'id_', 'message': 'message', 'provider-id': 'provider_id', 'status': 'status'}
+    _toSchema = {
+        'detachable': 'detachable',
+        'id_': 'id',
+        'message': 'message',
+        'provider_id': 'provider-id',
+        'status': 'status',
+    }
+    _toPy = {
+        'detachable': 'detachable',
+        'id': 'id_',
+        'message': 'message',
+        'provider-id': 'provider_id',
+        'status': 'status',
+    }
 
-    def __init__(self, detachable=None, id_=None, message=None, provider_id=None, status=None, **unknown_fields):
+    def __init__(
+        self,
+        detachable=None,
+        id_=None,
+        message=None,
+        provider_id=None,
+        status=None,
+        **unknown_fields,
+    ):
         """
         detachable : bool
         id_ : str
@@ -10707,16 +15425,22 @@ class ModelVolumeInfo(Type):
 
         # Validate arguments against known Juju API types.
         if detachable_ is not None and not isinstance(detachable_, bool):
-            raise TypeError(f'Expected detachable_ to be a bool, received: {type(detachable_)}')
+            raise TypeError(
+                f'Expected detachable_ to be a bool, received: {type(detachable_)}'
+            )
 
         if id__ is not None and not isinstance(id__, (bytes, str)):
             raise TypeError(f'Expected id__ to be a str, received: {type(id__)}')
 
         if message_ is not None and not isinstance(message_, (bytes, str)):
-            raise TypeError(f'Expected message_ to be a str, received: {type(message_)}')
+            raise TypeError(
+                f'Expected message_ to be a str, received: {type(message_)}'
+            )
 
         if provider_id_ is not None and not isinstance(provider_id_, (bytes, str)):
-            raise TypeError(f'Expected provider_id_ to be a str, received: {type(provider_id_)}')
+            raise TypeError(
+                f'Expected provider_id_ to be a str, received: {type(provider_id_)}'
+            )
 
         if status_ is not None and not isinstance(status_, (bytes, str)):
             raise TypeError(f'Expected status_ to be a str, received: {type(status_)}')
@@ -10730,10 +15454,22 @@ class ModelVolumeInfo(Type):
 
 
 class ModifyCloudAccess(Type):
-    _toSchema = {'access': 'access', 'action': 'action', 'cloud_tag': 'cloud-tag', 'user_tag': 'user-tag'}
-    _toPy = {'access': 'access', 'action': 'action', 'cloud-tag': 'cloud_tag', 'user-tag': 'user_tag'}
+    _toSchema = {
+        'access': 'access',
+        'action': 'action',
+        'cloud_tag': 'cloud-tag',
+        'user_tag': 'user-tag',
+    }
+    _toPy = {
+        'access': 'access',
+        'action': 'action',
+        'cloud-tag': 'cloud_tag',
+        'user-tag': 'user_tag',
+    }
 
-    def __init__(self, access=None, action=None, cloud_tag=None, user_tag=None, **unknown_fields):
+    def __init__(
+        self, access=None, action=None, cloud_tag=None, user_tag=None, **unknown_fields
+    ):
         """
         access : str
         action : str
@@ -10753,10 +15489,14 @@ class ModifyCloudAccess(Type):
             raise TypeError(f'Expected action_ to be a str, received: {type(action_)}')
 
         if cloud_tag_ is not None and not isinstance(cloud_tag_, (bytes, str)):
-            raise TypeError(f'Expected cloud_tag_ to be a str, received: {type(cloud_tag_)}')
+            raise TypeError(
+                f'Expected cloud_tag_ to be a str, received: {type(cloud_tag_)}'
+            )
 
         if user_tag_ is not None and not isinstance(user_tag_, (bytes, str)):
-            raise TypeError(f'Expected user_tag_ to be a str, received: {type(user_tag_)}')
+            raise TypeError(
+                f'Expected user_tag_ to be a str, received: {type(user_tag_)}'
+            )
 
         self.access = access_
         self.action = action_
@@ -10777,7 +15517,9 @@ class ModifyCloudAccessRequest(Type):
 
         # Validate arguments against known Juju API types.
         if changes_ is not None and not isinstance(changes_, (bytes, str, list)):
-            raise TypeError(f'Expected changes_ to be a Sequence, received: {type(changes_)}')
+            raise TypeError(
+                f'Expected changes_ to be a Sequence, received: {type(changes_)}'
+            )
 
         self.changes = changes_
         self.unknown_fields = unknown_fields
@@ -10805,7 +15547,9 @@ class ModifyControllerAccess(Type):
             raise TypeError(f'Expected action_ to be a str, received: {type(action_)}')
 
         if user_tag_ is not None and not isinstance(user_tag_, (bytes, str)):
-            raise TypeError(f'Expected user_tag_ to be a str, received: {type(user_tag_)}')
+            raise TypeError(
+                f'Expected user_tag_ to be a str, received: {type(user_tag_)}'
+            )
 
         self.access = access_
         self.action = action_
@@ -10825,17 +15569,31 @@ class ModifyControllerAccessRequest(Type):
 
         # Validate arguments against known Juju API types.
         if changes_ is not None and not isinstance(changes_, (bytes, str, list)):
-            raise TypeError(f'Expected changes_ to be a Sequence, received: {type(changes_)}')
+            raise TypeError(
+                f'Expected changes_ to be a Sequence, received: {type(changes_)}'
+            )
 
         self.changes = changes_
         self.unknown_fields = unknown_fields
 
 
 class ModifyModelAccess(Type):
-    _toSchema = {'access': 'access', 'action': 'action', 'model_tag': 'model-tag', 'user_tag': 'user-tag'}
-    _toPy = {'access': 'access', 'action': 'action', 'model-tag': 'model_tag', 'user-tag': 'user_tag'}
+    _toSchema = {
+        'access': 'access',
+        'action': 'action',
+        'model_tag': 'model-tag',
+        'user_tag': 'user-tag',
+    }
+    _toPy = {
+        'access': 'access',
+        'action': 'action',
+        'model-tag': 'model_tag',
+        'user-tag': 'user_tag',
+    }
 
-    def __init__(self, access=None, action=None, model_tag=None, user_tag=None, **unknown_fields):
+    def __init__(
+        self, access=None, action=None, model_tag=None, user_tag=None, **unknown_fields
+    ):
         """
         access : str
         action : str
@@ -10855,10 +15613,14 @@ class ModifyModelAccess(Type):
             raise TypeError(f'Expected action_ to be a str, received: {type(action_)}')
 
         if model_tag_ is not None and not isinstance(model_tag_, (bytes, str)):
-            raise TypeError(f'Expected model_tag_ to be a str, received: {type(model_tag_)}')
+            raise TypeError(
+                f'Expected model_tag_ to be a str, received: {type(model_tag_)}'
+            )
 
         if user_tag_ is not None and not isinstance(user_tag_, (bytes, str)):
-            raise TypeError(f'Expected user_tag_ to be a str, received: {type(user_tag_)}')
+            raise TypeError(
+                f'Expected user_tag_ to be a str, received: {type(user_tag_)}'
+            )
 
         self.access = access_
         self.action = action_
@@ -10879,17 +15641,31 @@ class ModifyModelAccessRequest(Type):
 
         # Validate arguments against known Juju API types.
         if changes_ is not None and not isinstance(changes_, (bytes, str, list)):
-            raise TypeError(f'Expected changes_ to be a Sequence, received: {type(changes_)}')
+            raise TypeError(
+                f'Expected changes_ to be a Sequence, received: {type(changes_)}'
+            )
 
         self.changes = changes_
         self.unknown_fields = unknown_fields
 
 
 class ModifyOfferAccess(Type):
-    _toSchema = {'access': 'access', 'action': 'action', 'offer_url': 'offer-url', 'user_tag': 'user-tag'}
-    _toPy = {'access': 'access', 'action': 'action', 'offer-url': 'offer_url', 'user-tag': 'user_tag'}
+    _toSchema = {
+        'access': 'access',
+        'action': 'action',
+        'offer_url': 'offer-url',
+        'user_tag': 'user-tag',
+    }
+    _toPy = {
+        'access': 'access',
+        'action': 'action',
+        'offer-url': 'offer_url',
+        'user-tag': 'user_tag',
+    }
 
-    def __init__(self, access=None, action=None, offer_url=None, user_tag=None, **unknown_fields):
+    def __init__(
+        self, access=None, action=None, offer_url=None, user_tag=None, **unknown_fields
+    ):
         """
         access : str
         action : str
@@ -10909,10 +15685,14 @@ class ModifyOfferAccess(Type):
             raise TypeError(f'Expected action_ to be a str, received: {type(action_)}')
 
         if offer_url_ is not None and not isinstance(offer_url_, (bytes, str)):
-            raise TypeError(f'Expected offer_url_ to be a str, received: {type(offer_url_)}')
+            raise TypeError(
+                f'Expected offer_url_ to be a str, received: {type(offer_url_)}'
+            )
 
         if user_tag_ is not None and not isinstance(user_tag_, (bytes, str)):
-            raise TypeError(f'Expected user_tag_ to be a str, received: {type(user_tag_)}')
+            raise TypeError(
+                f'Expected user_tag_ to be a str, received: {type(user_tag_)}'
+            )
 
         self.access = access_
         self.action = action_
@@ -10933,7 +15713,9 @@ class ModifyOfferAccessRequest(Type):
 
         # Validate arguments against known Juju API types.
         if changes_ is not None and not isinstance(changes_, (bytes, str, list)):
-            raise TypeError(f'Expected changes_ to be a Sequence, received: {type(changes_)}')
+            raise TypeError(
+                f'Expected changes_ to be a Sequence, received: {type(changes_)}'
+            )
 
         self.changes = changes_
         self.unknown_fields = unknown_fields
@@ -10953,7 +15735,9 @@ class ModifyUserSSHKeys(Type):
 
         # Validate arguments against known Juju API types.
         if ssh_keys_ is not None and not isinstance(ssh_keys_, (bytes, str, list)):
-            raise TypeError(f'Expected ssh_keys_ to be a Sequence, received: {type(ssh_keys_)}')
+            raise TypeError(
+                f'Expected ssh_keys_ to be a Sequence, received: {type(ssh_keys_)}'
+            )
 
         if user_ is not None and not isinstance(user_, (bytes, str)):
             raise TypeError(f'Expected user_ to be a str, received: {type(user_)}')
@@ -10982,10 +15766,14 @@ class MoveSubnetsParam(Type):
             raise TypeError(f'Expected force_ to be a bool, received: {type(force_)}')
 
         if space_tag_ is not None and not isinstance(space_tag_, (bytes, str)):
-            raise TypeError(f'Expected space_tag_ to be a str, received: {type(space_tag_)}')
+            raise TypeError(
+                f'Expected space_tag_ to be a str, received: {type(space_tag_)}'
+            )
 
         if subnets_ is not None and not isinstance(subnets_, (bytes, str, list)):
-            raise TypeError(f'Expected subnets_ to be a Sequence, received: {type(subnets_)}')
+            raise TypeError(
+                f'Expected subnets_ to be a Sequence, received: {type(subnets_)}'
+            )
 
         self.force = force_
         self.space_tag = space_tag_
@@ -11012,10 +15800,20 @@ class MoveSubnetsParams(Type):
 
 
 class MoveSubnetsResult(Type):
-    _toSchema = {'error': 'error', 'moved_subnets': 'moved-subnets', 'new_space': 'new-space'}
-    _toPy = {'error': 'error', 'moved-subnets': 'moved_subnets', 'new-space': 'new_space'}
+    _toSchema = {
+        'error': 'error',
+        'moved_subnets': 'moved-subnets',
+        'new_space': 'new-space',
+    }
+    _toPy = {
+        'error': 'error',
+        'moved-subnets': 'moved_subnets',
+        'new-space': 'new_space',
+    }
 
-    def __init__(self, error=None, moved_subnets=None, new_space=None, **unknown_fields):
+    def __init__(
+        self, error=None, moved_subnets=None, new_space=None, **unknown_fields
+    ):
         """
         error : Error
         moved_subnets : typing.Sequence[~MovedSubnet]
@@ -11029,11 +15827,17 @@ class MoveSubnetsResult(Type):
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
-        if moved_subnets_ is not None and not isinstance(moved_subnets_, (bytes, str, list)):
-            raise TypeError(f'Expected moved_subnets_ to be a Sequence, received: {type(moved_subnets_)}')
+        if moved_subnets_ is not None and not isinstance(
+            moved_subnets_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected moved_subnets_ to be a Sequence, received: {type(moved_subnets_)}'
+            )
 
         if new_space_ is not None and not isinstance(new_space_, (bytes, str)):
-            raise TypeError(f'Expected new_space_ to be a str, received: {type(new_space_)}')
+            raise TypeError(
+                f'Expected new_space_ to be a str, received: {type(new_space_)}'
+            )
 
         self.error = error_
         self.moved_subnets = moved_subnets_
@@ -11053,7 +15857,9 @@ class MoveSubnetsResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -11078,7 +15884,9 @@ class MovedSubnet(Type):
             raise TypeError(f'Expected cidr_ to be a str, received: {type(cidr_)}')
 
         if old_space_ is not None and not isinstance(old_space_, (bytes, str)):
-            raise TypeError(f'Expected old_space_ to be a str, received: {type(old_space_)}')
+            raise TypeError(
+                f'Expected old_space_ to be a str, received: {type(old_space_)}'
+            )
 
         if subnet_ is not None and not isinstance(subnet_, (bytes, str)):
             raise TypeError(f'Expected subnet_ to be a str, received: {type(subnet_)}')
@@ -11090,10 +15898,33 @@ class MovedSubnet(Type):
 
 
 class NetworkInterface(Type):
-    _toSchema = {'dns_nameservers': 'dns-nameservers', 'gateway': 'gateway', 'ip_addresses': 'ip-addresses', 'is_up': 'is-up', 'mac_address': 'mac-address', 'space': 'space'}
-    _toPy = {'dns-nameservers': 'dns_nameservers', 'gateway': 'gateway', 'ip-addresses': 'ip_addresses', 'is-up': 'is_up', 'mac-address': 'mac_address', 'space': 'space'}
+    _toSchema = {
+        'dns_nameservers': 'dns-nameservers',
+        'gateway': 'gateway',
+        'ip_addresses': 'ip-addresses',
+        'is_up': 'is-up',
+        'mac_address': 'mac-address',
+        'space': 'space',
+    }
+    _toPy = {
+        'dns-nameservers': 'dns_nameservers',
+        'gateway': 'gateway',
+        'ip-addresses': 'ip_addresses',
+        'is-up': 'is_up',
+        'mac-address': 'mac_address',
+        'space': 'space',
+    }
 
-    def __init__(self, dns_nameservers=None, gateway=None, ip_addresses=None, is_up=None, mac_address=None, space=None, **unknown_fields):
+    def __init__(
+        self,
+        dns_nameservers=None,
+        gateway=None,
+        ip_addresses=None,
+        is_up=None,
+        mac_address=None,
+        space=None,
+        **unknown_fields,
+    ):
         """
         dns_nameservers : typing.Sequence[str]
         gateway : str
@@ -11110,20 +15941,32 @@ class NetworkInterface(Type):
         space_ = space
 
         # Validate arguments against known Juju API types.
-        if dns_nameservers_ is not None and not isinstance(dns_nameservers_, (bytes, str, list)):
-            raise TypeError(f'Expected dns_nameservers_ to be a Sequence, received: {type(dns_nameservers_)}')
+        if dns_nameservers_ is not None and not isinstance(
+            dns_nameservers_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected dns_nameservers_ to be a Sequence, received: {type(dns_nameservers_)}'
+            )
 
         if gateway_ is not None and not isinstance(gateway_, (bytes, str)):
-            raise TypeError(f'Expected gateway_ to be a str, received: {type(gateway_)}')
+            raise TypeError(
+                f'Expected gateway_ to be a str, received: {type(gateway_)}'
+            )
 
-        if ip_addresses_ is not None and not isinstance(ip_addresses_, (bytes, str, list)):
-            raise TypeError(f'Expected ip_addresses_ to be a Sequence, received: {type(ip_addresses_)}')
+        if ip_addresses_ is not None and not isinstance(
+            ip_addresses_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected ip_addresses_ to be a Sequence, received: {type(ip_addresses_)}'
+            )
 
         if is_up_ is not None and not isinstance(is_up_, bool):
             raise TypeError(f'Expected is_up_ to be a bool, received: {type(is_up_)}')
 
         if mac_address_ is not None and not isinstance(mac_address_, (bytes, str)):
-            raise TypeError(f'Expected mac_address_ to be a str, received: {type(mac_address_)}')
+            raise TypeError(
+                f'Expected mac_address_ to be a str, received: {type(mac_address_)}'
+            )
 
         if space_ is not None and not isinstance(space_, (bytes, str)):
             raise TypeError(f'Expected space_ to be a str, received: {type(space_)}')
@@ -11150,8 +15993,12 @@ class NotifyWatchResult(Type):
         error_ = Error.from_json(error) if error else None
 
         # Validate arguments against known Juju API types.
-        if notifywatcherid_ is not None and not isinstance(notifywatcherid_, (bytes, str)):
-            raise TypeError(f'Expected notifywatcherid_ to be a str, received: {type(notifywatcherid_)}')
+        if notifywatcherid_ is not None and not isinstance(
+            notifywatcherid_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected notifywatcherid_ to be a str, received: {type(notifywatcherid_)}'
+            )
 
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
@@ -11173,17 +16020,33 @@ class NotifyWatchResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
 
 
 class Number(Type):
-    _toSchema = {'build': 'Build', 'major': 'Major', 'minor': 'Minor', 'patch': 'Patch', 'tag': 'Tag'}
-    _toPy = {'Build': 'build', 'Major': 'major', 'Minor': 'minor', 'Patch': 'patch', 'Tag': 'tag'}
+    _toSchema = {
+        'build': 'Build',
+        'major': 'Major',
+        'minor': 'Minor',
+        'patch': 'Patch',
+        'tag': 'Tag',
+    }
+    _toPy = {
+        'Build': 'build',
+        'Major': 'major',
+        'Minor': 'minor',
+        'Patch': 'patch',
+        'Tag': 'tag',
+    }
 
-    def __init__(self, build=None, major=None, minor=None, patch=None, tag=None, **unknown_fields):
+    def __init__(
+        self, build=None, major=None, minor=None, patch=None, tag=None, **unknown_fields
+    ):
         """
         build : int
         major : int
@@ -11222,10 +16085,33 @@ class Number(Type):
 
 
 class OfferConnection(Type):
-    _toSchema = {'endpoint': 'endpoint', 'ingress_subnets': 'ingress-subnets', 'relation_id': 'relation-id', 'source_model_tag': 'source-model-tag', 'status': 'status', 'username': 'username'}
-    _toPy = {'endpoint': 'endpoint', 'ingress-subnets': 'ingress_subnets', 'relation-id': 'relation_id', 'source-model-tag': 'source_model_tag', 'status': 'status', 'username': 'username'}
+    _toSchema = {
+        'endpoint': 'endpoint',
+        'ingress_subnets': 'ingress-subnets',
+        'relation_id': 'relation-id',
+        'source_model_tag': 'source-model-tag',
+        'status': 'status',
+        'username': 'username',
+    }
+    _toPy = {
+        'endpoint': 'endpoint',
+        'ingress-subnets': 'ingress_subnets',
+        'relation-id': 'relation_id',
+        'source-model-tag': 'source_model_tag',
+        'status': 'status',
+        'username': 'username',
+    }
 
-    def __init__(self, endpoint=None, ingress_subnets=None, relation_id=None, source_model_tag=None, status=None, username=None, **unknown_fields):
+    def __init__(
+        self,
+        endpoint=None,
+        ingress_subnets=None,
+        relation_id=None,
+        source_model_tag=None,
+        status=None,
+        username=None,
+        **unknown_fields,
+    ):
         """
         endpoint : str
         ingress_subnets : typing.Sequence[str]
@@ -11243,22 +16129,38 @@ class OfferConnection(Type):
 
         # Validate arguments against known Juju API types.
         if endpoint_ is not None and not isinstance(endpoint_, (bytes, str)):
-            raise TypeError(f'Expected endpoint_ to be a str, received: {type(endpoint_)}')
+            raise TypeError(
+                f'Expected endpoint_ to be a str, received: {type(endpoint_)}'
+            )
 
-        if ingress_subnets_ is not None and not isinstance(ingress_subnets_, (bytes, str, list)):
-            raise TypeError(f'Expected ingress_subnets_ to be a Sequence, received: {type(ingress_subnets_)}')
+        if ingress_subnets_ is not None and not isinstance(
+            ingress_subnets_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected ingress_subnets_ to be a Sequence, received: {type(ingress_subnets_)}'
+            )
 
         if relation_id_ is not None and not isinstance(relation_id_, int):
-            raise TypeError(f'Expected relation_id_ to be a int, received: {type(relation_id_)}')
+            raise TypeError(
+                f'Expected relation_id_ to be a int, received: {type(relation_id_)}'
+            )
 
-        if source_model_tag_ is not None and not isinstance(source_model_tag_, (bytes, str)):
-            raise TypeError(f'Expected source_model_tag_ to be a str, received: {type(source_model_tag_)}')
+        if source_model_tag_ is not None and not isinstance(
+            source_model_tag_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected source_model_tag_ to be a str, received: {type(source_model_tag_)}'
+            )
 
         if status_ is not None and not isinstance(status_, (dict, EntityStatus)):
-            raise TypeError(f'Expected status_ to be a EntityStatus, received: {type(status_)}')
+            raise TypeError(
+                f'Expected status_ to be a EntityStatus, received: {type(status_)}'
+            )
 
         if username_ is not None and not isinstance(username_, (bytes, str)):
-            raise TypeError(f'Expected username_ to be a str, received: {type(username_)}')
+            raise TypeError(
+                f'Expected username_ to be a str, received: {type(username_)}'
+            )
 
         self.endpoint = endpoint_
         self.ingress_subnets = ingress_subnets_
@@ -11270,10 +16172,42 @@ class OfferConnection(Type):
 
 
 class OfferFilter(Type):
-    _toSchema = {'allowed_users': 'allowed-users', 'application_description': 'application-description', 'application_name': 'application-name', 'application_user': 'application-user', 'connected_users': 'connected-users', 'endpoints': 'endpoints', 'model_name': 'model-name', 'offer_name': 'offer-name', 'owner_name': 'owner-name'}
-    _toPy = {'allowed-users': 'allowed_users', 'application-description': 'application_description', 'application-name': 'application_name', 'application-user': 'application_user', 'connected-users': 'connected_users', 'endpoints': 'endpoints', 'model-name': 'model_name', 'offer-name': 'offer_name', 'owner-name': 'owner_name'}
+    _toSchema = {
+        'allowed_users': 'allowed-users',
+        'application_description': 'application-description',
+        'application_name': 'application-name',
+        'application_user': 'application-user',
+        'connected_users': 'connected-users',
+        'endpoints': 'endpoints',
+        'model_name': 'model-name',
+        'offer_name': 'offer-name',
+        'owner_name': 'owner-name',
+    }
+    _toPy = {
+        'allowed-users': 'allowed_users',
+        'application-description': 'application_description',
+        'application-name': 'application_name',
+        'application-user': 'application_user',
+        'connected-users': 'connected_users',
+        'endpoints': 'endpoints',
+        'model-name': 'model_name',
+        'offer-name': 'offer_name',
+        'owner-name': 'owner_name',
+    }
 
-    def __init__(self, allowed_users=None, application_description=None, application_name=None, application_user=None, connected_users=None, endpoints=None, model_name=None, offer_name=None, owner_name=None, **unknown_fields):
+    def __init__(
+        self,
+        allowed_users=None,
+        application_description=None,
+        application_name=None,
+        application_user=None,
+        connected_users=None,
+        endpoints=None,
+        model_name=None,
+        offer_name=None,
+        owner_name=None,
+        **unknown_fields,
+    ):
         """
         allowed_users : typing.Sequence[str]
         application_description : str
@@ -11296,32 +16230,60 @@ class OfferFilter(Type):
         owner_name_ = owner_name
 
         # Validate arguments against known Juju API types.
-        if allowed_users_ is not None and not isinstance(allowed_users_, (bytes, str, list)):
-            raise TypeError(f'Expected allowed_users_ to be a Sequence, received: {type(allowed_users_)}')
+        if allowed_users_ is not None and not isinstance(
+            allowed_users_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected allowed_users_ to be a Sequence, received: {type(allowed_users_)}'
+            )
 
-        if application_description_ is not None and not isinstance(application_description_, (bytes, str)):
-            raise TypeError(f'Expected application_description_ to be a str, received: {type(application_description_)}')
+        if application_description_ is not None and not isinstance(
+            application_description_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected application_description_ to be a str, received: {type(application_description_)}'
+            )
 
-        if application_name_ is not None and not isinstance(application_name_, (bytes, str)):
-            raise TypeError(f'Expected application_name_ to be a str, received: {type(application_name_)}')
+        if application_name_ is not None and not isinstance(
+            application_name_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected application_name_ to be a str, received: {type(application_name_)}'
+            )
 
-        if application_user_ is not None and not isinstance(application_user_, (bytes, str)):
-            raise TypeError(f'Expected application_user_ to be a str, received: {type(application_user_)}')
+        if application_user_ is not None and not isinstance(
+            application_user_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected application_user_ to be a str, received: {type(application_user_)}'
+            )
 
-        if connected_users_ is not None and not isinstance(connected_users_, (bytes, str, list)):
-            raise TypeError(f'Expected connected_users_ to be a Sequence, received: {type(connected_users_)}')
+        if connected_users_ is not None and not isinstance(
+            connected_users_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected connected_users_ to be a Sequence, received: {type(connected_users_)}'
+            )
 
         if endpoints_ is not None and not isinstance(endpoints_, (bytes, str, list)):
-            raise TypeError(f'Expected endpoints_ to be a Sequence, received: {type(endpoints_)}')
+            raise TypeError(
+                f'Expected endpoints_ to be a Sequence, received: {type(endpoints_)}'
+            )
 
         if model_name_ is not None and not isinstance(model_name_, (bytes, str)):
-            raise TypeError(f'Expected model_name_ to be a str, received: {type(model_name_)}')
+            raise TypeError(
+                f'Expected model_name_ to be a str, received: {type(model_name_)}'
+            )
 
         if offer_name_ is not None and not isinstance(offer_name_, (bytes, str)):
-            raise TypeError(f'Expected offer_name_ to be a str, received: {type(offer_name_)}')
+            raise TypeError(
+                f'Expected offer_name_ to be a str, received: {type(offer_name_)}'
+            )
 
         if owner_name_ is not None and not isinstance(owner_name_, (bytes, str)):
-            raise TypeError(f'Expected owner_name_ to be a str, received: {type(owner_name_)}')
+            raise TypeError(
+                f'Expected owner_name_ to be a str, received: {type(owner_name_)}'
+            )
 
         self.allowed_users = allowed_users_
         self.application_description = application_description_
@@ -11347,7 +16309,9 @@ class OfferFilters(Type):
 
         # Validate arguments against known Juju API types.
         if filters_ is not None and not isinstance(filters_, (bytes, str, list)):
-            raise TypeError(f'Expected filters_ to be a Sequence, received: {type(filters_)}')
+            raise TypeError(
+                f'Expected filters_ to be a Sequence, received: {type(filters_)}'
+            )
 
         self.filters = filters_
         self.unknown_fields = unknown_fields
@@ -11367,10 +16331,14 @@ class OfferURLs(Type):
 
         # Validate arguments against known Juju API types.
         if bakery_version_ is not None and not isinstance(bakery_version_, int):
-            raise TypeError(f'Expected bakery_version_ to be a int, received: {type(bakery_version_)}')
+            raise TypeError(
+                f'Expected bakery_version_ to be a int, received: {type(bakery_version_)}'
+            )
 
         if offer_urls_ is not None and not isinstance(offer_urls_, (bytes, str, list)):
-            raise TypeError(f'Expected offer_urls_ to be a Sequence, received: {type(offer_urls_)}')
+            raise TypeError(
+                f'Expected offer_urls_ to be a Sequence, received: {type(offer_urls_)}'
+            )
 
         self.bakery_version = bakery_version_
         self.offer_urls = offer_urls_
@@ -11396,7 +16364,9 @@ class OfferUserDetails(Type):
             raise TypeError(f'Expected access_ to be a str, received: {type(access_)}')
 
         if display_name_ is not None and not isinstance(display_name_, (bytes, str)):
-            raise TypeError(f'Expected display_name_ to be a str, received: {type(display_name_)}')
+            raise TypeError(
+                f'Expected display_name_ to be a str, received: {type(display_name_)}'
+            )
 
         if user_ is not None and not isinstance(user_, (bytes, str)):
             raise TypeError(f'Expected user_ to be a str, received: {type(user_)}')
@@ -11408,10 +16378,36 @@ class OfferUserDetails(Type):
 
 
 class OperationQueryArgs(Type):
-    _toSchema = {'actions': 'actions', 'applications': 'applications', 'limit': 'limit', 'machines': 'machines', 'offset': 'offset', 'status': 'status', 'units': 'units'}
-    _toPy = {'actions': 'actions', 'applications': 'applications', 'limit': 'limit', 'machines': 'machines', 'offset': 'offset', 'status': 'status', 'units': 'units'}
+    _toSchema = {
+        'actions': 'actions',
+        'applications': 'applications',
+        'limit': 'limit',
+        'machines': 'machines',
+        'offset': 'offset',
+        'status': 'status',
+        'units': 'units',
+    }
+    _toPy = {
+        'actions': 'actions',
+        'applications': 'applications',
+        'limit': 'limit',
+        'machines': 'machines',
+        'offset': 'offset',
+        'status': 'status',
+        'units': 'units',
+    }
 
-    def __init__(self, actions=None, applications=None, limit=None, machines=None, offset=None, status=None, units=None, **unknown_fields):
+    def __init__(
+        self,
+        actions=None,
+        applications=None,
+        limit=None,
+        machines=None,
+        offset=None,
+        status=None,
+        units=None,
+        **unknown_fields,
+    ):
         """
         actions : typing.Sequence[str]
         applications : typing.Sequence[str]
@@ -11431,25 +16427,37 @@ class OperationQueryArgs(Type):
 
         # Validate arguments against known Juju API types.
         if actions_ is not None and not isinstance(actions_, (bytes, str, list)):
-            raise TypeError(f'Expected actions_ to be a Sequence, received: {type(actions_)}')
+            raise TypeError(
+                f'Expected actions_ to be a Sequence, received: {type(actions_)}'
+            )
 
-        if applications_ is not None and not isinstance(applications_, (bytes, str, list)):
-            raise TypeError(f'Expected applications_ to be a Sequence, received: {type(applications_)}')
+        if applications_ is not None and not isinstance(
+            applications_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected applications_ to be a Sequence, received: {type(applications_)}'
+            )
 
         if limit_ is not None and not isinstance(limit_, int):
             raise TypeError(f'Expected limit_ to be a int, received: {type(limit_)}')
 
         if machines_ is not None and not isinstance(machines_, (bytes, str, list)):
-            raise TypeError(f'Expected machines_ to be a Sequence, received: {type(machines_)}')
+            raise TypeError(
+                f'Expected machines_ to be a Sequence, received: {type(machines_)}'
+            )
 
         if offset_ is not None and not isinstance(offset_, int):
             raise TypeError(f'Expected offset_ to be a int, received: {type(offset_)}')
 
         if status_ is not None and not isinstance(status_, (bytes, str, list)):
-            raise TypeError(f'Expected status_ to be a Sequence, received: {type(status_)}')
+            raise TypeError(
+                f'Expected status_ to be a Sequence, received: {type(status_)}'
+            )
 
         if units_ is not None and not isinstance(units_, (bytes, str, list)):
-            raise TypeError(f'Expected units_ to be a Sequence, received: {type(units_)}')
+            raise TypeError(
+                f'Expected units_ to be a Sequence, received: {type(units_)}'
+            )
 
         self.actions = actions_
         self.applications = applications_
@@ -11462,10 +16470,42 @@ class OperationQueryArgs(Type):
 
 
 class OperationResult(Type):
-    _toSchema = {'actions': 'actions', 'completed': 'completed', 'enqueued': 'enqueued', 'error': 'error', 'fail': 'fail', 'operation': 'operation', 'started': 'started', 'status': 'status', 'summary': 'summary'}
-    _toPy = {'actions': 'actions', 'completed': 'completed', 'enqueued': 'enqueued', 'error': 'error', 'fail': 'fail', 'operation': 'operation', 'started': 'started', 'status': 'status', 'summary': 'summary'}
+    _toSchema = {
+        'actions': 'actions',
+        'completed': 'completed',
+        'enqueued': 'enqueued',
+        'error': 'error',
+        'fail': 'fail',
+        'operation': 'operation',
+        'started': 'started',
+        'status': 'status',
+        'summary': 'summary',
+    }
+    _toPy = {
+        'actions': 'actions',
+        'completed': 'completed',
+        'enqueued': 'enqueued',
+        'error': 'error',
+        'fail': 'fail',
+        'operation': 'operation',
+        'started': 'started',
+        'status': 'status',
+        'summary': 'summary',
+    }
 
-    def __init__(self, actions=None, completed=None, enqueued=None, error=None, fail=None, operation=None, started=None, status=None, summary=None, **unknown_fields):
+    def __init__(
+        self,
+        actions=None,
+        completed=None,
+        enqueued=None,
+        error=None,
+        fail=None,
+        operation=None,
+        started=None,
+        status=None,
+        summary=None,
+        **unknown_fields,
+    ):
         """
         actions : typing.Sequence[~ActionResult]
         completed : str
@@ -11489,13 +16529,19 @@ class OperationResult(Type):
 
         # Validate arguments against known Juju API types.
         if actions_ is not None and not isinstance(actions_, (bytes, str, list)):
-            raise TypeError(f'Expected actions_ to be a Sequence, received: {type(actions_)}')
+            raise TypeError(
+                f'Expected actions_ to be a Sequence, received: {type(actions_)}'
+            )
 
         if completed_ is not None and not isinstance(completed_, (bytes, str)):
-            raise TypeError(f'Expected completed_ to be a str, received: {type(completed_)}')
+            raise TypeError(
+                f'Expected completed_ to be a str, received: {type(completed_)}'
+            )
 
         if enqueued_ is not None and not isinstance(enqueued_, (bytes, str)):
-            raise TypeError(f'Expected enqueued_ to be a str, received: {type(enqueued_)}')
+            raise TypeError(
+                f'Expected enqueued_ to be a str, received: {type(enqueued_)}'
+            )
 
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
@@ -11504,16 +16550,22 @@ class OperationResult(Type):
             raise TypeError(f'Expected fail_ to be a str, received: {type(fail_)}')
 
         if operation_ is not None and not isinstance(operation_, (bytes, str)):
-            raise TypeError(f'Expected operation_ to be a str, received: {type(operation_)}')
+            raise TypeError(
+                f'Expected operation_ to be a str, received: {type(operation_)}'
+            )
 
         if started_ is not None and not isinstance(started_, (bytes, str)):
-            raise TypeError(f'Expected started_ to be a str, received: {type(started_)}')
+            raise TypeError(
+                f'Expected started_ to be a str, received: {type(started_)}'
+            )
 
         if status_ is not None and not isinstance(status_, (bytes, str)):
             raise TypeError(f'Expected status_ to be a str, received: {type(status_)}')
 
         if summary_ is not None and not isinstance(summary_, (bytes, str)):
-            raise TypeError(f'Expected summary_ to be a str, received: {type(summary_)}')
+            raise TypeError(
+                f'Expected summary_ to be a str, received: {type(summary_)}'
+            )
 
         self.actions = actions_
         self.completed = completed_
@@ -11541,10 +16593,14 @@ class OperationResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         if truncated_ is not None and not isinstance(truncated_, bool):
-            raise TypeError(f'Expected truncated_ to be a bool, received: {type(truncated_)}')
+            raise TypeError(
+                f'Expected truncated_ to be a bool, received: {type(truncated_)}'
+            )
 
         self.results = results_
         self.truncated = truncated_
@@ -11552,10 +16608,36 @@ class OperationResults(Type):
 
 
 class Payload(Type):
-    _toSchema = {'class_': 'class', 'id_': 'id', 'labels': 'labels', 'machine': 'machine', 'status': 'status', 'type_': 'type', 'unit': 'unit'}
-    _toPy = {'class': 'class_', 'id': 'id_', 'labels': 'labels', 'machine': 'machine', 'status': 'status', 'type': 'type_', 'unit': 'unit'}
+    _toSchema = {
+        'class_': 'class',
+        'id_': 'id',
+        'labels': 'labels',
+        'machine': 'machine',
+        'status': 'status',
+        'type_': 'type',
+        'unit': 'unit',
+    }
+    _toPy = {
+        'class': 'class_',
+        'id': 'id_',
+        'labels': 'labels',
+        'machine': 'machine',
+        'status': 'status',
+        'type': 'type_',
+        'unit': 'unit',
+    }
 
-    def __init__(self, class_=None, id_=None, labels=None, machine=None, status=None, type_=None, unit=None, **unknown_fields):
+    def __init__(
+        self,
+        class_=None,
+        id_=None,
+        labels=None,
+        machine=None,
+        status=None,
+        type_=None,
+        unit=None,
+        **unknown_fields,
+    ):
         """
         class_ : str
         id_ : str
@@ -11581,10 +16663,14 @@ class Payload(Type):
             raise TypeError(f'Expected id__ to be a str, received: {type(id__)}')
 
         if labels_ is not None and not isinstance(labels_, (bytes, str, list)):
-            raise TypeError(f'Expected labels_ to be a Sequence, received: {type(labels_)}')
+            raise TypeError(
+                f'Expected labels_ to be a Sequence, received: {type(labels_)}'
+            )
 
         if machine_ is not None and not isinstance(machine_, (bytes, str)):
-            raise TypeError(f'Expected machine_ to be a str, received: {type(machine_)}')
+            raise TypeError(
+                f'Expected machine_ to be a str, received: {type(machine_)}'
+            )
 
         if status_ is not None and not isinstance(status_, (bytes, str)):
             raise TypeError(f'Expected status_ to be a str, received: {type(status_)}')
@@ -11617,7 +16703,9 @@ class PayloadListArgs(Type):
 
         # Validate arguments against known Juju API types.
         if patterns_ is not None and not isinstance(patterns_, (bytes, str, list)):
-            raise TypeError(f'Expected patterns_ to be a Sequence, received: {type(patterns_)}')
+            raise TypeError(
+                f'Expected patterns_ to be a Sequence, received: {type(patterns_)}'
+            )
 
         self.patterns = patterns_
         self.unknown_fields = unknown_fields
@@ -11635,7 +16723,9 @@ class PayloadListResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -11657,7 +16747,9 @@ class PendingResourceUpload(Type):
 
         # Validate arguments against known Juju API types.
         if filename_ is not None and not isinstance(filename_, (bytes, str)):
-            raise TypeError(f'Expected filename_ to be a str, received: {type(filename_)}')
+            raise TypeError(
+                f'Expected filename_ to be a str, received: {type(filename_)}'
+            )
 
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
@@ -11685,7 +16777,9 @@ class Placement(Type):
 
         # Validate arguments against known Juju API types.
         if directive_ is not None and not isinstance(directive_, (bytes, str)):
-            raise TypeError(f'Expected directive_ to be a str, received: {type(directive_)}')
+            raise TypeError(
+                f'Expected directive_ to be a str, received: {type(directive_)}'
+            )
 
         if scope_ is not None and not isinstance(scope_, (bytes, str)):
             raise TypeError(f'Expected scope_ to be a str, received: {type(scope_)}')
@@ -11696,10 +16790,27 @@ class Placement(Type):
 
 
 class ProvisioningScriptParams(Type):
-    _toSchema = {'data_dir': 'data-dir', 'disable_package_commands': 'disable-package-commands', 'machine_id': 'machine-id', 'nonce': 'nonce'}
-    _toPy = {'data-dir': 'data_dir', 'disable-package-commands': 'disable_package_commands', 'machine-id': 'machine_id', 'nonce': 'nonce'}
+    _toSchema = {
+        'data_dir': 'data-dir',
+        'disable_package_commands': 'disable-package-commands',
+        'machine_id': 'machine-id',
+        'nonce': 'nonce',
+    }
+    _toPy = {
+        'data-dir': 'data_dir',
+        'disable-package-commands': 'disable_package_commands',
+        'machine-id': 'machine_id',
+        'nonce': 'nonce',
+    }
 
-    def __init__(self, data_dir=None, disable_package_commands=None, machine_id=None, nonce=None, **unknown_fields):
+    def __init__(
+        self,
+        data_dir=None,
+        disable_package_commands=None,
+        machine_id=None,
+        nonce=None,
+        **unknown_fields,
+    ):
         """
         data_dir : str
         disable_package_commands : bool
@@ -11713,13 +16824,21 @@ class ProvisioningScriptParams(Type):
 
         # Validate arguments against known Juju API types.
         if data_dir_ is not None and not isinstance(data_dir_, (bytes, str)):
-            raise TypeError(f'Expected data_dir_ to be a str, received: {type(data_dir_)}')
+            raise TypeError(
+                f'Expected data_dir_ to be a str, received: {type(data_dir_)}'
+            )
 
-        if disable_package_commands_ is not None and not isinstance(disable_package_commands_, bool):
-            raise TypeError(f'Expected disable_package_commands_ to be a bool, received: {type(disable_package_commands_)}')
+        if disable_package_commands_ is not None and not isinstance(
+            disable_package_commands_, bool
+        ):
+            raise TypeError(
+                f'Expected disable_package_commands_ to be a bool, received: {type(disable_package_commands_)}'
+            )
 
         if machine_id_ is not None and not isinstance(machine_id_, (bytes, str)):
-            raise TypeError(f'Expected machine_id_ to be a str, received: {type(machine_id_)}')
+            raise TypeError(
+                f'Expected machine_id_ to be a str, received: {type(machine_id_)}'
+            )
 
         if nonce_ is not None and not isinstance(nonce_, (bytes, str)):
             raise TypeError(f'Expected nonce_ to be a str, received: {type(nonce_)}')
@@ -11763,7 +16882,9 @@ class Proxy(Type):
 
         # Validate arguments against known Juju API types.
         if config_ is not None and not isinstance(config_, dict):
-            raise TypeError(f'Expected config_ to be a Mapping, received: {type(config_)}')
+            raise TypeError(
+                f'Expected config_ to be a Mapping, received: {type(config_)}'
+            )
 
         if type__ is not None and not isinstance(type__, (bytes, str)):
             raise TypeError(f'Expected type__ to be a str, received: {type(type__)}')
@@ -11785,7 +16906,9 @@ class QueryApplicationOffersResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -11805,10 +16928,14 @@ class RedirectInfoResult(Type):
 
         # Validate arguments against known Juju API types.
         if ca_cert_ is not None and not isinstance(ca_cert_, (bytes, str)):
-            raise TypeError(f'Expected ca_cert_ to be a str, received: {type(ca_cert_)}')
+            raise TypeError(
+                f'Expected ca_cert_ to be a str, received: {type(ca_cert_)}'
+            )
 
         if servers_ is not None and not isinstance(servers_, (bytes, str, list)):
-            raise TypeError(f'Expected servers_ to be a Sequence, received: {type(servers_)}')
+            raise TypeError(
+                f'Expected servers_ to be a Sequence, received: {type(servers_)}'
+            )
 
         self.ca_cert = ca_cert_
         self.servers = servers_
@@ -11829,7 +16956,9 @@ class RegionDefaults(Type):
 
         # Validate arguments against known Juju API types.
         if region_name_ is not None and not isinstance(region_name_, (bytes, str)):
-            raise TypeError(f'Expected region_name_ to be a str, received: {type(region_name_)}')
+            raise TypeError(
+                f'Expected region_name_ to be a str, received: {type(region_name_)}'
+            )
 
         self.region_name = region_name_
         self.value = value_
@@ -11850,10 +16979,14 @@ class RelationData(Type):
 
         # Validate arguments against known Juju API types.
         if inscope_ is not None and not isinstance(inscope_, bool):
-            raise TypeError(f'Expected inscope_ to be a bool, received: {type(inscope_)}')
+            raise TypeError(
+                f'Expected inscope_ to be a bool, received: {type(inscope_)}'
+            )
 
         if unitdata_ is not None and not isinstance(unitdata_, dict):
-            raise TypeError(f'Expected unitdata_ to be a Mapping, received: {type(unitdata_)}')
+            raise TypeError(
+                f'Expected unitdata_ to be a Mapping, received: {type(unitdata_)}'
+            )
 
         self.inscope = inscope_
         self.unitdata = unitdata_
@@ -11861,10 +16994,33 @@ class RelationData(Type):
 
 
 class RelationStatus(Type):
-    _toSchema = {'endpoints': 'endpoints', 'id_': 'id', 'interface': 'interface', 'key': 'key', 'scope': 'scope', 'status': 'status'}
-    _toPy = {'endpoints': 'endpoints', 'id': 'id_', 'interface': 'interface', 'key': 'key', 'scope': 'scope', 'status': 'status'}
+    _toSchema = {
+        'endpoints': 'endpoints',
+        'id_': 'id',
+        'interface': 'interface',
+        'key': 'key',
+        'scope': 'scope',
+        'status': 'status',
+    }
+    _toPy = {
+        'endpoints': 'endpoints',
+        'id': 'id_',
+        'interface': 'interface',
+        'key': 'key',
+        'scope': 'scope',
+        'status': 'status',
+    }
 
-    def __init__(self, endpoints=None, id_=None, interface=None, key=None, scope=None, status=None, **unknown_fields):
+    def __init__(
+        self,
+        endpoints=None,
+        id_=None,
+        interface=None,
+        key=None,
+        scope=None,
+        status=None,
+        **unknown_fields,
+    ):
         """
         endpoints : typing.Sequence[~EndpointStatus]
         id_ : int
@@ -11882,13 +17038,17 @@ class RelationStatus(Type):
 
         # Validate arguments against known Juju API types.
         if endpoints_ is not None and not isinstance(endpoints_, (bytes, str, list)):
-            raise TypeError(f'Expected endpoints_ to be a Sequence, received: {type(endpoints_)}')
+            raise TypeError(
+                f'Expected endpoints_ to be a Sequence, received: {type(endpoints_)}'
+            )
 
         if id__ is not None and not isinstance(id__, int):
             raise TypeError(f'Expected id__ to be a int, received: {type(id__)}')
 
         if interface_ is not None and not isinstance(interface_, (bytes, str)):
-            raise TypeError(f'Expected interface_ to be a str, received: {type(interface_)}')
+            raise TypeError(
+                f'Expected interface_ to be a str, received: {type(interface_)}'
+            )
 
         if key_ is not None and not isinstance(key_, (bytes, str)):
             raise TypeError(f'Expected key_ to be a str, received: {type(key_)}')
@@ -11897,7 +17057,9 @@ class RelationStatus(Type):
             raise TypeError(f'Expected scope_ to be a str, received: {type(scope_)}')
 
         if status_ is not None and not isinstance(status_, (dict, DetailedStatus)):
-            raise TypeError(f'Expected status_ to be a DetailedStatus, received: {type(status_)}')
+            raise TypeError(
+                f'Expected status_ to be a DetailedStatus, received: {type(status_)}'
+            )
 
         self.endpoints = endpoints_
         self.id_ = id__
@@ -11909,10 +17071,20 @@ class RelationStatus(Type):
 
 
 class RelationSuspendedArg(Type):
-    _toSchema = {'message': 'message', 'relation_id': 'relation-id', 'suspended': 'suspended'}
-    _toPy = {'message': 'message', 'relation-id': 'relation_id', 'suspended': 'suspended'}
+    _toSchema = {
+        'message': 'message',
+        'relation_id': 'relation-id',
+        'suspended': 'suspended',
+    }
+    _toPy = {
+        'message': 'message',
+        'relation-id': 'relation_id',
+        'suspended': 'suspended',
+    }
 
-    def __init__(self, message=None, relation_id=None, suspended=None, **unknown_fields):
+    def __init__(
+        self, message=None, relation_id=None, suspended=None, **unknown_fields
+    ):
         """
         message : str
         relation_id : int
@@ -11924,13 +17096,19 @@ class RelationSuspendedArg(Type):
 
         # Validate arguments against known Juju API types.
         if message_ is not None and not isinstance(message_, (bytes, str)):
-            raise TypeError(f'Expected message_ to be a str, received: {type(message_)}')
+            raise TypeError(
+                f'Expected message_ to be a str, received: {type(message_)}'
+            )
 
         if relation_id_ is not None and not isinstance(relation_id_, int):
-            raise TypeError(f'Expected relation_id_ to be a int, received: {type(relation_id_)}')
+            raise TypeError(
+                f'Expected relation_id_ to be a int, received: {type(relation_id_)}'
+            )
 
         if suspended_ is not None and not isinstance(suspended_, bool):
-            raise TypeError(f'Expected suspended_ to be a bool, received: {type(suspended_)}')
+            raise TypeError(
+                f'Expected suspended_ to be a bool, received: {type(suspended_)}'
+            )
 
         self.message = message_
         self.relation_id = relation_id_
@@ -11957,10 +17135,36 @@ class RelationSuspendedArgs(Type):
 
 
 class RemoteApplicationInfo(Type):
-    _toSchema = {'description': 'description', 'endpoints': 'endpoints', 'icon_url_path': 'icon-url-path', 'model_tag': 'model-tag', 'name': 'name', 'offer_url': 'offer-url', 'source_model_label': 'source-model-label'}
-    _toPy = {'description': 'description', 'endpoints': 'endpoints', 'icon-url-path': 'icon_url_path', 'model-tag': 'model_tag', 'name': 'name', 'offer-url': 'offer_url', 'source-model-label': 'source_model_label'}
+    _toSchema = {
+        'description': 'description',
+        'endpoints': 'endpoints',
+        'icon_url_path': 'icon-url-path',
+        'model_tag': 'model-tag',
+        'name': 'name',
+        'offer_url': 'offer-url',
+        'source_model_label': 'source-model-label',
+    }
+    _toPy = {
+        'description': 'description',
+        'endpoints': 'endpoints',
+        'icon-url-path': 'icon_url_path',
+        'model-tag': 'model_tag',
+        'name': 'name',
+        'offer-url': 'offer_url',
+        'source-model-label': 'source_model_label',
+    }
 
-    def __init__(self, description=None, endpoints=None, icon_url_path=None, model_tag=None, name=None, offer_url=None, source_model_label=None, **unknown_fields):
+    def __init__(
+        self,
+        description=None,
+        endpoints=None,
+        icon_url_path=None,
+        model_tag=None,
+        name=None,
+        offer_url=None,
+        source_model_label=None,
+        **unknown_fields,
+    ):
         """
         description : str
         endpoints : typing.Sequence[~RemoteEndpoint]
@@ -11980,25 +17184,39 @@ class RemoteApplicationInfo(Type):
 
         # Validate arguments against known Juju API types.
         if description_ is not None and not isinstance(description_, (bytes, str)):
-            raise TypeError(f'Expected description_ to be a str, received: {type(description_)}')
+            raise TypeError(
+                f'Expected description_ to be a str, received: {type(description_)}'
+            )
 
         if endpoints_ is not None and not isinstance(endpoints_, (bytes, str, list)):
-            raise TypeError(f'Expected endpoints_ to be a Sequence, received: {type(endpoints_)}')
+            raise TypeError(
+                f'Expected endpoints_ to be a Sequence, received: {type(endpoints_)}'
+            )
 
         if icon_url_path_ is not None and not isinstance(icon_url_path_, (bytes, str)):
-            raise TypeError(f'Expected icon_url_path_ to be a str, received: {type(icon_url_path_)}')
+            raise TypeError(
+                f'Expected icon_url_path_ to be a str, received: {type(icon_url_path_)}'
+            )
 
         if model_tag_ is not None and not isinstance(model_tag_, (bytes, str)):
-            raise TypeError(f'Expected model_tag_ to be a str, received: {type(model_tag_)}')
+            raise TypeError(
+                f'Expected model_tag_ to be a str, received: {type(model_tag_)}'
+            )
 
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
 
         if offer_url_ is not None and not isinstance(offer_url_, (bytes, str)):
-            raise TypeError(f'Expected offer_url_ to be a str, received: {type(offer_url_)}')
+            raise TypeError(
+                f'Expected offer_url_ to be a str, received: {type(offer_url_)}'
+            )
 
-        if source_model_label_ is not None and not isinstance(source_model_label_, (bytes, str)):
-            raise TypeError(f'Expected source_model_label_ to be a str, received: {type(source_model_label_)}')
+        if source_model_label_ is not None and not isinstance(
+            source_model_label_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected source_model_label_ to be a str, received: {type(source_model_label_)}'
+            )
 
         self.description = description_
         self.endpoints = endpoints_
@@ -12026,8 +17244,12 @@ class RemoteApplicationInfoResult(Type):
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
-        if result_ is not None and not isinstance(result_, (dict, RemoteApplicationInfo)):
-            raise TypeError(f'Expected result_ to be a RemoteApplicationInfo, received: {type(result_)}')
+        if result_ is not None and not isinstance(
+            result_, (dict, RemoteApplicationInfo)
+        ):
+            raise TypeError(
+                f'Expected result_ to be a RemoteApplicationInfo, received: {type(result_)}'
+            )
 
         self.error = error_
         self.result = result_
@@ -12046,17 +17268,45 @@ class RemoteApplicationInfoResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
 
 
 class RemoteApplicationStatus(Type):
-    _toSchema = {'endpoints': 'endpoints', 'err': 'err', 'life': 'life', 'offer_name': 'offer-name', 'offer_url': 'offer-url', 'relations': 'relations', 'status': 'status'}
-    _toPy = {'endpoints': 'endpoints', 'err': 'err', 'life': 'life', 'offer-name': 'offer_name', 'offer-url': 'offer_url', 'relations': 'relations', 'status': 'status'}
+    _toSchema = {
+        'endpoints': 'endpoints',
+        'err': 'err',
+        'life': 'life',
+        'offer_name': 'offer-name',
+        'offer_url': 'offer-url',
+        'relations': 'relations',
+        'status': 'status',
+    }
+    _toPy = {
+        'endpoints': 'endpoints',
+        'err': 'err',
+        'life': 'life',
+        'offer-name': 'offer_name',
+        'offer-url': 'offer_url',
+        'relations': 'relations',
+        'status': 'status',
+    }
 
-    def __init__(self, endpoints=None, err=None, life=None, offer_name=None, offer_url=None, relations=None, status=None, **unknown_fields):
+    def __init__(
+        self,
+        endpoints=None,
+        err=None,
+        life=None,
+        offer_name=None,
+        offer_url=None,
+        relations=None,
+        status=None,
+        **unknown_fields,
+    ):
         """
         endpoints : typing.Sequence[~RemoteEndpoint]
         err : Error
@@ -12076,7 +17326,9 @@ class RemoteApplicationStatus(Type):
 
         # Validate arguments against known Juju API types.
         if endpoints_ is not None and not isinstance(endpoints_, (bytes, str, list)):
-            raise TypeError(f'Expected endpoints_ to be a Sequence, received: {type(endpoints_)}')
+            raise TypeError(
+                f'Expected endpoints_ to be a Sequence, received: {type(endpoints_)}'
+            )
 
         if err_ is not None and not isinstance(err_, (dict, Error)):
             raise TypeError(f'Expected err_ to be a Error, received: {type(err_)}')
@@ -12085,16 +17337,24 @@ class RemoteApplicationStatus(Type):
             raise TypeError(f'Expected life_ to be a str, received: {type(life_)}')
 
         if offer_name_ is not None and not isinstance(offer_name_, (bytes, str)):
-            raise TypeError(f'Expected offer_name_ to be a str, received: {type(offer_name_)}')
+            raise TypeError(
+                f'Expected offer_name_ to be a str, received: {type(offer_name_)}'
+            )
 
         if offer_url_ is not None and not isinstance(offer_url_, (bytes, str)):
-            raise TypeError(f'Expected offer_url_ to be a str, received: {type(offer_url_)}')
+            raise TypeError(
+                f'Expected offer_url_ to be a str, received: {type(offer_url_)}'
+            )
 
         if relations_ is not None and not isinstance(relations_, dict):
-            raise TypeError(f'Expected relations_ to be a Mapping, received: {type(relations_)}')
+            raise TypeError(
+                f'Expected relations_ to be a Mapping, received: {type(relations_)}'
+            )
 
         if status_ is not None and not isinstance(status_, (dict, DetailedStatus)):
-            raise TypeError(f'Expected status_ to be a DetailedStatus, received: {type(status_)}')
+            raise TypeError(
+                f'Expected status_ to be a DetailedStatus, received: {type(status_)}'
+            )
 
         self.endpoints = endpoints_
         self.err = err_
@@ -12107,10 +17367,17 @@ class RemoteApplicationStatus(Type):
 
 
 class RemoteEndpoint(Type):
-    _toSchema = {'interface': 'interface', 'limit': 'limit', 'name': 'name', 'role': 'role'}
+    _toSchema = {
+        'interface': 'interface',
+        'limit': 'limit',
+        'name': 'name',
+        'role': 'role',
+    }
     _toPy = {'interface': 'interface', 'limit': 'limit', 'name': 'name', 'role': 'role'}
 
-    def __init__(self, interface=None, limit=None, name=None, role=None, **unknown_fields):
+    def __init__(
+        self, interface=None, limit=None, name=None, role=None, **unknown_fields
+    ):
         """
         interface : str
         limit : int
@@ -12124,7 +17391,9 @@ class RemoteEndpoint(Type):
 
         # Validate arguments against known Juju API types.
         if interface_ is not None and not isinstance(interface_, (bytes, str)):
-            raise TypeError(f'Expected interface_ to be a str, received: {type(interface_)}')
+            raise TypeError(
+                f'Expected interface_ to be a str, received: {type(interface_)}'
+            )
 
         if limit_ is not None and not isinstance(limit_, int):
             raise TypeError(f'Expected limit_ to be a int, received: {type(limit_)}')
@@ -12143,10 +17412,30 @@ class RemoteEndpoint(Type):
 
 
 class RemoteSpace(Type):
-    _toSchema = {'cloud_type': 'cloud-type', 'name': 'name', 'provider_attributes': 'provider-attributes', 'provider_id': 'provider-id', 'subnets': 'subnets'}
-    _toPy = {'cloud-type': 'cloud_type', 'name': 'name', 'provider-attributes': 'provider_attributes', 'provider-id': 'provider_id', 'subnets': 'subnets'}
+    _toSchema = {
+        'cloud_type': 'cloud-type',
+        'name': 'name',
+        'provider_attributes': 'provider-attributes',
+        'provider_id': 'provider-id',
+        'subnets': 'subnets',
+    }
+    _toPy = {
+        'cloud-type': 'cloud_type',
+        'name': 'name',
+        'provider-attributes': 'provider_attributes',
+        'provider-id': 'provider_id',
+        'subnets': 'subnets',
+    }
 
-    def __init__(self, cloud_type=None, name=None, provider_attributes=None, provider_id=None, subnets=None, **unknown_fields):
+    def __init__(
+        self,
+        cloud_type=None,
+        name=None,
+        provider_attributes=None,
+        provider_id=None,
+        subnets=None,
+        **unknown_fields,
+    ):
         """
         cloud_type : str
         name : str
@@ -12162,19 +17451,29 @@ class RemoteSpace(Type):
 
         # Validate arguments against known Juju API types.
         if cloud_type_ is not None and not isinstance(cloud_type_, (bytes, str)):
-            raise TypeError(f'Expected cloud_type_ to be a str, received: {type(cloud_type_)}')
+            raise TypeError(
+                f'Expected cloud_type_ to be a str, received: {type(cloud_type_)}'
+            )
 
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
 
-        if provider_attributes_ is not None and not isinstance(provider_attributes_, dict):
-            raise TypeError(f'Expected provider_attributes_ to be a Mapping, received: {type(provider_attributes_)}')
+        if provider_attributes_ is not None and not isinstance(
+            provider_attributes_, dict
+        ):
+            raise TypeError(
+                f'Expected provider_attributes_ to be a Mapping, received: {type(provider_attributes_)}'
+            )
 
         if provider_id_ is not None and not isinstance(provider_id_, (bytes, str)):
-            raise TypeError(f'Expected provider_id_ to be a str, received: {type(provider_id_)}')
+            raise TypeError(
+                f'Expected provider_id_ to be a str, received: {type(provider_id_)}'
+            )
 
         if subnets_ is not None and not isinstance(subnets_, (bytes, str, list)):
-            raise TypeError(f'Expected subnets_ to be a Sequence, received: {type(subnets_)}')
+            raise TypeError(
+                f'Expected subnets_ to be a Sequence, received: {type(subnets_)}'
+            )
 
         self.cloud_type = cloud_type_
         self.name = name_
@@ -12260,7 +17559,9 @@ class RemoveSpaceParam(Type):
 
         # Validate arguments against known Juju API types.
         if dry_run_ is not None and not isinstance(dry_run_, bool):
-            raise TypeError(f'Expected dry_run_ to be a bool, received: {type(dry_run_)}')
+            raise TypeError(
+                f'Expected dry_run_ to be a bool, received: {type(dry_run_)}'
+            )
 
         if force_ is not None and not isinstance(force_, bool):
             raise TypeError(f'Expected force_ to be a bool, received: {type(force_)}')
@@ -12285,18 +17586,39 @@ class RemoveSpaceParams(Type):
         space_param_ = [RemoveSpaceParam.from_json(o) for o in space_param or []]
 
         # Validate arguments against known Juju API types.
-        if space_param_ is not None and not isinstance(space_param_, (bytes, str, list)):
-            raise TypeError(f'Expected space_param_ to be a Sequence, received: {type(space_param_)}')
+        if space_param_ is not None and not isinstance(
+            space_param_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected space_param_ to be a Sequence, received: {type(space_param_)}'
+            )
 
         self.space_param = space_param_
         self.unknown_fields = unknown_fields
 
 
 class RemoveSpaceResult(Type):
-    _toSchema = {'bindings': 'bindings', 'constraints': 'constraints', 'controller_settings': 'controller-settings', 'error': 'error'}
-    _toPy = {'bindings': 'bindings', 'constraints': 'constraints', 'controller-settings': 'controller_settings', 'error': 'error'}
+    _toSchema = {
+        'bindings': 'bindings',
+        'constraints': 'constraints',
+        'controller_settings': 'controller-settings',
+        'error': 'error',
+    }
+    _toPy = {
+        'bindings': 'bindings',
+        'constraints': 'constraints',
+        'controller-settings': 'controller_settings',
+        'error': 'error',
+    }
 
-    def __init__(self, bindings=None, constraints=None, controller_settings=None, error=None, **unknown_fields):
+    def __init__(
+        self,
+        bindings=None,
+        constraints=None,
+        controller_settings=None,
+        error=None,
+        **unknown_fields,
+    ):
         """
         bindings : typing.Sequence[~Entity]
         constraints : typing.Sequence[~Entity]
@@ -12310,13 +17632,23 @@ class RemoveSpaceResult(Type):
 
         # Validate arguments against known Juju API types.
         if bindings_ is not None and not isinstance(bindings_, (bytes, str, list)):
-            raise TypeError(f'Expected bindings_ to be a Sequence, received: {type(bindings_)}')
+            raise TypeError(
+                f'Expected bindings_ to be a Sequence, received: {type(bindings_)}'
+            )
 
-        if constraints_ is not None and not isinstance(constraints_, (bytes, str, list)):
-            raise TypeError(f'Expected constraints_ to be a Sequence, received: {type(constraints_)}')
+        if constraints_ is not None and not isinstance(
+            constraints_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected constraints_ to be a Sequence, received: {type(constraints_)}'
+            )
 
-        if controller_settings_ is not None and not isinstance(controller_settings_, (bytes, str, list)):
-            raise TypeError(f'Expected controller_settings_ to be a Sequence, received: {type(controller_settings_)}')
+        if controller_settings_ is not None and not isinstance(
+            controller_settings_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected controller_settings_ to be a Sequence, received: {type(controller_settings_)}'
+            )
 
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
@@ -12340,7 +17672,9 @@ class RemoveSpaceResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -12358,17 +17692,39 @@ class RemoveStorage(Type):
 
         # Validate arguments against known Juju API types.
         if storage_ is not None and not isinstance(storage_, (bytes, str, list)):
-            raise TypeError(f'Expected storage_ to be a Sequence, received: {type(storage_)}')
+            raise TypeError(
+                f'Expected storage_ to be a Sequence, received: {type(storage_)}'
+            )
 
         self.storage = storage_
         self.unknown_fields = unknown_fields
 
 
 class RemoveStorageInstance(Type):
-    _toSchema = {'destroy_attachments': 'destroy-attachments', 'destroy_storage': 'destroy-storage', 'force': 'force', 'max_wait': 'max-wait', 'tag': 'tag'}
-    _toPy = {'destroy-attachments': 'destroy_attachments', 'destroy-storage': 'destroy_storage', 'force': 'force', 'max-wait': 'max_wait', 'tag': 'tag'}
+    _toSchema = {
+        'destroy_attachments': 'destroy-attachments',
+        'destroy_storage': 'destroy-storage',
+        'force': 'force',
+        'max_wait': 'max-wait',
+        'tag': 'tag',
+    }
+    _toPy = {
+        'destroy-attachments': 'destroy_attachments',
+        'destroy-storage': 'destroy_storage',
+        'force': 'force',
+        'max-wait': 'max_wait',
+        'tag': 'tag',
+    }
 
-    def __init__(self, destroy_attachments=None, destroy_storage=None, force=None, max_wait=None, tag=None, **unknown_fields):
+    def __init__(
+        self,
+        destroy_attachments=None,
+        destroy_storage=None,
+        force=None,
+        max_wait=None,
+        tag=None,
+        **unknown_fields,
+    ):
         """
         destroy_attachments : bool
         destroy_storage : bool
@@ -12383,17 +17739,25 @@ class RemoveStorageInstance(Type):
         tag_ = tag
 
         # Validate arguments against known Juju API types.
-        if destroy_attachments_ is not None and not isinstance(destroy_attachments_, bool):
-            raise TypeError(f'Expected destroy_attachments_ to be a bool, received: {type(destroy_attachments_)}')
+        if destroy_attachments_ is not None and not isinstance(
+            destroy_attachments_, bool
+        ):
+            raise TypeError(
+                f'Expected destroy_attachments_ to be a bool, received: {type(destroy_attachments_)}'
+            )
 
         if destroy_storage_ is not None and not isinstance(destroy_storage_, bool):
-            raise TypeError(f'Expected destroy_storage_ to be a bool, received: {type(destroy_storage_)}')
+            raise TypeError(
+                f'Expected destroy_storage_ to be a bool, received: {type(destroy_storage_)}'
+            )
 
         if force_ is not None and not isinstance(force_, bool):
             raise TypeError(f'Expected force_ to be a bool, received: {type(force_)}')
 
         if max_wait_ is not None and not isinstance(max_wait_, int):
-            raise TypeError(f'Expected max_wait_ to be a int, received: {type(max_wait_)}')
+            raise TypeError(
+                f'Expected max_wait_ to be a int, received: {type(max_wait_)}'
+            )
 
         if tag_ is not None and not isinstance(tag_, (bytes, str)):
             raise TypeError(f'Expected tag_ to be a str, received: {type(tag_)}')
@@ -12419,11 +17783,17 @@ class RenameSpaceParams(Type):
         to_space_tag_ = to_space_tag
 
         # Validate arguments against known Juju API types.
-        if from_space_tag_ is not None and not isinstance(from_space_tag_, (bytes, str)):
-            raise TypeError(f'Expected from_space_tag_ to be a str, received: {type(from_space_tag_)}')
+        if from_space_tag_ is not None and not isinstance(
+            from_space_tag_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected from_space_tag_ to be a str, received: {type(from_space_tag_)}'
+            )
 
         if to_space_tag_ is not None and not isinstance(to_space_tag_, (bytes, str)):
-            raise TypeError(f'Expected to_space_tag_ to be a str, received: {type(to_space_tag_)}')
+            raise TypeError(
+                f'Expected to_space_tag_ to be a str, received: {type(to_space_tag_)}'
+            )
 
         self.from_space_tag = from_space_tag_
         self.to_space_tag = to_space_tag_
@@ -12442,17 +17812,29 @@ class RenameSpacesParams(Type):
 
         # Validate arguments against known Juju API types.
         if changes_ is not None and not isinstance(changes_, (bytes, str, list)):
-            raise TypeError(f'Expected changes_ to be a Sequence, received: {type(changes_)}')
+            raise TypeError(
+                f'Expected changes_ to be a Sequence, received: {type(changes_)}'
+            )
 
         self.changes = changes_
         self.unknown_fields = unknown_fields
 
 
 class ResolveCharmWithChannel(Type):
-    _toSchema = {'charm_origin': 'charm-origin', 'reference': 'reference', 'switch_charm': 'switch-charm'}
-    _toPy = {'charm-origin': 'charm_origin', 'reference': 'reference', 'switch-charm': 'switch_charm'}
+    _toSchema = {
+        'charm_origin': 'charm-origin',
+        'reference': 'reference',
+        'switch_charm': 'switch-charm',
+    }
+    _toPy = {
+        'charm-origin': 'charm_origin',
+        'reference': 'reference',
+        'switch-charm': 'switch_charm',
+    }
 
-    def __init__(self, charm_origin=None, reference=None, switch_charm=None, **unknown_fields):
+    def __init__(
+        self, charm_origin=None, reference=None, switch_charm=None, **unknown_fields
+    ):
         """
         charm_origin : CharmOrigin
         reference : str
@@ -12463,14 +17845,22 @@ class ResolveCharmWithChannel(Type):
         switch_charm_ = switch_charm
 
         # Validate arguments against known Juju API types.
-        if charm_origin_ is not None and not isinstance(charm_origin_, (dict, CharmOrigin)):
-            raise TypeError(f'Expected charm_origin_ to be a CharmOrigin, received: {type(charm_origin_)}')
+        if charm_origin_ is not None and not isinstance(
+            charm_origin_, (dict, CharmOrigin)
+        ):
+            raise TypeError(
+                f'Expected charm_origin_ to be a CharmOrigin, received: {type(charm_origin_)}'
+            )
 
         if reference_ is not None and not isinstance(reference_, (bytes, str)):
-            raise TypeError(f'Expected reference_ to be a str, received: {type(reference_)}')
+            raise TypeError(
+                f'Expected reference_ to be a str, received: {type(reference_)}'
+            )
 
         if switch_charm_ is not None and not isinstance(switch_charm_, bool):
-            raise TypeError(f'Expected switch_charm_ to be a bool, received: {type(switch_charm_)}')
+            raise TypeError(
+                f'Expected switch_charm_ to be a bool, received: {type(switch_charm_)}'
+            )
 
         self.charm_origin = charm_origin_
         self.reference = reference_
@@ -12479,10 +17869,27 @@ class ResolveCharmWithChannel(Type):
 
 
 class ResolveCharmWithChannelResult(Type):
-    _toSchema = {'charm_origin': 'charm-origin', 'error': 'error', 'supported_bases': 'supported-bases', 'url': 'url'}
-    _toPy = {'charm-origin': 'charm_origin', 'error': 'error', 'supported-bases': 'supported_bases', 'url': 'url'}
+    _toSchema = {
+        'charm_origin': 'charm-origin',
+        'error': 'error',
+        'supported_bases': 'supported-bases',
+        'url': 'url',
+    }
+    _toPy = {
+        'charm-origin': 'charm_origin',
+        'error': 'error',
+        'supported-bases': 'supported_bases',
+        'url': 'url',
+    }
 
-    def __init__(self, charm_origin=None, error=None, supported_bases=None, url=None, **unknown_fields):
+    def __init__(
+        self,
+        charm_origin=None,
+        error=None,
+        supported_bases=None,
+        url=None,
+        **unknown_fields,
+    ):
         """
         charm_origin : CharmOrigin
         error : Error
@@ -12495,14 +17902,22 @@ class ResolveCharmWithChannelResult(Type):
         url_ = url
 
         # Validate arguments against known Juju API types.
-        if charm_origin_ is not None and not isinstance(charm_origin_, (dict, CharmOrigin)):
-            raise TypeError(f'Expected charm_origin_ to be a CharmOrigin, received: {type(charm_origin_)}')
+        if charm_origin_ is not None and not isinstance(
+            charm_origin_, (dict, CharmOrigin)
+        ):
+            raise TypeError(
+                f'Expected charm_origin_ to be a CharmOrigin, received: {type(charm_origin_)}'
+            )
 
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
-        if supported_bases_ is not None and not isinstance(supported_bases_, (bytes, str, list)):
-            raise TypeError(f'Expected supported_bases_ to be a Sequence, received: {type(supported_bases_)}')
+        if supported_bases_ is not None and not isinstance(
+            supported_bases_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected supported_bases_ to be a Sequence, received: {type(supported_bases_)}'
+            )
 
         if url_ is not None and not isinstance(url_, (bytes, str)):
             raise TypeError(f'Expected url_ to be a str, received: {type(url_)}')
@@ -12526,7 +17941,9 @@ class ResolveCharmWithChannelResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -12546,10 +17963,14 @@ class ResolveCharmsWithChannel(Type):
 
         # Validate arguments against known Juju API types.
         if macaroon_ is not None and not isinstance(macaroon_, (dict, Macaroon)):
-            raise TypeError(f'Expected macaroon_ to be a Macaroon, received: {type(macaroon_)}')
+            raise TypeError(
+                f'Expected macaroon_ to be a Macaroon, received: {type(macaroon_)}'
+            )
 
         if resolve_ is not None and not isinstance(resolve_, (bytes, str, list)):
-            raise TypeError(f'Expected resolve_ to be a Sequence, received: {type(resolve_)}')
+            raise TypeError(
+                f'Expected resolve_ to be a Sequence, received: {type(resolve_)}'
+            )
 
         self.macaroon = macaroon_
         self.resolve = resolve_
@@ -12557,10 +17978,57 @@ class ResolveCharmsWithChannel(Type):
 
 
 class Resource(Type):
-    _toSchema = {'application': 'application', 'charmresource': 'CharmResource', 'description': 'description', 'fingerprint': 'fingerprint', 'id_': 'id', 'name': 'name', 'origin': 'origin', 'path': 'path', 'pending_id': 'pending-id', 'revision': 'revision', 'size': 'size', 'timestamp': 'timestamp', 'type_': 'type', 'username': 'username'}
-    _toPy = {'CharmResource': 'charmresource', 'application': 'application', 'description': 'description', 'fingerprint': 'fingerprint', 'id': 'id_', 'name': 'name', 'origin': 'origin', 'path': 'path', 'pending-id': 'pending_id', 'revision': 'revision', 'size': 'size', 'timestamp': 'timestamp', 'type': 'type_', 'username': 'username'}
+    _toSchema = {
+        'application': 'application',
+        'charmresource': 'CharmResource',
+        'description': 'description',
+        'fingerprint': 'fingerprint',
+        'id_': 'id',
+        'name': 'name',
+        'origin': 'origin',
+        'path': 'path',
+        'pending_id': 'pending-id',
+        'revision': 'revision',
+        'size': 'size',
+        'timestamp': 'timestamp',
+        'type_': 'type',
+        'username': 'username',
+    }
+    _toPy = {
+        'CharmResource': 'charmresource',
+        'application': 'application',
+        'description': 'description',
+        'fingerprint': 'fingerprint',
+        'id': 'id_',
+        'name': 'name',
+        'origin': 'origin',
+        'path': 'path',
+        'pending-id': 'pending_id',
+        'revision': 'revision',
+        'size': 'size',
+        'timestamp': 'timestamp',
+        'type': 'type_',
+        'username': 'username',
+    }
 
-    def __init__(self, charmresource=None, application=None, description=None, fingerprint=None, id_=None, name=None, origin=None, path=None, pending_id=None, revision=None, size=None, timestamp=None, type_=None, username=None, **unknown_fields):
+    def __init__(
+        self,
+        charmresource=None,
+        application=None,
+        description=None,
+        fingerprint=None,
+        id_=None,
+        name=None,
+        origin=None,
+        path=None,
+        pending_id=None,
+        revision=None,
+        size=None,
+        timestamp=None,
+        type_=None,
+        username=None,
+        **unknown_fields,
+    ):
         """
         charmresource : CharmResource
         application : str
@@ -12577,7 +18045,9 @@ class Resource(Type):
         type_ : str
         username : str
         """
-        charmresource_ = CharmResource.from_json(charmresource) if charmresource else None
+        charmresource_ = (
+            CharmResource.from_json(charmresource) if charmresource else None
+        )
         application_ = application
         description_ = description
         fingerprint_ = fingerprint
@@ -12593,17 +18063,29 @@ class Resource(Type):
         username_ = username
 
         # Validate arguments against known Juju API types.
-        if charmresource_ is not None and not isinstance(charmresource_, (dict, CharmResource)):
-            raise TypeError(f'Expected charmresource_ to be a CharmResource, received: {type(charmresource_)}')
+        if charmresource_ is not None and not isinstance(
+            charmresource_, (dict, CharmResource)
+        ):
+            raise TypeError(
+                f'Expected charmresource_ to be a CharmResource, received: {type(charmresource_)}'
+            )
 
         if application_ is not None and not isinstance(application_, (bytes, str)):
-            raise TypeError(f'Expected application_ to be a str, received: {type(application_)}')
+            raise TypeError(
+                f'Expected application_ to be a str, received: {type(application_)}'
+            )
 
         if description_ is not None and not isinstance(description_, (bytes, str)):
-            raise TypeError(f'Expected description_ to be a str, received: {type(description_)}')
+            raise TypeError(
+                f'Expected description_ to be a str, received: {type(description_)}'
+            )
 
-        if fingerprint_ is not None and not isinstance(fingerprint_, (bytes, str, list)):
-            raise TypeError(f'Expected fingerprint_ to be a Sequence, received: {type(fingerprint_)}')
+        if fingerprint_ is not None and not isinstance(
+            fingerprint_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected fingerprint_ to be a Sequence, received: {type(fingerprint_)}'
+            )
 
         if id__ is not None and not isinstance(id__, (bytes, str)):
             raise TypeError(f'Expected id__ to be a str, received: {type(id__)}')
@@ -12618,22 +18100,30 @@ class Resource(Type):
             raise TypeError(f'Expected path_ to be a str, received: {type(path_)}')
 
         if pending_id_ is not None and not isinstance(pending_id_, (bytes, str)):
-            raise TypeError(f'Expected pending_id_ to be a str, received: {type(pending_id_)}')
+            raise TypeError(
+                f'Expected pending_id_ to be a str, received: {type(pending_id_)}'
+            )
 
         if revision_ is not None and not isinstance(revision_, int):
-            raise TypeError(f'Expected revision_ to be a int, received: {type(revision_)}')
+            raise TypeError(
+                f'Expected revision_ to be a int, received: {type(revision_)}'
+            )
 
         if size_ is not None and not isinstance(size_, int):
             raise TypeError(f'Expected size_ to be a int, received: {type(size_)}')
 
         if timestamp_ is not None and not isinstance(timestamp_, (bytes, str)):
-            raise TypeError(f'Expected timestamp_ to be a str, received: {type(timestamp_)}')
+            raise TypeError(
+                f'Expected timestamp_ to be a str, received: {type(timestamp_)}'
+            )
 
         if type__ is not None and not isinstance(type__, (bytes, str)):
             raise TypeError(f'Expected type__ to be a str, received: {type(type__)}')
 
         if username_ is not None and not isinstance(username_, (bytes, str)):
-            raise TypeError(f'Expected username_ to be a str, received: {type(username_)}')
+            raise TypeError(
+                f'Expected username_ to be a str, received: {type(username_)}'
+            )
 
         self.charmresource = charmresource_
         self.application = application_
@@ -12653,10 +18143,30 @@ class Resource(Type):
 
 
 class ResourcesResult(Type):
-    _toSchema = {'charm_store_resources': 'charm-store-resources', 'error': 'error', 'errorresult': 'ErrorResult', 'resources': 'resources', 'unit_resources': 'unit-resources'}
-    _toPy = {'ErrorResult': 'errorresult', 'charm-store-resources': 'charm_store_resources', 'error': 'error', 'resources': 'resources', 'unit-resources': 'unit_resources'}
+    _toSchema = {
+        'charm_store_resources': 'charm-store-resources',
+        'error': 'error',
+        'errorresult': 'ErrorResult',
+        'resources': 'resources',
+        'unit_resources': 'unit-resources',
+    }
+    _toPy = {
+        'ErrorResult': 'errorresult',
+        'charm-store-resources': 'charm_store_resources',
+        'error': 'error',
+        'resources': 'resources',
+        'unit-resources': 'unit_resources',
+    }
 
-    def __init__(self, errorresult=None, charm_store_resources=None, error=None, resources=None, unit_resources=None, **unknown_fields):
+    def __init__(
+        self,
+        errorresult=None,
+        charm_store_resources=None,
+        error=None,
+        resources=None,
+        unit_resources=None,
+        **unknown_fields,
+    ):
         """
         errorresult : ErrorResult
         charm_store_resources : typing.Sequence[~CharmResource]
@@ -12665,26 +18175,42 @@ class ResourcesResult(Type):
         unit_resources : typing.Sequence[~UnitResources]
         """
         errorresult_ = ErrorResult.from_json(errorresult) if errorresult else None
-        charm_store_resources_ = [CharmResource.from_json(o) for o in charm_store_resources or []]
+        charm_store_resources_ = [
+            CharmResource.from_json(o) for o in charm_store_resources or []
+        ]
         error_ = Error.from_json(error) if error else None
         resources_ = [Resource.from_json(o) for o in resources or []]
         unit_resources_ = [UnitResources.from_json(o) for o in unit_resources or []]
 
         # Validate arguments against known Juju API types.
-        if errorresult_ is not None and not isinstance(errorresult_, (dict, ErrorResult)):
-            raise TypeError(f'Expected errorresult_ to be a ErrorResult, received: {type(errorresult_)}')
+        if errorresult_ is not None and not isinstance(
+            errorresult_, (dict, ErrorResult)
+        ):
+            raise TypeError(
+                f'Expected errorresult_ to be a ErrorResult, received: {type(errorresult_)}'
+            )
 
-        if charm_store_resources_ is not None and not isinstance(charm_store_resources_, (bytes, str, list)):
-            raise TypeError(f'Expected charm_store_resources_ to be a Sequence, received: {type(charm_store_resources_)}')
+        if charm_store_resources_ is not None and not isinstance(
+            charm_store_resources_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected charm_store_resources_ to be a Sequence, received: {type(charm_store_resources_)}'
+            )
 
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if resources_ is not None and not isinstance(resources_, (bytes, str, list)):
-            raise TypeError(f'Expected resources_ to be a Sequence, received: {type(resources_)}')
+            raise TypeError(
+                f'Expected resources_ to be a Sequence, received: {type(resources_)}'
+            )
 
-        if unit_resources_ is not None and not isinstance(unit_resources_, (bytes, str, list)):
-            raise TypeError(f'Expected unit_resources_ to be a Sequence, received: {type(unit_resources_)}')
+        if unit_resources_ is not None and not isinstance(
+            unit_resources_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected unit_resources_ to be a Sequence, received: {type(unit_resources_)}'
+            )
 
         self.errorresult = errorresult_
         self.charm_store_resources = charm_store_resources_
@@ -12706,7 +18232,9 @@ class ResourcesResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -12729,7 +18257,9 @@ class RetryProvisioningArgs(Type):
             raise TypeError(f'Expected all__ to be a bool, received: {type(all__)}')
 
         if machines_ is not None and not isinstance(machines_, (bytes, str, list)):
-            raise TypeError(f'Expected machines_ to be a Sequence, received: {type(machines_)}')
+            raise TypeError(
+                f'Expected machines_ to be a Sequence, received: {type(machines_)}'
+            )
 
         self.all_ = all__
         self.machines = machines_
@@ -12771,18 +18301,51 @@ class RevokeCredentialArgs(Type):
         credentials_ = [RevokeCredentialArg.from_json(o) for o in credentials or []]
 
         # Validate arguments against known Juju API types.
-        if credentials_ is not None and not isinstance(credentials_, (bytes, str, list)):
-            raise TypeError(f'Expected credentials_ to be a Sequence, received: {type(credentials_)}')
+        if credentials_ is not None and not isinstance(
+            credentials_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected credentials_ to be a Sequence, received: {type(credentials_)}'
+            )
 
         self.credentials = credentials_
         self.unknown_fields = unknown_fields
 
 
 class RunParams(Type):
-    _toSchema = {'applications': 'applications', 'commands': 'commands', 'execution_group': 'execution-group', 'machines': 'machines', 'parallel': 'parallel', 'timeout': 'timeout', 'units': 'units', 'workload_context': 'workload-context'}
-    _toPy = {'applications': 'applications', 'commands': 'commands', 'execution-group': 'execution_group', 'machines': 'machines', 'parallel': 'parallel', 'timeout': 'timeout', 'units': 'units', 'workload-context': 'workload_context'}
+    _toSchema = {
+        'applications': 'applications',
+        'commands': 'commands',
+        'execution_group': 'execution-group',
+        'machines': 'machines',
+        'parallel': 'parallel',
+        'timeout': 'timeout',
+        'units': 'units',
+        'workload_context': 'workload-context',
+    }
+    _toPy = {
+        'applications': 'applications',
+        'commands': 'commands',
+        'execution-group': 'execution_group',
+        'machines': 'machines',
+        'parallel': 'parallel',
+        'timeout': 'timeout',
+        'units': 'units',
+        'workload-context': 'workload_context',
+    }
 
-    def __init__(self, applications=None, commands=None, execution_group=None, machines=None, parallel=None, timeout=None, units=None, workload_context=None, **unknown_fields):
+    def __init__(
+        self,
+        applications=None,
+        commands=None,
+        execution_group=None,
+        machines=None,
+        parallel=None,
+        timeout=None,
+        units=None,
+        workload_context=None,
+        **unknown_fields,
+    ):
         """
         applications : typing.Sequence[str]
         commands : str
@@ -12803,29 +18366,49 @@ class RunParams(Type):
         workload_context_ = workload_context
 
         # Validate arguments against known Juju API types.
-        if applications_ is not None and not isinstance(applications_, (bytes, str, list)):
-            raise TypeError(f'Expected applications_ to be a Sequence, received: {type(applications_)}')
+        if applications_ is not None and not isinstance(
+            applications_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected applications_ to be a Sequence, received: {type(applications_)}'
+            )
 
         if commands_ is not None and not isinstance(commands_, (bytes, str)):
-            raise TypeError(f'Expected commands_ to be a str, received: {type(commands_)}')
+            raise TypeError(
+                f'Expected commands_ to be a str, received: {type(commands_)}'
+            )
 
-        if execution_group_ is not None and not isinstance(execution_group_, (bytes, str)):
-            raise TypeError(f'Expected execution_group_ to be a str, received: {type(execution_group_)}')
+        if execution_group_ is not None and not isinstance(
+            execution_group_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected execution_group_ to be a str, received: {type(execution_group_)}'
+            )
 
         if machines_ is not None and not isinstance(machines_, (bytes, str, list)):
-            raise TypeError(f'Expected machines_ to be a Sequence, received: {type(machines_)}')
+            raise TypeError(
+                f'Expected machines_ to be a Sequence, received: {type(machines_)}'
+            )
 
         if parallel_ is not None and not isinstance(parallel_, bool):
-            raise TypeError(f'Expected parallel_ to be a bool, received: {type(parallel_)}')
+            raise TypeError(
+                f'Expected parallel_ to be a bool, received: {type(parallel_)}'
+            )
 
         if timeout_ is not None and not isinstance(timeout_, int):
-            raise TypeError(f'Expected timeout_ to be a int, received: {type(timeout_)}')
+            raise TypeError(
+                f'Expected timeout_ to be a int, received: {type(timeout_)}'
+            )
 
         if units_ is not None and not isinstance(units_, (bytes, str, list)):
-            raise TypeError(f'Expected units_ to be a Sequence, received: {type(units_)}')
+            raise TypeError(
+                f'Expected units_ to be a Sequence, received: {type(units_)}'
+            )
 
         if workload_context_ is not None and not isinstance(workload_context_, bool):
-            raise TypeError(f'Expected workload_context_ to be a bool, received: {type(workload_context_)}')
+            raise TypeError(
+                f'Expected workload_context_ to be a bool, received: {type(workload_context_)}'
+            )
 
         self.applications = applications_
         self.commands = commands_
@@ -12852,7 +18435,9 @@ class SSHAddressResult(Type):
 
         # Validate arguments against known Juju API types.
         if address_ is not None and not isinstance(address_, (bytes, str)):
-            raise TypeError(f'Expected address_ to be a str, received: {type(address_)}')
+            raise TypeError(
+                f'Expected address_ to be a str, received: {type(address_)}'
+            )
 
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
@@ -12874,7 +18459,9 @@ class SSHAddressResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -12894,7 +18481,9 @@ class SSHAddressesResult(Type):
 
         # Validate arguments against known Juju API types.
         if addresses_ is not None and not isinstance(addresses_, (bytes, str, list)):
-            raise TypeError(f'Expected addresses_ to be a Sequence, received: {type(addresses_)}')
+            raise TypeError(
+                f'Expected addresses_ to be a Sequence, received: {type(addresses_)}'
+            )
 
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
@@ -12916,7 +18505,9 @@ class SSHAddressesResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -12934,7 +18525,9 @@ class SSHProxyResult(Type):
 
         # Validate arguments against known Juju API types.
         if use_proxy_ is not None and not isinstance(use_proxy_, bool):
-            raise TypeError(f'Expected use_proxy_ to be a bool, received: {type(use_proxy_)}')
+            raise TypeError(
+                f'Expected use_proxy_ to be a bool, received: {type(use_proxy_)}'
+            )
 
         self.use_proxy = use_proxy_
         self.unknown_fields = unknown_fields
@@ -12956,8 +18549,12 @@ class SSHPublicKeysResult(Type):
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
-        if public_keys_ is not None and not isinstance(public_keys_, (bytes, str, list)):
-            raise TypeError(f'Expected public_keys_ to be a Sequence, received: {type(public_keys_)}')
+        if public_keys_ is not None and not isinstance(
+            public_keys_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected public_keys_ to be a Sequence, received: {type(public_keys_)}'
+            )
 
         self.error = error_
         self.public_keys = public_keys_
@@ -12976,7 +18573,9 @@ class SSHPublicKeysResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -12994,17 +18593,36 @@ class ScaleApplicationInfo(Type):
 
         # Validate arguments against known Juju API types.
         if num_units_ is not None and not isinstance(num_units_, int):
-            raise TypeError(f'Expected num_units_ to be a int, received: {type(num_units_)}')
+            raise TypeError(
+                f'Expected num_units_ to be a int, received: {type(num_units_)}'
+            )
 
         self.num_units = num_units_
         self.unknown_fields = unknown_fields
 
 
 class ScaleApplicationParams(Type):
-    _toSchema = {'application_tag': 'application-tag', 'force': 'force', 'scale': 'scale', 'scale_change': 'scale-change'}
-    _toPy = {'application-tag': 'application_tag', 'force': 'force', 'scale': 'scale', 'scale-change': 'scale_change'}
+    _toSchema = {
+        'application_tag': 'application-tag',
+        'force': 'force',
+        'scale': 'scale',
+        'scale_change': 'scale-change',
+    }
+    _toPy = {
+        'application-tag': 'application_tag',
+        'force': 'force',
+        'scale': 'scale',
+        'scale-change': 'scale_change',
+    }
 
-    def __init__(self, application_tag=None, force=None, scale=None, scale_change=None, **unknown_fields):
+    def __init__(
+        self,
+        application_tag=None,
+        force=None,
+        scale=None,
+        scale_change=None,
+        **unknown_fields,
+    ):
         """
         application_tag : str
         force : bool
@@ -13017,8 +18635,12 @@ class ScaleApplicationParams(Type):
         scale_change_ = scale_change
 
         # Validate arguments against known Juju API types.
-        if application_tag_ is not None and not isinstance(application_tag_, (bytes, str)):
-            raise TypeError(f'Expected application_tag_ to be a str, received: {type(application_tag_)}')
+        if application_tag_ is not None and not isinstance(
+            application_tag_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected application_tag_ to be a str, received: {type(application_tag_)}'
+            )
 
         if force_ is not None and not isinstance(force_, bool):
             raise TypeError(f'Expected force_ to be a bool, received: {type(force_)}')
@@ -13027,7 +18649,9 @@ class ScaleApplicationParams(Type):
             raise TypeError(f'Expected scale_ to be a int, received: {type(scale_)}')
 
         if scale_change_ is not None and not isinstance(scale_change_, int):
-            raise TypeError(f'Expected scale_change_ to be a int, received: {type(scale_change_)}')
+            raise TypeError(
+                f'Expected scale_change_ to be a int, received: {type(scale_change_)}'
+            )
 
         self.application_tag = application_tag_
         self.force = force_
@@ -13053,7 +18677,9 @@ class ScaleApplicationResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if info_ is not None and not isinstance(info_, (dict, ScaleApplicationInfo)):
-            raise TypeError(f'Expected info_ to be a ScaleApplicationInfo, received: {type(info_)}')
+            raise TypeError(
+                f'Expected info_ to be a ScaleApplicationInfo, received: {type(info_)}'
+            )
 
         self.error = error_
         self.info = info_
@@ -13072,7 +18698,9 @@ class ScaleApplicationResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -13086,21 +18714,44 @@ class ScaleApplicationsParams(Type):
         """
         applications : typing.Sequence[~ScaleApplicationParams]
         """
-        applications_ = [ScaleApplicationParams.from_json(o) for o in applications or []]
+        applications_ = [
+            ScaleApplicationParams.from_json(o) for o in applications or []
+        ]
 
         # Validate arguments against known Juju API types.
-        if applications_ is not None and not isinstance(applications_, (bytes, str, list)):
-            raise TypeError(f'Expected applications_ to be a Sequence, received: {type(applications_)}')
+        if applications_ is not None and not isinstance(
+            applications_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected applications_ to be a Sequence, received: {type(applications_)}'
+            )
 
         self.applications = applications_
         self.unknown_fields = unknown_fields
 
 
 class SecretBackend(Type):
-    _toSchema = {'backend_type': 'backend-type', 'config': 'config', 'name': 'name', 'token_rotate_interval': 'token-rotate-interval'}
-    _toPy = {'backend-type': 'backend_type', 'config': 'config', 'name': 'name', 'token-rotate-interval': 'token_rotate_interval'}
+    _toSchema = {
+        'backend_type': 'backend-type',
+        'config': 'config',
+        'name': 'name',
+        'token_rotate_interval': 'token-rotate-interval',
+    }
+    _toPy = {
+        'backend-type': 'backend_type',
+        'config': 'config',
+        'name': 'name',
+        'token-rotate-interval': 'token_rotate_interval',
+    }
 
-    def __init__(self, backend_type=None, config=None, name=None, token_rotate_interval=None, **unknown_fields):
+    def __init__(
+        self,
+        backend_type=None,
+        config=None,
+        name=None,
+        token_rotate_interval=None,
+        **unknown_fields,
+    ):
         """
         backend_type : str
         config : typing.Mapping[str, typing.Any]
@@ -13114,16 +18765,24 @@ class SecretBackend(Type):
 
         # Validate arguments against known Juju API types.
         if backend_type_ is not None and not isinstance(backend_type_, (bytes, str)):
-            raise TypeError(f'Expected backend_type_ to be a str, received: {type(backend_type_)}')
+            raise TypeError(
+                f'Expected backend_type_ to be a str, received: {type(backend_type_)}'
+            )
 
         if config_ is not None and not isinstance(config_, dict):
-            raise TypeError(f'Expected config_ to be a Mapping, received: {type(config_)}')
+            raise TypeError(
+                f'Expected config_ to be a Mapping, received: {type(config_)}'
+            )
 
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
 
-        if token_rotate_interval_ is not None and not isinstance(token_rotate_interval_, int):
-            raise TypeError(f'Expected token_rotate_interval_ to be a int, received: {type(token_rotate_interval_)}')
+        if token_rotate_interval_ is not None and not isinstance(
+            token_rotate_interval_, int
+        ):
+            raise TypeError(
+                f'Expected token_rotate_interval_ to be a int, received: {type(token_rotate_interval_)}'
+            )
 
         self.backend_type = backend_type_
         self.config = config_
@@ -13133,10 +18792,33 @@ class SecretBackend(Type):
 
 
 class SecretBackendResult(Type):
-    _toSchema = {'error': 'error', 'id_': 'id', 'message': 'message', 'num_secrets': 'num-secrets', 'result': 'result', 'status': 'status'}
-    _toPy = {'error': 'error', 'id': 'id_', 'message': 'message', 'num-secrets': 'num_secrets', 'result': 'result', 'status': 'status'}
+    _toSchema = {
+        'error': 'error',
+        'id_': 'id',
+        'message': 'message',
+        'num_secrets': 'num-secrets',
+        'result': 'result',
+        'status': 'status',
+    }
+    _toPy = {
+        'error': 'error',
+        'id': 'id_',
+        'message': 'message',
+        'num-secrets': 'num_secrets',
+        'result': 'result',
+        'status': 'status',
+    }
 
-    def __init__(self, error=None, id_=None, message=None, num_secrets=None, result=None, status=None, **unknown_fields):
+    def __init__(
+        self,
+        error=None,
+        id_=None,
+        message=None,
+        num_secrets=None,
+        result=None,
+        status=None,
+        **unknown_fields,
+    ):
         """
         error : Error
         id_ : str
@@ -13160,13 +18842,19 @@ class SecretBackendResult(Type):
             raise TypeError(f'Expected id__ to be a str, received: {type(id__)}')
 
         if message_ is not None and not isinstance(message_, (bytes, str)):
-            raise TypeError(f'Expected message_ to be a str, received: {type(message_)}')
+            raise TypeError(
+                f'Expected message_ to be a str, received: {type(message_)}'
+            )
 
         if num_secrets_ is not None and not isinstance(num_secrets_, int):
-            raise TypeError(f'Expected num_secrets_ to be a int, received: {type(num_secrets_)}')
+            raise TypeError(
+                f'Expected num_secrets_ to be a int, received: {type(num_secrets_)}'
+            )
 
         if result_ is not None and not isinstance(result_, (dict, SecretBackend)):
-            raise TypeError(f'Expected result_ to be a SecretBackend, received: {type(result_)}')
+            raise TypeError(
+                f'Expected result_ to be a SecretBackend, received: {type(result_)}'
+            )
 
         if status_ is not None and not isinstance(status_, (bytes, str)):
             raise TypeError(f'Expected status_ to be a str, received: {type(status_)}')
@@ -13196,8 +18884,12 @@ class SecretContentParams(Type):
         if data_ is not None and not isinstance(data_, dict):
             raise TypeError(f'Expected data_ to be a Mapping, received: {type(data_)}')
 
-        if value_ref_ is not None and not isinstance(value_ref_, (dict, SecretValueRef)):
-            raise TypeError(f'Expected value_ref_ to be a SecretValueRef, received: {type(value_ref_)}')
+        if value_ref_ is not None and not isinstance(
+            value_ref_, (dict, SecretValueRef)
+        ):
+            raise TypeError(
+                f'Expected value_ref_ to be a SecretValueRef, received: {type(value_ref_)}'
+            )
 
         self.data = data_
         self.value_ref = value_ref_
@@ -13205,10 +18897,33 @@ class SecretContentParams(Type):
 
 
 class SecretRevision(Type):
-    _toSchema = {'backend_name': 'backend-name', 'create_time': 'create-time', 'expire_time': 'expire-time', 'revision': 'revision', 'update_time': 'update-time', 'value_ref': 'value-ref'}
-    _toPy = {'backend-name': 'backend_name', 'create-time': 'create_time', 'expire-time': 'expire_time', 'revision': 'revision', 'update-time': 'update_time', 'value-ref': 'value_ref'}
+    _toSchema = {
+        'backend_name': 'backend-name',
+        'create_time': 'create-time',
+        'expire_time': 'expire-time',
+        'revision': 'revision',
+        'update_time': 'update-time',
+        'value_ref': 'value-ref',
+    }
+    _toPy = {
+        'backend-name': 'backend_name',
+        'create-time': 'create_time',
+        'expire-time': 'expire_time',
+        'revision': 'revision',
+        'update-time': 'update_time',
+        'value-ref': 'value_ref',
+    }
 
-    def __init__(self, backend_name=None, create_time=None, expire_time=None, revision=None, update_time=None, value_ref=None, **unknown_fields):
+    def __init__(
+        self,
+        backend_name=None,
+        create_time=None,
+        expire_time=None,
+        revision=None,
+        update_time=None,
+        value_ref=None,
+        **unknown_fields,
+    ):
         """
         backend_name : str
         create_time : str
@@ -13226,22 +18941,36 @@ class SecretRevision(Type):
 
         # Validate arguments against known Juju API types.
         if backend_name_ is not None and not isinstance(backend_name_, (bytes, str)):
-            raise TypeError(f'Expected backend_name_ to be a str, received: {type(backend_name_)}')
+            raise TypeError(
+                f'Expected backend_name_ to be a str, received: {type(backend_name_)}'
+            )
 
         if create_time_ is not None and not isinstance(create_time_, (bytes, str)):
-            raise TypeError(f'Expected create_time_ to be a str, received: {type(create_time_)}')
+            raise TypeError(
+                f'Expected create_time_ to be a str, received: {type(create_time_)}'
+            )
 
         if expire_time_ is not None and not isinstance(expire_time_, (bytes, str)):
-            raise TypeError(f'Expected expire_time_ to be a str, received: {type(expire_time_)}')
+            raise TypeError(
+                f'Expected expire_time_ to be a str, received: {type(expire_time_)}'
+            )
 
         if revision_ is not None and not isinstance(revision_, int):
-            raise TypeError(f'Expected revision_ to be a int, received: {type(revision_)}')
+            raise TypeError(
+                f'Expected revision_ to be a int, received: {type(revision_)}'
+            )
 
         if update_time_ is not None and not isinstance(update_time_, (bytes, str)):
-            raise TypeError(f'Expected update_time_ to be a str, received: {type(update_time_)}')
+            raise TypeError(
+                f'Expected update_time_ to be a str, received: {type(update_time_)}'
+            )
 
-        if value_ref_ is not None and not isinstance(value_ref_, (dict, SecretValueRef)):
-            raise TypeError(f'Expected value_ref_ to be a SecretValueRef, received: {type(value_ref_)}')
+        if value_ref_ is not None and not isinstance(
+            value_ref_, (dict, SecretValueRef)
+        ):
+            raise TypeError(
+                f'Expected value_ref_ to be a SecretValueRef, received: {type(value_ref_)}'
+            )
 
         self.backend_name = backend_name_
         self.create_time = create_time_
@@ -13266,10 +18995,14 @@ class SecretValueRef(Type):
 
         # Validate arguments against known Juju API types.
         if backend_id_ is not None and not isinstance(backend_id_, (bytes, str)):
-            raise TypeError(f'Expected backend_id_ to be a str, received: {type(backend_id_)}')
+            raise TypeError(
+                f'Expected backend_id_ to be a str, received: {type(backend_id_)}'
+            )
 
         if revision_id_ is not None and not isinstance(revision_id_, (bytes, str)):
-            raise TypeError(f'Expected revision_id_ to be a str, received: {type(revision_id_)}')
+            raise TypeError(
+                f'Expected revision_id_ to be a str, received: {type(revision_id_)}'
+            )
 
         self.backend_id = backend_id_
         self.revision_id = revision_id_
@@ -13301,10 +19034,22 @@ class SecretValueResult(Type):
 
 
 class SecretsFilter(Type):
-    _toSchema = {'label': 'label', 'owner_tag': 'owner-tag', 'revision': 'revision', 'uri': 'uri'}
-    _toPy = {'label': 'label', 'owner-tag': 'owner_tag', 'revision': 'revision', 'uri': 'uri'}
+    _toSchema = {
+        'label': 'label',
+        'owner_tag': 'owner-tag',
+        'revision': 'revision',
+        'uri': 'uri',
+    }
+    _toPy = {
+        'label': 'label',
+        'owner-tag': 'owner_tag',
+        'revision': 'revision',
+        'uri': 'uri',
+    }
 
-    def __init__(self, label=None, owner_tag=None, revision=None, uri=None, **unknown_fields):
+    def __init__(
+        self, label=None, owner_tag=None, revision=None, uri=None, **unknown_fields
+    ):
         """
         label : str
         owner_tag : str
@@ -13321,10 +19066,14 @@ class SecretsFilter(Type):
             raise TypeError(f'Expected label_ to be a str, received: {type(label_)}')
 
         if owner_tag_ is not None and not isinstance(owner_tag_, (bytes, str)):
-            raise TypeError(f'Expected owner_tag_ to be a str, received: {type(owner_tag_)}')
+            raise TypeError(
+                f'Expected owner_tag_ to be a str, received: {type(owner_tag_)}'
+            )
 
         if revision_ is not None and not isinstance(revision_, int):
-            raise TypeError(f'Expected revision_ to be a int, received: {type(revision_)}')
+            raise TypeError(
+                f'Expected revision_ to be a int, received: {type(revision_)}'
+            )
 
         if uri_ is not None and not isinstance(uri_, (bytes, str)):
             raise TypeError(f'Expected uri_ to be a str, received: {type(uri_)}')
@@ -13350,10 +19099,14 @@ class SetConstraints(Type):
 
         # Validate arguments against known Juju API types.
         if application_ is not None and not isinstance(application_, (bytes, str)):
-            raise TypeError(f'Expected application_ to be a str, received: {type(application_)}')
+            raise TypeError(
+                f'Expected application_ to be a str, received: {type(application_)}'
+            )
 
         if constraints_ is not None and not isinstance(constraints_, (dict, Value)):
-            raise TypeError(f'Expected constraints_ to be a Value, received: {type(constraints_)}')
+            raise TypeError(
+                f'Expected constraints_ to be a Value, received: {type(constraints_)}'
+            )
 
         self.application = application_
         self.constraints = constraints_
@@ -13372,17 +19125,36 @@ class SetModelDefaults(Type):
 
         # Validate arguments against known Juju API types.
         if config_ is not None and not isinstance(config_, (bytes, str, list)):
-            raise TypeError(f'Expected config_ to be a Sequence, received: {type(config_)}')
+            raise TypeError(
+                f'Expected config_ to be a Sequence, received: {type(config_)}'
+            )
 
         self.config = config_
         self.unknown_fields = unknown_fields
 
 
 class ShowSpaceResult(Type):
-    _toSchema = {'applications': 'applications', 'error': 'error', 'machine_count': 'machine-count', 'space': 'space'}
-    _toPy = {'applications': 'applications', 'error': 'error', 'machine-count': 'machine_count', 'space': 'space'}
+    _toSchema = {
+        'applications': 'applications',
+        'error': 'error',
+        'machine_count': 'machine-count',
+        'space': 'space',
+    }
+    _toPy = {
+        'applications': 'applications',
+        'error': 'error',
+        'machine-count': 'machine_count',
+        'space': 'space',
+    }
 
-    def __init__(self, applications=None, error=None, machine_count=None, space=None, **unknown_fields):
+    def __init__(
+        self,
+        applications=None,
+        error=None,
+        machine_count=None,
+        space=None,
+        **unknown_fields,
+    ):
         """
         applications : typing.Sequence[str]
         error : Error
@@ -13395,14 +19167,20 @@ class ShowSpaceResult(Type):
         space_ = Space.from_json(space) if space else None
 
         # Validate arguments against known Juju API types.
-        if applications_ is not None and not isinstance(applications_, (bytes, str, list)):
-            raise TypeError(f'Expected applications_ to be a Sequence, received: {type(applications_)}')
+        if applications_ is not None and not isinstance(
+            applications_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected applications_ to be a Sequence, received: {type(applications_)}'
+            )
 
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if machine_count_ is not None and not isinstance(machine_count_, int):
-            raise TypeError(f'Expected machine_count_ to be a int, received: {type(machine_count_)}')
+            raise TypeError(
+                f'Expected machine_count_ to be a int, received: {type(machine_count_)}'
+            )
 
         if space_ is not None and not isinstance(space_, (dict, Space)):
             raise TypeError(f'Expected space_ to be a Space, received: {type(space_)}')
@@ -13426,7 +19204,9 @@ class ShowSpaceResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -13459,7 +19239,9 @@ class Space(Type):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
 
         if subnets_ is not None and not isinstance(subnets_, (bytes, str, list)):
-            raise TypeError(f'Expected subnets_ to be a Sequence, received: {type(subnets_)}')
+            raise TypeError(
+                f'Expected subnets_ to be a Sequence, received: {type(subnets_)}'
+            )
 
         self.error = error_
         self.id_ = id__
@@ -13472,7 +19254,9 @@ class StatusHistoryFilter(Type):
     _toSchema = {'date': 'date', 'delta': 'delta', 'exclude': 'exclude', 'size': 'size'}
     _toPy = {'date': 'date', 'delta': 'delta', 'exclude': 'exclude', 'size': 'size'}
 
-    def __init__(self, date=None, delta=None, exclude=None, size=None, **unknown_fields):
+    def __init__(
+        self, date=None, delta=None, exclude=None, size=None, **unknown_fields
+    ):
         """
         date : str
         delta : int
@@ -13492,7 +19276,9 @@ class StatusHistoryFilter(Type):
             raise TypeError(f'Expected delta_ to be a int, received: {type(delta_)}')
 
         if exclude_ is not None and not isinstance(exclude_, (bytes, str, list)):
-            raise TypeError(f'Expected exclude_ to be a Sequence, received: {type(exclude_)}')
+            raise TypeError(
+                f'Expected exclude_ to be a Sequence, received: {type(exclude_)}'
+            )
 
         if size_ is not None and not isinstance(size_, int):
             raise TypeError(f'Expected size_ to be a int, received: {type(size_)}')
@@ -13505,10 +19291,22 @@ class StatusHistoryFilter(Type):
 
 
 class StatusHistoryRequest(Type):
-    _toSchema = {'filter_': 'filter', 'historykind': 'historyKind', 'size': 'size', 'tag': 'tag'}
-    _toPy = {'filter': 'filter_', 'historyKind': 'historykind', 'size': 'size', 'tag': 'tag'}
+    _toSchema = {
+        'filter_': 'filter',
+        'historykind': 'historyKind',
+        'size': 'size',
+        'tag': 'tag',
+    }
+    _toPy = {
+        'filter': 'filter_',
+        'historyKind': 'historykind',
+        'size': 'size',
+        'tag': 'tag',
+    }
 
-    def __init__(self, filter_=None, historykind=None, size=None, tag=None, **unknown_fields):
+    def __init__(
+        self, filter_=None, historykind=None, size=None, tag=None, **unknown_fields
+    ):
         """
         filter_ : StatusHistoryFilter
         historykind : str
@@ -13521,11 +19319,17 @@ class StatusHistoryRequest(Type):
         tag_ = tag
 
         # Validate arguments against known Juju API types.
-        if filter__ is not None and not isinstance(filter__, (dict, StatusHistoryFilter)):
-            raise TypeError(f'Expected filter__ to be a StatusHistoryFilter, received: {type(filter__)}')
+        if filter__ is not None and not isinstance(
+            filter__, (dict, StatusHistoryFilter)
+        ):
+            raise TypeError(
+                f'Expected filter__ to be a StatusHistoryFilter, received: {type(filter__)}'
+            )
 
         if historykind_ is not None and not isinstance(historykind_, (bytes, str)):
-            raise TypeError(f'Expected historykind_ to be a str, received: {type(historykind_)}')
+            raise TypeError(
+                f'Expected historykind_ to be a str, received: {type(historykind_)}'
+            )
 
         if size_ is not None and not isinstance(size_, int):
             raise TypeError(f'Expected size_ to be a int, received: {type(size_)}')
@@ -13552,7 +19356,9 @@ class StatusHistoryRequests(Type):
 
         # Validate arguments against known Juju API types.
         if requests_ is not None and not isinstance(requests_, (bytes, str, list)):
-            raise TypeError(f'Expected requests_ to be a Sequence, received: {type(requests_)}')
+            raise TypeError(
+                f'Expected requests_ to be a Sequence, received: {type(requests_)}'
+            )
 
         self.requests = requests_
         self.unknown_fields = unknown_fields
@@ -13575,7 +19381,9 @@ class StatusHistoryResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if history_ is not None and not isinstance(history_, (dict, History)):
-            raise TypeError(f'Expected history_ to be a History, received: {type(history_)}')
+            raise TypeError(
+                f'Expected history_ to be a History, received: {type(history_)}'
+            )
 
         self.error = error_
         self.history = history_
@@ -13594,7 +19402,9 @@ class StatusHistoryResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -13614,10 +19424,14 @@ class StatusParams(Type):
 
         # Validate arguments against known Juju API types.
         if include_storage_ is not None and not isinstance(include_storage_, bool):
-            raise TypeError(f'Expected include_storage_ to be a bool, received: {type(include_storage_)}')
+            raise TypeError(
+                f'Expected include_storage_ to be a bool, received: {type(include_storage_)}'
+            )
 
         if patterns_ is not None and not isinstance(patterns_, (bytes, str, list)):
-            raise TypeError(f'Expected patterns_ to be a Sequence, received: {type(patterns_)}')
+            raise TypeError(
+                f'Expected patterns_ to be a Sequence, received: {type(patterns_)}'
+            )
 
         self.include_storage = include_storage_
         self.patterns = patterns_
@@ -13642,8 +19456,12 @@ class StorageAddParams(Type):
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
 
-        if storage_ is not None and not isinstance(storage_, (dict, StorageConstraints)):
-            raise TypeError(f'Expected storage_ to be a StorageConstraints, received: {type(storage_)}')
+        if storage_ is not None and not isinstance(
+            storage_, (dict, StorageConstraints)
+        ):
+            raise TypeError(
+                f'Expected storage_ to be a StorageConstraints, received: {type(storage_)}'
+            )
 
         if unit_ is not None and not isinstance(unit_, (bytes, str)):
             raise TypeError(f'Expected unit_ to be a str, received: {type(unit_)}')
@@ -13655,10 +19473,30 @@ class StorageAddParams(Type):
 
 
 class StorageAttachmentDetails(Type):
-    _toSchema = {'life': 'life', 'location': 'location', 'machine_tag': 'machine-tag', 'storage_tag': 'storage-tag', 'unit_tag': 'unit-tag'}
-    _toPy = {'life': 'life', 'location': 'location', 'machine-tag': 'machine_tag', 'storage-tag': 'storage_tag', 'unit-tag': 'unit_tag'}
+    _toSchema = {
+        'life': 'life',
+        'location': 'location',
+        'machine_tag': 'machine-tag',
+        'storage_tag': 'storage-tag',
+        'unit_tag': 'unit-tag',
+    }
+    _toPy = {
+        'life': 'life',
+        'location': 'location',
+        'machine-tag': 'machine_tag',
+        'storage-tag': 'storage_tag',
+        'unit-tag': 'unit_tag',
+    }
 
-    def __init__(self, life=None, location=None, machine_tag=None, storage_tag=None, unit_tag=None, **unknown_fields):
+    def __init__(
+        self,
+        life=None,
+        location=None,
+        machine_tag=None,
+        storage_tag=None,
+        unit_tag=None,
+        **unknown_fields,
+    ):
         """
         life : str
         location : str
@@ -13677,16 +19515,24 @@ class StorageAttachmentDetails(Type):
             raise TypeError(f'Expected life_ to be a str, received: {type(life_)}')
 
         if location_ is not None and not isinstance(location_, (bytes, str)):
-            raise TypeError(f'Expected location_ to be a str, received: {type(location_)}')
+            raise TypeError(
+                f'Expected location_ to be a str, received: {type(location_)}'
+            )
 
         if machine_tag_ is not None and not isinstance(machine_tag_, (bytes, str)):
-            raise TypeError(f'Expected machine_tag_ to be a str, received: {type(machine_tag_)}')
+            raise TypeError(
+                f'Expected machine_tag_ to be a str, received: {type(machine_tag_)}'
+            )
 
         if storage_tag_ is not None and not isinstance(storage_tag_, (bytes, str)):
-            raise TypeError(f'Expected storage_tag_ to be a str, received: {type(storage_tag_)}')
+            raise TypeError(
+                f'Expected storage_tag_ to be a str, received: {type(storage_tag_)}'
+            )
 
         if unit_tag_ is not None and not isinstance(unit_tag_, (bytes, str)):
-            raise TypeError(f'Expected unit_tag_ to be a str, received: {type(unit_tag_)}')
+            raise TypeError(
+                f'Expected unit_tag_ to be a str, received: {type(unit_tag_)}'
+            )
 
         self.life = life_
         self.location = location_
@@ -13710,10 +19556,14 @@ class StorageAttachmentId(Type):
 
         # Validate arguments against known Juju API types.
         if storage_tag_ is not None and not isinstance(storage_tag_, (bytes, str)):
-            raise TypeError(f'Expected storage_tag_ to be a str, received: {type(storage_tag_)}')
+            raise TypeError(
+                f'Expected storage_tag_ to be a str, received: {type(storage_tag_)}'
+            )
 
         if unit_tag_ is not None and not isinstance(unit_tag_, (bytes, str)):
-            raise TypeError(f'Expected unit_tag_ to be a str, received: {type(unit_tag_)}')
+            raise TypeError(
+                f'Expected unit_tag_ to be a str, received: {type(unit_tag_)}'
+            )
 
         self.storage_tag = storage_tag_
         self.unit_tag = unit_tag_
@@ -13787,10 +19637,14 @@ class StorageDetachmentParams(Type):
             raise TypeError(f'Expected force_ to be a bool, received: {type(force_)}')
 
         if ids_ is not None and not isinstance(ids_, (dict, StorageAttachmentIds)):
-            raise TypeError(f'Expected ids_ to be a StorageAttachmentIds, received: {type(ids_)}')
+            raise TypeError(
+                f'Expected ids_ to be a StorageAttachmentIds, received: {type(ids_)}'
+            )
 
         if max_wait_ is not None and not isinstance(max_wait_, int):
-            raise TypeError(f'Expected max_wait_ to be a int, received: {type(max_wait_)}')
+            raise TypeError(
+                f'Expected max_wait_ to be a int, received: {type(max_wait_)}'
+            )
 
         self.force = force_
         self.ids = ids_
@@ -13799,10 +19653,36 @@ class StorageDetachmentParams(Type):
 
 
 class StorageDetails(Type):
-    _toSchema = {'attachments': 'attachments', 'kind': 'kind', 'life': 'life', 'owner_tag': 'owner-tag', 'persistent': 'persistent', 'status': 'status', 'storage_tag': 'storage-tag'}
-    _toPy = {'attachments': 'attachments', 'kind': 'kind', 'life': 'life', 'owner-tag': 'owner_tag', 'persistent': 'persistent', 'status': 'status', 'storage-tag': 'storage_tag'}
+    _toSchema = {
+        'attachments': 'attachments',
+        'kind': 'kind',
+        'life': 'life',
+        'owner_tag': 'owner-tag',
+        'persistent': 'persistent',
+        'status': 'status',
+        'storage_tag': 'storage-tag',
+    }
+    _toPy = {
+        'attachments': 'attachments',
+        'kind': 'kind',
+        'life': 'life',
+        'owner-tag': 'owner_tag',
+        'persistent': 'persistent',
+        'status': 'status',
+        'storage-tag': 'storage_tag',
+    }
 
-    def __init__(self, attachments=None, kind=None, life=None, owner_tag=None, persistent=None, status=None, storage_tag=None, **unknown_fields):
+    def __init__(
+        self,
+        attachments=None,
+        kind=None,
+        life=None,
+        owner_tag=None,
+        persistent=None,
+        status=None,
+        storage_tag=None,
+        **unknown_fields,
+    ):
         """
         attachments : typing.Mapping[str, ~StorageAttachmentDetails]
         kind : int
@@ -13812,7 +19692,10 @@ class StorageDetails(Type):
         status : EntityStatus
         storage_tag : str
         """
-        attachments_ = {k: StorageAttachmentDetails.from_json(v) for k, v in (attachments or {}).items()}
+        attachments_ = {
+            k: StorageAttachmentDetails.from_json(v)
+            for k, v in (attachments or {}).items()
+        }
         kind_ = kind
         life_ = life
         owner_tag_ = owner_tag
@@ -13822,7 +19705,9 @@ class StorageDetails(Type):
 
         # Validate arguments against known Juju API types.
         if attachments_ is not None and not isinstance(attachments_, dict):
-            raise TypeError(f'Expected attachments_ to be a Mapping, received: {type(attachments_)}')
+            raise TypeError(
+                f'Expected attachments_ to be a Mapping, received: {type(attachments_)}'
+            )
 
         if kind_ is not None and not isinstance(kind_, int):
             raise TypeError(f'Expected kind_ to be a int, received: {type(kind_)}')
@@ -13831,16 +19716,24 @@ class StorageDetails(Type):
             raise TypeError(f'Expected life_ to be a str, received: {type(life_)}')
 
         if owner_tag_ is not None and not isinstance(owner_tag_, (bytes, str)):
-            raise TypeError(f'Expected owner_tag_ to be a str, received: {type(owner_tag_)}')
+            raise TypeError(
+                f'Expected owner_tag_ to be a str, received: {type(owner_tag_)}'
+            )
 
         if persistent_ is not None and not isinstance(persistent_, bool):
-            raise TypeError(f'Expected persistent_ to be a bool, received: {type(persistent_)}')
+            raise TypeError(
+                f'Expected persistent_ to be a bool, received: {type(persistent_)}'
+            )
 
         if status_ is not None and not isinstance(status_, (dict, EntityStatus)):
-            raise TypeError(f'Expected status_ to be a EntityStatus, received: {type(status_)}')
+            raise TypeError(
+                f'Expected status_ to be a EntityStatus, received: {type(status_)}'
+            )
 
         if storage_tag_ is not None and not isinstance(storage_tag_, (bytes, str)):
-            raise TypeError(f'Expected storage_tag_ to be a str, received: {type(storage_tag_)}')
+            raise TypeError(
+                f'Expected storage_tag_ to be a str, received: {type(storage_tag_)}'
+            )
 
         self.attachments = attachments_
         self.kind = kind_
@@ -13869,7 +19762,9 @@ class StorageDetailsListResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if result_ is not None and not isinstance(result_, (bytes, str, list)):
-            raise TypeError(f'Expected result_ to be a Sequence, received: {type(result_)}')
+            raise TypeError(
+                f'Expected result_ to be a Sequence, received: {type(result_)}'
+            )
 
         self.error = error_
         self.result = result_
@@ -13888,7 +19783,9 @@ class StorageDetailsListResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -13911,7 +19808,9 @@ class StorageDetailsResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if result_ is not None and not isinstance(result_, (dict, StorageDetails)):
-            raise TypeError(f'Expected result_ to be a StorageDetails, received: {type(result_)}')
+            raise TypeError(
+                f'Expected result_ to be a StorageDetails, received: {type(result_)}'
+            )
 
         self.error = error_
         self.result = result_
@@ -13930,7 +19829,9 @@ class StorageDetailsResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -13941,9 +19842,7 @@ class StorageFilter(Type):
     _toPy = {}
 
     def __init__(self, **unknown_fields):
-        """
-
-        """
+        """ """
         self.unknown_fields = unknown_fields
 
 
@@ -13959,7 +19858,9 @@ class StorageFilters(Type):
 
         # Validate arguments against known Juju API types.
         if filters_ is not None and not isinstance(filters_, (bytes, str, list)):
-            raise TypeError(f'Expected filters_ to be a Sequence, received: {type(filters_)}')
+            raise TypeError(
+                f'Expected filters_ to be a Sequence, received: {type(filters_)}'
+            )
 
         self.filters = filters_
         self.unknown_fields = unknown_fields
@@ -13981,13 +19882,17 @@ class StoragePool(Type):
 
         # Validate arguments against known Juju API types.
         if attrs_ is not None and not isinstance(attrs_, dict):
-            raise TypeError(f'Expected attrs_ to be a Mapping, received: {type(attrs_)}')
+            raise TypeError(
+                f'Expected attrs_ to be a Mapping, received: {type(attrs_)}'
+            )
 
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
 
         if provider_ is not None and not isinstance(provider_, (bytes, str)):
-            raise TypeError(f'Expected provider_ to be a str, received: {type(provider_)}')
+            raise TypeError(
+                f'Expected provider_ to be a str, received: {type(provider_)}'
+            )
 
         self.attrs = attrs_
         self.name = name_
@@ -14007,7 +19912,9 @@ class StoragePoolArgs(Type):
 
         # Validate arguments against known Juju API types.
         if pools_ is not None and not isinstance(pools_, (bytes, str, list)):
-            raise TypeError(f'Expected pools_ to be a Sequence, received: {type(pools_)}')
+            raise TypeError(
+                f'Expected pools_ to be a Sequence, received: {type(pools_)}'
+            )
 
         self.pools = pools_
         self.unknown_fields = unknown_fields
@@ -14043,7 +19950,9 @@ class StoragePoolDeleteArgs(Type):
 
         # Validate arguments against known Juju API types.
         if pools_ is not None and not isinstance(pools_, (bytes, str, list)):
-            raise TypeError(f'Expected pools_ to be a Sequence, received: {type(pools_)}')
+            raise TypeError(
+                f'Expected pools_ to be a Sequence, received: {type(pools_)}'
+            )
 
         self.pools = pools_
         self.unknown_fields = unknown_fields
@@ -14063,10 +19972,14 @@ class StoragePoolFilter(Type):
 
         # Validate arguments against known Juju API types.
         if names_ is not None and not isinstance(names_, (bytes, str, list)):
-            raise TypeError(f'Expected names_ to be a Sequence, received: {type(names_)}')
+            raise TypeError(
+                f'Expected names_ to be a Sequence, received: {type(names_)}'
+            )
 
         if providers_ is not None and not isinstance(providers_, (bytes, str, list)):
-            raise TypeError(f'Expected providers_ to be a Sequence, received: {type(providers_)}')
+            raise TypeError(
+                f'Expected providers_ to be a Sequence, received: {type(providers_)}'
+            )
 
         self.names = names_
         self.providers = providers_
@@ -14085,7 +19998,9 @@ class StoragePoolFilters(Type):
 
         # Validate arguments against known Juju API types.
         if filters_ is not None and not isinstance(filters_, (bytes, str, list)):
-            raise TypeError(f'Expected filters_ to be a Sequence, received: {type(filters_)}')
+            raise TypeError(
+                f'Expected filters_ to be a Sequence, received: {type(filters_)}'
+            )
 
         self.filters = filters_
         self.unknown_fields = unknown_fields
@@ -14107,8 +20022,12 @@ class StoragePoolsResult(Type):
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
-        if storage_pools_ is not None and not isinstance(storage_pools_, (bytes, str, list)):
-            raise TypeError(f'Expected storage_pools_ to be a Sequence, received: {type(storage_pools_)}')
+        if storage_pools_ is not None and not isinstance(
+            storage_pools_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected storage_pools_ to be a Sequence, received: {type(storage_pools_)}'
+            )
 
         self.error = error_
         self.storage_pools = storage_pools_
@@ -14127,7 +20046,9 @@ class StoragePoolsResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -14145,7 +20066,9 @@ class StoragesAddParams(Type):
 
         # Validate arguments against known Juju API types.
         if storages_ is not None and not isinstance(storages_, (bytes, str, list)):
-            raise TypeError(f'Expected storages_ to be a Sequence, received: {type(storages_)}')
+            raise TypeError(
+                f'Expected storages_ to be a Sequence, received: {type(storages_)}'
+            )
 
         self.storages = storages_
         self.unknown_fields = unknown_fields
@@ -14187,7 +20110,9 @@ class StringResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -14210,7 +20135,9 @@ class StringsResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if result_ is not None and not isinstance(result_, (bytes, str, list)):
-            raise TypeError(f'Expected result_ to be a Sequence, received: {type(result_)}')
+            raise TypeError(
+                f'Expected result_ to be a Sequence, received: {type(result_)}'
+            )
 
         self.error = error_
         self.result = result_
@@ -14229,7 +20156,9 @@ class StringsResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -14251,13 +20180,17 @@ class StringsWatchResult(Type):
 
         # Validate arguments against known Juju API types.
         if changes_ is not None and not isinstance(changes_, (bytes, str, list)):
-            raise TypeError(f'Expected changes_ to be a Sequence, received: {type(changes_)}')
+            raise TypeError(
+                f'Expected changes_ to be a Sequence, received: {type(changes_)}'
+            )
 
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if watcher_id_ is not None and not isinstance(watcher_id_, (bytes, str)):
-            raise TypeError(f'Expected watcher_id_ to be a str, received: {type(watcher_id_)}')
+            raise TypeError(
+                f'Expected watcher_id_ to be a str, received: {type(watcher_id_)}'
+            )
 
         self.changes = changes_
         self.error = error_
@@ -14277,17 +20210,51 @@ class StringsWatchResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
 
 
 class Subnet(Type):
-    _toSchema = {'cidr': 'cidr', 'life': 'life', 'provider_id': 'provider-id', 'provider_network_id': 'provider-network-id', 'provider_space_id': 'provider-space-id', 'space_tag': 'space-tag', 'status': 'status', 'vlan_tag': 'vlan-tag', 'zones': 'zones'}
-    _toPy = {'cidr': 'cidr', 'life': 'life', 'provider-id': 'provider_id', 'provider-network-id': 'provider_network_id', 'provider-space-id': 'provider_space_id', 'space-tag': 'space_tag', 'status': 'status', 'vlan-tag': 'vlan_tag', 'zones': 'zones'}
+    _toSchema = {
+        'cidr': 'cidr',
+        'life': 'life',
+        'provider_id': 'provider-id',
+        'provider_network_id': 'provider-network-id',
+        'provider_space_id': 'provider-space-id',
+        'space_tag': 'space-tag',
+        'status': 'status',
+        'vlan_tag': 'vlan-tag',
+        'zones': 'zones',
+    }
+    _toPy = {
+        'cidr': 'cidr',
+        'life': 'life',
+        'provider-id': 'provider_id',
+        'provider-network-id': 'provider_network_id',
+        'provider-space-id': 'provider_space_id',
+        'space-tag': 'space_tag',
+        'status': 'status',
+        'vlan-tag': 'vlan_tag',
+        'zones': 'zones',
+    }
 
-    def __init__(self, cidr=None, life=None, provider_id=None, provider_network_id=None, provider_space_id=None, space_tag=None, status=None, vlan_tag=None, zones=None, **unknown_fields):
+    def __init__(
+        self,
+        cidr=None,
+        life=None,
+        provider_id=None,
+        provider_network_id=None,
+        provider_space_id=None,
+        space_tag=None,
+        status=None,
+        vlan_tag=None,
+        zones=None,
+        **unknown_fields,
+    ):
         """
         cidr : str
         life : str
@@ -14317,25 +20284,41 @@ class Subnet(Type):
             raise TypeError(f'Expected life_ to be a str, received: {type(life_)}')
 
         if provider_id_ is not None and not isinstance(provider_id_, (bytes, str)):
-            raise TypeError(f'Expected provider_id_ to be a str, received: {type(provider_id_)}')
+            raise TypeError(
+                f'Expected provider_id_ to be a str, received: {type(provider_id_)}'
+            )
 
-        if provider_network_id_ is not None and not isinstance(provider_network_id_, (bytes, str)):
-            raise TypeError(f'Expected provider_network_id_ to be a str, received: {type(provider_network_id_)}')
+        if provider_network_id_ is not None and not isinstance(
+            provider_network_id_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected provider_network_id_ to be a str, received: {type(provider_network_id_)}'
+            )
 
-        if provider_space_id_ is not None and not isinstance(provider_space_id_, (bytes, str)):
-            raise TypeError(f'Expected provider_space_id_ to be a str, received: {type(provider_space_id_)}')
+        if provider_space_id_ is not None and not isinstance(
+            provider_space_id_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected provider_space_id_ to be a str, received: {type(provider_space_id_)}'
+            )
 
         if space_tag_ is not None and not isinstance(space_tag_, (bytes, str)):
-            raise TypeError(f'Expected space_tag_ to be a str, received: {type(space_tag_)}')
+            raise TypeError(
+                f'Expected space_tag_ to be a str, received: {type(space_tag_)}'
+            )
 
         if status_ is not None and not isinstance(status_, (bytes, str)):
             raise TypeError(f'Expected status_ to be a str, received: {type(status_)}')
 
         if vlan_tag_ is not None and not isinstance(vlan_tag_, int):
-            raise TypeError(f'Expected vlan_tag_ to be a int, received: {type(vlan_tag_)}')
+            raise TypeError(
+                f'Expected vlan_tag_ to be a int, received: {type(vlan_tag_)}'
+            )
 
         if zones_ is not None and not isinstance(zones_, (bytes, str, list)):
-            raise TypeError(f'Expected zones_ to be a Sequence, received: {type(zones_)}')
+            raise TypeError(
+                f'Expected zones_ to be a Sequence, received: {type(zones_)}'
+            )
 
         self.cidr = cidr_
         self.life = life_
@@ -14350,10 +20333,48 @@ class Subnet(Type):
 
 
 class SubnetV2(Type):
-    _toSchema = {'cidr': 'cidr', 'id_': 'id', 'life': 'life', 'provider_id': 'provider-id', 'provider_network_id': 'provider-network-id', 'provider_space_id': 'provider-space-id', 'space_tag': 'space-tag', 'status': 'status', 'subnet': 'Subnet', 'vlan_tag': 'vlan-tag', 'zones': 'zones'}
-    _toPy = {'Subnet': 'subnet', 'cidr': 'cidr', 'id': 'id_', 'life': 'life', 'provider-id': 'provider_id', 'provider-network-id': 'provider_network_id', 'provider-space-id': 'provider_space_id', 'space-tag': 'space_tag', 'status': 'status', 'vlan-tag': 'vlan_tag', 'zones': 'zones'}
+    _toSchema = {
+        'cidr': 'cidr',
+        'id_': 'id',
+        'life': 'life',
+        'provider_id': 'provider-id',
+        'provider_network_id': 'provider-network-id',
+        'provider_space_id': 'provider-space-id',
+        'space_tag': 'space-tag',
+        'status': 'status',
+        'subnet': 'Subnet',
+        'vlan_tag': 'vlan-tag',
+        'zones': 'zones',
+    }
+    _toPy = {
+        'Subnet': 'subnet',
+        'cidr': 'cidr',
+        'id': 'id_',
+        'life': 'life',
+        'provider-id': 'provider_id',
+        'provider-network-id': 'provider_network_id',
+        'provider-space-id': 'provider_space_id',
+        'space-tag': 'space_tag',
+        'status': 'status',
+        'vlan-tag': 'vlan_tag',
+        'zones': 'zones',
+    }
 
-    def __init__(self, subnet=None, cidr=None, id_=None, life=None, provider_id=None, provider_network_id=None, provider_space_id=None, space_tag=None, status=None, vlan_tag=None, zones=None, **unknown_fields):
+    def __init__(
+        self,
+        subnet=None,
+        cidr=None,
+        id_=None,
+        life=None,
+        provider_id=None,
+        provider_network_id=None,
+        provider_space_id=None,
+        space_tag=None,
+        status=None,
+        vlan_tag=None,
+        zones=None,
+        **unknown_fields,
+    ):
         """
         subnet : Subnet
         cidr : str
@@ -14381,7 +20402,9 @@ class SubnetV2(Type):
 
         # Validate arguments against known Juju API types.
         if subnet_ is not None and not isinstance(subnet_, (dict, Subnet)):
-            raise TypeError(f'Expected subnet_ to be a Subnet, received: {type(subnet_)}')
+            raise TypeError(
+                f'Expected subnet_ to be a Subnet, received: {type(subnet_)}'
+            )
 
         if cidr_ is not None and not isinstance(cidr_, (bytes, str)):
             raise TypeError(f'Expected cidr_ to be a str, received: {type(cidr_)}')
@@ -14393,25 +20416,41 @@ class SubnetV2(Type):
             raise TypeError(f'Expected life_ to be a str, received: {type(life_)}')
 
         if provider_id_ is not None and not isinstance(provider_id_, (bytes, str)):
-            raise TypeError(f'Expected provider_id_ to be a str, received: {type(provider_id_)}')
+            raise TypeError(
+                f'Expected provider_id_ to be a str, received: {type(provider_id_)}'
+            )
 
-        if provider_network_id_ is not None and not isinstance(provider_network_id_, (bytes, str)):
-            raise TypeError(f'Expected provider_network_id_ to be a str, received: {type(provider_network_id_)}')
+        if provider_network_id_ is not None and not isinstance(
+            provider_network_id_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected provider_network_id_ to be a str, received: {type(provider_network_id_)}'
+            )
 
-        if provider_space_id_ is not None and not isinstance(provider_space_id_, (bytes, str)):
-            raise TypeError(f'Expected provider_space_id_ to be a str, received: {type(provider_space_id_)}')
+        if provider_space_id_ is not None and not isinstance(
+            provider_space_id_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected provider_space_id_ to be a str, received: {type(provider_space_id_)}'
+            )
 
         if space_tag_ is not None and not isinstance(space_tag_, (bytes, str)):
-            raise TypeError(f'Expected space_tag_ to be a str, received: {type(space_tag_)}')
+            raise TypeError(
+                f'Expected space_tag_ to be a str, received: {type(space_tag_)}'
+            )
 
         if status_ is not None and not isinstance(status_, (bytes, str)):
             raise TypeError(f'Expected status_ to be a str, received: {type(status_)}')
 
         if vlan_tag_ is not None and not isinstance(vlan_tag_, int):
-            raise TypeError(f'Expected vlan_tag_ to be a int, received: {type(vlan_tag_)}')
+            raise TypeError(
+                f'Expected vlan_tag_ to be a int, received: {type(vlan_tag_)}'
+            )
 
         if zones_ is not None and not isinstance(zones_, (bytes, str, list)):
-            raise TypeError(f'Expected zones_ to be a Sequence, received: {type(zones_)}')
+            raise TypeError(
+                f'Expected zones_ to be a Sequence, received: {type(zones_)}'
+            )
 
         self.subnet = subnet_
         self.cidr = cidr_
@@ -14441,7 +20480,9 @@ class SubnetsFilters(Type):
 
         # Validate arguments against known Juju API types.
         if space_tag_ is not None and not isinstance(space_tag_, (bytes, str)):
-            raise TypeError(f'Expected space_tag_ to be a str, received: {type(space_tag_)}')
+            raise TypeError(
+                f'Expected space_tag_ to be a str, received: {type(space_tag_)}'
+            )
 
         if zone_ is not None and not isinstance(zone_, (bytes, str)):
             raise TypeError(f'Expected zone_ to be a str, received: {type(zone_)}')
@@ -14468,7 +20509,9 @@ class SubnetsResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if subnets_ is not None and not isinstance(subnets_, (bytes, str, list)):
-            raise TypeError(f'Expected subnets_ to be a Sequence, received: {type(subnets_)}')
+            raise TypeError(
+                f'Expected subnets_ to be a Sequence, received: {type(subnets_)}'
+            )
 
         self.error = error_
         self.subnets = subnets_
@@ -14487,7 +20530,9 @@ class SubnetsResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -14505,7 +20550,9 @@ class SummaryWatcherID(Type):
 
         # Validate arguments against known Juju API types.
         if watcher_id_ is not None and not isinstance(watcher_id_, (bytes, str)):
-            raise TypeError(f'Expected watcher_id_ to be a str, received: {type(watcher_id_)}')
+            raise TypeError(
+                f'Expected watcher_id_ to be a str, received: {type(watcher_id_)}'
+            )
 
         self.watcher_id = watcher_id_
         self.unknown_fields = unknown_fields
@@ -14527,13 +20574,17 @@ class SupportedFeature(Type):
 
         # Validate arguments against known Juju API types.
         if description_ is not None and not isinstance(description_, (bytes, str)):
-            raise TypeError(f'Expected description_ to be a str, received: {type(description_)}')
+            raise TypeError(
+                f'Expected description_ to be a str, received: {type(description_)}'
+            )
 
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
 
         if version_ is not None and not isinstance(version_, (bytes, str)):
-            raise TypeError(f'Expected version_ to be a str, received: {type(version_)}')
+            raise TypeError(
+                f'Expected version_ to be a str, received: {type(version_)}'
+            )
 
         self.description = description_
         self.name = name_
@@ -14554,8 +20605,12 @@ class TaggedCredential(Type):
         tag_ = tag
 
         # Validate arguments against known Juju API types.
-        if credential_ is not None and not isinstance(credential_, (dict, CloudCredential)):
-            raise TypeError(f'Expected credential_ to be a CloudCredential, received: {type(credential_)}')
+        if credential_ is not None and not isinstance(
+            credential_, (dict, CloudCredential)
+        ):
+            raise TypeError(
+                f'Expected credential_ to be a CloudCredential, received: {type(credential_)}'
+            )
 
         if tag_ is not None and not isinstance(tag_, (bytes, str)):
             raise TypeError(f'Expected tag_ to be a str, received: {type(tag_)}')
@@ -14576,8 +20631,12 @@ class TaggedCredentials(Type):
         credentials_ = [TaggedCredential.from_json(o) for o in credentials or []]
 
         # Validate arguments against known Juju API types.
-        if credentials_ is not None and not isinstance(credentials_, (bytes, str, list)):
-            raise TypeError(f'Expected credentials_ to be a Sequence, received: {type(credentials_)}')
+        if credentials_ is not None and not isinstance(
+            credentials_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected credentials_ to be a Sequence, received: {type(credentials_)}'
+            )
 
         self.credentials = credentials_
         self.unknown_fields = unknown_fields
@@ -14587,7 +20646,9 @@ class Tools(Type):
     _toSchema = {'sha256': 'sha256', 'size': 'size', 'url': 'url', 'version': 'version'}
     _toPy = {'sha256': 'sha256', 'size': 'size', 'url': 'url', 'version': 'version'}
 
-    def __init__(self, sha256=None, size=None, url=None, version=None, **unknown_fields):
+    def __init__(
+        self, sha256=None, size=None, url=None, version=None, **unknown_fields
+    ):
         """
         sha256 : str
         size : int
@@ -14610,7 +20671,9 @@ class Tools(Type):
             raise TypeError(f'Expected url_ to be a str, received: {type(url_)}')
 
         if version_ is not None and not isinstance(version_, (dict, Binary)):
-            raise TypeError(f'Expected version_ to be a Binary, received: {type(version_)}')
+            raise TypeError(
+                f'Expected version_ to be a Binary, received: {type(version_)}'
+            )
 
         self.sha256 = sha256_
         self.size = size_
@@ -14636,7 +20699,9 @@ class UnitInfoResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if result_ is not None and not isinstance(result_, (dict, UnitResult)):
-            raise TypeError(f'Expected result_ to be a UnitResult, received: {type(result_)}')
+            raise TypeError(
+                f'Expected result_ to be a UnitResult, received: {type(result_)}'
+            )
 
         self.error = error_
         self.result = result_
@@ -14655,17 +20720,36 @@ class UnitInfoResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
 
 
 class UnitResources(Type):
-    _toSchema = {'download_progress': 'download-progress', 'entity': 'Entity', 'resources': 'resources', 'tag': 'tag'}
-    _toPy = {'Entity': 'entity', 'download-progress': 'download_progress', 'resources': 'resources', 'tag': 'tag'}
+    _toSchema = {
+        'download_progress': 'download-progress',
+        'entity': 'Entity',
+        'resources': 'resources',
+        'tag': 'tag',
+    }
+    _toPy = {
+        'Entity': 'entity',
+        'download-progress': 'download_progress',
+        'resources': 'resources',
+        'tag': 'tag',
+    }
 
-    def __init__(self, entity=None, download_progress=None, resources=None, tag=None, **unknown_fields):
+    def __init__(
+        self,
+        entity=None,
+        download_progress=None,
+        resources=None,
+        tag=None,
+        **unknown_fields,
+    ):
         """
         entity : Entity
         download_progress : typing.Mapping[str, int]
@@ -14679,13 +20763,19 @@ class UnitResources(Type):
 
         # Validate arguments against known Juju API types.
         if entity_ is not None and not isinstance(entity_, (dict, Entity)):
-            raise TypeError(f'Expected entity_ to be a Entity, received: {type(entity_)}')
+            raise TypeError(
+                f'Expected entity_ to be a Entity, received: {type(entity_)}'
+            )
 
         if download_progress_ is not None and not isinstance(download_progress_, dict):
-            raise TypeError(f'Expected download_progress_ to be a Mapping, received: {type(download_progress_)}')
+            raise TypeError(
+                f'Expected download_progress_ to be a Mapping, received: {type(download_progress_)}'
+            )
 
         if resources_ is not None and not isinstance(resources_, (bytes, str, list)):
-            raise TypeError(f'Expected resources_ to be a Sequence, received: {type(resources_)}')
+            raise TypeError(
+                f'Expected resources_ to be a Sequence, received: {type(resources_)}'
+            )
 
         if tag_ is not None and not isinstance(tag_, (bytes, str)):
             raise TypeError(f'Expected tag_ to be a str, received: {type(tag_)}')
@@ -14698,10 +20788,48 @@ class UnitResources(Type):
 
 
 class UnitResult(Type):
-    _toSchema = {'address': 'address', 'charm': 'charm', 'leader': 'leader', 'life': 'life', 'machine': 'machine', 'opened_ports': 'opened-ports', 'provider_id': 'provider-id', 'public_address': 'public-address', 'relation_data': 'relation-data', 'tag': 'tag', 'workload_version': 'workload-version'}
-    _toPy = {'address': 'address', 'charm': 'charm', 'leader': 'leader', 'life': 'life', 'machine': 'machine', 'opened-ports': 'opened_ports', 'provider-id': 'provider_id', 'public-address': 'public_address', 'relation-data': 'relation_data', 'tag': 'tag', 'workload-version': 'workload_version'}
+    _toSchema = {
+        'address': 'address',
+        'charm': 'charm',
+        'leader': 'leader',
+        'life': 'life',
+        'machine': 'machine',
+        'opened_ports': 'opened-ports',
+        'provider_id': 'provider-id',
+        'public_address': 'public-address',
+        'relation_data': 'relation-data',
+        'tag': 'tag',
+        'workload_version': 'workload-version',
+    }
+    _toPy = {
+        'address': 'address',
+        'charm': 'charm',
+        'leader': 'leader',
+        'life': 'life',
+        'machine': 'machine',
+        'opened-ports': 'opened_ports',
+        'provider-id': 'provider_id',
+        'public-address': 'public_address',
+        'relation-data': 'relation_data',
+        'tag': 'tag',
+        'workload-version': 'workload_version',
+    }
 
-    def __init__(self, address=None, charm=None, leader=None, life=None, machine=None, opened_ports=None, provider_id=None, public_address=None, relation_data=None, tag=None, workload_version=None, **unknown_fields):
+    def __init__(
+        self,
+        address=None,
+        charm=None,
+        leader=None,
+        life=None,
+        machine=None,
+        opened_ports=None,
+        provider_id=None,
+        public_address=None,
+        relation_data=None,
+        tag=None,
+        workload_version=None,
+        **unknown_fields,
+    ):
         """
         address : str
         charm : str
@@ -14723,13 +20851,17 @@ class UnitResult(Type):
         opened_ports_ = opened_ports
         provider_id_ = provider_id
         public_address_ = public_address
-        relation_data_ = [EndpointRelationData.from_json(o) for o in relation_data or []]
+        relation_data_ = [
+            EndpointRelationData.from_json(o) for o in relation_data or []
+        ]
         tag_ = tag
         workload_version_ = workload_version
 
         # Validate arguments against known Juju API types.
         if address_ is not None and not isinstance(address_, (bytes, str)):
-            raise TypeError(f'Expected address_ to be a str, received: {type(address_)}')
+            raise TypeError(
+                f'Expected address_ to be a str, received: {type(address_)}'
+            )
 
         if charm_ is not None and not isinstance(charm_, (bytes, str)):
             raise TypeError(f'Expected charm_ to be a str, received: {type(charm_)}')
@@ -14741,25 +20873,45 @@ class UnitResult(Type):
             raise TypeError(f'Expected life_ to be a str, received: {type(life_)}')
 
         if machine_ is not None and not isinstance(machine_, (bytes, str)):
-            raise TypeError(f'Expected machine_ to be a str, received: {type(machine_)}')
+            raise TypeError(
+                f'Expected machine_ to be a str, received: {type(machine_)}'
+            )
 
-        if opened_ports_ is not None and not isinstance(opened_ports_, (bytes, str, list)):
-            raise TypeError(f'Expected opened_ports_ to be a Sequence, received: {type(opened_ports_)}')
+        if opened_ports_ is not None and not isinstance(
+            opened_ports_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected opened_ports_ to be a Sequence, received: {type(opened_ports_)}'
+            )
 
         if provider_id_ is not None and not isinstance(provider_id_, (bytes, str)):
-            raise TypeError(f'Expected provider_id_ to be a str, received: {type(provider_id_)}')
+            raise TypeError(
+                f'Expected provider_id_ to be a str, received: {type(provider_id_)}'
+            )
 
-        if public_address_ is not None and not isinstance(public_address_, (bytes, str)):
-            raise TypeError(f'Expected public_address_ to be a str, received: {type(public_address_)}')
+        if public_address_ is not None and not isinstance(
+            public_address_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected public_address_ to be a str, received: {type(public_address_)}'
+            )
 
-        if relation_data_ is not None and not isinstance(relation_data_, (bytes, str, list)):
-            raise TypeError(f'Expected relation_data_ to be a Sequence, received: {type(relation_data_)}')
+        if relation_data_ is not None and not isinstance(
+            relation_data_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected relation_data_ to be a Sequence, received: {type(relation_data_)}'
+            )
 
         if tag_ is not None and not isinstance(tag_, (bytes, str)):
             raise TypeError(f'Expected tag_ to be a str, received: {type(tag_)}')
 
-        if workload_version_ is not None and not isinstance(workload_version_, (bytes, str)):
-            raise TypeError(f'Expected workload_version_ to be a str, received: {type(workload_version_)}')
+        if workload_version_ is not None and not isinstance(
+            workload_version_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected workload_version_ to be a str, received: {type(workload_version_)}'
+            )
 
         self.address = address_
         self.charm = charm_
@@ -14776,10 +20928,48 @@ class UnitResult(Type):
 
 
 class UnitStatus(Type):
-    _toSchema = {'address': 'address', 'agent_status': 'agent-status', 'charm': 'charm', 'leader': 'leader', 'machine': 'machine', 'opened_ports': 'opened-ports', 'provider_id': 'provider-id', 'public_address': 'public-address', 'subordinates': 'subordinates', 'workload_status': 'workload-status', 'workload_version': 'workload-version'}
-    _toPy = {'address': 'address', 'agent-status': 'agent_status', 'charm': 'charm', 'leader': 'leader', 'machine': 'machine', 'opened-ports': 'opened_ports', 'provider-id': 'provider_id', 'public-address': 'public_address', 'subordinates': 'subordinates', 'workload-status': 'workload_status', 'workload-version': 'workload_version'}
+    _toSchema = {
+        'address': 'address',
+        'agent_status': 'agent-status',
+        'charm': 'charm',
+        'leader': 'leader',
+        'machine': 'machine',
+        'opened_ports': 'opened-ports',
+        'provider_id': 'provider-id',
+        'public_address': 'public-address',
+        'subordinates': 'subordinates',
+        'workload_status': 'workload-status',
+        'workload_version': 'workload-version',
+    }
+    _toPy = {
+        'address': 'address',
+        'agent-status': 'agent_status',
+        'charm': 'charm',
+        'leader': 'leader',
+        'machine': 'machine',
+        'opened-ports': 'opened_ports',
+        'provider-id': 'provider_id',
+        'public-address': 'public_address',
+        'subordinates': 'subordinates',
+        'workload-status': 'workload_status',
+        'workload-version': 'workload_version',
+    }
 
-    def __init__(self, address=None, agent_status=None, charm=None, leader=None, machine=None, opened_ports=None, provider_id=None, public_address=None, subordinates=None, workload_status=None, workload_version=None, **unknown_fields):
+    def __init__(
+        self,
+        address=None,
+        agent_status=None,
+        charm=None,
+        leader=None,
+        machine=None,
+        opened_ports=None,
+        provider_id=None,
+        public_address=None,
+        subordinates=None,
+        workload_status=None,
+        workload_version=None,
+        **unknown_fields,
+    ):
         """
         address : str
         agent_status : DetailedStatus
@@ -14801,16 +20991,26 @@ class UnitStatus(Type):
         opened_ports_ = opened_ports
         provider_id_ = provider_id
         public_address_ = public_address
-        subordinates_ = {k: UnitStatus.from_json(v) for k, v in (subordinates or {}).items()}
-        workload_status_ = DetailedStatus.from_json(workload_status) if workload_status else None
+        subordinates_ = {
+            k: UnitStatus.from_json(v) for k, v in (subordinates or {}).items()
+        }
+        workload_status_ = (
+            DetailedStatus.from_json(workload_status) if workload_status else None
+        )
         workload_version_ = workload_version
 
         # Validate arguments against known Juju API types.
         if address_ is not None and not isinstance(address_, (bytes, str)):
-            raise TypeError(f'Expected address_ to be a str, received: {type(address_)}')
+            raise TypeError(
+                f'Expected address_ to be a str, received: {type(address_)}'
+            )
 
-        if agent_status_ is not None and not isinstance(agent_status_, (dict, DetailedStatus)):
-            raise TypeError(f'Expected agent_status_ to be a DetailedStatus, received: {type(agent_status_)}')
+        if agent_status_ is not None and not isinstance(
+            agent_status_, (dict, DetailedStatus)
+        ):
+            raise TypeError(
+                f'Expected agent_status_ to be a DetailedStatus, received: {type(agent_status_)}'
+            )
 
         if charm_ is not None and not isinstance(charm_, (bytes, str)):
             raise TypeError(f'Expected charm_ to be a str, received: {type(charm_)}')
@@ -14819,25 +21019,47 @@ class UnitStatus(Type):
             raise TypeError(f'Expected leader_ to be a bool, received: {type(leader_)}')
 
         if machine_ is not None and not isinstance(machine_, (bytes, str)):
-            raise TypeError(f'Expected machine_ to be a str, received: {type(machine_)}')
+            raise TypeError(
+                f'Expected machine_ to be a str, received: {type(machine_)}'
+            )
 
-        if opened_ports_ is not None and not isinstance(opened_ports_, (bytes, str, list)):
-            raise TypeError(f'Expected opened_ports_ to be a Sequence, received: {type(opened_ports_)}')
+        if opened_ports_ is not None and not isinstance(
+            opened_ports_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected opened_ports_ to be a Sequence, received: {type(opened_ports_)}'
+            )
 
         if provider_id_ is not None and not isinstance(provider_id_, (bytes, str)):
-            raise TypeError(f'Expected provider_id_ to be a str, received: {type(provider_id_)}')
+            raise TypeError(
+                f'Expected provider_id_ to be a str, received: {type(provider_id_)}'
+            )
 
-        if public_address_ is not None and not isinstance(public_address_, (bytes, str)):
-            raise TypeError(f'Expected public_address_ to be a str, received: {type(public_address_)}')
+        if public_address_ is not None and not isinstance(
+            public_address_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected public_address_ to be a str, received: {type(public_address_)}'
+            )
 
         if subordinates_ is not None and not isinstance(subordinates_, dict):
-            raise TypeError(f'Expected subordinates_ to be a Mapping, received: {type(subordinates_)}')
+            raise TypeError(
+                f'Expected subordinates_ to be a Mapping, received: {type(subordinates_)}'
+            )
 
-        if workload_status_ is not None and not isinstance(workload_status_, (dict, DetailedStatus)):
-            raise TypeError(f'Expected workload_status_ to be a DetailedStatus, received: {type(workload_status_)}')
+        if workload_status_ is not None and not isinstance(
+            workload_status_, (dict, DetailedStatus)
+        ):
+            raise TypeError(
+                f'Expected workload_status_ to be a DetailedStatus, received: {type(workload_status_)}'
+            )
 
-        if workload_version_ is not None and not isinstance(workload_version_, (bytes, str)):
-            raise TypeError(f'Expected workload_version_ to be a str, received: {type(workload_version_)}')
+        if workload_version_ is not None and not isinstance(
+            workload_version_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected workload_version_ to be a str, received: {type(workload_version_)}'
+            )
 
         self.address = address_
         self.agent_status = agent_status_
@@ -14917,7 +21139,9 @@ class UpdateChannelArg(Type):
 
         # Validate arguments against known Juju API types.
         if channel_ is not None and not isinstance(channel_, (bytes, str)):
-            raise TypeError(f'Expected channel_ to be a str, received: {type(channel_)}')
+            raise TypeError(
+                f'Expected channel_ to be a str, received: {type(channel_)}'
+            )
 
         if force_ is not None and not isinstance(force_, bool):
             raise TypeError(f'Expected force_ to be a bool, received: {type(force_)}')
@@ -14961,7 +21185,9 @@ class UpdateCloudArgs(Type):
 
         # Validate arguments against known Juju API types.
         if clouds_ is not None and not isinstance(clouds_, (bytes, str, list)):
-            raise TypeError(f'Expected clouds_ to be a Sequence, received: {type(clouds_)}')
+            raise TypeError(
+                f'Expected clouds_ to be a Sequence, received: {type(clouds_)}'
+            )
 
         self.clouds = clouds_
         self.unknown_fields = unknown_fields
@@ -14980,8 +21206,12 @@ class UpdateCredentialArgs(Type):
         force_ = force
 
         # Validate arguments against known Juju API types.
-        if credentials_ is not None and not isinstance(credentials_, (bytes, str, list)):
-            raise TypeError(f'Expected credentials_ to be a Sequence, received: {type(credentials_)}')
+        if credentials_ is not None and not isinstance(
+            credentials_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected credentials_ to be a Sequence, received: {type(credentials_)}'
+            )
 
         if force_ is not None and not isinstance(force_, bool):
             raise TypeError(f'Expected force_ to be a bool, received: {type(force_)}')
@@ -15007,7 +21237,9 @@ class UpdateCredentialModelResult(Type):
 
         # Validate arguments against known Juju API types.
         if errors_ is not None and not isinstance(errors_, (bytes, str, list)):
-            raise TypeError(f'Expected errors_ to be a Sequence, received: {type(errors_)}')
+            raise TypeError(
+                f'Expected errors_ to be a Sequence, received: {type(errors_)}'
+            )
 
         if name_ is not None and not isinstance(name_, (bytes, str)):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
@@ -15040,7 +21272,9 @@ class UpdateCredentialResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if models_ is not None and not isinstance(models_, (bytes, str, list)):
-            raise TypeError(f'Expected models_ to be a Sequence, received: {type(models_)}')
+            raise TypeError(
+                f'Expected models_ to be a Sequence, received: {type(models_)}'
+            )
 
         if tag_ is not None and not isinstance(tag_, (bytes, str)):
             raise TypeError(f'Expected tag_ to be a str, received: {type(tag_)}')
@@ -15063,17 +21297,42 @@ class UpdateCredentialResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
 
 
 class UpdateSecretBackendArg(Type):
-    _toSchema = {'config': 'config', 'force': 'force', 'name': 'name', 'name_change': 'name-change', 'reset': 'reset', 'token_rotate_interval': 'token-rotate-interval'}
-    _toPy = {'config': 'config', 'force': 'force', 'name': 'name', 'name-change': 'name_change', 'reset': 'reset', 'token-rotate-interval': 'token_rotate_interval'}
+    _toSchema = {
+        'config': 'config',
+        'force': 'force',
+        'name': 'name',
+        'name_change': 'name-change',
+        'reset': 'reset',
+        'token_rotate_interval': 'token-rotate-interval',
+    }
+    _toPy = {
+        'config': 'config',
+        'force': 'force',
+        'name': 'name',
+        'name-change': 'name_change',
+        'reset': 'reset',
+        'token-rotate-interval': 'token_rotate_interval',
+    }
 
-    def __init__(self, config=None, force=None, name=None, name_change=None, reset=None, token_rotate_interval=None, **unknown_fields):
+    def __init__(
+        self,
+        config=None,
+        force=None,
+        name=None,
+        name_change=None,
+        reset=None,
+        token_rotate_interval=None,
+        **unknown_fields,
+    ):
         """
         config : typing.Mapping[str, typing.Any]
         force : bool
@@ -15091,7 +21350,9 @@ class UpdateSecretBackendArg(Type):
 
         # Validate arguments against known Juju API types.
         if config_ is not None and not isinstance(config_, dict):
-            raise TypeError(f'Expected config_ to be a Mapping, received: {type(config_)}')
+            raise TypeError(
+                f'Expected config_ to be a Mapping, received: {type(config_)}'
+            )
 
         if force_ is not None and not isinstance(force_, bool):
             raise TypeError(f'Expected force_ to be a bool, received: {type(force_)}')
@@ -15100,13 +21361,21 @@ class UpdateSecretBackendArg(Type):
             raise TypeError(f'Expected name_ to be a str, received: {type(name_)}')
 
         if name_change_ is not None and not isinstance(name_change_, (bytes, str)):
-            raise TypeError(f'Expected name_change_ to be a str, received: {type(name_change_)}')
+            raise TypeError(
+                f'Expected name_change_ to be a str, received: {type(name_change_)}'
+            )
 
         if reset_ is not None and not isinstance(reset_, (bytes, str, list)):
-            raise TypeError(f'Expected reset_ to be a Sequence, received: {type(reset_)}')
+            raise TypeError(
+                f'Expected reset_ to be a Sequence, received: {type(reset_)}'
+            )
 
-        if token_rotate_interval_ is not None and not isinstance(token_rotate_interval_, int):
-            raise TypeError(f'Expected token_rotate_interval_ to be a int, received: {type(token_rotate_interval_)}')
+        if token_rotate_interval_ is not None and not isinstance(
+            token_rotate_interval_, int
+        ):
+            raise TypeError(
+                f'Expected token_rotate_interval_ to be a int, received: {type(token_rotate_interval_)}'
+            )
 
         self.config = config_
         self.force = force_
@@ -15136,10 +21405,45 @@ class UpdateSecretBackendArgs(Type):
 
 
 class UpdateUserSecretArg(Type):
-    _toSchema = {'auto_prune': 'auto-prune', 'content': 'content', 'description': 'description', 'existing_label': 'existing-label', 'expire_time': 'expire-time', 'label': 'label', 'params': 'params', 'rotate_policy': 'rotate-policy', 'upsertsecretarg': 'UpsertSecretArg', 'uri': 'uri'}
-    _toPy = {'UpsertSecretArg': 'upsertsecretarg', 'auto-prune': 'auto_prune', 'content': 'content', 'description': 'description', 'existing-label': 'existing_label', 'expire-time': 'expire_time', 'label': 'label', 'params': 'params', 'rotate-policy': 'rotate_policy', 'uri': 'uri'}
+    _toSchema = {
+        'auto_prune': 'auto-prune',
+        'content': 'content',
+        'description': 'description',
+        'existing_label': 'existing-label',
+        'expire_time': 'expire-time',
+        'label': 'label',
+        'params': 'params',
+        'rotate_policy': 'rotate-policy',
+        'upsertsecretarg': 'UpsertSecretArg',
+        'uri': 'uri',
+    }
+    _toPy = {
+        'UpsertSecretArg': 'upsertsecretarg',
+        'auto-prune': 'auto_prune',
+        'content': 'content',
+        'description': 'description',
+        'existing-label': 'existing_label',
+        'expire-time': 'expire_time',
+        'label': 'label',
+        'params': 'params',
+        'rotate-policy': 'rotate_policy',
+        'uri': 'uri',
+    }
 
-    def __init__(self, upsertsecretarg=None, auto_prune=None, content=None, description=None, existing_label=None, expire_time=None, label=None, params=None, rotate_policy=None, uri=None, **unknown_fields):
+    def __init__(
+        self,
+        upsertsecretarg=None,
+        auto_prune=None,
+        content=None,
+        description=None,
+        existing_label=None,
+        expire_time=None,
+        label=None,
+        params=None,
+        rotate_policy=None,
+        uri=None,
+        **unknown_fields,
+    ):
         """
         upsertsecretarg : UpsertSecretArg
         auto_prune : bool
@@ -15152,7 +21456,9 @@ class UpdateUserSecretArg(Type):
         rotate_policy : str
         uri : str
         """
-        upsertsecretarg_ = UpsertSecretArg.from_json(upsertsecretarg) if upsertsecretarg else None
+        upsertsecretarg_ = (
+            UpsertSecretArg.from_json(upsertsecretarg) if upsertsecretarg else None
+        )
         auto_prune_ = auto_prune
         content_ = SecretContentParams.from_json(content) if content else None
         description_ = description
@@ -15164,32 +21470,54 @@ class UpdateUserSecretArg(Type):
         uri_ = uri
 
         # Validate arguments against known Juju API types.
-        if upsertsecretarg_ is not None and not isinstance(upsertsecretarg_, (dict, UpsertSecretArg)):
-            raise TypeError(f'Expected upsertsecretarg_ to be a UpsertSecretArg, received: {type(upsertsecretarg_)}')
+        if upsertsecretarg_ is not None and not isinstance(
+            upsertsecretarg_, (dict, UpsertSecretArg)
+        ):
+            raise TypeError(
+                f'Expected upsertsecretarg_ to be a UpsertSecretArg, received: {type(upsertsecretarg_)}'
+            )
 
         if auto_prune_ is not None and not isinstance(auto_prune_, bool):
-            raise TypeError(f'Expected auto_prune_ to be a bool, received: {type(auto_prune_)}')
+            raise TypeError(
+                f'Expected auto_prune_ to be a bool, received: {type(auto_prune_)}'
+            )
 
-        if content_ is not None and not isinstance(content_, (dict, SecretContentParams)):
-            raise TypeError(f'Expected content_ to be a SecretContentParams, received: {type(content_)}')
+        if content_ is not None and not isinstance(
+            content_, (dict, SecretContentParams)
+        ):
+            raise TypeError(
+                f'Expected content_ to be a SecretContentParams, received: {type(content_)}'
+            )
 
         if description_ is not None and not isinstance(description_, (bytes, str)):
-            raise TypeError(f'Expected description_ to be a str, received: {type(description_)}')
+            raise TypeError(
+                f'Expected description_ to be a str, received: {type(description_)}'
+            )
 
-        if existing_label_ is not None and not isinstance(existing_label_, (bytes, str)):
-            raise TypeError(f'Expected existing_label_ to be a str, received: {type(existing_label_)}')
+        if existing_label_ is not None and not isinstance(
+            existing_label_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected existing_label_ to be a str, received: {type(existing_label_)}'
+            )
 
         if expire_time_ is not None and not isinstance(expire_time_, (bytes, str)):
-            raise TypeError(f'Expected expire_time_ to be a str, received: {type(expire_time_)}')
+            raise TypeError(
+                f'Expected expire_time_ to be a str, received: {type(expire_time_)}'
+            )
 
         if label_ is not None and not isinstance(label_, (bytes, str)):
             raise TypeError(f'Expected label_ to be a str, received: {type(label_)}')
 
         if params_ is not None and not isinstance(params_, dict):
-            raise TypeError(f'Expected params_ to be a Mapping, received: {type(params_)}')
+            raise TypeError(
+                f'Expected params_ to be a Mapping, received: {type(params_)}'
+            )
 
         if rotate_policy_ is not None and not isinstance(rotate_policy_, (bytes, str)):
-            raise TypeError(f'Expected rotate_policy_ to be a str, received: {type(rotate_policy_)}')
+            raise TypeError(
+                f'Expected rotate_policy_ to be a str, received: {type(rotate_policy_)}'
+            )
 
         if uri_ is not None and not isinstance(uri_, (bytes, str)):
             raise TypeError(f'Expected uri_ to be a str, received: {type(uri_)}')
@@ -15226,10 +21554,30 @@ class UpdateUserSecretArgs(Type):
 
 
 class UpgradeModelParams(Type):
-    _toSchema = {'agent_stream': 'agent-stream', 'dry_run': 'dry-run', 'ignore_agent_versions': 'ignore-agent-versions', 'model_tag': 'model-tag', 'target_version': 'target-version'}
-    _toPy = {'agent-stream': 'agent_stream', 'dry-run': 'dry_run', 'ignore-agent-versions': 'ignore_agent_versions', 'model-tag': 'model_tag', 'target-version': 'target_version'}
+    _toSchema = {
+        'agent_stream': 'agent-stream',
+        'dry_run': 'dry-run',
+        'ignore_agent_versions': 'ignore-agent-versions',
+        'model_tag': 'model-tag',
+        'target_version': 'target-version',
+    }
+    _toPy = {
+        'agent-stream': 'agent_stream',
+        'dry-run': 'dry_run',
+        'ignore-agent-versions': 'ignore_agent_versions',
+        'model-tag': 'model_tag',
+        'target-version': 'target_version',
+    }
 
-    def __init__(self, agent_stream=None, dry_run=None, ignore_agent_versions=None, model_tag=None, target_version=None, **unknown_fields):
+    def __init__(
+        self,
+        agent_stream=None,
+        dry_run=None,
+        ignore_agent_versions=None,
+        model_tag=None,
+        target_version=None,
+        **unknown_fields,
+    ):
         """
         agent_stream : str
         dry_run : bool
@@ -15245,19 +21593,33 @@ class UpgradeModelParams(Type):
 
         # Validate arguments against known Juju API types.
         if agent_stream_ is not None and not isinstance(agent_stream_, (bytes, str)):
-            raise TypeError(f'Expected agent_stream_ to be a str, received: {type(agent_stream_)}')
+            raise TypeError(
+                f'Expected agent_stream_ to be a str, received: {type(agent_stream_)}'
+            )
 
         if dry_run_ is not None and not isinstance(dry_run_, bool):
-            raise TypeError(f'Expected dry_run_ to be a bool, received: {type(dry_run_)}')
+            raise TypeError(
+                f'Expected dry_run_ to be a bool, received: {type(dry_run_)}'
+            )
 
-        if ignore_agent_versions_ is not None and not isinstance(ignore_agent_versions_, bool):
-            raise TypeError(f'Expected ignore_agent_versions_ to be a bool, received: {type(ignore_agent_versions_)}')
+        if ignore_agent_versions_ is not None and not isinstance(
+            ignore_agent_versions_, bool
+        ):
+            raise TypeError(
+                f'Expected ignore_agent_versions_ to be a bool, received: {type(ignore_agent_versions_)}'
+            )
 
         if model_tag_ is not None and not isinstance(model_tag_, (bytes, str)):
-            raise TypeError(f'Expected model_tag_ to be a str, received: {type(model_tag_)}')
+            raise TypeError(
+                f'Expected model_tag_ to be a str, received: {type(model_tag_)}'
+            )
 
-        if target_version_ is not None and not isinstance(target_version_, (dict, Number)):
-            raise TypeError(f'Expected target_version_ to be a Number, received: {type(target_version_)}')
+        if target_version_ is not None and not isinstance(
+            target_version_, (dict, Number)
+        ):
+            raise TypeError(
+                f'Expected target_version_ to be a Number, received: {type(target_version_)}'
+            )
 
         self.agent_stream = agent_stream_
         self.dry_run = dry_run_
@@ -15280,8 +21642,12 @@ class UpgradeModelResult(Type):
         error_ = Error.from_json(error) if error else None
 
         # Validate arguments against known Juju API types.
-        if chosen_version_ is not None and not isinstance(chosen_version_, (dict, Number)):
-            raise TypeError(f'Expected chosen_version_ to be a Number, received: {type(chosen_version_)}')
+        if chosen_version_ is not None and not isinstance(
+            chosen_version_, (dict, Number)
+        ):
+            raise TypeError(
+                f'Expected chosen_version_ to be a Number, received: {type(chosen_version_)}'
+            )
 
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
@@ -15305,10 +21671,14 @@ class UpgradeSeriesNotificationParam(Type):
 
         # Validate arguments against known Juju API types.
         if entity_ is not None and not isinstance(entity_, (dict, Entity)):
-            raise TypeError(f'Expected entity_ to be a Entity, received: {type(entity_)}')
+            raise TypeError(
+                f'Expected entity_ to be a Entity, received: {type(entity_)}'
+            )
 
         if watcher_id_ is not None and not isinstance(watcher_id_, (bytes, str)):
-            raise TypeError(f'Expected watcher_id_ to be a str, received: {type(watcher_id_)}')
+            raise TypeError(
+                f'Expected watcher_id_ to be a str, received: {type(watcher_id_)}'
+            )
 
         self.entity = entity_
         self.watcher_id = watcher_id_
@@ -15327,7 +21697,9 @@ class UpgradeSeriesNotificationParams(Type):
 
         # Validate arguments against known Juju API types.
         if params_ is not None and not isinstance(params_, (bytes, str, list)):
-            raise TypeError(f'Expected params_ to be a Sequence, received: {type(params_)}')
+            raise TypeError(
+                f'Expected params_ to be a Sequence, received: {type(params_)}'
+            )
 
         self.params = params_
         self.unknown_fields = unknown_fields
@@ -15350,7 +21722,9 @@ class UpgradeSeriesUnitsResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if unit_names_ is not None and not isinstance(unit_names_, (bytes, str, list)):
-            raise TypeError(f'Expected unit_names_ to be a Sequence, received: {type(unit_names_)}')
+            raise TypeError(
+                f'Expected unit_names_ to be a Sequence, received: {type(unit_names_)}'
+            )
 
         self.error = error_
         self.unit_names = unit_names_
@@ -15369,17 +21743,42 @@ class UpgradeSeriesUnitsResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
 
 
 class UpsertSecretArg(Type):
-    _toSchema = {'content': 'content', 'description': 'description', 'expire_time': 'expire-time', 'label': 'label', 'params': 'params', 'rotate_policy': 'rotate-policy'}
-    _toPy = {'content': 'content', 'description': 'description', 'expire-time': 'expire_time', 'label': 'label', 'params': 'params', 'rotate-policy': 'rotate_policy'}
+    _toSchema = {
+        'content': 'content',
+        'description': 'description',
+        'expire_time': 'expire-time',
+        'label': 'label',
+        'params': 'params',
+        'rotate_policy': 'rotate-policy',
+    }
+    _toPy = {
+        'content': 'content',
+        'description': 'description',
+        'expire-time': 'expire_time',
+        'label': 'label',
+        'params': 'params',
+        'rotate-policy': 'rotate_policy',
+    }
 
-    def __init__(self, content=None, description=None, expire_time=None, label=None, params=None, rotate_policy=None, **unknown_fields):
+    def __init__(
+        self,
+        content=None,
+        description=None,
+        expire_time=None,
+        label=None,
+        params=None,
+        rotate_policy=None,
+        **unknown_fields,
+    ):
         """
         content : SecretContentParams
         description : str
@@ -15396,23 +21795,35 @@ class UpsertSecretArg(Type):
         rotate_policy_ = rotate_policy
 
         # Validate arguments against known Juju API types.
-        if content_ is not None and not isinstance(content_, (dict, SecretContentParams)):
-            raise TypeError(f'Expected content_ to be a SecretContentParams, received: {type(content_)}')
+        if content_ is not None and not isinstance(
+            content_, (dict, SecretContentParams)
+        ):
+            raise TypeError(
+                f'Expected content_ to be a SecretContentParams, received: {type(content_)}'
+            )
 
         if description_ is not None and not isinstance(description_, (bytes, str)):
-            raise TypeError(f'Expected description_ to be a str, received: {type(description_)}')
+            raise TypeError(
+                f'Expected description_ to be a str, received: {type(description_)}'
+            )
 
         if expire_time_ is not None and not isinstance(expire_time_, (bytes, str)):
-            raise TypeError(f'Expected expire_time_ to be a str, received: {type(expire_time_)}')
+            raise TypeError(
+                f'Expected expire_time_ to be a str, received: {type(expire_time_)}'
+            )
 
         if label_ is not None and not isinstance(label_, (bytes, str)):
             raise TypeError(f'Expected label_ to be a str, received: {type(label_)}')
 
         if params_ is not None and not isinstance(params_, dict):
-            raise TypeError(f'Expected params_ to be a Mapping, received: {type(params_)}')
+            raise TypeError(
+                f'Expected params_ to be a Mapping, received: {type(params_)}'
+            )
 
         if rotate_policy_ is not None and not isinstance(rotate_policy_, (bytes, str)):
-            raise TypeError(f'Expected rotate_policy_ to be a str, received: {type(rotate_policy_)}')
+            raise TypeError(
+                f'Expected rotate_policy_ to be a str, received: {type(rotate_policy_)}'
+            )
 
         self.content = content_
         self.description = description_
@@ -15440,7 +21851,9 @@ class UserAccess(Type):
             raise TypeError(f'Expected access_ to be a str, received: {type(access_)}')
 
         if user_tag_ is not None and not isinstance(user_tag_, (bytes, str)):
-            raise TypeError(f'Expected user_tag_ to be a str, received: {type(user_tag_)}')
+            raise TypeError(
+                f'Expected user_tag_ to be a str, received: {type(user_tag_)}'
+            )
 
         self.access = access_
         self.user_tag = user_tag_
@@ -15464,7 +21877,9 @@ class UserAccessResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if result_ is not None and not isinstance(result_, (dict, UserAccess)):
-            raise TypeError(f'Expected result_ to be a UserAccess, received: {type(result_)}')
+            raise TypeError(
+                f'Expected result_ to be a UserAccess, received: {type(result_)}'
+            )
 
         self.error = error_
         self.result = result_
@@ -15483,7 +21898,9 @@ class UserAccessResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -15503,10 +21920,14 @@ class UserCloud(Type):
 
         # Validate arguments against known Juju API types.
         if cloud_tag_ is not None and not isinstance(cloud_tag_, (bytes, str)):
-            raise TypeError(f'Expected cloud_tag_ to be a str, received: {type(cloud_tag_)}')
+            raise TypeError(
+                f'Expected cloud_tag_ to be a str, received: {type(cloud_tag_)}'
+            )
 
         if user_tag_ is not None and not isinstance(user_tag_, (bytes, str)):
-            raise TypeError(f'Expected user_tag_ to be a str, received: {type(user_tag_)}')
+            raise TypeError(
+                f'Expected user_tag_ to be a str, received: {type(user_tag_)}'
+            )
 
         self.cloud_tag = cloud_tag_
         self.user_tag = user_tag_
@@ -15524,18 +21945,48 @@ class UserClouds(Type):
         user_clouds_ = [UserCloud.from_json(o) for o in user_clouds or []]
 
         # Validate arguments against known Juju API types.
-        if user_clouds_ is not None and not isinstance(user_clouds_, (bytes, str, list)):
-            raise TypeError(f'Expected user_clouds_ to be a Sequence, received: {type(user_clouds_)}')
+        if user_clouds_ is not None and not isinstance(
+            user_clouds_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected user_clouds_ to be a Sequence, received: {type(user_clouds_)}'
+            )
 
         self.user_clouds = user_clouds_
         self.unknown_fields = unknown_fields
 
 
 class UserInfo(Type):
-    _toSchema = {'access': 'access', 'created_by': 'created-by', 'date_created': 'date-created', 'disabled': 'disabled', 'display_name': 'display-name', 'last_connection': 'last-connection', 'username': 'username'}
-    _toPy = {'access': 'access', 'created-by': 'created_by', 'date-created': 'date_created', 'disabled': 'disabled', 'display-name': 'display_name', 'last-connection': 'last_connection', 'username': 'username'}
+    _toSchema = {
+        'access': 'access',
+        'created_by': 'created-by',
+        'date_created': 'date-created',
+        'disabled': 'disabled',
+        'display_name': 'display-name',
+        'last_connection': 'last-connection',
+        'username': 'username',
+    }
+    _toPy = {
+        'access': 'access',
+        'created-by': 'created_by',
+        'date-created': 'date_created',
+        'disabled': 'disabled',
+        'display-name': 'display_name',
+        'last-connection': 'last_connection',
+        'username': 'username',
+    }
 
-    def __init__(self, access=None, created_by=None, date_created=None, disabled=None, display_name=None, last_connection=None, username=None, **unknown_fields):
+    def __init__(
+        self,
+        access=None,
+        created_by=None,
+        date_created=None,
+        disabled=None,
+        display_name=None,
+        last_connection=None,
+        username=None,
+        **unknown_fields,
+    ):
         """
         access : str
         created_by : str
@@ -15558,22 +22009,36 @@ class UserInfo(Type):
             raise TypeError(f'Expected access_ to be a str, received: {type(access_)}')
 
         if created_by_ is not None and not isinstance(created_by_, (bytes, str)):
-            raise TypeError(f'Expected created_by_ to be a str, received: {type(created_by_)}')
+            raise TypeError(
+                f'Expected created_by_ to be a str, received: {type(created_by_)}'
+            )
 
         if date_created_ is not None and not isinstance(date_created_, (bytes, str)):
-            raise TypeError(f'Expected date_created_ to be a str, received: {type(date_created_)}')
+            raise TypeError(
+                f'Expected date_created_ to be a str, received: {type(date_created_)}'
+            )
 
         if disabled_ is not None and not isinstance(disabled_, bool):
-            raise TypeError(f'Expected disabled_ to be a bool, received: {type(disabled_)}')
+            raise TypeError(
+                f'Expected disabled_ to be a bool, received: {type(disabled_)}'
+            )
 
         if display_name_ is not None and not isinstance(display_name_, (bytes, str)):
-            raise TypeError(f'Expected display_name_ to be a str, received: {type(display_name_)}')
+            raise TypeError(
+                f'Expected display_name_ to be a str, received: {type(display_name_)}'
+            )
 
-        if last_connection_ is not None and not isinstance(last_connection_, (bytes, str)):
-            raise TypeError(f'Expected last_connection_ to be a str, received: {type(last_connection_)}')
+        if last_connection_ is not None and not isinstance(
+            last_connection_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected last_connection_ to be a str, received: {type(last_connection_)}'
+            )
 
         if username_ is not None and not isinstance(username_, (bytes, str)):
-            raise TypeError(f'Expected username_ to be a str, received: {type(username_)}')
+            raise TypeError(
+                f'Expected username_ to be a str, received: {type(username_)}'
+            )
 
         self.access = access_
         self.created_by = created_by_
@@ -15599,10 +22064,14 @@ class UserInfoRequest(Type):
 
         # Validate arguments against known Juju API types.
         if entities_ is not None and not isinstance(entities_, (bytes, str, list)):
-            raise TypeError(f'Expected entities_ to be a Sequence, received: {type(entities_)}')
+            raise TypeError(
+                f'Expected entities_ to be a Sequence, received: {type(entities_)}'
+            )
 
         if include_disabled_ is not None and not isinstance(include_disabled_, bool):
-            raise TypeError(f'Expected include_disabled_ to be a bool, received: {type(include_disabled_)}')
+            raise TypeError(
+                f'Expected include_disabled_ to be a bool, received: {type(include_disabled_)}'
+            )
 
         self.entities = entities_
         self.include_disabled = include_disabled_
@@ -15626,7 +22095,9 @@ class UserInfoResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if result_ is not None and not isinstance(result_, (dict, UserInfo)):
-            raise TypeError(f'Expected result_ to be a UserInfo, received: {type(result_)}')
+            raise TypeError(
+                f'Expected result_ to be a UserInfo, received: {type(result_)}'
+            )
 
         self.error = error_
         self.result = result_
@@ -15645,7 +22116,9 @@ class UserInfoResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -15664,8 +22137,12 @@ class UserModel(Type):
         model_ = Model.from_json(model) if model else None
 
         # Validate arguments against known Juju API types.
-        if last_connection_ is not None and not isinstance(last_connection_, (bytes, str)):
-            raise TypeError(f'Expected last_connection_ to be a str, received: {type(last_connection_)}')
+        if last_connection_ is not None and not isinstance(
+            last_connection_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected last_connection_ to be a str, received: {type(last_connection_)}'
+            )
 
         if model_ is not None and not isinstance(model_, (dict, Model)):
             raise TypeError(f'Expected model_ to be a Model, received: {type(model_)}')
@@ -15686,18 +22163,72 @@ class UserModelList(Type):
         user_models_ = [UserModel.from_json(o) for o in user_models or []]
 
         # Validate arguments against known Juju API types.
-        if user_models_ is not None and not isinstance(user_models_, (bytes, str, list)):
-            raise TypeError(f'Expected user_models_ to be a Sequence, received: {type(user_models_)}')
+        if user_models_ is not None and not isinstance(
+            user_models_, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected user_models_ to be a Sequence, received: {type(user_models_)}'
+            )
 
         self.user_models = user_models_
         self.unknown_fields = unknown_fields
 
 
 class Value(Type):
-    _toSchema = {'allocate_public_ip': 'allocate-public-ip', 'arch': 'arch', 'container': 'container', 'cores': 'cores', 'cpu_power': 'cpu-power', 'image_id': 'image-id', 'instance_role': 'instance-role', 'instance_type': 'instance-type', 'mem': 'mem', 'root_disk': 'root-disk', 'root_disk_source': 'root-disk-source', 'spaces': 'spaces', 'tags': 'tags', 'virt_type': 'virt-type', 'zones': 'zones'}
-    _toPy = {'allocate-public-ip': 'allocate_public_ip', 'arch': 'arch', 'container': 'container', 'cores': 'cores', 'cpu-power': 'cpu_power', 'image-id': 'image_id', 'instance-role': 'instance_role', 'instance-type': 'instance_type', 'mem': 'mem', 'root-disk': 'root_disk', 'root-disk-source': 'root_disk_source', 'spaces': 'spaces', 'tags': 'tags', 'virt-type': 'virt_type', 'zones': 'zones'}
+    _toSchema = {
+        'allocate_public_ip': 'allocate-public-ip',
+        'arch': 'arch',
+        'container': 'container',
+        'cores': 'cores',
+        'cpu_power': 'cpu-power',
+        'image_id': 'image-id',
+        'instance_role': 'instance-role',
+        'instance_type': 'instance-type',
+        'mem': 'mem',
+        'root_disk': 'root-disk',
+        'root_disk_source': 'root-disk-source',
+        'spaces': 'spaces',
+        'tags': 'tags',
+        'virt_type': 'virt-type',
+        'zones': 'zones',
+    }
+    _toPy = {
+        'allocate-public-ip': 'allocate_public_ip',
+        'arch': 'arch',
+        'container': 'container',
+        'cores': 'cores',
+        'cpu-power': 'cpu_power',
+        'image-id': 'image_id',
+        'instance-role': 'instance_role',
+        'instance-type': 'instance_type',
+        'mem': 'mem',
+        'root-disk': 'root_disk',
+        'root-disk-source': 'root_disk_source',
+        'spaces': 'spaces',
+        'tags': 'tags',
+        'virt-type': 'virt_type',
+        'zones': 'zones',
+    }
 
-    def __init__(self, allocate_public_ip=None, arch=None, container=None, cores=None, cpu_power=None, image_id=None, instance_role=None, instance_type=None, mem=None, root_disk=None, root_disk_source=None, spaces=None, tags=None, virt_type=None, zones=None, **unknown_fields):
+    def __init__(
+        self,
+        allocate_public_ip=None,
+        arch=None,
+        container=None,
+        cores=None,
+        cpu_power=None,
+        image_id=None,
+        instance_role=None,
+        instance_type=None,
+        mem=None,
+        root_disk=None,
+        root_disk_source=None,
+        spaces=None,
+        tags=None,
+        virt_type=None,
+        zones=None,
+        **unknown_fields,
+    ):
         """
         allocate_public_ip : bool
         arch : str
@@ -15732,50 +22263,76 @@ class Value(Type):
         zones_ = zones
 
         # Validate arguments against known Juju API types.
-        if allocate_public_ip_ is not None and not isinstance(allocate_public_ip_, bool):
-            raise TypeError(f'Expected allocate_public_ip_ to be a bool, received: {type(allocate_public_ip_)}')
+        if allocate_public_ip_ is not None and not isinstance(
+            allocate_public_ip_, bool
+        ):
+            raise TypeError(
+                f'Expected allocate_public_ip_ to be a bool, received: {type(allocate_public_ip_)}'
+            )
 
         if arch_ is not None and not isinstance(arch_, (bytes, str)):
             raise TypeError(f'Expected arch_ to be a str, received: {type(arch_)}')
 
         if container_ is not None and not isinstance(container_, (bytes, str)):
-            raise TypeError(f'Expected container_ to be a str, received: {type(container_)}')
+            raise TypeError(
+                f'Expected container_ to be a str, received: {type(container_)}'
+            )
 
         if cores_ is not None and not isinstance(cores_, int):
             raise TypeError(f'Expected cores_ to be a int, received: {type(cores_)}')
 
         if cpu_power_ is not None and not isinstance(cpu_power_, int):
-            raise TypeError(f'Expected cpu_power_ to be a int, received: {type(cpu_power_)}')
+            raise TypeError(
+                f'Expected cpu_power_ to be a int, received: {type(cpu_power_)}'
+            )
 
         if image_id_ is not None and not isinstance(image_id_, (bytes, str)):
-            raise TypeError(f'Expected image_id_ to be a str, received: {type(image_id_)}')
+            raise TypeError(
+                f'Expected image_id_ to be a str, received: {type(image_id_)}'
+            )
 
         if instance_role_ is not None and not isinstance(instance_role_, (bytes, str)):
-            raise TypeError(f'Expected instance_role_ to be a str, received: {type(instance_role_)}')
+            raise TypeError(
+                f'Expected instance_role_ to be a str, received: {type(instance_role_)}'
+            )
 
         if instance_type_ is not None and not isinstance(instance_type_, (bytes, str)):
-            raise TypeError(f'Expected instance_type_ to be a str, received: {type(instance_type_)}')
+            raise TypeError(
+                f'Expected instance_type_ to be a str, received: {type(instance_type_)}'
+            )
 
         if mem_ is not None and not isinstance(mem_, int):
             raise TypeError(f'Expected mem_ to be a int, received: {type(mem_)}')
 
         if root_disk_ is not None and not isinstance(root_disk_, int):
-            raise TypeError(f'Expected root_disk_ to be a int, received: {type(root_disk_)}')
+            raise TypeError(
+                f'Expected root_disk_ to be a int, received: {type(root_disk_)}'
+            )
 
-        if root_disk_source_ is not None and not isinstance(root_disk_source_, (bytes, str)):
-            raise TypeError(f'Expected root_disk_source_ to be a str, received: {type(root_disk_source_)}')
+        if root_disk_source_ is not None and not isinstance(
+            root_disk_source_, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected root_disk_source_ to be a str, received: {type(root_disk_source_)}'
+            )
 
         if spaces_ is not None and not isinstance(spaces_, (bytes, str, list)):
-            raise TypeError(f'Expected spaces_ to be a Sequence, received: {type(spaces_)}')
+            raise TypeError(
+                f'Expected spaces_ to be a Sequence, received: {type(spaces_)}'
+            )
 
         if tags_ is not None and not isinstance(tags_, (bytes, str, list)):
             raise TypeError(f'Expected tags_ to be a Sequence, received: {type(tags_)}')
 
         if virt_type_ is not None and not isinstance(virt_type_, (bytes, str)):
-            raise TypeError(f'Expected virt_type_ to be a str, received: {type(virt_type_)}')
+            raise TypeError(
+                f'Expected virt_type_ to be a str, received: {type(virt_type_)}'
+            )
 
         if zones_ is not None and not isinstance(zones_, (bytes, str, list)):
-            raise TypeError(f'Expected zones_ to be a Sequence, received: {type(zones_)}')
+            raise TypeError(
+                f'Expected zones_ to be a Sequence, received: {type(zones_)}'
+            )
 
         self.allocate_public_ip = allocate_public_ip_
         self.arch = arch_
@@ -15796,10 +22353,36 @@ class Value(Type):
 
 
 class VolumeAttachmentDetails(Type):
-    _toSchema = {'bus_address': 'bus-address', 'device_link': 'device-link', 'device_name': 'device-name', 'life': 'life', 'plan_info': 'plan-info', 'read_only': 'read-only', 'volumeattachmentinfo': 'VolumeAttachmentInfo'}
-    _toPy = {'VolumeAttachmentInfo': 'volumeattachmentinfo', 'bus-address': 'bus_address', 'device-link': 'device_link', 'device-name': 'device_name', 'life': 'life', 'plan-info': 'plan_info', 'read-only': 'read_only'}
+    _toSchema = {
+        'bus_address': 'bus-address',
+        'device_link': 'device-link',
+        'device_name': 'device-name',
+        'life': 'life',
+        'plan_info': 'plan-info',
+        'read_only': 'read-only',
+        'volumeattachmentinfo': 'VolumeAttachmentInfo',
+    }
+    _toPy = {
+        'VolumeAttachmentInfo': 'volumeattachmentinfo',
+        'bus-address': 'bus_address',
+        'device-link': 'device_link',
+        'device-name': 'device_name',
+        'life': 'life',
+        'plan-info': 'plan_info',
+        'read-only': 'read_only',
+    }
 
-    def __init__(self, volumeattachmentinfo=None, bus_address=None, device_link=None, device_name=None, life=None, plan_info=None, read_only=None, **unknown_fields):
+    def __init__(
+        self,
+        volumeattachmentinfo=None,
+        bus_address=None,
+        device_link=None,
+        device_name=None,
+        life=None,
+        plan_info=None,
+        read_only=None,
+        **unknown_fields,
+    ):
         """
         volumeattachmentinfo : VolumeAttachmentInfo
         bus_address : str
@@ -15809,35 +22392,57 @@ class VolumeAttachmentDetails(Type):
         plan_info : VolumeAttachmentPlanInfo
         read_only : bool
         """
-        volumeattachmentinfo_ = VolumeAttachmentInfo.from_json(volumeattachmentinfo) if volumeattachmentinfo else None
+        volumeattachmentinfo_ = (
+            VolumeAttachmentInfo.from_json(volumeattachmentinfo)
+            if volumeattachmentinfo
+            else None
+        )
         bus_address_ = bus_address
         device_link_ = device_link
         device_name_ = device_name
         life_ = life
-        plan_info_ = VolumeAttachmentPlanInfo.from_json(plan_info) if plan_info else None
+        plan_info_ = (
+            VolumeAttachmentPlanInfo.from_json(plan_info) if plan_info else None
+        )
         read_only_ = read_only
 
         # Validate arguments against known Juju API types.
-        if volumeattachmentinfo_ is not None and not isinstance(volumeattachmentinfo_, (dict, VolumeAttachmentInfo)):
-            raise TypeError(f'Expected volumeattachmentinfo_ to be a VolumeAttachmentInfo, received: {type(volumeattachmentinfo_)}')
+        if volumeattachmentinfo_ is not None and not isinstance(
+            volumeattachmentinfo_, (dict, VolumeAttachmentInfo)
+        ):
+            raise TypeError(
+                f'Expected volumeattachmentinfo_ to be a VolumeAttachmentInfo, received: {type(volumeattachmentinfo_)}'
+            )
 
         if bus_address_ is not None and not isinstance(bus_address_, (bytes, str)):
-            raise TypeError(f'Expected bus_address_ to be a str, received: {type(bus_address_)}')
+            raise TypeError(
+                f'Expected bus_address_ to be a str, received: {type(bus_address_)}'
+            )
 
         if device_link_ is not None and not isinstance(device_link_, (bytes, str)):
-            raise TypeError(f'Expected device_link_ to be a str, received: {type(device_link_)}')
+            raise TypeError(
+                f'Expected device_link_ to be a str, received: {type(device_link_)}'
+            )
 
         if device_name_ is not None and not isinstance(device_name_, (bytes, str)):
-            raise TypeError(f'Expected device_name_ to be a str, received: {type(device_name_)}')
+            raise TypeError(
+                f'Expected device_name_ to be a str, received: {type(device_name_)}'
+            )
 
         if life_ is not None and not isinstance(life_, (bytes, str)):
             raise TypeError(f'Expected life_ to be a str, received: {type(life_)}')
 
-        if plan_info_ is not None and not isinstance(plan_info_, (dict, VolumeAttachmentPlanInfo)):
-            raise TypeError(f'Expected plan_info_ to be a VolumeAttachmentPlanInfo, received: {type(plan_info_)}')
+        if plan_info_ is not None and not isinstance(
+            plan_info_, (dict, VolumeAttachmentPlanInfo)
+        ):
+            raise TypeError(
+                f'Expected plan_info_ to be a VolumeAttachmentPlanInfo, received: {type(plan_info_)}'
+            )
 
         if read_only_ is not None and not isinstance(read_only_, bool):
-            raise TypeError(f'Expected read_only_ to be a bool, received: {type(read_only_)}')
+            raise TypeError(
+                f'Expected read_only_ to be a bool, received: {type(read_only_)}'
+            )
 
         self.volumeattachmentinfo = volumeattachmentinfo_
         self.bus_address = bus_address_
@@ -15850,10 +22455,30 @@ class VolumeAttachmentDetails(Type):
 
 
 class VolumeAttachmentInfo(Type):
-    _toSchema = {'bus_address': 'bus-address', 'device_link': 'device-link', 'device_name': 'device-name', 'plan_info': 'plan-info', 'read_only': 'read-only'}
-    _toPy = {'bus-address': 'bus_address', 'device-link': 'device_link', 'device-name': 'device_name', 'plan-info': 'plan_info', 'read-only': 'read_only'}
+    _toSchema = {
+        'bus_address': 'bus-address',
+        'device_link': 'device-link',
+        'device_name': 'device-name',
+        'plan_info': 'plan-info',
+        'read_only': 'read-only',
+    }
+    _toPy = {
+        'bus-address': 'bus_address',
+        'device-link': 'device_link',
+        'device-name': 'device_name',
+        'plan-info': 'plan_info',
+        'read-only': 'read_only',
+    }
 
-    def __init__(self, bus_address=None, device_link=None, device_name=None, plan_info=None, read_only=None, **unknown_fields):
+    def __init__(
+        self,
+        bus_address=None,
+        device_link=None,
+        device_name=None,
+        plan_info=None,
+        read_only=None,
+        **unknown_fields,
+    ):
         """
         bus_address : str
         device_link : str
@@ -15864,24 +22489,38 @@ class VolumeAttachmentInfo(Type):
         bus_address_ = bus_address
         device_link_ = device_link
         device_name_ = device_name
-        plan_info_ = VolumeAttachmentPlanInfo.from_json(plan_info) if plan_info else None
+        plan_info_ = (
+            VolumeAttachmentPlanInfo.from_json(plan_info) if plan_info else None
+        )
         read_only_ = read_only
 
         # Validate arguments against known Juju API types.
         if bus_address_ is not None and not isinstance(bus_address_, (bytes, str)):
-            raise TypeError(f'Expected bus_address_ to be a str, received: {type(bus_address_)}')
+            raise TypeError(
+                f'Expected bus_address_ to be a str, received: {type(bus_address_)}'
+            )
 
         if device_link_ is not None and not isinstance(device_link_, (bytes, str)):
-            raise TypeError(f'Expected device_link_ to be a str, received: {type(device_link_)}')
+            raise TypeError(
+                f'Expected device_link_ to be a str, received: {type(device_link_)}'
+            )
 
         if device_name_ is not None and not isinstance(device_name_, (bytes, str)):
-            raise TypeError(f'Expected device_name_ to be a str, received: {type(device_name_)}')
+            raise TypeError(
+                f'Expected device_name_ to be a str, received: {type(device_name_)}'
+            )
 
-        if plan_info_ is not None and not isinstance(plan_info_, (dict, VolumeAttachmentPlanInfo)):
-            raise TypeError(f'Expected plan_info_ to be a VolumeAttachmentPlanInfo, received: {type(plan_info_)}')
+        if plan_info_ is not None and not isinstance(
+            plan_info_, (dict, VolumeAttachmentPlanInfo)
+        ):
+            raise TypeError(
+                f'Expected plan_info_ to be a VolumeAttachmentPlanInfo, received: {type(plan_info_)}'
+            )
 
         if read_only_ is not None and not isinstance(read_only_, bool):
-            raise TypeError(f'Expected read_only_ to be a bool, received: {type(read_only_)}')
+            raise TypeError(
+                f'Expected read_only_ to be a bool, received: {type(read_only_)}'
+            )
 
         self.bus_address = bus_address_
         self.device_link = device_link_
@@ -15905,10 +22544,14 @@ class VolumeAttachmentPlanInfo(Type):
 
         # Validate arguments against known Juju API types.
         if device_attributes_ is not None and not isinstance(device_attributes_, dict):
-            raise TypeError(f'Expected device_attributes_ to be a Mapping, received: {type(device_attributes_)}')
+            raise TypeError(
+                f'Expected device_attributes_ to be a Mapping, received: {type(device_attributes_)}'
+            )
 
         if device_type_ is not None and not isinstance(device_type_, (bytes, str)):
-            raise TypeError(f'Expected device_type_ to be a str, received: {type(device_type_)}')
+            raise TypeError(
+                f'Expected device_type_ to be a str, received: {type(device_type_)}'
+            )
 
         self.device_attributes = device_attributes_
         self.device_type = device_type_
@@ -15916,10 +22559,36 @@ class VolumeAttachmentPlanInfo(Type):
 
 
 class VolumeDetails(Type):
-    _toSchema = {'info': 'info', 'life': 'life', 'machine_attachments': 'machine-attachments', 'status': 'status', 'storage': 'storage', 'unit_attachments': 'unit-attachments', 'volume_tag': 'volume-tag'}
-    _toPy = {'info': 'info', 'life': 'life', 'machine-attachments': 'machine_attachments', 'status': 'status', 'storage': 'storage', 'unit-attachments': 'unit_attachments', 'volume-tag': 'volume_tag'}
+    _toSchema = {
+        'info': 'info',
+        'life': 'life',
+        'machine_attachments': 'machine-attachments',
+        'status': 'status',
+        'storage': 'storage',
+        'unit_attachments': 'unit-attachments',
+        'volume_tag': 'volume-tag',
+    }
+    _toPy = {
+        'info': 'info',
+        'life': 'life',
+        'machine-attachments': 'machine_attachments',
+        'status': 'status',
+        'storage': 'storage',
+        'unit-attachments': 'unit_attachments',
+        'volume-tag': 'volume_tag',
+    }
 
-    def __init__(self, info=None, life=None, machine_attachments=None, status=None, storage=None, unit_attachments=None, volume_tag=None, **unknown_fields):
+    def __init__(
+        self,
+        info=None,
+        life=None,
+        machine_attachments=None,
+        status=None,
+        storage=None,
+        unit_attachments=None,
+        volume_tag=None,
+        **unknown_fields,
+    ):
         """
         info : VolumeInfo
         life : str
@@ -15931,33 +22600,53 @@ class VolumeDetails(Type):
         """
         info_ = VolumeInfo.from_json(info) if info else None
         life_ = life
-        machine_attachments_ = {k: VolumeAttachmentDetails.from_json(v) for k, v in (machine_attachments or {}).items()}
+        machine_attachments_ = {
+            k: VolumeAttachmentDetails.from_json(v)
+            for k, v in (machine_attachments or {}).items()
+        }
         status_ = EntityStatus.from_json(status) if status else None
         storage_ = StorageDetails.from_json(storage) if storage else None
-        unit_attachments_ = {k: VolumeAttachmentDetails.from_json(v) for k, v in (unit_attachments or {}).items()}
+        unit_attachments_ = {
+            k: VolumeAttachmentDetails.from_json(v)
+            for k, v in (unit_attachments or {}).items()
+        }
         volume_tag_ = volume_tag
 
         # Validate arguments against known Juju API types.
         if info_ is not None and not isinstance(info_, (dict, VolumeInfo)):
-            raise TypeError(f'Expected info_ to be a VolumeInfo, received: {type(info_)}')
+            raise TypeError(
+                f'Expected info_ to be a VolumeInfo, received: {type(info_)}'
+            )
 
         if life_ is not None and not isinstance(life_, (bytes, str)):
             raise TypeError(f'Expected life_ to be a str, received: {type(life_)}')
 
-        if machine_attachments_ is not None and not isinstance(machine_attachments_, dict):
-            raise TypeError(f'Expected machine_attachments_ to be a Mapping, received: {type(machine_attachments_)}')
+        if machine_attachments_ is not None and not isinstance(
+            machine_attachments_, dict
+        ):
+            raise TypeError(
+                f'Expected machine_attachments_ to be a Mapping, received: {type(machine_attachments_)}'
+            )
 
         if status_ is not None and not isinstance(status_, (dict, EntityStatus)):
-            raise TypeError(f'Expected status_ to be a EntityStatus, received: {type(status_)}')
+            raise TypeError(
+                f'Expected status_ to be a EntityStatus, received: {type(status_)}'
+            )
 
         if storage_ is not None and not isinstance(storage_, (dict, StorageDetails)):
-            raise TypeError(f'Expected storage_ to be a StorageDetails, received: {type(storage_)}')
+            raise TypeError(
+                f'Expected storage_ to be a StorageDetails, received: {type(storage_)}'
+            )
 
         if unit_attachments_ is not None and not isinstance(unit_attachments_, dict):
-            raise TypeError(f'Expected unit_attachments_ to be a Mapping, received: {type(unit_attachments_)}')
+            raise TypeError(
+                f'Expected unit_attachments_ to be a Mapping, received: {type(unit_attachments_)}'
+            )
 
         if volume_tag_ is not None and not isinstance(volume_tag_, (bytes, str)):
-            raise TypeError(f'Expected volume_tag_ to be a str, received: {type(volume_tag_)}')
+            raise TypeError(
+                f'Expected volume_tag_ to be a str, received: {type(volume_tag_)}'
+            )
 
         self.info = info_
         self.life = life_
@@ -15986,7 +22675,9 @@ class VolumeDetailsListResult(Type):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
 
         if result_ is not None and not isinstance(result_, (bytes, str, list)):
-            raise TypeError(f'Expected result_ to be a Sequence, received: {type(result_)}')
+            raise TypeError(
+                f'Expected result_ to be a Sequence, received: {type(result_)}'
+            )
 
         self.error = error_
         self.result = result_
@@ -16005,7 +22696,9 @@ class VolumeDetailsListResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
@@ -16023,7 +22716,9 @@ class VolumeFilter(Type):
 
         # Validate arguments against known Juju API types.
         if machines_ is not None and not isinstance(machines_, (bytes, str, list)):
-            raise TypeError(f'Expected machines_ to be a Sequence, received: {type(machines_)}')
+            raise TypeError(
+                f'Expected machines_ to be a Sequence, received: {type(machines_)}'
+            )
 
         self.machines = machines_
         self.unknown_fields = unknown_fields
@@ -16041,17 +22736,42 @@ class VolumeFilters(Type):
 
         # Validate arguments against known Juju API types.
         if filters_ is not None and not isinstance(filters_, (bytes, str, list)):
-            raise TypeError(f'Expected filters_ to be a Sequence, received: {type(filters_)}')
+            raise TypeError(
+                f'Expected filters_ to be a Sequence, received: {type(filters_)}'
+            )
 
         self.filters = filters_
         self.unknown_fields = unknown_fields
 
 
 class VolumeInfo(Type):
-    _toSchema = {'hardware_id': 'hardware-id', 'persistent': 'persistent', 'pool': 'pool', 'size': 'size', 'volume_id': 'volume-id', 'wwn': 'wwn'}
-    _toPy = {'hardware-id': 'hardware_id', 'persistent': 'persistent', 'pool': 'pool', 'size': 'size', 'volume-id': 'volume_id', 'wwn': 'wwn'}
+    _toSchema = {
+        'hardware_id': 'hardware-id',
+        'persistent': 'persistent',
+        'pool': 'pool',
+        'size': 'size',
+        'volume_id': 'volume-id',
+        'wwn': 'wwn',
+    }
+    _toPy = {
+        'hardware-id': 'hardware_id',
+        'persistent': 'persistent',
+        'pool': 'pool',
+        'size': 'size',
+        'volume-id': 'volume_id',
+        'wwn': 'wwn',
+    }
 
-    def __init__(self, hardware_id=None, persistent=None, pool=None, size=None, volume_id=None, wwn=None, **unknown_fields):
+    def __init__(
+        self,
+        hardware_id=None,
+        persistent=None,
+        pool=None,
+        size=None,
+        volume_id=None,
+        wwn=None,
+        **unknown_fields,
+    ):
         """
         hardware_id : str
         persistent : bool
@@ -16069,10 +22789,14 @@ class VolumeInfo(Type):
 
         # Validate arguments against known Juju API types.
         if hardware_id_ is not None and not isinstance(hardware_id_, (bytes, str)):
-            raise TypeError(f'Expected hardware_id_ to be a str, received: {type(hardware_id_)}')
+            raise TypeError(
+                f'Expected hardware_id_ to be a str, received: {type(hardware_id_)}'
+            )
 
         if persistent_ is not None and not isinstance(persistent_, bool):
-            raise TypeError(f'Expected persistent_ to be a bool, received: {type(persistent_)}')
+            raise TypeError(
+                f'Expected persistent_ to be a bool, received: {type(persistent_)}'
+            )
 
         if pool_ is not None and not isinstance(pool_, (bytes, str)):
             raise TypeError(f'Expected pool_ to be a str, received: {type(pool_)}')
@@ -16081,7 +22805,9 @@ class VolumeInfo(Type):
             raise TypeError(f'Expected size_ to be a int, received: {type(size_)}')
 
         if volume_id_ is not None and not isinstance(volume_id_, (bytes, str)):
-            raise TypeError(f'Expected volume_id_ to be a str, received: {type(volume_id_)}')
+            raise TypeError(
+                f'Expected volume_id_ to be a str, received: {type(volume_id_)}'
+            )
 
         if wwn_ is not None and not isinstance(wwn_, (bytes, str)):
             raise TypeError(f'Expected wwn_ to be a str, received: {type(wwn_)}')
@@ -16111,7 +22837,9 @@ class ZoneResult(Type):
 
         # Validate arguments against known Juju API types.
         if available_ is not None and not isinstance(available_, bool):
-            raise TypeError(f'Expected available_ to be a bool, received: {type(available_)}')
+            raise TypeError(
+                f'Expected available_ to be a bool, received: {type(available_)}'
+            )
 
         if error_ is not None and not isinstance(error_, (dict, Error)):
             raise TypeError(f'Expected error_ to be a Error, received: {type(error_)}')
@@ -16137,9 +22865,9 @@ class ZoneResults(Type):
 
         # Validate arguments against known Juju API types.
         if results_ is not None and not isinstance(results_, (bytes, str, list)):
-            raise TypeError(f'Expected results_ to be a Sequence, received: {type(results_)}')
+            raise TypeError(
+                f'Expected results_ to be a Sequence, received: {type(results_)}'
+            )
 
         self.results = results_
         self.unknown_fields = unknown_fields
-
-

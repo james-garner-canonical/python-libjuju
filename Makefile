@@ -18,6 +18,7 @@ clean:
 client:
 	tox -r --notest -e lint,py3
 	$(PY) -m juju.client.facade -s "juju/client/schemas*" -o juju/client/
+	ruff format juju/client/_client*.py juju/client/_definitions.py
 
 .PHONY: run-unit-tests
 run-unit-tests: .tox lint

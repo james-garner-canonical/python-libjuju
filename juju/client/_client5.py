@@ -4,112 +4,172 @@
 from juju.client.facade import Type, ReturnMapping
 from juju.client._definitions import *
 
+
 class SubnetsFacade(Type):
     name = 'Subnets'
     version = 5
-    schema =     {'definitions': {'CIDRParams': {'additionalProperties': False,
-                                    'properties': {'cidrs': {'items': {'type': 'string'},
-                                                             'type': 'array'}},
-                                    'required': ['cidrs'],
-                                    'type': 'object'},
-                     'Error': {'additionalProperties': False,
-                               'properties': {'code': {'type': 'string'},
-                                              'info': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                    'type': 'object'}},
-                                                       'type': 'object'},
-                                              'message': {'type': 'string'}},
-                               'required': ['message', 'code'],
-                               'type': 'object'},
-                     'ListSubnetsResults': {'additionalProperties': False,
-                                            'properties': {'results': {'items': {'$ref': '#/definitions/Subnet'},
-                                                                       'type': 'array'}},
-                                            'required': ['results'],
-                                            'type': 'object'},
-                     'Subnet': {'additionalProperties': False,
-                                'properties': {'cidr': {'type': 'string'},
-                                               'life': {'type': 'string'},
-                                               'provider-id': {'type': 'string'},
-                                               'provider-network-id': {'type': 'string'},
-                                               'provider-space-id': {'type': 'string'},
-                                               'space-tag': {'type': 'string'},
-                                               'status': {'type': 'string'},
-                                               'vlan-tag': {'type': 'integer'},
-                                               'zones': {'items': {'type': 'string'},
-                                                         'type': 'array'}},
-                                'required': ['cidr',
-                                             'vlan-tag',
-                                             'life',
-                                             'space-tag',
-                                             'zones'],
-                                'type': 'object'},
-                     'SubnetV2': {'additionalProperties': False,
-                                  'properties': {'Subnet': {'$ref': '#/definitions/Subnet'},
-                                                 'cidr': {'type': 'string'},
-                                                 'id': {'type': 'string'},
-                                                 'life': {'type': 'string'},
-                                                 'provider-id': {'type': 'string'},
-                                                 'provider-network-id': {'type': 'string'},
-                                                 'provider-space-id': {'type': 'string'},
-                                                 'space-tag': {'type': 'string'},
-                                                 'status': {'type': 'string'},
-                                                 'vlan-tag': {'type': 'integer'},
-                                                 'zones': {'items': {'type': 'string'},
-                                                           'type': 'array'}},
-                                  'required': ['cidr',
-                                               'vlan-tag',
-                                               'life',
-                                               'space-tag',
-                                               'zones',
-                                               'Subnet'],
-                                  'type': 'object'},
-                     'SubnetsFilters': {'additionalProperties': False,
-                                        'properties': {'space-tag': {'type': 'string'},
-                                                       'zone': {'type': 'string'}},
-                                        'type': 'object'},
-                     'SubnetsResult': {'additionalProperties': False,
-                                       'properties': {'error': {'$ref': '#/definitions/Error'},
-                                                      'subnets': {'items': {'$ref': '#/definitions/SubnetV2'},
-                                                                  'type': 'array'}},
-                                       'type': 'object'},
-                     'SubnetsResults': {'additionalProperties': False,
-                                        'properties': {'results': {'items': {'$ref': '#/definitions/SubnetsResult'},
-                                                                   'type': 'array'}},
-                                        'required': ['results'],
-                                        'type': 'object'},
-                     'ZoneResult': {'additionalProperties': False,
-                                    'properties': {'available': {'type': 'boolean'},
-                                                   'error': {'$ref': '#/definitions/Error'},
-                                                   'name': {'type': 'string'}},
-                                    'required': ['name', 'available'],
-                                    'type': 'object'},
-                     'ZoneResults': {'additionalProperties': False,
-                                     'properties': {'results': {'items': {'$ref': '#/definitions/ZoneResult'},
-                                                                'type': 'array'}},
-                                     'required': ['results'],
-                                     'type': 'object'}},
-     'properties': {'AllZones': {'description': 'AllZones returns all availability '
-                                                'zones known to Juju. If a\n'
-                                                'zone is unusable, unavailable, or '
-                                                'deprecated the Available\n'
-                                                'field will be false.',
-                                 'properties': {'Result': {'$ref': '#/definitions/ZoneResults'}},
-                                 'type': 'object'},
-                    'ListSubnets': {'description': 'ListSubnets returns the '
-                                                   'matching subnets after '
-                                                   'applying\n'
-                                                   'optional filters.',
-                                    'properties': {'Params': {'$ref': '#/definitions/SubnetsFilters'},
-                                                   'Result': {'$ref': '#/definitions/ListSubnetsResults'}},
-                                    'type': 'object'},
-                    'SubnetsByCIDR': {'description': 'SubnetsByCIDR returns the '
-                                                     'collection of subnets '
-                                                     'matching each CIDR in the '
-                                                     'input.',
-                                      'properties': {'Params': {'$ref': '#/definitions/CIDRParams'},
-                                                     'Result': {'$ref': '#/definitions/SubnetsResults'}},
-                                      'type': 'object'}},
-     'type': 'object'}
-
+    schema = {
+        'definitions': {
+            'CIDRParams': {
+                'additionalProperties': False,
+                'properties': {'cidrs': {'items': {'type': 'string'}, 'type': 'array'}},
+                'required': ['cidrs'],
+                'type': 'object',
+            },
+            'Error': {
+                'additionalProperties': False,
+                'properties': {
+                    'code': {'type': 'string'},
+                    'info': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'message': {'type': 'string'},
+                },
+                'required': ['message', 'code'],
+                'type': 'object',
+            },
+            'ListSubnetsResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/Subnet'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'Subnet': {
+                'additionalProperties': False,
+                'properties': {
+                    'cidr': {'type': 'string'},
+                    'life': {'type': 'string'},
+                    'provider-id': {'type': 'string'},
+                    'provider-network-id': {'type': 'string'},
+                    'provider-space-id': {'type': 'string'},
+                    'space-tag': {'type': 'string'},
+                    'status': {'type': 'string'},
+                    'vlan-tag': {'type': 'integer'},
+                    'zones': {'items': {'type': 'string'}, 'type': 'array'},
+                },
+                'required': ['cidr', 'vlan-tag', 'life', 'space-tag', 'zones'],
+                'type': 'object',
+            },
+            'SubnetV2': {
+                'additionalProperties': False,
+                'properties': {
+                    'Subnet': {'$ref': '#/definitions/Subnet'},
+                    'cidr': {'type': 'string'},
+                    'id': {'type': 'string'},
+                    'life': {'type': 'string'},
+                    'provider-id': {'type': 'string'},
+                    'provider-network-id': {'type': 'string'},
+                    'provider-space-id': {'type': 'string'},
+                    'space-tag': {'type': 'string'},
+                    'status': {'type': 'string'},
+                    'vlan-tag': {'type': 'integer'},
+                    'zones': {'items': {'type': 'string'}, 'type': 'array'},
+                },
+                'required': [
+                    'cidr',
+                    'vlan-tag',
+                    'life',
+                    'space-tag',
+                    'zones',
+                    'Subnet',
+                ],
+                'type': 'object',
+            },
+            'SubnetsFilters': {
+                'additionalProperties': False,
+                'properties': {
+                    'space-tag': {'type': 'string'},
+                    'zone': {'type': 'string'},
+                },
+                'type': 'object',
+            },
+            'SubnetsResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'subnets': {
+                        'items': {'$ref': '#/definitions/SubnetV2'},
+                        'type': 'array',
+                    },
+                },
+                'type': 'object',
+            },
+            'SubnetsResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/SubnetsResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'ZoneResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'available': {'type': 'boolean'},
+                    'error': {'$ref': '#/definitions/Error'},
+                    'name': {'type': 'string'},
+                },
+                'required': ['name', 'available'],
+                'type': 'object',
+            },
+            'ZoneResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/ZoneResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+        },
+        'properties': {
+            'AllZones': {
+                'description': 'AllZones returns all availability '
+                'zones known to Juju. If a\n'
+                'zone is unusable, unavailable, or '
+                'deprecated the Available\n'
+                'field will be false.',
+                'properties': {'Result': {'$ref': '#/definitions/ZoneResults'}},
+                'type': 'object',
+            },
+            'ListSubnets': {
+                'description': 'ListSubnets returns the '
+                'matching subnets after '
+                'applying\n'
+                'optional filters.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/SubnetsFilters'},
+                    'Result': {'$ref': '#/definitions/ListSubnetsResults'},
+                },
+                'type': 'object',
+            },
+            'SubnetsByCIDR': {
+                'description': 'SubnetsByCIDR returns the '
+                'collection of subnets '
+                'matching each CIDR in the '
+                'input.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/CIDRParams'},
+                    'Result': {'$ref': '#/definitions/SubnetsResults'},
+                },
+                'type': 'object',
+            },
+        },
+        'type': 'object',
+    }
 
     @ReturnMapping(ZoneResults)
     async def AllZones(self):
@@ -134,7 +194,6 @@ class SubnetsFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(ListSubnetsResults)
     async def ListSubnets(self, space_tag=None, zone=None):
         """
@@ -146,7 +205,9 @@ class SubnetsFacade(Type):
         Returns -> ListSubnetsResults
         """
         if space_tag is not None and not isinstance(space_tag, (bytes, str)):
-            raise TypeError(f'Expected space_tag to be a str, received: {type(space_tag)}')
+            raise TypeError(
+                f'Expected space_tag to be a str, received: {type(space_tag)}'
+            )
 
         if zone is not None and not isinstance(zone, (bytes, str)):
             raise TypeError(f'Expected zone to be a str, received: {type(zone)}')
@@ -163,7 +224,6 @@ class SubnetsFacade(Type):
         _params['zone'] = zone
         reply = await self.rpc(msg)
         return reply
-
 
     @ReturnMapping(SubnetsResults)
     async def SubnetsByCIDR(self, cidrs=None):
@@ -187,4 +247,3 @@ class SubnetsFacade(Type):
         _params['cidrs'] = cidrs
         reply = await self.rpc(msg)
         return reply
-

@@ -4,219 +4,350 @@
 from juju.client.facade import Type, ReturnMapping
 from juju.client._definitions import *
 
+
 class ActionFacade(Type):
     name = 'Action'
     version = 7
-    schema =     {'definitions': {'Action': {'additionalProperties': False,
-                                'properties': {'execution-group': {'type': 'string'},
-                                               'name': {'type': 'string'},
-                                               'parallel': {'type': 'boolean'},
-                                               'parameters': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                           'type': 'object'}},
-                                                              'type': 'object'},
-                                               'receiver': {'type': 'string'},
-                                               'tag': {'type': 'string'}},
-                                'required': ['tag', 'receiver', 'name'],
-                                'type': 'object'},
-                     'ActionMessage': {'additionalProperties': False,
-                                       'properties': {'message': {'type': 'string'},
-                                                      'timestamp': {'format': 'date-time',
-                                                                    'type': 'string'}},
-                                       'required': ['timestamp', 'message'],
-                                       'type': 'object'},
-                     'ActionResult': {'additionalProperties': False,
-                                      'properties': {'action': {'$ref': '#/definitions/Action'},
-                                                     'completed': {'format': 'date-time',
-                                                                   'type': 'string'},
-                                                     'enqueued': {'format': 'date-time',
-                                                                  'type': 'string'},
-                                                     'error': {'$ref': '#/definitions/Error'},
-                                                     'log': {'items': {'$ref': '#/definitions/ActionMessage'},
-                                                             'type': 'array'},
-                                                     'message': {'type': 'string'},
-                                                     'output': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                             'type': 'object'}},
-                                                                'type': 'object'},
-                                                     'started': {'format': 'date-time',
-                                                                 'type': 'string'},
-                                                     'status': {'type': 'string'}},
-                                      'type': 'object'},
-                     'ActionResults': {'additionalProperties': False,
-                                       'properties': {'results': {'items': {'$ref': '#/definitions/ActionResult'},
-                                                                  'type': 'array'}},
-                                       'type': 'object'},
-                     'ActionSpec': {'additionalProperties': False,
-                                    'properties': {'description': {'type': 'string'},
-                                                   'params': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                           'type': 'object'}},
-                                                              'type': 'object'}},
-                                    'required': ['description', 'params'],
-                                    'type': 'object'},
-                     'Actions': {'additionalProperties': False,
-                                 'properties': {'actions': {'items': {'$ref': '#/definitions/Action'},
-                                                            'type': 'array'}},
-                                 'type': 'object'},
-                     'ApplicationCharmActionsResult': {'additionalProperties': False,
-                                                       'properties': {'actions': {'patternProperties': {'.*': {'$ref': '#/definitions/ActionSpec'}},
-                                                                                  'type': 'object'},
-                                                                      'application-tag': {'type': 'string'},
-                                                                      'error': {'$ref': '#/definitions/Error'}},
-                                                       'type': 'object'},
-                     'ApplicationsCharmActionsResults': {'additionalProperties': False,
-                                                         'properties': {'results': {'items': {'$ref': '#/definitions/ApplicationCharmActionsResult'},
-                                                                                    'type': 'array'}},
-                                                         'type': 'object'},
-                     'EnqueuedActions': {'additionalProperties': False,
-                                         'properties': {'actions': {'items': {'$ref': '#/definitions/ActionResult'},
-                                                                    'type': 'array'},
-                                                        'operation': {'type': 'string'}},
-                                         'required': ['operation'],
-                                         'type': 'object'},
-                     'Entities': {'additionalProperties': False,
-                                  'properties': {'entities': {'items': {'$ref': '#/definitions/Entity'},
-                                                              'type': 'array'}},
-                                  'required': ['entities'],
-                                  'type': 'object'},
-                     'Entity': {'additionalProperties': False,
-                                'properties': {'tag': {'type': 'string'}},
-                                'required': ['tag'],
-                                'type': 'object'},
-                     'Error': {'additionalProperties': False,
-                               'properties': {'code': {'type': 'string'},
-                                              'info': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                    'type': 'object'}},
-                                                       'type': 'object'},
-                                              'message': {'type': 'string'}},
-                               'required': ['message', 'code'],
-                               'type': 'object'},
-                     'OperationQueryArgs': {'additionalProperties': False,
-                                            'properties': {'actions': {'items': {'type': 'string'},
-                                                                       'type': 'array'},
-                                                           'applications': {'items': {'type': 'string'},
-                                                                            'type': 'array'},
-                                                           'limit': {'type': 'integer'},
-                                                           'machines': {'items': {'type': 'string'},
-                                                                        'type': 'array'},
-                                                           'offset': {'type': 'integer'},
-                                                           'status': {'items': {'type': 'string'},
-                                                                      'type': 'array'},
-                                                           'units': {'items': {'type': 'string'},
-                                                                     'type': 'array'}},
-                                            'type': 'object'},
-                     'OperationResult': {'additionalProperties': False,
-                                         'properties': {'actions': {'items': {'$ref': '#/definitions/ActionResult'},
-                                                                    'type': 'array'},
-                                                        'completed': {'format': 'date-time',
-                                                                      'type': 'string'},
-                                                        'enqueued': {'format': 'date-time',
-                                                                     'type': 'string'},
-                                                        'error': {'$ref': '#/definitions/Error'},
-                                                        'fail': {'type': 'string'},
-                                                        'operation': {'type': 'string'},
-                                                        'started': {'format': 'date-time',
-                                                                    'type': 'string'},
-                                                        'status': {'type': 'string'},
-                                                        'summary': {'type': 'string'}},
-                                         'required': ['operation', 'summary'],
-                                         'type': 'object'},
-                     'OperationResults': {'additionalProperties': False,
-                                          'properties': {'results': {'items': {'$ref': '#/definitions/OperationResult'},
-                                                                     'type': 'array'},
-                                                         'truncated': {'type': 'boolean'}},
-                                          'type': 'object'},
-                     'RunParams': {'additionalProperties': False,
-                                   'properties': {'applications': {'items': {'type': 'string'},
-                                                                   'type': 'array'},
-                                                  'commands': {'type': 'string'},
-                                                  'execution-group': {'type': 'string'},
-                                                  'machines': {'items': {'type': 'string'},
-                                                               'type': 'array'},
-                                                  'parallel': {'type': 'boolean'},
-                                                  'timeout': {'type': 'integer'},
-                                                  'units': {'items': {'type': 'string'},
-                                                            'type': 'array'},
-                                                  'workload-context': {'type': 'boolean'}},
-                                   'required': ['commands', 'timeout'],
-                                   'type': 'object'},
-                     'StringsWatchResult': {'additionalProperties': False,
-                                            'properties': {'changes': {'items': {'type': 'string'},
-                                                                       'type': 'array'},
-                                                           'error': {'$ref': '#/definitions/Error'},
-                                                           'watcher-id': {'type': 'string'}},
-                                            'required': ['watcher-id'],
-                                            'type': 'object'},
-                     'StringsWatchResults': {'additionalProperties': False,
-                                             'properties': {'results': {'items': {'$ref': '#/definitions/StringsWatchResult'},
-                                                                        'type': 'array'}},
-                                             'required': ['results'],
-                                             'type': 'object'}},
-     'properties': {'Actions': {'description': 'Actions takes a list of '
-                                               'ActionTags, and returns the full '
-                                               'Action for\n'
-                                               'each ID.',
-                                'properties': {'Params': {'$ref': '#/definitions/Entities'},
-                                               'Result': {'$ref': '#/definitions/ActionResults'}},
-                                'type': 'object'},
-                    'ApplicationsCharmsActions': {'description': 'ApplicationsCharmsActions '
-                                                                 'returns a slice '
-                                                                 'of charm Actions '
-                                                                 'for a slice of\n'
-                                                                 'services.',
-                                                  'properties': {'Params': {'$ref': '#/definitions/Entities'},
-                                                                 'Result': {'$ref': '#/definitions/ApplicationsCharmActionsResults'}},
-                                                  'type': 'object'},
-                    'Cancel': {'description': 'Cancel attempts to cancel enqueued '
-                                              'Actions from running.',
-                               'properties': {'Params': {'$ref': '#/definitions/Entities'},
-                                              'Result': {'$ref': '#/definitions/ActionResults'}},
-                               'type': 'object'},
-                    'EnqueueOperation': {'description': 'EnqueueOperation takes a '
-                                                        'list of Actions and '
-                                                        'queues them up to be '
-                                                        'executed as\n'
-                                                        'an operation, each action '
-                                                        'running as a task on the '
-                                                        'designated '
-                                                        'ActionReceiver.\n'
-                                                        'We return the ID of the '
-                                                        'overall operation and '
-                                                        'each individual task.',
-                                         'properties': {'Params': {'$ref': '#/definitions/Actions'},
-                                                        'Result': {'$ref': '#/definitions/EnqueuedActions'}},
-                                         'type': 'object'},
-                    'ListOperations': {'description': 'ListOperations fetches the '
-                                                      'called actions for '
-                                                      'specified apps/units.',
-                                       'properties': {'Params': {'$ref': '#/definitions/OperationQueryArgs'},
-                                                      'Result': {'$ref': '#/definitions/OperationResults'}},
-                                       'type': 'object'},
-                    'Operations': {'description': 'Operations fetches the '
-                                                  'specified operation ids.',
-                                   'properties': {'Params': {'$ref': '#/definitions/Entities'},
-                                                  'Result': {'$ref': '#/definitions/OperationResults'}},
-                                   'type': 'object'},
-                    'Run': {'description': 'Run the commands specified on the '
-                                           'machines identified through the\n'
-                                           'list of machines, units and services.',
-                            'properties': {'Params': {'$ref': '#/definitions/RunParams'},
-                                           'Result': {'$ref': '#/definitions/EnqueuedActions'}},
-                            'type': 'object'},
-                    'RunOnAllMachines': {'description': 'RunOnAllMachines attempts '
-                                                        'to run the specified '
-                                                        'command on all the '
-                                                        'machines.',
-                                         'properties': {'Params': {'$ref': '#/definitions/RunParams'},
-                                                        'Result': {'$ref': '#/definitions/EnqueuedActions'}},
-                                         'type': 'object'},
-                    'WatchActionsProgress': {'description': 'WatchActionsProgress '
-                                                            'creates a watcher '
-                                                            'that reports on '
-                                                            'action log messages.',
-                                             'properties': {'Params': {'$ref': '#/definitions/Entities'},
-                                                            'Result': {'$ref': '#/definitions/StringsWatchResults'}},
-                                             'type': 'object'}},
-     'type': 'object'}
-
+    schema = {
+        'definitions': {
+            'Action': {
+                'additionalProperties': False,
+                'properties': {
+                    'execution-group': {'type': 'string'},
+                    'name': {'type': 'string'},
+                    'parallel': {'type': 'boolean'},
+                    'parameters': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'receiver': {'type': 'string'},
+                    'tag': {'type': 'string'},
+                },
+                'required': ['tag', 'receiver', 'name'],
+                'type': 'object',
+            },
+            'ActionMessage': {
+                'additionalProperties': False,
+                'properties': {
+                    'message': {'type': 'string'},
+                    'timestamp': {'format': 'date-time', 'type': 'string'},
+                },
+                'required': ['timestamp', 'message'],
+                'type': 'object',
+            },
+            'ActionResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'action': {'$ref': '#/definitions/Action'},
+                    'completed': {'format': 'date-time', 'type': 'string'},
+                    'enqueued': {'format': 'date-time', 'type': 'string'},
+                    'error': {'$ref': '#/definitions/Error'},
+                    'log': {
+                        'items': {'$ref': '#/definitions/ActionMessage'},
+                        'type': 'array',
+                    },
+                    'message': {'type': 'string'},
+                    'output': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'started': {'format': 'date-time', 'type': 'string'},
+                    'status': {'type': 'string'},
+                },
+                'type': 'object',
+            },
+            'ActionResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/ActionResult'},
+                        'type': 'array',
+                    }
+                },
+                'type': 'object',
+            },
+            'ActionSpec': {
+                'additionalProperties': False,
+                'properties': {
+                    'description': {'type': 'string'},
+                    'params': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                },
+                'required': ['description', 'params'],
+                'type': 'object',
+            },
+            'Actions': {
+                'additionalProperties': False,
+                'properties': {
+                    'actions': {
+                        'items': {'$ref': '#/definitions/Action'},
+                        'type': 'array',
+                    }
+                },
+                'type': 'object',
+            },
+            'ApplicationCharmActionsResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'actions': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/ActionSpec'}
+                        },
+                        'type': 'object',
+                    },
+                    'application-tag': {'type': 'string'},
+                    'error': {'$ref': '#/definitions/Error'},
+                },
+                'type': 'object',
+            },
+            'ApplicationsCharmActionsResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {
+                            '$ref': '#/definitions/ApplicationCharmActionsResult'
+                        },
+                        'type': 'array',
+                    }
+                },
+                'type': 'object',
+            },
+            'EnqueuedActions': {
+                'additionalProperties': False,
+                'properties': {
+                    'actions': {
+                        'items': {'$ref': '#/definitions/ActionResult'},
+                        'type': 'array',
+                    },
+                    'operation': {'type': 'string'},
+                },
+                'required': ['operation'],
+                'type': 'object',
+            },
+            'Entities': {
+                'additionalProperties': False,
+                'properties': {
+                    'entities': {
+                        'items': {'$ref': '#/definitions/Entity'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['entities'],
+                'type': 'object',
+            },
+            'Entity': {
+                'additionalProperties': False,
+                'properties': {'tag': {'type': 'string'}},
+                'required': ['tag'],
+                'type': 'object',
+            },
+            'Error': {
+                'additionalProperties': False,
+                'properties': {
+                    'code': {'type': 'string'},
+                    'info': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'message': {'type': 'string'},
+                },
+                'required': ['message', 'code'],
+                'type': 'object',
+            },
+            'OperationQueryArgs': {
+                'additionalProperties': False,
+                'properties': {
+                    'actions': {'items': {'type': 'string'}, 'type': 'array'},
+                    'applications': {'items': {'type': 'string'}, 'type': 'array'},
+                    'limit': {'type': 'integer'},
+                    'machines': {'items': {'type': 'string'}, 'type': 'array'},
+                    'offset': {'type': 'integer'},
+                    'status': {'items': {'type': 'string'}, 'type': 'array'},
+                    'units': {'items': {'type': 'string'}, 'type': 'array'},
+                },
+                'type': 'object',
+            },
+            'OperationResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'actions': {
+                        'items': {'$ref': '#/definitions/ActionResult'},
+                        'type': 'array',
+                    },
+                    'completed': {'format': 'date-time', 'type': 'string'},
+                    'enqueued': {'format': 'date-time', 'type': 'string'},
+                    'error': {'$ref': '#/definitions/Error'},
+                    'fail': {'type': 'string'},
+                    'operation': {'type': 'string'},
+                    'started': {'format': 'date-time', 'type': 'string'},
+                    'status': {'type': 'string'},
+                    'summary': {'type': 'string'},
+                },
+                'required': ['operation', 'summary'],
+                'type': 'object',
+            },
+            'OperationResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/OperationResult'},
+                        'type': 'array',
+                    },
+                    'truncated': {'type': 'boolean'},
+                },
+                'type': 'object',
+            },
+            'RunParams': {
+                'additionalProperties': False,
+                'properties': {
+                    'applications': {'items': {'type': 'string'}, 'type': 'array'},
+                    'commands': {'type': 'string'},
+                    'execution-group': {'type': 'string'},
+                    'machines': {'items': {'type': 'string'}, 'type': 'array'},
+                    'parallel': {'type': 'boolean'},
+                    'timeout': {'type': 'integer'},
+                    'units': {'items': {'type': 'string'}, 'type': 'array'},
+                    'workload-context': {'type': 'boolean'},
+                },
+                'required': ['commands', 'timeout'],
+                'type': 'object',
+            },
+            'StringsWatchResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'changes': {'items': {'type': 'string'}, 'type': 'array'},
+                    'error': {'$ref': '#/definitions/Error'},
+                    'watcher-id': {'type': 'string'},
+                },
+                'required': ['watcher-id'],
+                'type': 'object',
+            },
+            'StringsWatchResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/StringsWatchResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+        },
+        'properties': {
+            'Actions': {
+                'description': 'Actions takes a list of '
+                'ActionTags, and returns the full '
+                'Action for\n'
+                'each ID.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/Entities'},
+                    'Result': {'$ref': '#/definitions/ActionResults'},
+                },
+                'type': 'object',
+            },
+            'ApplicationsCharmsActions': {
+                'description': 'ApplicationsCharmsActions '
+                'returns a slice '
+                'of charm Actions '
+                'for a slice of\n'
+                'services.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/Entities'},
+                    'Result': {'$ref': '#/definitions/ApplicationsCharmActionsResults'},
+                },
+                'type': 'object',
+            },
+            'Cancel': {
+                'description': 'Cancel attempts to cancel enqueued '
+                'Actions from running.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/Entities'},
+                    'Result': {'$ref': '#/definitions/ActionResults'},
+                },
+                'type': 'object',
+            },
+            'EnqueueOperation': {
+                'description': 'EnqueueOperation takes a '
+                'list of Actions and '
+                'queues them up to be '
+                'executed as\n'
+                'an operation, each action '
+                'running as a task on the '
+                'designated '
+                'ActionReceiver.\n'
+                'We return the ID of the '
+                'overall operation and '
+                'each individual task.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/Actions'},
+                    'Result': {'$ref': '#/definitions/EnqueuedActions'},
+                },
+                'type': 'object',
+            },
+            'ListOperations': {
+                'description': 'ListOperations fetches the '
+                'called actions for '
+                'specified apps/units.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/OperationQueryArgs'},
+                    'Result': {'$ref': '#/definitions/OperationResults'},
+                },
+                'type': 'object',
+            },
+            'Operations': {
+                'description': 'Operations fetches the ' 'specified operation ids.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/Entities'},
+                    'Result': {'$ref': '#/definitions/OperationResults'},
+                },
+                'type': 'object',
+            },
+            'Run': {
+                'description': 'Run the commands specified on the '
+                'machines identified through the\n'
+                'list of machines, units and services.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/RunParams'},
+                    'Result': {'$ref': '#/definitions/EnqueuedActions'},
+                },
+                'type': 'object',
+            },
+            'RunOnAllMachines': {
+                'description': 'RunOnAllMachines attempts '
+                'to run the specified '
+                'command on all the '
+                'machines.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/RunParams'},
+                    'Result': {'$ref': '#/definitions/EnqueuedActions'},
+                },
+                'type': 'object',
+            },
+            'WatchActionsProgress': {
+                'description': 'WatchActionsProgress '
+                'creates a watcher '
+                'that reports on '
+                'action log messages.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/Entities'},
+                    'Result': {'$ref': '#/definitions/StringsWatchResults'},
+                },
+                'type': 'object',
+            },
+        },
+        'type': 'object',
+    }
 
     @ReturnMapping(ActionResults)
     async def Actions(self, entities=None):
@@ -228,7 +359,9 @@ class ActionFacade(Type):
         Returns -> ActionResults
         """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
+            raise TypeError(
+                f'Expected entities to be a Sequence, received: {type(entities)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -242,7 +375,6 @@ class ActionFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(ApplicationsCharmActionsResults)
     async def ApplicationsCharmsActions(self, entities=None):
         """
@@ -253,7 +385,9 @@ class ActionFacade(Type):
         Returns -> ApplicationsCharmActionsResults
         """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
+            raise TypeError(
+                f'Expected entities to be a Sequence, received: {type(entities)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -267,7 +401,6 @@ class ActionFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(ActionResults)
     async def Cancel(self, entities=None):
         """
@@ -277,7 +410,9 @@ class ActionFacade(Type):
         Returns -> ActionResults
         """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
+            raise TypeError(
+                f'Expected entities to be a Sequence, received: {type(entities)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -291,7 +426,6 @@ class ActionFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(EnqueuedActions)
     async def EnqueueOperation(self, actions=None):
         """
@@ -303,7 +437,9 @@ class ActionFacade(Type):
         Returns -> EnqueuedActions
         """
         if actions is not None and not isinstance(actions, (bytes, str, list)):
-            raise TypeError(f'Expected actions to be a Sequence, received: {type(actions)}')
+            raise TypeError(
+                f'Expected actions to be a Sequence, received: {type(actions)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -317,9 +453,17 @@ class ActionFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(OperationResults)
-    async def ListOperations(self, actions=None, applications=None, limit=None, machines=None, offset=None, status=None, units=None):
+    async def ListOperations(
+        self,
+        actions=None,
+        applications=None,
+        limit=None,
+        machines=None,
+        offset=None,
+        status=None,
+        units=None,
+    ):
         """
         ListOperations fetches the called actions for specified apps/units.
 
@@ -333,22 +477,32 @@ class ActionFacade(Type):
         Returns -> OperationResults
         """
         if actions is not None and not isinstance(actions, (bytes, str, list)):
-            raise TypeError(f'Expected actions to be a Sequence, received: {type(actions)}')
+            raise TypeError(
+                f'Expected actions to be a Sequence, received: {type(actions)}'
+            )
 
-        if applications is not None and not isinstance(applications, (bytes, str, list)):
-            raise TypeError(f'Expected applications to be a Sequence, received: {type(applications)}')
+        if applications is not None and not isinstance(
+            applications, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected applications to be a Sequence, received: {type(applications)}'
+            )
 
         if limit is not None and not isinstance(limit, int):
             raise TypeError(f'Expected limit to be a int, received: {type(limit)}')
 
         if machines is not None and not isinstance(machines, (bytes, str, list)):
-            raise TypeError(f'Expected machines to be a Sequence, received: {type(machines)}')
+            raise TypeError(
+                f'Expected machines to be a Sequence, received: {type(machines)}'
+            )
 
         if offset is not None and not isinstance(offset, int):
             raise TypeError(f'Expected offset to be a int, received: {type(offset)}')
 
         if status is not None and not isinstance(status, (bytes, str, list)):
-            raise TypeError(f'Expected status to be a Sequence, received: {type(status)}')
+            raise TypeError(
+                f'Expected status to be a Sequence, received: {type(status)}'
+            )
 
         if units is not None and not isinstance(units, (bytes, str, list)):
             raise TypeError(f'Expected units to be a Sequence, received: {type(units)}')
@@ -371,7 +525,6 @@ class ActionFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(OperationResults)
     async def Operations(self, entities=None):
         """
@@ -381,7 +534,9 @@ class ActionFacade(Type):
         Returns -> OperationResults
         """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
+            raise TypeError(
+                f'Expected entities to be a Sequence, received: {type(entities)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -395,9 +550,18 @@ class ActionFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(EnqueuedActions)
-    async def Run(self, applications=None, commands=None, execution_group=None, machines=None, parallel=None, timeout=None, units=None, workload_context=None):
+    async def Run(
+        self,
+        applications=None,
+        commands=None,
+        execution_group=None,
+        machines=None,
+        parallel=None,
+        timeout=None,
+        units=None,
+        workload_context=None,
+    ):
         """
         Run the commands specified on the machines identified through the
         list of machines, units and services.
@@ -412,20 +576,34 @@ class ActionFacade(Type):
         workload_context : bool
         Returns -> EnqueuedActions
         """
-        if applications is not None and not isinstance(applications, (bytes, str, list)):
-            raise TypeError(f'Expected applications to be a Sequence, received: {type(applications)}')
+        if applications is not None and not isinstance(
+            applications, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected applications to be a Sequence, received: {type(applications)}'
+            )
 
         if commands is not None and not isinstance(commands, (bytes, str)):
-            raise TypeError(f'Expected commands to be a str, received: {type(commands)}')
+            raise TypeError(
+                f'Expected commands to be a str, received: {type(commands)}'
+            )
 
-        if execution_group is not None and not isinstance(execution_group, (bytes, str)):
-            raise TypeError(f'Expected execution_group to be a str, received: {type(execution_group)}')
+        if execution_group is not None and not isinstance(
+            execution_group, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected execution_group to be a str, received: {type(execution_group)}'
+            )
 
         if machines is not None and not isinstance(machines, (bytes, str, list)):
-            raise TypeError(f'Expected machines to be a Sequence, received: {type(machines)}')
+            raise TypeError(
+                f'Expected machines to be a Sequence, received: {type(machines)}'
+            )
 
         if parallel is not None and not isinstance(parallel, bool):
-            raise TypeError(f'Expected parallel to be a bool, received: {type(parallel)}')
+            raise TypeError(
+                f'Expected parallel to be a bool, received: {type(parallel)}'
+            )
 
         if timeout is not None and not isinstance(timeout, int):
             raise TypeError(f'Expected timeout to be a int, received: {type(timeout)}')
@@ -434,7 +612,9 @@ class ActionFacade(Type):
             raise TypeError(f'Expected units to be a Sequence, received: {type(units)}')
 
         if workload_context is not None and not isinstance(workload_context, bool):
-            raise TypeError(f'Expected workload_context to be a bool, received: {type(workload_context)}')
+            raise TypeError(
+                f'Expected workload_context to be a bool, received: {type(workload_context)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -455,9 +635,18 @@ class ActionFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(EnqueuedActions)
-    async def RunOnAllMachines(self, applications=None, commands=None, execution_group=None, machines=None, parallel=None, timeout=None, units=None, workload_context=None):
+    async def RunOnAllMachines(
+        self,
+        applications=None,
+        commands=None,
+        execution_group=None,
+        machines=None,
+        parallel=None,
+        timeout=None,
+        units=None,
+        workload_context=None,
+    ):
         """
         RunOnAllMachines attempts to run the specified command on all the machines.
 
@@ -471,20 +660,34 @@ class ActionFacade(Type):
         workload_context : bool
         Returns -> EnqueuedActions
         """
-        if applications is not None and not isinstance(applications, (bytes, str, list)):
-            raise TypeError(f'Expected applications to be a Sequence, received: {type(applications)}')
+        if applications is not None and not isinstance(
+            applications, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected applications to be a Sequence, received: {type(applications)}'
+            )
 
         if commands is not None and not isinstance(commands, (bytes, str)):
-            raise TypeError(f'Expected commands to be a str, received: {type(commands)}')
+            raise TypeError(
+                f'Expected commands to be a str, received: {type(commands)}'
+            )
 
-        if execution_group is not None and not isinstance(execution_group, (bytes, str)):
-            raise TypeError(f'Expected execution_group to be a str, received: {type(execution_group)}')
+        if execution_group is not None and not isinstance(
+            execution_group, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected execution_group to be a str, received: {type(execution_group)}'
+            )
 
         if machines is not None and not isinstance(machines, (bytes, str, list)):
-            raise TypeError(f'Expected machines to be a Sequence, received: {type(machines)}')
+            raise TypeError(
+                f'Expected machines to be a Sequence, received: {type(machines)}'
+            )
 
         if parallel is not None and not isinstance(parallel, bool):
-            raise TypeError(f'Expected parallel to be a bool, received: {type(parallel)}')
+            raise TypeError(
+                f'Expected parallel to be a bool, received: {type(parallel)}'
+            )
 
         if timeout is not None and not isinstance(timeout, int):
             raise TypeError(f'Expected timeout to be a int, received: {type(timeout)}')
@@ -493,7 +696,9 @@ class ActionFacade(Type):
             raise TypeError(f'Expected units to be a Sequence, received: {type(units)}')
 
         if workload_context is not None and not isinstance(workload_context, bool):
-            raise TypeError(f'Expected workload_context to be a bool, received: {type(workload_context)}')
+            raise TypeError(
+                f'Expected workload_context to be a bool, received: {type(workload_context)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -514,7 +719,6 @@ class ActionFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(StringsWatchResults)
     async def WatchActionsProgress(self, entities=None):
         """
@@ -524,7 +728,9 @@ class ActionFacade(Type):
         Returns -> StringsWatchResults
         """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
+            raise TypeError(
+                f'Expected entities to be a Sequence, received: {type(entities)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -538,443 +744,695 @@ class ActionFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
+
 class CharmsFacade(Type):
     name = 'Charms'
     version = 7
-    schema =     {'definitions': {'AddCharmWithOrigin': {'additionalProperties': False,
-                                            'properties': {'charm-origin': {'$ref': '#/definitions/CharmOrigin'},
-                                                           'force': {'type': 'boolean'},
-                                                           'url': {'type': 'string'}},
-                                            'required': ['url',
-                                                         'charm-origin',
-                                                         'force'],
-                                            'type': 'object'},
-                     'ApplicationCharmPlacement': {'additionalProperties': False,
-                                                   'properties': {'application': {'type': 'string'},
-                                                                  'charm-url': {'type': 'string'}},
-                                                   'required': ['application',
-                                                                'charm-url'],
-                                                   'type': 'object'},
-                     'ApplicationCharmPlacements': {'additionalProperties': False,
-                                                    'properties': {'placements': {'items': {'$ref': '#/definitions/ApplicationCharmPlacement'},
-                                                                                  'type': 'array'}},
-                                                    'required': ['placements'],
-                                                    'type': 'object'},
-                     'Base': {'additionalProperties': False,
-                              'properties': {'channel': {'type': 'string'},
-                                             'name': {'type': 'string'}},
-                              'required': ['name', 'channel'],
-                              'type': 'object'},
-                     'Charm': {'additionalProperties': False,
-                               'properties': {'actions': {'$ref': '#/definitions/CharmActions'},
-                                              'config': {'patternProperties': {'.*': {'$ref': '#/definitions/CharmOption'}},
-                                                         'type': 'object'},
-                                              'lxd-profile': {'$ref': '#/definitions/CharmLXDProfile'},
-                                              'manifest': {'$ref': '#/definitions/CharmManifest'},
-                                              'meta': {'$ref': '#/definitions/CharmMeta'},
-                                              'metrics': {'$ref': '#/definitions/CharmMetrics'},
-                                              'revision': {'type': 'integer'},
-                                              'url': {'type': 'string'}},
-                               'required': ['revision', 'url', 'config'],
-                               'type': 'object'},
-                     'CharmActionSpec': {'additionalProperties': False,
-                                         'properties': {'description': {'type': 'string'},
-                                                        'params': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                                'type': 'object'}},
-                                                                   'type': 'object'}},
-                                         'required': ['description', 'params'],
-                                         'type': 'object'},
-                     'CharmActions': {'additionalProperties': False,
-                                      'properties': {'specs': {'patternProperties': {'.*': {'$ref': '#/definitions/CharmActionSpec'}},
-                                                               'type': 'object'}},
-                                      'type': 'object'},
-                     'CharmBase': {'additionalProperties': False,
-                                   'properties': {'architectures': {'items': {'type': 'string'},
-                                                                    'type': 'array'},
-                                                  'channel': {'type': 'string'},
-                                                  'name': {'type': 'string'}},
-                                   'type': 'object'},
-                     'CharmContainer': {'additionalProperties': False,
-                                        'properties': {'mounts': {'items': {'$ref': '#/definitions/CharmMount'},
-                                                                  'type': 'array'},
-                                                       'resource': {'type': 'string'}},
-                                        'type': 'object'},
-                     'CharmDeployment': {'additionalProperties': False,
-                                         'properties': {'min-version': {'type': 'string'},
-                                                        'mode': {'type': 'string'},
-                                                        'service': {'type': 'string'},
-                                                        'type': {'type': 'string'}},
-                                         'required': ['type',
-                                                      'mode',
-                                                      'service',
-                                                      'min-version'],
-                                         'type': 'object'},
-                     'CharmDevice': {'additionalProperties': False,
-                                     'properties': {'CountMax': {'type': 'integer'},
-                                                    'CountMin': {'type': 'integer'},
-                                                    'Description': {'type': 'string'},
-                                                    'Name': {'type': 'string'},
-                                                    'Type': {'type': 'string'}},
-                                     'required': ['Name',
-                                                  'Description',
-                                                  'Type',
-                                                  'CountMin',
-                                                  'CountMax'],
-                                     'type': 'object'},
-                     'CharmLXDProfile': {'additionalProperties': False,
-                                         'properties': {'config': {'patternProperties': {'.*': {'type': 'string'}},
-                                                                   'type': 'object'},
-                                                        'description': {'type': 'string'},
-                                                        'devices': {'patternProperties': {'.*': {'patternProperties': {'.*': {'type': 'string'}},
-                                                                                                 'type': 'object'}},
-                                                                    'type': 'object'}},
-                                         'required': ['config',
-                                                      'description',
-                                                      'devices'],
-                                         'type': 'object'},
-                     'CharmManifest': {'additionalProperties': False,
-                                       'properties': {'bases': {'items': {'$ref': '#/definitions/CharmBase'},
-                                                                'type': 'array'}},
-                                       'type': 'object'},
-                     'CharmMeta': {'additionalProperties': False,
-                                   'properties': {'assumes-expr': {'$ref': '#/definitions/ExpressionTree'},
-                                                  'categories': {'items': {'type': 'string'},
-                                                                 'type': 'array'},
-                                                  'containers': {'patternProperties': {'.*': {'$ref': '#/definitions/CharmContainer'}},
-                                                                 'type': 'object'},
-                                                  'deployment': {'$ref': '#/definitions/CharmDeployment'},
-                                                  'description': {'type': 'string'},
-                                                  'devices': {'patternProperties': {'.*': {'$ref': '#/definitions/CharmDevice'}},
-                                                              'type': 'object'},
-                                                  'extra-bindings': {'patternProperties': {'.*': {'type': 'string'}},
-                                                                     'type': 'object'},
-                                                  'min-juju-version': {'type': 'string'},
-                                                  'name': {'type': 'string'},
-                                                  'payload-classes': {'patternProperties': {'.*': {'$ref': '#/definitions/CharmPayloadClass'}},
-                                                                      'type': 'object'},
-                                                  'peers': {'patternProperties': {'.*': {'$ref': '#/definitions/CharmRelation'}},
-                                                            'type': 'object'},
-                                                  'provides': {'patternProperties': {'.*': {'$ref': '#/definitions/CharmRelation'}},
-                                                               'type': 'object'},
-                                                  'requires': {'patternProperties': {'.*': {'$ref': '#/definitions/CharmRelation'}},
-                                                               'type': 'object'},
-                                                  'resources': {'patternProperties': {'.*': {'$ref': '#/definitions/CharmResourceMeta'}},
-                                                                'type': 'object'},
-                                                  'series': {'items': {'type': 'string'},
-                                                             'type': 'array'},
-                                                  'storage': {'patternProperties': {'.*': {'$ref': '#/definitions/CharmStorage'}},
-                                                              'type': 'object'},
-                                                  'subordinate': {'type': 'boolean'},
-                                                  'summary': {'type': 'string'},
-                                                  'tags': {'items': {'type': 'string'},
-                                                           'type': 'array'},
-                                                  'terms': {'items': {'type': 'string'},
-                                                            'type': 'array'}},
-                                   'required': ['name',
-                                                'summary',
-                                                'description',
-                                                'subordinate'],
-                                   'type': 'object'},
-                     'CharmMetric': {'additionalProperties': False,
-                                     'properties': {'description': {'type': 'string'},
-                                                    'type': {'type': 'string'}},
-                                     'required': ['type', 'description'],
-                                     'type': 'object'},
-                     'CharmMetrics': {'additionalProperties': False,
-                                      'properties': {'metrics': {'patternProperties': {'.*': {'$ref': '#/definitions/CharmMetric'}},
-                                                                 'type': 'object'},
-                                                     'plan': {'$ref': '#/definitions/CharmPlan'}},
-                                      'required': ['metrics', 'plan'],
-                                      'type': 'object'},
-                     'CharmMount': {'additionalProperties': False,
-                                    'properties': {'location': {'type': 'string'},
-                                                   'storage': {'type': 'string'}},
-                                    'type': 'object'},
-                     'CharmOption': {'additionalProperties': False,
-                                     'properties': {'default': {'additionalProperties': True,
-                                                                'type': 'object'},
-                                                    'description': {'type': 'string'},
-                                                    'type': {'type': 'string'}},
-                                     'required': ['type'],
-                                     'type': 'object'},
-                     'CharmOrigin': {'additionalProperties': False,
-                                     'properties': {'architecture': {'type': 'string'},
-                                                    'base': {'$ref': '#/definitions/Base'},
-                                                    'branch': {'type': 'string'},
-                                                    'hash': {'type': 'string'},
-                                                    'id': {'type': 'string'},
-                                                    'instance-key': {'type': 'string'},
-                                                    'revision': {'type': 'integer'},
-                                                    'risk': {'type': 'string'},
-                                                    'source': {'type': 'string'},
-                                                    'track': {'type': 'string'},
-                                                    'type': {'type': 'string'}},
-                                     'required': ['source', 'type', 'id'],
-                                     'type': 'object'},
-                     'CharmOriginResult': {'additionalProperties': False,
-                                           'properties': {'charm-origin': {'$ref': '#/definitions/CharmOrigin'},
-                                                          'error': {'$ref': '#/definitions/Error'}},
-                                           'required': ['charm-origin'],
-                                           'type': 'object'},
-                     'CharmPayloadClass': {'additionalProperties': False,
-                                           'properties': {'name': {'type': 'string'},
-                                                          'type': {'type': 'string'}},
-                                           'required': ['name', 'type'],
-                                           'type': 'object'},
-                     'CharmPlan': {'additionalProperties': False,
-                                   'properties': {'required': {'type': 'boolean'}},
-                                   'required': ['required'],
-                                   'type': 'object'},
-                     'CharmRelation': {'additionalProperties': False,
-                                       'properties': {'interface': {'type': 'string'},
-                                                      'limit': {'type': 'integer'},
-                                                      'name': {'type': 'string'},
-                                                      'optional': {'type': 'boolean'},
-                                                      'role': {'type': 'string'},
-                                                      'scope': {'type': 'string'}},
-                                       'required': ['name',
-                                                    'role',
-                                                    'interface',
-                                                    'optional',
-                                                    'limit',
-                                                    'scope'],
-                                       'type': 'object'},
-                     'CharmResource': {'additionalProperties': False,
-                                       'properties': {'description': {'type': 'string'},
-                                                      'fingerprint': {'items': {'type': 'integer'},
-                                                                      'type': 'array'},
-                                                      'name': {'type': 'string'},
-                                                      'origin': {'type': 'string'},
-                                                      'path': {'type': 'string'},
-                                                      'revision': {'type': 'integer'},
-                                                      'size': {'type': 'integer'},
-                                                      'type': {'type': 'string'}},
-                                       'required': ['name',
-                                                    'type',
-                                                    'path',
-                                                    'origin',
-                                                    'revision',
-                                                    'fingerprint',
-                                                    'size'],
-                                       'type': 'object'},
-                     'CharmResourceMeta': {'additionalProperties': False,
-                                           'properties': {'description': {'type': 'string'},
-                                                          'name': {'type': 'string'},
-                                                          'path': {'type': 'string'},
-                                                          'type': {'type': 'string'}},
-                                           'required': ['name',
-                                                        'type',
-                                                        'path',
-                                                        'description'],
-                                           'type': 'object'},
-                     'CharmResourceResult': {'additionalProperties': False,
-                                             'properties': {'CharmResource': {'$ref': '#/definitions/CharmResource'},
-                                                            'ErrorResult': {'$ref': '#/definitions/ErrorResult'},
-                                                            'description': {'type': 'string'},
-                                                            'error': {'$ref': '#/definitions/Error'},
-                                                            'fingerprint': {'items': {'type': 'integer'},
-                                                                            'type': 'array'},
-                                                            'name': {'type': 'string'},
-                                                            'origin': {'type': 'string'},
-                                                            'path': {'type': 'string'},
-                                                            'revision': {'type': 'integer'},
-                                                            'size': {'type': 'integer'},
-                                                            'type': {'type': 'string'}},
-                                             'required': ['ErrorResult',
-                                                          'name',
-                                                          'type',
-                                                          'path',
-                                                          'origin',
-                                                          'revision',
-                                                          'fingerprint',
-                                                          'size',
-                                                          'CharmResource'],
-                                             'type': 'object'},
-                     'CharmResourcesResults': {'additionalProperties': False,
-                                               'properties': {'results': {'items': {'items': {'$ref': '#/definitions/CharmResourceResult'},
-                                                                                    'type': 'array'},
-                                                                          'type': 'array'}},
-                                               'required': ['results'],
-                                               'type': 'object'},
-                     'CharmStorage': {'additionalProperties': False,
-                                      'properties': {'count-max': {'type': 'integer'},
-                                                     'count-min': {'type': 'integer'},
-                                                     'description': {'type': 'string'},
-                                                     'location': {'type': 'string'},
-                                                     'minimum-size': {'type': 'integer'},
-                                                     'name': {'type': 'string'},
-                                                     'properties': {'items': {'type': 'string'},
-                                                                    'type': 'array'},
-                                                     'read-only': {'type': 'boolean'},
-                                                     'shared': {'type': 'boolean'},
-                                                     'type': {'type': 'string'}},
-                                      'required': ['name',
-                                                   'description',
-                                                   'type',
-                                                   'shared',
-                                                   'read-only',
-                                                   'count-min',
-                                                   'count-max',
-                                                   'minimum-size'],
-                                      'type': 'object'},
-                     'CharmURL': {'additionalProperties': False,
-                                  'properties': {'url': {'type': 'string'}},
-                                  'required': ['url'],
-                                  'type': 'object'},
-                     'CharmURLAndOrigin': {'additionalProperties': False,
-                                           'properties': {'charm-origin': {'$ref': '#/definitions/CharmOrigin'},
-                                                          'charm-url': {'type': 'string'},
-                                                          'macaroon': {'$ref': '#/definitions/Macaroon'}},
-                                           'required': ['charm-url',
-                                                        'charm-origin'],
-                                           'type': 'object'},
-                     'CharmURLAndOrigins': {'additionalProperties': False,
-                                            'properties': {'entities': {'items': {'$ref': '#/definitions/CharmURLAndOrigin'},
-                                                                        'type': 'array'}},
-                                            'required': ['entities'],
-                                            'type': 'object'},
-                     'CharmsList': {'additionalProperties': False,
-                                    'properties': {'names': {'items': {'type': 'string'},
-                                                             'type': 'array'}},
-                                    'required': ['names'],
-                                    'type': 'object'},
-                     'CharmsListResult': {'additionalProperties': False,
-                                          'properties': {'charm-urls': {'items': {'type': 'string'},
-                                                                        'type': 'array'}},
-                                          'required': ['charm-urls'],
-                                          'type': 'object'},
-                     'DownloadInfoResult': {'additionalProperties': False,
-                                            'properties': {'charm-origin': {'$ref': '#/definitions/CharmOrigin'},
-                                                           'url': {'type': 'string'}},
-                                            'required': ['url', 'charm-origin'],
-                                            'type': 'object'},
-                     'DownloadInfoResults': {'additionalProperties': False,
-                                             'properties': {'results': {'items': {'$ref': '#/definitions/DownloadInfoResult'},
-                                                                        'type': 'array'}},
-                                             'required': ['results'],
-                                             'type': 'object'},
-                     'Error': {'additionalProperties': False,
-                               'properties': {'code': {'type': 'string'},
-                                              'info': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                    'type': 'object'}},
-                                                       'type': 'object'},
-                                              'message': {'type': 'string'}},
-                               'required': ['message', 'code'],
-                               'type': 'object'},
-                     'ErrorResult': {'additionalProperties': False,
-                                     'properties': {'error': {'$ref': '#/definitions/Error'}},
-                                     'type': 'object'},
-                     'ErrorResults': {'additionalProperties': False,
-                                      'properties': {'results': {'items': {'$ref': '#/definitions/ErrorResult'},
-                                                                 'type': 'array'}},
-                                      'required': ['results'],
-                                      'type': 'object'},
-                     'ExpressionTree': {'additionalProperties': False,
-                                        'properties': {'Expression': {'additionalProperties': True,
-                                                                      'type': 'object'}},
-                                        'required': ['Expression'],
-                                        'type': 'object'},
-                     'IsMeteredResult': {'additionalProperties': False,
-                                         'properties': {'metered': {'type': 'boolean'}},
-                                         'required': ['metered'],
-                                         'type': 'object'},
-                     'Macaroon': {'additionalProperties': False, 'type': 'object'},
-                     'ResolveCharmWithChannel': {'additionalProperties': False,
-                                                 'properties': {'charm-origin': {'$ref': '#/definitions/CharmOrigin'},
-                                                                'reference': {'type': 'string'},
-                                                                'switch-charm': {'type': 'boolean'}},
-                                                 'required': ['reference',
-                                                              'charm-origin'],
-                                                 'type': 'object'},
-                     'ResolveCharmWithChannelResult': {'additionalProperties': False,
-                                                       'properties': {'charm-origin': {'$ref': '#/definitions/CharmOrigin'},
-                                                                      'error': {'$ref': '#/definitions/Error'},
-                                                                      'supported-bases': {'items': {'$ref': '#/definitions/Base'},
-                                                                                          'type': 'array'},
-                                                                      'url': {'type': 'string'}},
-                                                       'required': ['url',
-                                                                    'charm-origin',
-                                                                    'supported-bases'],
-                                                       'type': 'object'},
-                     'ResolveCharmWithChannelResults': {'additionalProperties': False,
-                                                        'properties': {'Results': {'items': {'$ref': '#/definitions/ResolveCharmWithChannelResult'},
-                                                                                   'type': 'array'}},
-                                                        'required': ['Results'],
-                                                        'type': 'object'},
-                     'ResolveCharmsWithChannel': {'additionalProperties': False,
-                                                  'properties': {'macaroon': {'$ref': '#/definitions/Macaroon'},
-                                                                 'resolve': {'items': {'$ref': '#/definitions/ResolveCharmWithChannel'},
-                                                                             'type': 'array'}},
-                                                  'required': ['resolve'],
-                                                  'type': 'object'}},
-     'properties': {'AddCharm': {'description': 'AddCharm adds the given charm URL '
-                                                '(which must include revision) to '
-                                                'the\n'
-                                                'environment, if it does not exist '
-                                                'yet. Local charms are not '
-                                                'supported,\n'
-                                                'only charm store and charm hub '
-                                                'URLs. See also AddLocalCharm().',
-                                 'properties': {'Params': {'$ref': '#/definitions/AddCharmWithOrigin'},
-                                                'Result': {'$ref': '#/definitions/CharmOriginResult'}},
-                                 'type': 'object'},
-                    'CharmInfo': {'description': 'CharmInfo returns information '
-                                                 'about the requested charm.',
-                                  'properties': {'Params': {'$ref': '#/definitions/CharmURL'},
-                                                 'Result': {'$ref': '#/definitions/Charm'}},
-                                  'type': 'object'},
-                    'CheckCharmPlacement': {'description': 'CheckCharmPlacement '
-                                                           'checks if a charm is '
-                                                           'allowed to be placed '
-                                                           'with in a\n'
-                                                           'given application.',
-                                            'properties': {'Params': {'$ref': '#/definitions/ApplicationCharmPlacements'},
-                                                           'Result': {'$ref': '#/definitions/ErrorResults'}},
-                                            'type': 'object'},
-                    'GetDownloadInfos': {'description': 'GetDownloadInfos attempts '
-                                                        'to get the bundle '
-                                                        'corresponding to the '
-                                                        'charm url\n'
-                                                        'and origin.',
-                                         'properties': {'Params': {'$ref': '#/definitions/CharmURLAndOrigins'},
-                                                        'Result': {'$ref': '#/definitions/DownloadInfoResults'}},
-                                         'type': 'object'},
-                    'IsMetered': {'description': 'IsMetered returns whether or not '
-                                                 'the charm is metered.\n'
-                                                 'TODO (cderici) only used for '
-                                                 'metered charms in cmd '
-                                                 'MeteredDeployAPI,\n'
-                                                 'kept for client compatibility, '
-                                                 'remove in juju 4.0',
-                                  'properties': {'Params': {'$ref': '#/definitions/CharmURL'},
-                                                 'Result': {'$ref': '#/definitions/IsMeteredResult'}},
-                                  'type': 'object'},
-                    'List': {'description': 'List returns a list of charm URLs '
-                                            'currently in the state.\n'
-                                            'If supplied parameter contains any '
-                                            'names, the result will\n'
-                                            'be filtered to return only the charms '
-                                            'with supplied names.',
-                             'properties': {'Params': {'$ref': '#/definitions/CharmsList'},
-                                            'Result': {'$ref': '#/definitions/CharmsListResult'}},
-                             'type': 'object'},
-                    'ListCharmResources': {'description': 'ListCharmResources '
-                                                          'returns a series of '
-                                                          'resources for a given '
-                                                          'charm.',
-                                           'properties': {'Params': {'$ref': '#/definitions/CharmURLAndOrigins'},
-                                                          'Result': {'$ref': '#/definitions/CharmResourcesResults'}},
-                                           'type': 'object'},
-                    'ResolveCharms': {'description': 'ResolveCharms resolves the '
-                                                     'given charm URLs with an '
-                                                     'optionally specified\n'
-                                                     'preferred channel.  Channel '
-                                                     'provided via CharmOrigin.',
-                                      'properties': {'Params': {'$ref': '#/definitions/ResolveCharmsWithChannel'},
-                                                     'Result': {'$ref': '#/definitions/ResolveCharmWithChannelResults'}},
-                                      'type': 'object'}},
-     'type': 'object'}
-
+    schema = {
+        'definitions': {
+            'AddCharmWithOrigin': {
+                'additionalProperties': False,
+                'properties': {
+                    'charm-origin': {'$ref': '#/definitions/CharmOrigin'},
+                    'force': {'type': 'boolean'},
+                    'url': {'type': 'string'},
+                },
+                'required': ['url', 'charm-origin', 'force'],
+                'type': 'object',
+            },
+            'ApplicationCharmPlacement': {
+                'additionalProperties': False,
+                'properties': {
+                    'application': {'type': 'string'},
+                    'charm-url': {'type': 'string'},
+                },
+                'required': ['application', 'charm-url'],
+                'type': 'object',
+            },
+            'ApplicationCharmPlacements': {
+                'additionalProperties': False,
+                'properties': {
+                    'placements': {
+                        'items': {'$ref': '#/definitions/ApplicationCharmPlacement'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['placements'],
+                'type': 'object',
+            },
+            'Base': {
+                'additionalProperties': False,
+                'properties': {
+                    'channel': {'type': 'string'},
+                    'name': {'type': 'string'},
+                },
+                'required': ['name', 'channel'],
+                'type': 'object',
+            },
+            'Charm': {
+                'additionalProperties': False,
+                'properties': {
+                    'actions': {'$ref': '#/definitions/CharmActions'},
+                    'config': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/CharmOption'}
+                        },
+                        'type': 'object',
+                    },
+                    'lxd-profile': {'$ref': '#/definitions/CharmLXDProfile'},
+                    'manifest': {'$ref': '#/definitions/CharmManifest'},
+                    'meta': {'$ref': '#/definitions/CharmMeta'},
+                    'metrics': {'$ref': '#/definitions/CharmMetrics'},
+                    'revision': {'type': 'integer'},
+                    'url': {'type': 'string'},
+                },
+                'required': ['revision', 'url', 'config'],
+                'type': 'object',
+            },
+            'CharmActionSpec': {
+                'additionalProperties': False,
+                'properties': {
+                    'description': {'type': 'string'},
+                    'params': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                },
+                'required': ['description', 'params'],
+                'type': 'object',
+            },
+            'CharmActions': {
+                'additionalProperties': False,
+                'properties': {
+                    'specs': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/CharmActionSpec'}
+                        },
+                        'type': 'object',
+                    }
+                },
+                'type': 'object',
+            },
+            'CharmBase': {
+                'additionalProperties': False,
+                'properties': {
+                    'architectures': {'items': {'type': 'string'}, 'type': 'array'},
+                    'channel': {'type': 'string'},
+                    'name': {'type': 'string'},
+                },
+                'type': 'object',
+            },
+            'CharmContainer': {
+                'additionalProperties': False,
+                'properties': {
+                    'mounts': {
+                        'items': {'$ref': '#/definitions/CharmMount'},
+                        'type': 'array',
+                    },
+                    'resource': {'type': 'string'},
+                },
+                'type': 'object',
+            },
+            'CharmDeployment': {
+                'additionalProperties': False,
+                'properties': {
+                    'min-version': {'type': 'string'},
+                    'mode': {'type': 'string'},
+                    'service': {'type': 'string'},
+                    'type': {'type': 'string'},
+                },
+                'required': ['type', 'mode', 'service', 'min-version'],
+                'type': 'object',
+            },
+            'CharmDevice': {
+                'additionalProperties': False,
+                'properties': {
+                    'CountMax': {'type': 'integer'},
+                    'CountMin': {'type': 'integer'},
+                    'Description': {'type': 'string'},
+                    'Name': {'type': 'string'},
+                    'Type': {'type': 'string'},
+                },
+                'required': ['Name', 'Description', 'Type', 'CountMin', 'CountMax'],
+                'type': 'object',
+            },
+            'CharmLXDProfile': {
+                'additionalProperties': False,
+                'properties': {
+                    'config': {
+                        'patternProperties': {'.*': {'type': 'string'}},
+                        'type': 'object',
+                    },
+                    'description': {'type': 'string'},
+                    'devices': {
+                        'patternProperties': {
+                            '.*': {
+                                'patternProperties': {'.*': {'type': 'string'}},
+                                'type': 'object',
+                            }
+                        },
+                        'type': 'object',
+                    },
+                },
+                'required': ['config', 'description', 'devices'],
+                'type': 'object',
+            },
+            'CharmManifest': {
+                'additionalProperties': False,
+                'properties': {
+                    'bases': {
+                        'items': {'$ref': '#/definitions/CharmBase'},
+                        'type': 'array',
+                    }
+                },
+                'type': 'object',
+            },
+            'CharmMeta': {
+                'additionalProperties': False,
+                'properties': {
+                    'assumes-expr': {'$ref': '#/definitions/ExpressionTree'},
+                    'categories': {'items': {'type': 'string'}, 'type': 'array'},
+                    'containers': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/CharmContainer'}
+                        },
+                        'type': 'object',
+                    },
+                    'deployment': {'$ref': '#/definitions/CharmDeployment'},
+                    'description': {'type': 'string'},
+                    'devices': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/CharmDevice'}
+                        },
+                        'type': 'object',
+                    },
+                    'extra-bindings': {
+                        'patternProperties': {'.*': {'type': 'string'}},
+                        'type': 'object',
+                    },
+                    'min-juju-version': {'type': 'string'},
+                    'name': {'type': 'string'},
+                    'payload-classes': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/CharmPayloadClass'}
+                        },
+                        'type': 'object',
+                    },
+                    'peers': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/CharmRelation'}
+                        },
+                        'type': 'object',
+                    },
+                    'provides': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/CharmRelation'}
+                        },
+                        'type': 'object',
+                    },
+                    'requires': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/CharmRelation'}
+                        },
+                        'type': 'object',
+                    },
+                    'resources': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/CharmResourceMeta'}
+                        },
+                        'type': 'object',
+                    },
+                    'series': {'items': {'type': 'string'}, 'type': 'array'},
+                    'storage': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/CharmStorage'}
+                        },
+                        'type': 'object',
+                    },
+                    'subordinate': {'type': 'boolean'},
+                    'summary': {'type': 'string'},
+                    'tags': {'items': {'type': 'string'}, 'type': 'array'},
+                    'terms': {'items': {'type': 'string'}, 'type': 'array'},
+                },
+                'required': ['name', 'summary', 'description', 'subordinate'],
+                'type': 'object',
+            },
+            'CharmMetric': {
+                'additionalProperties': False,
+                'properties': {
+                    'description': {'type': 'string'},
+                    'type': {'type': 'string'},
+                },
+                'required': ['type', 'description'],
+                'type': 'object',
+            },
+            'CharmMetrics': {
+                'additionalProperties': False,
+                'properties': {
+                    'metrics': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/CharmMetric'}
+                        },
+                        'type': 'object',
+                    },
+                    'plan': {'$ref': '#/definitions/CharmPlan'},
+                },
+                'required': ['metrics', 'plan'],
+                'type': 'object',
+            },
+            'CharmMount': {
+                'additionalProperties': False,
+                'properties': {
+                    'location': {'type': 'string'},
+                    'storage': {'type': 'string'},
+                },
+                'type': 'object',
+            },
+            'CharmOption': {
+                'additionalProperties': False,
+                'properties': {
+                    'default': {'additionalProperties': True, 'type': 'object'},
+                    'description': {'type': 'string'},
+                    'type': {'type': 'string'},
+                },
+                'required': ['type'],
+                'type': 'object',
+            },
+            'CharmOrigin': {
+                'additionalProperties': False,
+                'properties': {
+                    'architecture': {'type': 'string'},
+                    'base': {'$ref': '#/definitions/Base'},
+                    'branch': {'type': 'string'},
+                    'hash': {'type': 'string'},
+                    'id': {'type': 'string'},
+                    'instance-key': {'type': 'string'},
+                    'revision': {'type': 'integer'},
+                    'risk': {'type': 'string'},
+                    'source': {'type': 'string'},
+                    'track': {'type': 'string'},
+                    'type': {'type': 'string'},
+                },
+                'required': ['source', 'type', 'id'],
+                'type': 'object',
+            },
+            'CharmOriginResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'charm-origin': {'$ref': '#/definitions/CharmOrigin'},
+                    'error': {'$ref': '#/definitions/Error'},
+                },
+                'required': ['charm-origin'],
+                'type': 'object',
+            },
+            'CharmPayloadClass': {
+                'additionalProperties': False,
+                'properties': {'name': {'type': 'string'}, 'type': {'type': 'string'}},
+                'required': ['name', 'type'],
+                'type': 'object',
+            },
+            'CharmPlan': {
+                'additionalProperties': False,
+                'properties': {'required': {'type': 'boolean'}},
+                'required': ['required'],
+                'type': 'object',
+            },
+            'CharmRelation': {
+                'additionalProperties': False,
+                'properties': {
+                    'interface': {'type': 'string'},
+                    'limit': {'type': 'integer'},
+                    'name': {'type': 'string'},
+                    'optional': {'type': 'boolean'},
+                    'role': {'type': 'string'},
+                    'scope': {'type': 'string'},
+                },
+                'required': ['name', 'role', 'interface', 'optional', 'limit', 'scope'],
+                'type': 'object',
+            },
+            'CharmResource': {
+                'additionalProperties': False,
+                'properties': {
+                    'description': {'type': 'string'},
+                    'fingerprint': {'items': {'type': 'integer'}, 'type': 'array'},
+                    'name': {'type': 'string'},
+                    'origin': {'type': 'string'},
+                    'path': {'type': 'string'},
+                    'revision': {'type': 'integer'},
+                    'size': {'type': 'integer'},
+                    'type': {'type': 'string'},
+                },
+                'required': [
+                    'name',
+                    'type',
+                    'path',
+                    'origin',
+                    'revision',
+                    'fingerprint',
+                    'size',
+                ],
+                'type': 'object',
+            },
+            'CharmResourceMeta': {
+                'additionalProperties': False,
+                'properties': {
+                    'description': {'type': 'string'},
+                    'name': {'type': 'string'},
+                    'path': {'type': 'string'},
+                    'type': {'type': 'string'},
+                },
+                'required': ['name', 'type', 'path', 'description'],
+                'type': 'object',
+            },
+            'CharmResourceResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'CharmResource': {'$ref': '#/definitions/CharmResource'},
+                    'ErrorResult': {'$ref': '#/definitions/ErrorResult'},
+                    'description': {'type': 'string'},
+                    'error': {'$ref': '#/definitions/Error'},
+                    'fingerprint': {'items': {'type': 'integer'}, 'type': 'array'},
+                    'name': {'type': 'string'},
+                    'origin': {'type': 'string'},
+                    'path': {'type': 'string'},
+                    'revision': {'type': 'integer'},
+                    'size': {'type': 'integer'},
+                    'type': {'type': 'string'},
+                },
+                'required': [
+                    'ErrorResult',
+                    'name',
+                    'type',
+                    'path',
+                    'origin',
+                    'revision',
+                    'fingerprint',
+                    'size',
+                    'CharmResource',
+                ],
+                'type': 'object',
+            },
+            'CharmResourcesResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {
+                            'items': {'$ref': '#/definitions/CharmResourceResult'},
+                            'type': 'array',
+                        },
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'CharmStorage': {
+                'additionalProperties': False,
+                'properties': {
+                    'count-max': {'type': 'integer'},
+                    'count-min': {'type': 'integer'},
+                    'description': {'type': 'string'},
+                    'location': {'type': 'string'},
+                    'minimum-size': {'type': 'integer'},
+                    'name': {'type': 'string'},
+                    'properties': {'items': {'type': 'string'}, 'type': 'array'},
+                    'read-only': {'type': 'boolean'},
+                    'shared': {'type': 'boolean'},
+                    'type': {'type': 'string'},
+                },
+                'required': [
+                    'name',
+                    'description',
+                    'type',
+                    'shared',
+                    'read-only',
+                    'count-min',
+                    'count-max',
+                    'minimum-size',
+                ],
+                'type': 'object',
+            },
+            'CharmURL': {
+                'additionalProperties': False,
+                'properties': {'url': {'type': 'string'}},
+                'required': ['url'],
+                'type': 'object',
+            },
+            'CharmURLAndOrigin': {
+                'additionalProperties': False,
+                'properties': {
+                    'charm-origin': {'$ref': '#/definitions/CharmOrigin'},
+                    'charm-url': {'type': 'string'},
+                    'macaroon': {'$ref': '#/definitions/Macaroon'},
+                },
+                'required': ['charm-url', 'charm-origin'],
+                'type': 'object',
+            },
+            'CharmURLAndOrigins': {
+                'additionalProperties': False,
+                'properties': {
+                    'entities': {
+                        'items': {'$ref': '#/definitions/CharmURLAndOrigin'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['entities'],
+                'type': 'object',
+            },
+            'CharmsList': {
+                'additionalProperties': False,
+                'properties': {'names': {'items': {'type': 'string'}, 'type': 'array'}},
+                'required': ['names'],
+                'type': 'object',
+            },
+            'CharmsListResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'charm-urls': {'items': {'type': 'string'}, 'type': 'array'}
+                },
+                'required': ['charm-urls'],
+                'type': 'object',
+            },
+            'DownloadInfoResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'charm-origin': {'$ref': '#/definitions/CharmOrigin'},
+                    'url': {'type': 'string'},
+                },
+                'required': ['url', 'charm-origin'],
+                'type': 'object',
+            },
+            'DownloadInfoResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/DownloadInfoResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'Error': {
+                'additionalProperties': False,
+                'properties': {
+                    'code': {'type': 'string'},
+                    'info': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'message': {'type': 'string'},
+                },
+                'required': ['message', 'code'],
+                'type': 'object',
+            },
+            'ErrorResult': {
+                'additionalProperties': False,
+                'properties': {'error': {'$ref': '#/definitions/Error'}},
+                'type': 'object',
+            },
+            'ErrorResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/ErrorResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'ExpressionTree': {
+                'additionalProperties': False,
+                'properties': {
+                    'Expression': {'additionalProperties': True, 'type': 'object'}
+                },
+                'required': ['Expression'],
+                'type': 'object',
+            },
+            'IsMeteredResult': {
+                'additionalProperties': False,
+                'properties': {'metered': {'type': 'boolean'}},
+                'required': ['metered'],
+                'type': 'object',
+            },
+            'Macaroon': {'additionalProperties': False, 'type': 'object'},
+            'ResolveCharmWithChannel': {
+                'additionalProperties': False,
+                'properties': {
+                    'charm-origin': {'$ref': '#/definitions/CharmOrigin'},
+                    'reference': {'type': 'string'},
+                    'switch-charm': {'type': 'boolean'},
+                },
+                'required': ['reference', 'charm-origin'],
+                'type': 'object',
+            },
+            'ResolveCharmWithChannelResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'charm-origin': {'$ref': '#/definitions/CharmOrigin'},
+                    'error': {'$ref': '#/definitions/Error'},
+                    'supported-bases': {
+                        'items': {'$ref': '#/definitions/Base'},
+                        'type': 'array',
+                    },
+                    'url': {'type': 'string'},
+                },
+                'required': ['url', 'charm-origin', 'supported-bases'],
+                'type': 'object',
+            },
+            'ResolveCharmWithChannelResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'Results': {
+                        'items': {
+                            '$ref': '#/definitions/ResolveCharmWithChannelResult'
+                        },
+                        'type': 'array',
+                    }
+                },
+                'required': ['Results'],
+                'type': 'object',
+            },
+            'ResolveCharmsWithChannel': {
+                'additionalProperties': False,
+                'properties': {
+                    'macaroon': {'$ref': '#/definitions/Macaroon'},
+                    'resolve': {
+                        'items': {'$ref': '#/definitions/ResolveCharmWithChannel'},
+                        'type': 'array',
+                    },
+                },
+                'required': ['resolve'],
+                'type': 'object',
+            },
+        },
+        'properties': {
+            'AddCharm': {
+                'description': 'AddCharm adds the given charm URL '
+                '(which must include revision) to '
+                'the\n'
+                'environment, if it does not exist '
+                'yet. Local charms are not '
+                'supported,\n'
+                'only charm store and charm hub '
+                'URLs. See also AddLocalCharm().',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/AddCharmWithOrigin'},
+                    'Result': {'$ref': '#/definitions/CharmOriginResult'},
+                },
+                'type': 'object',
+            },
+            'CharmInfo': {
+                'description': 'CharmInfo returns information '
+                'about the requested charm.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/CharmURL'},
+                    'Result': {'$ref': '#/definitions/Charm'},
+                },
+                'type': 'object',
+            },
+            'CheckCharmPlacement': {
+                'description': 'CheckCharmPlacement '
+                'checks if a charm is '
+                'allowed to be placed '
+                'with in a\n'
+                'given application.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/ApplicationCharmPlacements'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+            'GetDownloadInfos': {
+                'description': 'GetDownloadInfos attempts '
+                'to get the bundle '
+                'corresponding to the '
+                'charm url\n'
+                'and origin.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/CharmURLAndOrigins'},
+                    'Result': {'$ref': '#/definitions/DownloadInfoResults'},
+                },
+                'type': 'object',
+            },
+            'IsMetered': {
+                'description': 'IsMetered returns whether or not '
+                'the charm is metered.\n'
+                'TODO (cderici) only used for '
+                'metered charms in cmd '
+                'MeteredDeployAPI,\n'
+                'kept for client compatibility, '
+                'remove in juju 4.0',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/CharmURL'},
+                    'Result': {'$ref': '#/definitions/IsMeteredResult'},
+                },
+                'type': 'object',
+            },
+            'List': {
+                'description': 'List returns a list of charm URLs '
+                'currently in the state.\n'
+                'If supplied parameter contains any '
+                'names, the result will\n'
+                'be filtered to return only the charms '
+                'with supplied names.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/CharmsList'},
+                    'Result': {'$ref': '#/definitions/CharmsListResult'},
+                },
+                'type': 'object',
+            },
+            'ListCharmResources': {
+                'description': 'ListCharmResources '
+                'returns a series of '
+                'resources for a given '
+                'charm.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/CharmURLAndOrigins'},
+                    'Result': {'$ref': '#/definitions/CharmResourcesResults'},
+                },
+                'type': 'object',
+            },
+            'ResolveCharms': {
+                'description': 'ResolveCharms resolves the '
+                'given charm URLs with an '
+                'optionally specified\n'
+                'preferred channel.  Channel '
+                'provided via CharmOrigin.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/ResolveCharmsWithChannel'},
+                    'Result': {'$ref': '#/definitions/ResolveCharmWithChannelResults'},
+                },
+                'type': 'object',
+            },
+        },
+        'type': 'object',
+    }
 
     @ReturnMapping(CharmOriginResult)
     async def AddCharm(self, charm_origin=None, force=None, url=None):
@@ -988,8 +1446,12 @@ class CharmsFacade(Type):
         url : str
         Returns -> CharmOriginResult
         """
-        if charm_origin is not None and not isinstance(charm_origin, (dict, CharmOrigin)):
-            raise TypeError(f'Expected charm_origin to be a CharmOrigin, received: {type(charm_origin)}')
+        if charm_origin is not None and not isinstance(
+            charm_origin, (dict, CharmOrigin)
+        ):
+            raise TypeError(
+                f'Expected charm_origin to be a CharmOrigin, received: {type(charm_origin)}'
+            )
 
         if force is not None and not isinstance(force, bool):
             raise TypeError(f'Expected force to be a bool, received: {type(force)}')
@@ -1010,7 +1472,6 @@ class CharmsFacade(Type):
         _params['url'] = url
         reply = await self.rpc(msg)
         return reply
-
 
     @ReturnMapping(Charm)
     async def CharmInfo(self, url=None):
@@ -1035,7 +1496,6 @@ class CharmsFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(ErrorResults)
     async def CheckCharmPlacement(self, placements=None):
         """
@@ -1046,7 +1506,9 @@ class CharmsFacade(Type):
         Returns -> ErrorResults
         """
         if placements is not None and not isinstance(placements, (bytes, str, list)):
-            raise TypeError(f'Expected placements to be a Sequence, received: {type(placements)}')
+            raise TypeError(
+                f'Expected placements to be a Sequence, received: {type(placements)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -1060,7 +1522,6 @@ class CharmsFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(DownloadInfoResults)
     async def GetDownloadInfos(self, entities=None):
         """
@@ -1071,7 +1532,9 @@ class CharmsFacade(Type):
         Returns -> DownloadInfoResults
         """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
+            raise TypeError(
+                f'Expected entities to be a Sequence, received: {type(entities)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -1084,7 +1547,6 @@ class CharmsFacade(Type):
         _params['entities'] = entities
         reply = await self.rpc(msg)
         return reply
-
 
     @ReturnMapping(IsMeteredResult)
     async def IsMetered(self, url=None):
@@ -1111,7 +1573,6 @@ class CharmsFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(CharmsListResult)
     async def List(self, names=None):
         """
@@ -1137,7 +1598,6 @@ class CharmsFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(CharmResourcesResults)
     async def ListCharmResources(self, entities=None):
         """
@@ -1147,7 +1607,9 @@ class CharmsFacade(Type):
         Returns -> CharmResourcesResults
         """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
+            raise TypeError(
+                f'Expected entities to be a Sequence, received: {type(entities)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -1161,7 +1623,6 @@ class CharmsFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(ResolveCharmWithChannelResults)
     async def ResolveCharms(self, macaroon=None, resolve=None):
         """
@@ -1173,10 +1634,14 @@ class CharmsFacade(Type):
         Returns -> ResolveCharmWithChannelResults
         """
         if macaroon is not None and not isinstance(macaroon, (dict, Macaroon)):
-            raise TypeError(f'Expected macaroon to be a Macaroon, received: {type(macaroon)}')
+            raise TypeError(
+                f'Expected macaroon to be a Macaroon, received: {type(macaroon)}'
+            )
 
         if resolve is not None and not isinstance(resolve, (bytes, str, list)):
-            raise TypeError(f'Expected resolve to be a Sequence, received: {type(resolve)}')
+            raise TypeError(
+                f'Expected resolve to be a Sequence, received: {type(resolve)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -1191,562 +1656,846 @@ class CharmsFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
+
 class ClientFacade(Type):
     name = 'Client'
     version = 7
-    schema =     {'definitions': {'AllWatcherId': {'additionalProperties': False,
-                                      'properties': {'watcher-id': {'type': 'string'}},
-                                      'required': ['watcher-id'],
-                                      'type': 'object'},
-                     'ApplicationOfferStatus': {'additionalProperties': False,
-                                                'properties': {'active-connected-count': {'type': 'integer'},
-                                                               'application-name': {'type': 'string'},
-                                                               'charm': {'type': 'string'},
-                                                               'endpoints': {'patternProperties': {'.*': {'$ref': '#/definitions/RemoteEndpoint'}},
-                                                                             'type': 'object'},
-                                                               'err': {'$ref': '#/definitions/Error'},
-                                                               'offer-name': {'type': 'string'},
-                                                               'total-connected-count': {'type': 'integer'}},
-                                                'required': ['offer-name',
-                                                             'application-name',
-                                                             'charm',
-                                                             'endpoints',
-                                                             'active-connected-count',
-                                                             'total-connected-count'],
-                                                'type': 'object'},
-                     'ApplicationStatus': {'additionalProperties': False,
-                                           'properties': {'base': {'$ref': '#/definitions/Base'},
-                                                          'can-upgrade-to': {'type': 'string'},
-                                                          'charm': {'type': 'string'},
-                                                          'charm-channel': {'type': 'string'},
-                                                          'charm-profile': {'type': 'string'},
-                                                          'charm-version': {'type': 'string'},
-                                                          'endpoint-bindings': {'patternProperties': {'.*': {'type': 'string'}},
-                                                                                'type': 'object'},
-                                                          'err': {'$ref': '#/definitions/Error'},
-                                                          'exposed': {'type': 'boolean'},
-                                                          'exposed-endpoints': {'patternProperties': {'.*': {'$ref': '#/definitions/ExposedEndpoint'}},
-                                                                                'type': 'object'},
-                                                          'int': {'type': 'integer'},
-                                                          'life': {'type': 'string'},
-                                                          'meter-statuses': {'patternProperties': {'.*': {'$ref': '#/definitions/MeterStatus'}},
-                                                                             'type': 'object'},
-                                                          'provider-id': {'type': 'string'},
-                                                          'public-address': {'type': 'string'},
-                                                          'relations': {'patternProperties': {'.*': {'items': {'type': 'string'},
-                                                                                                     'type': 'array'}},
-                                                                        'type': 'object'},
-                                                          'status': {'$ref': '#/definitions/DetailedStatus'},
-                                                          'subordinate-to': {'items': {'type': 'string'},
-                                                                             'type': 'array'},
-                                                          'units': {'patternProperties': {'.*': {'$ref': '#/definitions/UnitStatus'}},
-                                                                    'type': 'object'},
-                                                          'workload-version': {'type': 'string'}},
-                                           'required': ['charm',
-                                                        'charm-version',
-                                                        'charm-profile',
-                                                        'base',
-                                                        'exposed',
-                                                        'life',
-                                                        'relations',
-                                                        'can-upgrade-to',
-                                                        'subordinate-to',
-                                                        'units',
-                                                        'meter-statuses',
-                                                        'status',
-                                                        'workload-version',
-                                                        'endpoint-bindings',
-                                                        'public-address'],
-                                           'type': 'object'},
-                     'Base': {'additionalProperties': False,
-                              'properties': {'channel': {'type': 'string'},
-                                             'name': {'type': 'string'}},
-                              'required': ['name', 'channel'],
-                              'type': 'object'},
-                     'Binary': {'additionalProperties': False,
-                                'properties': {'Arch': {'type': 'string'},
-                                               'Build': {'type': 'integer'},
-                                               'Major': {'type': 'integer'},
-                                               'Minor': {'type': 'integer'},
-                                               'Number': {'$ref': '#/definitions/Number'},
-                                               'Patch': {'type': 'integer'},
-                                               'Release': {'type': 'string'},
-                                               'Tag': {'type': 'string'}},
-                                'required': ['Major',
-                                             'Minor',
-                                             'Tag',
-                                             'Patch',
-                                             'Build',
-                                             'Number',
-                                             'Release',
-                                             'Arch'],
-                                'type': 'object'},
-                     'BranchStatus': {'additionalProperties': False,
-                                      'properties': {'assigned-units': {'patternProperties': {'.*': {'items': {'type': 'string'},
-                                                                                                     'type': 'array'}},
-                                                                        'type': 'object'},
-                                                     'created': {'type': 'integer'},
-                                                     'created-by': {'type': 'string'}},
-                                      'required': ['assigned-units',
-                                                   'created',
-                                                   'created-by'],
-                                      'type': 'object'},
-                     'DetailedStatus': {'additionalProperties': False,
-                                        'properties': {'data': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                             'type': 'object'}},
-                                                                'type': 'object'},
-                                                       'err': {'$ref': '#/definitions/Error'},
-                                                       'info': {'type': 'string'},
-                                                       'kind': {'type': 'string'},
-                                                       'life': {'type': 'string'},
-                                                       'since': {'format': 'date-time',
-                                                                 'type': 'string'},
-                                                       'status': {'type': 'string'},
-                                                       'version': {'type': 'string'}},
-                                        'required': ['status',
-                                                     'info',
-                                                     'data',
-                                                     'since',
-                                                     'kind',
-                                                     'version',
-                                                     'life'],
-                                        'type': 'object'},
-                     'EndpointStatus': {'additionalProperties': False,
-                                        'properties': {'application': {'type': 'string'},
-                                                       'name': {'type': 'string'},
-                                                       'role': {'type': 'string'},
-                                                       'subordinate': {'type': 'boolean'}},
-                                        'required': ['application',
-                                                     'name',
-                                                     'role',
-                                                     'subordinate'],
-                                        'type': 'object'},
-                     'EntityStatus': {'additionalProperties': False,
-                                      'properties': {'data': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                           'type': 'object'}},
-                                                              'type': 'object'},
-                                                     'info': {'type': 'string'},
-                                                     'since': {'format': 'date-time',
-                                                               'type': 'string'},
-                                                     'status': {'type': 'string'}},
-                                      'required': ['status', 'info', 'since'],
-                                      'type': 'object'},
-                     'Error': {'additionalProperties': False,
-                               'properties': {'code': {'type': 'string'},
-                                              'info': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                    'type': 'object'}},
-                                                       'type': 'object'},
-                                              'message': {'type': 'string'}},
-                               'required': ['message', 'code'],
-                               'type': 'object'},
-                     'ExposedEndpoint': {'additionalProperties': False,
-                                         'properties': {'expose-to-cidrs': {'items': {'type': 'string'},
-                                                                            'type': 'array'},
-                                                        'expose-to-spaces': {'items': {'type': 'string'},
-                                                                             'type': 'array'}},
-                                         'type': 'object'},
-                     'FilesystemAttachmentDetails': {'additionalProperties': False,
-                                                     'properties': {'FilesystemAttachmentInfo': {'$ref': '#/definitions/FilesystemAttachmentInfo'},
-                                                                    'life': {'type': 'string'},
-                                                                    'mount-point': {'type': 'string'},
-                                                                    'read-only': {'type': 'boolean'}},
-                                                     'required': ['FilesystemAttachmentInfo'],
-                                                     'type': 'object'},
-                     'FilesystemAttachmentInfo': {'additionalProperties': False,
-                                                  'properties': {'mount-point': {'type': 'string'},
-                                                                 'read-only': {'type': 'boolean'}},
-                                                  'type': 'object'},
-                     'FilesystemDetails': {'additionalProperties': False,
-                                           'properties': {'filesystem-tag': {'type': 'string'},
-                                                          'info': {'$ref': '#/definitions/FilesystemInfo'},
-                                                          'life': {'type': 'string'},
-                                                          'machine-attachments': {'patternProperties': {'.*': {'$ref': '#/definitions/FilesystemAttachmentDetails'}},
-                                                                                  'type': 'object'},
-                                                          'status': {'$ref': '#/definitions/EntityStatus'},
-                                                          'storage': {'$ref': '#/definitions/StorageDetails'},
-                                                          'unit-attachments': {'patternProperties': {'.*': {'$ref': '#/definitions/FilesystemAttachmentDetails'}},
-                                                                               'type': 'object'},
-                                                          'volume-tag': {'type': 'string'}},
-                                           'required': ['filesystem-tag',
-                                                        'info',
-                                                        'status'],
-                                           'type': 'object'},
-                     'FilesystemInfo': {'additionalProperties': False,
-                                        'properties': {'filesystem-id': {'type': 'string'},
-                                                       'pool': {'type': 'string'},
-                                                       'size': {'type': 'integer'}},
-                                        'required': ['filesystem-id',
-                                                     'pool',
-                                                     'size'],
-                                        'type': 'object'},
-                     'FindToolsParams': {'additionalProperties': False,
-                                         'properties': {'agentstream': {'type': 'string'},
-                                                        'arch': {'type': 'string'},
-                                                        'major': {'type': 'integer'},
-                                                        'number': {'$ref': '#/definitions/Number'},
-                                                        'os-type': {'type': 'string'}},
-                                         'required': ['number',
-                                                      'major',
-                                                      'arch',
-                                                      'os-type',
-                                                      'agentstream'],
-                                         'type': 'object'},
-                     'FindToolsResult': {'additionalProperties': False,
-                                         'properties': {'error': {'$ref': '#/definitions/Error'},
-                                                        'list': {'items': {'$ref': '#/definitions/Tools'},
-                                                                 'type': 'array'}},
-                                         'required': ['list'],
-                                         'type': 'object'},
-                     'FullStatus': {'additionalProperties': False,
-                                    'properties': {'applications': {'patternProperties': {'.*': {'$ref': '#/definitions/ApplicationStatus'}},
-                                                                    'type': 'object'},
-                                                   'branches': {'patternProperties': {'.*': {'$ref': '#/definitions/BranchStatus'}},
-                                                                'type': 'object'},
-                                                   'controller-timestamp': {'format': 'date-time',
-                                                                            'type': 'string'},
-                                                   'filesystems': {'items': {'$ref': '#/definitions/FilesystemDetails'},
-                                                                   'type': 'array'},
-                                                   'machines': {'patternProperties': {'.*': {'$ref': '#/definitions/MachineStatus'}},
-                                                                'type': 'object'},
-                                                   'model': {'$ref': '#/definitions/ModelStatusInfo'},
-                                                   'offers': {'patternProperties': {'.*': {'$ref': '#/definitions/ApplicationOfferStatus'}},
-                                                              'type': 'object'},
-                                                   'relations': {'items': {'$ref': '#/definitions/RelationStatus'},
-                                                                 'type': 'array'},
-                                                   'remote-applications': {'patternProperties': {'.*': {'$ref': '#/definitions/RemoteApplicationStatus'}},
-                                                                           'type': 'object'},
-                                                   'storage': {'items': {'$ref': '#/definitions/StorageDetails'},
-                                                               'type': 'array'},
-                                                   'volumes': {'items': {'$ref': '#/definitions/VolumeDetails'},
-                                                               'type': 'array'}},
-                                    'required': ['model',
-                                                 'machines',
-                                                 'applications',
-                                                 'remote-applications',
-                                                 'offers',
-                                                 'relations',
-                                                 'controller-timestamp',
-                                                 'branches'],
-                                    'type': 'object'},
-                     'History': {'additionalProperties': False,
-                                 'properties': {'error': {'$ref': '#/definitions/Error'},
-                                                'statuses': {'items': {'$ref': '#/definitions/DetailedStatus'},
-                                                             'type': 'array'}},
-                                 'required': ['statuses'],
-                                 'type': 'object'},
-                     'LXDProfile': {'additionalProperties': False,
-                                    'properties': {'config': {'patternProperties': {'.*': {'type': 'string'}},
-                                                              'type': 'object'},
-                                                   'description': {'type': 'string'},
-                                                   'devices': {'patternProperties': {'.*': {'patternProperties': {'.*': {'type': 'string'}},
-                                                                                            'type': 'object'}},
-                                                               'type': 'object'}},
-                                    'required': ['config',
-                                                 'description',
-                                                 'devices'],
-                                    'type': 'object'},
-                     'MachineStatus': {'additionalProperties': False,
-                                       'properties': {'agent-status': {'$ref': '#/definitions/DetailedStatus'},
-                                                      'base': {'$ref': '#/definitions/Base'},
-                                                      'constraints': {'type': 'string'},
-                                                      'containers': {'patternProperties': {'.*': {'$ref': '#/definitions/MachineStatus'}},
-                                                                     'type': 'object'},
-                                                      'display-name': {'type': 'string'},
-                                                      'dns-name': {'type': 'string'},
-                                                      'hardware': {'type': 'string'},
-                                                      'has-vote': {'type': 'boolean'},
-                                                      'hostname': {'type': 'string'},
-                                                      'id': {'type': 'string'},
-                                                      'instance-id': {'type': 'string'},
-                                                      'instance-status': {'$ref': '#/definitions/DetailedStatus'},
-                                                      'ip-addresses': {'items': {'type': 'string'},
-                                                                       'type': 'array'},
-                                                      'jobs': {'items': {'type': 'string'},
-                                                               'type': 'array'},
-                                                      'lxd-profiles': {'patternProperties': {'.*': {'$ref': '#/definitions/LXDProfile'}},
-                                                                       'type': 'object'},
-                                                      'modification-status': {'$ref': '#/definitions/DetailedStatus'},
-                                                      'network-interfaces': {'patternProperties': {'.*': {'$ref': '#/definitions/NetworkInterface'}},
-                                                                             'type': 'object'},
-                                                      'primary-controller-machine': {'type': 'boolean'},
-                                                      'wants-vote': {'type': 'boolean'}},
-                                       'required': ['agent-status',
-                                                    'instance-status',
-                                                    'modification-status',
-                                                    'dns-name',
-                                                    'instance-id',
-                                                    'display-name',
-                                                    'base',
-                                                    'id',
-                                                    'containers',
-                                                    'constraints',
-                                                    'hardware',
-                                                    'jobs',
-                                                    'has-vote',
-                                                    'wants-vote'],
-                                       'type': 'object'},
-                     'MeterStatus': {'additionalProperties': False,
-                                     'properties': {'color': {'type': 'string'},
-                                                    'message': {'type': 'string'}},
-                                     'required': ['color', 'message'],
-                                     'type': 'object'},
-                     'ModelStatusInfo': {'additionalProperties': False,
-                                         'properties': {'available-version': {'type': 'string'},
-                                                        'cloud-tag': {'type': 'string'},
-                                                        'meter-status': {'$ref': '#/definitions/MeterStatus'},
-                                                        'model-status': {'$ref': '#/definitions/DetailedStatus'},
-                                                        'name': {'type': 'string'},
-                                                        'region': {'type': 'string'},
-                                                        'sla': {'type': 'string'},
-                                                        'type': {'type': 'string'},
-                                                        'version': {'type': 'string'}},
-                                         'required': ['name',
-                                                      'type',
-                                                      'cloud-tag',
-                                                      'version',
-                                                      'available-version',
-                                                      'model-status',
-                                                      'meter-status',
-                                                      'sla'],
-                                         'type': 'object'},
-                     'NetworkInterface': {'additionalProperties': False,
-                                          'properties': {'dns-nameservers': {'items': {'type': 'string'},
-                                                                             'type': 'array'},
-                                                         'gateway': {'type': 'string'},
-                                                         'ip-addresses': {'items': {'type': 'string'},
-                                                                          'type': 'array'},
-                                                         'is-up': {'type': 'boolean'},
-                                                         'mac-address': {'type': 'string'},
-                                                         'space': {'type': 'string'}},
-                                          'required': ['ip-addresses',
-                                                       'mac-address',
-                                                       'is-up'],
-                                          'type': 'object'},
-                     'Number': {'additionalProperties': False,
-                                'properties': {'Build': {'type': 'integer'},
-                                               'Major': {'type': 'integer'},
-                                               'Minor': {'type': 'integer'},
-                                               'Patch': {'type': 'integer'},
-                                               'Tag': {'type': 'string'}},
-                                'required': ['Major',
-                                             'Minor',
-                                             'Tag',
-                                             'Patch',
-                                             'Build'],
-                                'type': 'object'},
-                     'RelationStatus': {'additionalProperties': False,
-                                        'properties': {'endpoints': {'items': {'$ref': '#/definitions/EndpointStatus'},
-                                                                     'type': 'array'},
-                                                       'id': {'type': 'integer'},
-                                                       'interface': {'type': 'string'},
-                                                       'key': {'type': 'string'},
-                                                       'scope': {'type': 'string'},
-                                                       'status': {'$ref': '#/definitions/DetailedStatus'}},
-                                        'required': ['id',
-                                                     'key',
-                                                     'interface',
-                                                     'scope',
-                                                     'endpoints',
-                                                     'status'],
-                                        'type': 'object'},
-                     'RemoteApplicationStatus': {'additionalProperties': False,
-                                                 'properties': {'endpoints': {'items': {'$ref': '#/definitions/RemoteEndpoint'},
-                                                                              'type': 'array'},
-                                                                'err': {'$ref': '#/definitions/Error'},
-                                                                'life': {'type': 'string'},
-                                                                'offer-name': {'type': 'string'},
-                                                                'offer-url': {'type': 'string'},
-                                                                'relations': {'patternProperties': {'.*': {'items': {'type': 'string'},
-                                                                                                           'type': 'array'}},
-                                                                              'type': 'object'},
-                                                                'status': {'$ref': '#/definitions/DetailedStatus'}},
-                                                 'required': ['offer-url',
-                                                              'offer-name',
-                                                              'endpoints',
-                                                              'life',
-                                                              'relations',
-                                                              'status'],
-                                                 'type': 'object'},
-                     'RemoteEndpoint': {'additionalProperties': False,
-                                        'properties': {'interface': {'type': 'string'},
-                                                       'limit': {'type': 'integer'},
-                                                       'name': {'type': 'string'},
-                                                       'role': {'type': 'string'}},
-                                        'required': ['name',
-                                                     'role',
-                                                     'interface',
-                                                     'limit'],
-                                        'type': 'object'},
-                     'StatusHistoryFilter': {'additionalProperties': False,
-                                             'properties': {'date': {'format': 'date-time',
-                                                                     'type': 'string'},
-                                                            'delta': {'type': 'integer'},
-                                                            'exclude': {'items': {'type': 'string'},
-                                                                        'type': 'array'},
-                                                            'size': {'type': 'integer'}},
-                                             'required': ['size',
-                                                          'date',
-                                                          'delta',
-                                                          'exclude'],
-                                             'type': 'object'},
-                     'StatusHistoryRequest': {'additionalProperties': False,
-                                              'properties': {'filter': {'$ref': '#/definitions/StatusHistoryFilter'},
-                                                             'historyKind': {'type': 'string'},
-                                                             'size': {'type': 'integer'},
-                                                             'tag': {'type': 'string'}},
-                                              'required': ['historyKind',
-                                                           'size',
-                                                           'filter',
-                                                           'tag'],
-                                              'type': 'object'},
-                     'StatusHistoryRequests': {'additionalProperties': False,
-                                               'properties': {'requests': {'items': {'$ref': '#/definitions/StatusHistoryRequest'},
-                                                                           'type': 'array'}},
-                                               'required': ['requests'],
-                                               'type': 'object'},
-                     'StatusHistoryResult': {'additionalProperties': False,
-                                             'properties': {'error': {'$ref': '#/definitions/Error'},
-                                                            'history': {'$ref': '#/definitions/History'}},
-                                             'required': ['history'],
-                                             'type': 'object'},
-                     'StatusHistoryResults': {'additionalProperties': False,
-                                              'properties': {'results': {'items': {'$ref': '#/definitions/StatusHistoryResult'},
-                                                                         'type': 'array'}},
-                                              'required': ['results'],
-                                              'type': 'object'},
-                     'StatusParams': {'additionalProperties': False,
-                                      'properties': {'include-storage': {'type': 'boolean'},
-                                                     'patterns': {'items': {'type': 'string'},
-                                                                  'type': 'array'}},
-                                      'required': ['patterns'],
-                                      'type': 'object'},
-                     'StorageAttachmentDetails': {'additionalProperties': False,
-                                                  'properties': {'life': {'type': 'string'},
-                                                                 'location': {'type': 'string'},
-                                                                 'machine-tag': {'type': 'string'},
-                                                                 'storage-tag': {'type': 'string'},
-                                                                 'unit-tag': {'type': 'string'}},
-                                                  'required': ['storage-tag',
-                                                               'unit-tag',
-                                                               'machine-tag'],
-                                                  'type': 'object'},
-                     'StorageDetails': {'additionalProperties': False,
-                                        'properties': {'attachments': {'patternProperties': {'.*': {'$ref': '#/definitions/StorageAttachmentDetails'}},
-                                                                       'type': 'object'},
-                                                       'kind': {'type': 'integer'},
-                                                       'life': {'type': 'string'},
-                                                       'owner-tag': {'type': 'string'},
-                                                       'persistent': {'type': 'boolean'},
-                                                       'status': {'$ref': '#/definitions/EntityStatus'},
-                                                       'storage-tag': {'type': 'string'}},
-                                        'required': ['storage-tag',
-                                                     'owner-tag',
-                                                     'kind',
-                                                     'status',
-                                                     'persistent'],
-                                        'type': 'object'},
-                     'Tools': {'additionalProperties': False,
-                               'properties': {'sha256': {'type': 'string'},
-                                              'size': {'type': 'integer'},
-                                              'url': {'type': 'string'},
-                                              'version': {'$ref': '#/definitions/Binary'}},
-                               'required': ['version', 'url', 'size'],
-                               'type': 'object'},
-                     'UnitStatus': {'additionalProperties': False,
-                                    'properties': {'address': {'type': 'string'},
-                                                   'agent-status': {'$ref': '#/definitions/DetailedStatus'},
-                                                   'charm': {'type': 'string'},
-                                                   'leader': {'type': 'boolean'},
-                                                   'machine': {'type': 'string'},
-                                                   'opened-ports': {'items': {'type': 'string'},
-                                                                    'type': 'array'},
-                                                   'provider-id': {'type': 'string'},
-                                                   'public-address': {'type': 'string'},
-                                                   'subordinates': {'patternProperties': {'.*': {'$ref': '#/definitions/UnitStatus'}},
-                                                                    'type': 'object'},
-                                                   'workload-status': {'$ref': '#/definitions/DetailedStatus'},
-                                                   'workload-version': {'type': 'string'}},
-                                    'required': ['agent-status',
-                                                 'workload-status',
-                                                 'workload-version',
-                                                 'machine',
-                                                 'opened-ports',
-                                                 'public-address',
-                                                 'charm',
-                                                 'subordinates'],
-                                    'type': 'object'},
-                     'VolumeAttachmentDetails': {'additionalProperties': False,
-                                                 'properties': {'VolumeAttachmentInfo': {'$ref': '#/definitions/VolumeAttachmentInfo'},
-                                                                'bus-address': {'type': 'string'},
-                                                                'device-link': {'type': 'string'},
-                                                                'device-name': {'type': 'string'},
-                                                                'life': {'type': 'string'},
-                                                                'plan-info': {'$ref': '#/definitions/VolumeAttachmentPlanInfo'},
-                                                                'read-only': {'type': 'boolean'}},
-                                                 'required': ['VolumeAttachmentInfo'],
-                                                 'type': 'object'},
-                     'VolumeAttachmentInfo': {'additionalProperties': False,
-                                              'properties': {'bus-address': {'type': 'string'},
-                                                             'device-link': {'type': 'string'},
-                                                             'device-name': {'type': 'string'},
-                                                             'plan-info': {'$ref': '#/definitions/VolumeAttachmentPlanInfo'},
-                                                             'read-only': {'type': 'boolean'}},
-                                              'type': 'object'},
-                     'VolumeAttachmentPlanInfo': {'additionalProperties': False,
-                                                  'properties': {'device-attributes': {'patternProperties': {'.*': {'type': 'string'}},
-                                                                                       'type': 'object'},
-                                                                 'device-type': {'type': 'string'}},
-                                                  'type': 'object'},
-                     'VolumeDetails': {'additionalProperties': False,
-                                       'properties': {'info': {'$ref': '#/definitions/VolumeInfo'},
-                                                      'life': {'type': 'string'},
-                                                      'machine-attachments': {'patternProperties': {'.*': {'$ref': '#/definitions/VolumeAttachmentDetails'}},
-                                                                              'type': 'object'},
-                                                      'status': {'$ref': '#/definitions/EntityStatus'},
-                                                      'storage': {'$ref': '#/definitions/StorageDetails'},
-                                                      'unit-attachments': {'patternProperties': {'.*': {'$ref': '#/definitions/VolumeAttachmentDetails'}},
-                                                                           'type': 'object'},
-                                                      'volume-tag': {'type': 'string'}},
-                                       'required': ['volume-tag', 'info', 'status'],
-                                       'type': 'object'},
-                     'VolumeInfo': {'additionalProperties': False,
-                                    'properties': {'hardware-id': {'type': 'string'},
-                                                   'persistent': {'type': 'boolean'},
-                                                   'pool': {'type': 'string'},
-                                                   'size': {'type': 'integer'},
-                                                   'volume-id': {'type': 'string'},
-                                                   'wwn': {'type': 'string'}},
-                                    'required': ['volume-id', 'size', 'persistent'],
-                                    'type': 'object'}},
-     'properties': {'FindTools': {'description': 'FindTools returns a List '
-                                                 'containing all tools matching '
-                                                 'the given parameters.\n'
-                                                 'TODO(juju 3.1) - remove, used by '
-                                                 '2.9 client only',
-                                  'properties': {'Params': {'$ref': '#/definitions/FindToolsParams'},
-                                                 'Result': {'$ref': '#/definitions/FindToolsResult'}},
-                                  'type': 'object'},
-                    'FullStatus': {'description': 'FullStatus gives the '
-                                                  'information needed for juju '
-                                                  'status over the api',
-                                   'properties': {'Params': {'$ref': '#/definitions/StatusParams'},
-                                                  'Result': {'$ref': '#/definitions/FullStatus'}},
-                                   'type': 'object'},
-                    'StatusHistory': {'description': 'StatusHistory returns a '
-                                                     'slice of past statuses for '
-                                                     'several entities.',
-                                      'properties': {'Params': {'$ref': '#/definitions/StatusHistoryRequests'},
-                                                     'Result': {'$ref': '#/definitions/StatusHistoryResults'}},
-                                      'type': 'object'},
-                    'WatchAll': {'description': 'WatchAll initiates a watcher for '
-                                                'entities in the connected model.',
-                                 'properties': {'Result': {'$ref': '#/definitions/AllWatcherId'}},
-                                 'type': 'object'}},
-     'type': 'object'}
-
+    schema = {
+        'definitions': {
+            'AllWatcherId': {
+                'additionalProperties': False,
+                'properties': {'watcher-id': {'type': 'string'}},
+                'required': ['watcher-id'],
+                'type': 'object',
+            },
+            'ApplicationOfferStatus': {
+                'additionalProperties': False,
+                'properties': {
+                    'active-connected-count': {'type': 'integer'},
+                    'application-name': {'type': 'string'},
+                    'charm': {'type': 'string'},
+                    'endpoints': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/RemoteEndpoint'}
+                        },
+                        'type': 'object',
+                    },
+                    'err': {'$ref': '#/definitions/Error'},
+                    'offer-name': {'type': 'string'},
+                    'total-connected-count': {'type': 'integer'},
+                },
+                'required': [
+                    'offer-name',
+                    'application-name',
+                    'charm',
+                    'endpoints',
+                    'active-connected-count',
+                    'total-connected-count',
+                ],
+                'type': 'object',
+            },
+            'ApplicationStatus': {
+                'additionalProperties': False,
+                'properties': {
+                    'base': {'$ref': '#/definitions/Base'},
+                    'can-upgrade-to': {'type': 'string'},
+                    'charm': {'type': 'string'},
+                    'charm-channel': {'type': 'string'},
+                    'charm-profile': {'type': 'string'},
+                    'charm-version': {'type': 'string'},
+                    'endpoint-bindings': {
+                        'patternProperties': {'.*': {'type': 'string'}},
+                        'type': 'object',
+                    },
+                    'err': {'$ref': '#/definitions/Error'},
+                    'exposed': {'type': 'boolean'},
+                    'exposed-endpoints': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/ExposedEndpoint'}
+                        },
+                        'type': 'object',
+                    },
+                    'int': {'type': 'integer'},
+                    'life': {'type': 'string'},
+                    'meter-statuses': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/MeterStatus'}
+                        },
+                        'type': 'object',
+                    },
+                    'provider-id': {'type': 'string'},
+                    'public-address': {'type': 'string'},
+                    'relations': {
+                        'patternProperties': {
+                            '.*': {'items': {'type': 'string'}, 'type': 'array'}
+                        },
+                        'type': 'object',
+                    },
+                    'status': {'$ref': '#/definitions/DetailedStatus'},
+                    'subordinate-to': {'items': {'type': 'string'}, 'type': 'array'},
+                    'units': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/UnitStatus'}
+                        },
+                        'type': 'object',
+                    },
+                    'workload-version': {'type': 'string'},
+                },
+                'required': [
+                    'charm',
+                    'charm-version',
+                    'charm-profile',
+                    'base',
+                    'exposed',
+                    'life',
+                    'relations',
+                    'can-upgrade-to',
+                    'subordinate-to',
+                    'units',
+                    'meter-statuses',
+                    'status',
+                    'workload-version',
+                    'endpoint-bindings',
+                    'public-address',
+                ],
+                'type': 'object',
+            },
+            'Base': {
+                'additionalProperties': False,
+                'properties': {
+                    'channel': {'type': 'string'},
+                    'name': {'type': 'string'},
+                },
+                'required': ['name', 'channel'],
+                'type': 'object',
+            },
+            'Binary': {
+                'additionalProperties': False,
+                'properties': {
+                    'Arch': {'type': 'string'},
+                    'Build': {'type': 'integer'},
+                    'Major': {'type': 'integer'},
+                    'Minor': {'type': 'integer'},
+                    'Number': {'$ref': '#/definitions/Number'},
+                    'Patch': {'type': 'integer'},
+                    'Release': {'type': 'string'},
+                    'Tag': {'type': 'string'},
+                },
+                'required': [
+                    'Major',
+                    'Minor',
+                    'Tag',
+                    'Patch',
+                    'Build',
+                    'Number',
+                    'Release',
+                    'Arch',
+                ],
+                'type': 'object',
+            },
+            'BranchStatus': {
+                'additionalProperties': False,
+                'properties': {
+                    'assigned-units': {
+                        'patternProperties': {
+                            '.*': {'items': {'type': 'string'}, 'type': 'array'}
+                        },
+                        'type': 'object',
+                    },
+                    'created': {'type': 'integer'},
+                    'created-by': {'type': 'string'},
+                },
+                'required': ['assigned-units', 'created', 'created-by'],
+                'type': 'object',
+            },
+            'DetailedStatus': {
+                'additionalProperties': False,
+                'properties': {
+                    'data': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'err': {'$ref': '#/definitions/Error'},
+                    'info': {'type': 'string'},
+                    'kind': {'type': 'string'},
+                    'life': {'type': 'string'},
+                    'since': {'format': 'date-time', 'type': 'string'},
+                    'status': {'type': 'string'},
+                    'version': {'type': 'string'},
+                },
+                'required': [
+                    'status',
+                    'info',
+                    'data',
+                    'since',
+                    'kind',
+                    'version',
+                    'life',
+                ],
+                'type': 'object',
+            },
+            'EndpointStatus': {
+                'additionalProperties': False,
+                'properties': {
+                    'application': {'type': 'string'},
+                    'name': {'type': 'string'},
+                    'role': {'type': 'string'},
+                    'subordinate': {'type': 'boolean'},
+                },
+                'required': ['application', 'name', 'role', 'subordinate'],
+                'type': 'object',
+            },
+            'EntityStatus': {
+                'additionalProperties': False,
+                'properties': {
+                    'data': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'info': {'type': 'string'},
+                    'since': {'format': 'date-time', 'type': 'string'},
+                    'status': {'type': 'string'},
+                },
+                'required': ['status', 'info', 'since'],
+                'type': 'object',
+            },
+            'Error': {
+                'additionalProperties': False,
+                'properties': {
+                    'code': {'type': 'string'},
+                    'info': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'message': {'type': 'string'},
+                },
+                'required': ['message', 'code'],
+                'type': 'object',
+            },
+            'ExposedEndpoint': {
+                'additionalProperties': False,
+                'properties': {
+                    'expose-to-cidrs': {'items': {'type': 'string'}, 'type': 'array'},
+                    'expose-to-spaces': {'items': {'type': 'string'}, 'type': 'array'},
+                },
+                'type': 'object',
+            },
+            'FilesystemAttachmentDetails': {
+                'additionalProperties': False,
+                'properties': {
+                    'FilesystemAttachmentInfo': {
+                        '$ref': '#/definitions/FilesystemAttachmentInfo'
+                    },
+                    'life': {'type': 'string'},
+                    'mount-point': {'type': 'string'},
+                    'read-only': {'type': 'boolean'},
+                },
+                'required': ['FilesystemAttachmentInfo'],
+                'type': 'object',
+            },
+            'FilesystemAttachmentInfo': {
+                'additionalProperties': False,
+                'properties': {
+                    'mount-point': {'type': 'string'},
+                    'read-only': {'type': 'boolean'},
+                },
+                'type': 'object',
+            },
+            'FilesystemDetails': {
+                'additionalProperties': False,
+                'properties': {
+                    'filesystem-tag': {'type': 'string'},
+                    'info': {'$ref': '#/definitions/FilesystemInfo'},
+                    'life': {'type': 'string'},
+                    'machine-attachments': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/FilesystemAttachmentDetails'}
+                        },
+                        'type': 'object',
+                    },
+                    'status': {'$ref': '#/definitions/EntityStatus'},
+                    'storage': {'$ref': '#/definitions/StorageDetails'},
+                    'unit-attachments': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/FilesystemAttachmentDetails'}
+                        },
+                        'type': 'object',
+                    },
+                    'volume-tag': {'type': 'string'},
+                },
+                'required': ['filesystem-tag', 'info', 'status'],
+                'type': 'object',
+            },
+            'FilesystemInfo': {
+                'additionalProperties': False,
+                'properties': {
+                    'filesystem-id': {'type': 'string'},
+                    'pool': {'type': 'string'},
+                    'size': {'type': 'integer'},
+                },
+                'required': ['filesystem-id', 'pool', 'size'],
+                'type': 'object',
+            },
+            'FindToolsParams': {
+                'additionalProperties': False,
+                'properties': {
+                    'agentstream': {'type': 'string'},
+                    'arch': {'type': 'string'},
+                    'major': {'type': 'integer'},
+                    'number': {'$ref': '#/definitions/Number'},
+                    'os-type': {'type': 'string'},
+                },
+                'required': ['number', 'major', 'arch', 'os-type', 'agentstream'],
+                'type': 'object',
+            },
+            'FindToolsResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'list': {'items': {'$ref': '#/definitions/Tools'}, 'type': 'array'},
+                },
+                'required': ['list'],
+                'type': 'object',
+            },
+            'FullStatus': {
+                'additionalProperties': False,
+                'properties': {
+                    'applications': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/ApplicationStatus'}
+                        },
+                        'type': 'object',
+                    },
+                    'branches': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/BranchStatus'}
+                        },
+                        'type': 'object',
+                    },
+                    'controller-timestamp': {'format': 'date-time', 'type': 'string'},
+                    'filesystems': {
+                        'items': {'$ref': '#/definitions/FilesystemDetails'},
+                        'type': 'array',
+                    },
+                    'machines': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/MachineStatus'}
+                        },
+                        'type': 'object',
+                    },
+                    'model': {'$ref': '#/definitions/ModelStatusInfo'},
+                    'offers': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/ApplicationOfferStatus'}
+                        },
+                        'type': 'object',
+                    },
+                    'relations': {
+                        'items': {'$ref': '#/definitions/RelationStatus'},
+                        'type': 'array',
+                    },
+                    'remote-applications': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/RemoteApplicationStatus'}
+                        },
+                        'type': 'object',
+                    },
+                    'storage': {
+                        'items': {'$ref': '#/definitions/StorageDetails'},
+                        'type': 'array',
+                    },
+                    'volumes': {
+                        'items': {'$ref': '#/definitions/VolumeDetails'},
+                        'type': 'array',
+                    },
+                },
+                'required': [
+                    'model',
+                    'machines',
+                    'applications',
+                    'remote-applications',
+                    'offers',
+                    'relations',
+                    'controller-timestamp',
+                    'branches',
+                ],
+                'type': 'object',
+            },
+            'History': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'statuses': {
+                        'items': {'$ref': '#/definitions/DetailedStatus'},
+                        'type': 'array',
+                    },
+                },
+                'required': ['statuses'],
+                'type': 'object',
+            },
+            'LXDProfile': {
+                'additionalProperties': False,
+                'properties': {
+                    'config': {
+                        'patternProperties': {'.*': {'type': 'string'}},
+                        'type': 'object',
+                    },
+                    'description': {'type': 'string'},
+                    'devices': {
+                        'patternProperties': {
+                            '.*': {
+                                'patternProperties': {'.*': {'type': 'string'}},
+                                'type': 'object',
+                            }
+                        },
+                        'type': 'object',
+                    },
+                },
+                'required': ['config', 'description', 'devices'],
+                'type': 'object',
+            },
+            'MachineStatus': {
+                'additionalProperties': False,
+                'properties': {
+                    'agent-status': {'$ref': '#/definitions/DetailedStatus'},
+                    'base': {'$ref': '#/definitions/Base'},
+                    'constraints': {'type': 'string'},
+                    'containers': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/MachineStatus'}
+                        },
+                        'type': 'object',
+                    },
+                    'display-name': {'type': 'string'},
+                    'dns-name': {'type': 'string'},
+                    'hardware': {'type': 'string'},
+                    'has-vote': {'type': 'boolean'},
+                    'hostname': {'type': 'string'},
+                    'id': {'type': 'string'},
+                    'instance-id': {'type': 'string'},
+                    'instance-status': {'$ref': '#/definitions/DetailedStatus'},
+                    'ip-addresses': {'items': {'type': 'string'}, 'type': 'array'},
+                    'jobs': {'items': {'type': 'string'}, 'type': 'array'},
+                    'lxd-profiles': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/LXDProfile'}
+                        },
+                        'type': 'object',
+                    },
+                    'modification-status': {'$ref': '#/definitions/DetailedStatus'},
+                    'network-interfaces': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/NetworkInterface'}
+                        },
+                        'type': 'object',
+                    },
+                    'primary-controller-machine': {'type': 'boolean'},
+                    'wants-vote': {'type': 'boolean'},
+                },
+                'required': [
+                    'agent-status',
+                    'instance-status',
+                    'modification-status',
+                    'dns-name',
+                    'instance-id',
+                    'display-name',
+                    'base',
+                    'id',
+                    'containers',
+                    'constraints',
+                    'hardware',
+                    'jobs',
+                    'has-vote',
+                    'wants-vote',
+                ],
+                'type': 'object',
+            },
+            'MeterStatus': {
+                'additionalProperties': False,
+                'properties': {
+                    'color': {'type': 'string'},
+                    'message': {'type': 'string'},
+                },
+                'required': ['color', 'message'],
+                'type': 'object',
+            },
+            'ModelStatusInfo': {
+                'additionalProperties': False,
+                'properties': {
+                    'available-version': {'type': 'string'},
+                    'cloud-tag': {'type': 'string'},
+                    'meter-status': {'$ref': '#/definitions/MeterStatus'},
+                    'model-status': {'$ref': '#/definitions/DetailedStatus'},
+                    'name': {'type': 'string'},
+                    'region': {'type': 'string'},
+                    'sla': {'type': 'string'},
+                    'type': {'type': 'string'},
+                    'version': {'type': 'string'},
+                },
+                'required': [
+                    'name',
+                    'type',
+                    'cloud-tag',
+                    'version',
+                    'available-version',
+                    'model-status',
+                    'meter-status',
+                    'sla',
+                ],
+                'type': 'object',
+            },
+            'NetworkInterface': {
+                'additionalProperties': False,
+                'properties': {
+                    'dns-nameservers': {'items': {'type': 'string'}, 'type': 'array'},
+                    'gateway': {'type': 'string'},
+                    'ip-addresses': {'items': {'type': 'string'}, 'type': 'array'},
+                    'is-up': {'type': 'boolean'},
+                    'mac-address': {'type': 'string'},
+                    'space': {'type': 'string'},
+                },
+                'required': ['ip-addresses', 'mac-address', 'is-up'],
+                'type': 'object',
+            },
+            'Number': {
+                'additionalProperties': False,
+                'properties': {
+                    'Build': {'type': 'integer'},
+                    'Major': {'type': 'integer'},
+                    'Minor': {'type': 'integer'},
+                    'Patch': {'type': 'integer'},
+                    'Tag': {'type': 'string'},
+                },
+                'required': ['Major', 'Minor', 'Tag', 'Patch', 'Build'],
+                'type': 'object',
+            },
+            'RelationStatus': {
+                'additionalProperties': False,
+                'properties': {
+                    'endpoints': {
+                        'items': {'$ref': '#/definitions/EndpointStatus'},
+                        'type': 'array',
+                    },
+                    'id': {'type': 'integer'},
+                    'interface': {'type': 'string'},
+                    'key': {'type': 'string'},
+                    'scope': {'type': 'string'},
+                    'status': {'$ref': '#/definitions/DetailedStatus'},
+                },
+                'required': ['id', 'key', 'interface', 'scope', 'endpoints', 'status'],
+                'type': 'object',
+            },
+            'RemoteApplicationStatus': {
+                'additionalProperties': False,
+                'properties': {
+                    'endpoints': {
+                        'items': {'$ref': '#/definitions/RemoteEndpoint'},
+                        'type': 'array',
+                    },
+                    'err': {'$ref': '#/definitions/Error'},
+                    'life': {'type': 'string'},
+                    'offer-name': {'type': 'string'},
+                    'offer-url': {'type': 'string'},
+                    'relations': {
+                        'patternProperties': {
+                            '.*': {'items': {'type': 'string'}, 'type': 'array'}
+                        },
+                        'type': 'object',
+                    },
+                    'status': {'$ref': '#/definitions/DetailedStatus'},
+                },
+                'required': [
+                    'offer-url',
+                    'offer-name',
+                    'endpoints',
+                    'life',
+                    'relations',
+                    'status',
+                ],
+                'type': 'object',
+            },
+            'RemoteEndpoint': {
+                'additionalProperties': False,
+                'properties': {
+                    'interface': {'type': 'string'},
+                    'limit': {'type': 'integer'},
+                    'name': {'type': 'string'},
+                    'role': {'type': 'string'},
+                },
+                'required': ['name', 'role', 'interface', 'limit'],
+                'type': 'object',
+            },
+            'StatusHistoryFilter': {
+                'additionalProperties': False,
+                'properties': {
+                    'date': {'format': 'date-time', 'type': 'string'},
+                    'delta': {'type': 'integer'},
+                    'exclude': {'items': {'type': 'string'}, 'type': 'array'},
+                    'size': {'type': 'integer'},
+                },
+                'required': ['size', 'date', 'delta', 'exclude'],
+                'type': 'object',
+            },
+            'StatusHistoryRequest': {
+                'additionalProperties': False,
+                'properties': {
+                    'filter': {'$ref': '#/definitions/StatusHistoryFilter'},
+                    'historyKind': {'type': 'string'},
+                    'size': {'type': 'integer'},
+                    'tag': {'type': 'string'},
+                },
+                'required': ['historyKind', 'size', 'filter', 'tag'],
+                'type': 'object',
+            },
+            'StatusHistoryRequests': {
+                'additionalProperties': False,
+                'properties': {
+                    'requests': {
+                        'items': {'$ref': '#/definitions/StatusHistoryRequest'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['requests'],
+                'type': 'object',
+            },
+            'StatusHistoryResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'history': {'$ref': '#/definitions/History'},
+                },
+                'required': ['history'],
+                'type': 'object',
+            },
+            'StatusHistoryResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/StatusHistoryResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'StatusParams': {
+                'additionalProperties': False,
+                'properties': {
+                    'include-storage': {'type': 'boolean'},
+                    'patterns': {'items': {'type': 'string'}, 'type': 'array'},
+                },
+                'required': ['patterns'],
+                'type': 'object',
+            },
+            'StorageAttachmentDetails': {
+                'additionalProperties': False,
+                'properties': {
+                    'life': {'type': 'string'},
+                    'location': {'type': 'string'},
+                    'machine-tag': {'type': 'string'},
+                    'storage-tag': {'type': 'string'},
+                    'unit-tag': {'type': 'string'},
+                },
+                'required': ['storage-tag', 'unit-tag', 'machine-tag'],
+                'type': 'object',
+            },
+            'StorageDetails': {
+                'additionalProperties': False,
+                'properties': {
+                    'attachments': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/StorageAttachmentDetails'}
+                        },
+                        'type': 'object',
+                    },
+                    'kind': {'type': 'integer'},
+                    'life': {'type': 'string'},
+                    'owner-tag': {'type': 'string'},
+                    'persistent': {'type': 'boolean'},
+                    'status': {'$ref': '#/definitions/EntityStatus'},
+                    'storage-tag': {'type': 'string'},
+                },
+                'required': [
+                    'storage-tag',
+                    'owner-tag',
+                    'kind',
+                    'status',
+                    'persistent',
+                ],
+                'type': 'object',
+            },
+            'Tools': {
+                'additionalProperties': False,
+                'properties': {
+                    'sha256': {'type': 'string'},
+                    'size': {'type': 'integer'},
+                    'url': {'type': 'string'},
+                    'version': {'$ref': '#/definitions/Binary'},
+                },
+                'required': ['version', 'url', 'size'],
+                'type': 'object',
+            },
+            'UnitStatus': {
+                'additionalProperties': False,
+                'properties': {
+                    'address': {'type': 'string'},
+                    'agent-status': {'$ref': '#/definitions/DetailedStatus'},
+                    'charm': {'type': 'string'},
+                    'leader': {'type': 'boolean'},
+                    'machine': {'type': 'string'},
+                    'opened-ports': {'items': {'type': 'string'}, 'type': 'array'},
+                    'provider-id': {'type': 'string'},
+                    'public-address': {'type': 'string'},
+                    'subordinates': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/UnitStatus'}
+                        },
+                        'type': 'object',
+                    },
+                    'workload-status': {'$ref': '#/definitions/DetailedStatus'},
+                    'workload-version': {'type': 'string'},
+                },
+                'required': [
+                    'agent-status',
+                    'workload-status',
+                    'workload-version',
+                    'machine',
+                    'opened-ports',
+                    'public-address',
+                    'charm',
+                    'subordinates',
+                ],
+                'type': 'object',
+            },
+            'VolumeAttachmentDetails': {
+                'additionalProperties': False,
+                'properties': {
+                    'VolumeAttachmentInfo': {
+                        '$ref': '#/definitions/VolumeAttachmentInfo'
+                    },
+                    'bus-address': {'type': 'string'},
+                    'device-link': {'type': 'string'},
+                    'device-name': {'type': 'string'},
+                    'life': {'type': 'string'},
+                    'plan-info': {'$ref': '#/definitions/VolumeAttachmentPlanInfo'},
+                    'read-only': {'type': 'boolean'},
+                },
+                'required': ['VolumeAttachmentInfo'],
+                'type': 'object',
+            },
+            'VolumeAttachmentInfo': {
+                'additionalProperties': False,
+                'properties': {
+                    'bus-address': {'type': 'string'},
+                    'device-link': {'type': 'string'},
+                    'device-name': {'type': 'string'},
+                    'plan-info': {'$ref': '#/definitions/VolumeAttachmentPlanInfo'},
+                    'read-only': {'type': 'boolean'},
+                },
+                'type': 'object',
+            },
+            'VolumeAttachmentPlanInfo': {
+                'additionalProperties': False,
+                'properties': {
+                    'device-attributes': {
+                        'patternProperties': {'.*': {'type': 'string'}},
+                        'type': 'object',
+                    },
+                    'device-type': {'type': 'string'},
+                },
+                'type': 'object',
+            },
+            'VolumeDetails': {
+                'additionalProperties': False,
+                'properties': {
+                    'info': {'$ref': '#/definitions/VolumeInfo'},
+                    'life': {'type': 'string'},
+                    'machine-attachments': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/VolumeAttachmentDetails'}
+                        },
+                        'type': 'object',
+                    },
+                    'status': {'$ref': '#/definitions/EntityStatus'},
+                    'storage': {'$ref': '#/definitions/StorageDetails'},
+                    'unit-attachments': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/VolumeAttachmentDetails'}
+                        },
+                        'type': 'object',
+                    },
+                    'volume-tag': {'type': 'string'},
+                },
+                'required': ['volume-tag', 'info', 'status'],
+                'type': 'object',
+            },
+            'VolumeInfo': {
+                'additionalProperties': False,
+                'properties': {
+                    'hardware-id': {'type': 'string'},
+                    'persistent': {'type': 'boolean'},
+                    'pool': {'type': 'string'},
+                    'size': {'type': 'integer'},
+                    'volume-id': {'type': 'string'},
+                    'wwn': {'type': 'string'},
+                },
+                'required': ['volume-id', 'size', 'persistent'],
+                'type': 'object',
+            },
+        },
+        'properties': {
+            'FindTools': {
+                'description': 'FindTools returns a List '
+                'containing all tools matching '
+                'the given parameters.\n'
+                'TODO(juju 3.1) - remove, used by '
+                '2.9 client only',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/FindToolsParams'},
+                    'Result': {'$ref': '#/definitions/FindToolsResult'},
+                },
+                'type': 'object',
+            },
+            'FullStatus': {
+                'description': 'FullStatus gives the '
+                'information needed for juju '
+                'status over the api',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/StatusParams'},
+                    'Result': {'$ref': '#/definitions/FullStatus'},
+                },
+                'type': 'object',
+            },
+            'StatusHistory': {
+                'description': 'StatusHistory returns a '
+                'slice of past statuses for '
+                'several entities.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/StatusHistoryRequests'},
+                    'Result': {'$ref': '#/definitions/StatusHistoryResults'},
+                },
+                'type': 'object',
+            },
+            'WatchAll': {
+                'description': 'WatchAll initiates a watcher for '
+                'entities in the connected model.',
+                'properties': {'Result': {'$ref': '#/definitions/AllWatcherId'}},
+                'type': 'object',
+            },
+        },
+        'type': 'object',
+    }
 
     @ReturnMapping(FindToolsResult)
-    async def FindTools(self, agentstream=None, arch=None, major=None, number=None, os_type=None):
+    async def FindTools(
+        self, agentstream=None, arch=None, major=None, number=None, os_type=None
+    ):
         """
         FindTools returns a List containing all tools matching the given parameters.
         TODO(juju 3.1) - remove, used by 2.9 client only
@@ -1759,7 +2508,9 @@ class ClientFacade(Type):
         Returns -> FindToolsResult
         """
         if agentstream is not None and not isinstance(agentstream, (bytes, str)):
-            raise TypeError(f'Expected agentstream to be a str, received: {type(agentstream)}')
+            raise TypeError(
+                f'Expected agentstream to be a str, received: {type(agentstream)}'
+            )
 
         if arch is not None and not isinstance(arch, (bytes, str)):
             raise TypeError(f'Expected arch to be a str, received: {type(arch)}')
@@ -1789,7 +2540,6 @@ class ClientFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(FullStatus)
     async def FullStatus(self, include_storage=None, patterns=None):
         """
@@ -1800,10 +2550,14 @@ class ClientFacade(Type):
         Returns -> FullStatus
         """
         if include_storage is not None and not isinstance(include_storage, bool):
-            raise TypeError(f'Expected include_storage to be a bool, received: {type(include_storage)}')
+            raise TypeError(
+                f'Expected include_storage to be a bool, received: {type(include_storage)}'
+            )
 
         if patterns is not None and not isinstance(patterns, (bytes, str, list)):
-            raise TypeError(f'Expected patterns to be a Sequence, received: {type(patterns)}')
+            raise TypeError(
+                f'Expected patterns to be a Sequence, received: {type(patterns)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -1818,7 +2572,6 @@ class ClientFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(StatusHistoryResults)
     async def StatusHistory(self, requests=None):
         """
@@ -1828,7 +2581,9 @@ class ClientFacade(Type):
         Returns -> StatusHistoryResults
         """
         if requests is not None and not isinstance(requests, (bytes, str, list)):
-            raise TypeError(f'Expected requests to be a Sequence, received: {type(requests)}')
+            raise TypeError(
+                f'Expected requests to be a Sequence, received: {type(requests)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -1841,7 +2596,6 @@ class ClientFacade(Type):
         _params['requests'] = requests
         reply = await self.rpc(msg)
         return reply
-
 
     @ReturnMapping(AllWatcherId)
     async def WatchAll(self):
@@ -1864,531 +2618,848 @@ class ClientFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
+
 class CloudFacade(Type):
     name = 'Cloud'
     version = 7
-    schema =     {'definitions': {'AddCloudArgs': {'additionalProperties': False,
-                                      'properties': {'cloud': {'$ref': '#/definitions/Cloud'},
-                                                     'force': {'type': 'boolean'},
-                                                     'name': {'type': 'string'}},
-                                      'required': ['cloud', 'name'],
-                                      'type': 'object'},
-                     'Cloud': {'additionalProperties': False,
-                               'properties': {'auth-types': {'items': {'type': 'string'},
-                                                             'type': 'array'},
-                                              'ca-certificates': {'items': {'type': 'string'},
-                                                                  'type': 'array'},
-                                              'config': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                      'type': 'object'}},
-                                                         'type': 'object'},
-                                              'endpoint': {'type': 'string'},
-                                              'host-cloud-region': {'type': 'string'},
-                                              'identity-endpoint': {'type': 'string'},
-                                              'is-controller-cloud': {'type': 'boolean'},
-                                              'region-config': {'patternProperties': {'.*': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                                                          'type': 'object'}},
-                                                                                             'type': 'object'}},
-                                                                'type': 'object'},
-                                              'regions': {'items': {'$ref': '#/definitions/CloudRegion'},
-                                                          'type': 'array'},
-                                              'skip-tls-verify': {'type': 'boolean'},
-                                              'storage-endpoint': {'type': 'string'},
-                                              'type': {'type': 'string'}},
-                               'required': ['type'],
-                               'type': 'object'},
-                     'CloudCredential': {'additionalProperties': False,
-                                         'properties': {'attrs': {'patternProperties': {'.*': {'type': 'string'}},
-                                                                  'type': 'object'},
-                                                        'auth-type': {'type': 'string'},
-                                                        'redacted': {'items': {'type': 'string'},
-                                                                     'type': 'array'}},
-                                         'required': ['auth-type'],
-                                         'type': 'object'},
-                     'CloudCredentialArg': {'additionalProperties': False,
-                                            'properties': {'cloud-name': {'type': 'string'},
-                                                           'credential-name': {'type': 'string'}},
-                                            'required': ['cloud-name',
-                                                         'credential-name'],
-                                            'type': 'object'},
-                     'CloudCredentialArgs': {'additionalProperties': False,
-                                             'properties': {'credentials': {'items': {'$ref': '#/definitions/CloudCredentialArg'},
-                                                                            'type': 'array'},
-                                                            'include-secrets': {'type': 'boolean'}},
-                                             'required': ['include-secrets'],
-                                             'type': 'object'},
-                     'CloudCredentialResult': {'additionalProperties': False,
-                                               'properties': {'error': {'$ref': '#/definitions/Error'},
-                                                              'result': {'$ref': '#/definitions/CloudCredential'}},
-                                               'type': 'object'},
-                     'CloudCredentialResults': {'additionalProperties': False,
-                                                'properties': {'results': {'items': {'$ref': '#/definitions/CloudCredentialResult'},
-                                                                           'type': 'array'}},
-                                                'type': 'object'},
-                     'CloudDetails': {'additionalProperties': False,
-                                      'properties': {'auth-types': {'items': {'type': 'string'},
-                                                                    'type': 'array'},
-                                                     'endpoint': {'type': 'string'},
-                                                     'identity-endpoint': {'type': 'string'},
-                                                     'regions': {'items': {'$ref': '#/definitions/CloudRegion'},
-                                                                 'type': 'array'},
-                                                     'storage-endpoint': {'type': 'string'},
-                                                     'type': {'type': 'string'}},
-                                      'required': ['type'],
-                                      'type': 'object'},
-                     'CloudInfo': {'additionalProperties': False,
-                                   'properties': {'CloudDetails': {'$ref': '#/definitions/CloudDetails'},
-                                                  'users': {'items': {'$ref': '#/definitions/CloudUserInfo'},
-                                                            'type': 'array'}},
-                                   'required': ['CloudDetails', 'users'],
-                                   'type': 'object'},
-                     'CloudInfoResult': {'additionalProperties': False,
-                                         'properties': {'error': {'$ref': '#/definitions/Error'},
-                                                        'result': {'$ref': '#/definitions/CloudInfo'}},
-                                         'type': 'object'},
-                     'CloudInfoResults': {'additionalProperties': False,
-                                          'properties': {'results': {'items': {'$ref': '#/definitions/CloudInfoResult'},
-                                                                     'type': 'array'}},
-                                          'required': ['results'],
-                                          'type': 'object'},
-                     'CloudInstanceTypesConstraint': {'additionalProperties': False,
-                                                      'properties': {'cloud-tag': {'type': 'string'},
-                                                                     'constraints': {'$ref': '#/definitions/Value'},
-                                                                     'region': {'type': 'string'}},
-                                                      'required': ['cloud-tag',
-                                                                   'region'],
-                                                      'type': 'object'},
-                     'CloudInstanceTypesConstraints': {'additionalProperties': False,
-                                                       'properties': {'constraints': {'items': {'$ref': '#/definitions/CloudInstanceTypesConstraint'},
-                                                                                      'type': 'array'}},
-                                                       'required': ['constraints'],
-                                                       'type': 'object'},
-                     'CloudRegion': {'additionalProperties': False,
-                                     'properties': {'endpoint': {'type': 'string'},
-                                                    'identity-endpoint': {'type': 'string'},
-                                                    'name': {'type': 'string'},
-                                                    'storage-endpoint': {'type': 'string'}},
-                                     'required': ['name'],
-                                     'type': 'object'},
-                     'CloudResult': {'additionalProperties': False,
-                                     'properties': {'cloud': {'$ref': '#/definitions/Cloud'},
-                                                    'error': {'$ref': '#/definitions/Error'}},
-                                     'type': 'object'},
-                     'CloudResults': {'additionalProperties': False,
-                                      'properties': {'results': {'items': {'$ref': '#/definitions/CloudResult'},
-                                                                 'type': 'array'}},
-                                      'type': 'object'},
-                     'CloudUserInfo': {'additionalProperties': False,
-                                       'properties': {'access': {'type': 'string'},
-                                                      'display-name': {'type': 'string'},
-                                                      'user': {'type': 'string'}},
-                                       'required': ['user',
-                                                    'display-name',
-                                                    'access'],
-                                       'type': 'object'},
-                     'CloudsResult': {'additionalProperties': False,
-                                      'properties': {'clouds': {'patternProperties': {'.*': {'$ref': '#/definitions/Cloud'}},
-                                                                'type': 'object'}},
-                                      'type': 'object'},
-                     'ControllerCredentialInfo': {'additionalProperties': False,
-                                                  'properties': {'content': {'$ref': '#/definitions/CredentialContent'},
-                                                                 'models': {'items': {'$ref': '#/definitions/ModelAccess'},
-                                                                            'type': 'array'}},
-                                                  'type': 'object'},
-                     'CredentialContent': {'additionalProperties': False,
-                                           'properties': {'attrs': {'patternProperties': {'.*': {'type': 'string'}},
-                                                                    'type': 'object'},
-                                                          'auth-type': {'type': 'string'},
-                                                          'cloud': {'type': 'string'},
-                                                          'name': {'type': 'string'},
-                                                          'valid': {'type': 'boolean'}},
-                                           'required': ['name',
-                                                        'cloud',
-                                                        'auth-type'],
-                                           'type': 'object'},
-                     'CredentialContentResult': {'additionalProperties': False,
-                                                 'properties': {'error': {'$ref': '#/definitions/Error'},
-                                                                'result': {'$ref': '#/definitions/ControllerCredentialInfo'}},
-                                                 'type': 'object'},
-                     'CredentialContentResults': {'additionalProperties': False,
-                                                  'properties': {'results': {'items': {'$ref': '#/definitions/CredentialContentResult'},
-                                                                             'type': 'array'}},
-                                                  'type': 'object'},
-                     'Entities': {'additionalProperties': False,
-                                  'properties': {'entities': {'items': {'$ref': '#/definitions/Entity'},
-                                                              'type': 'array'}},
-                                  'required': ['entities'],
-                                  'type': 'object'},
-                     'Entity': {'additionalProperties': False,
-                                'properties': {'tag': {'type': 'string'}},
-                                'required': ['tag'],
-                                'type': 'object'},
-                     'Error': {'additionalProperties': False,
-                               'properties': {'code': {'type': 'string'},
-                                              'info': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                    'type': 'object'}},
-                                                       'type': 'object'},
-                                              'message': {'type': 'string'}},
-                               'required': ['message', 'code'],
-                               'type': 'object'},
-                     'ErrorResult': {'additionalProperties': False,
-                                     'properties': {'error': {'$ref': '#/definitions/Error'}},
-                                     'type': 'object'},
-                     'ErrorResults': {'additionalProperties': False,
-                                      'properties': {'results': {'items': {'$ref': '#/definitions/ErrorResult'},
-                                                                 'type': 'array'}},
-                                      'required': ['results'],
-                                      'type': 'object'},
-                     'InstanceType': {'additionalProperties': False,
-                                      'properties': {'arches': {'items': {'type': 'string'},
-                                                                'type': 'array'},
-                                                     'cost': {'type': 'integer'},
-                                                     'cpu-cores': {'type': 'integer'},
-                                                     'memory': {'type': 'integer'},
-                                                     'name': {'type': 'string'},
-                                                     'root-disk': {'type': 'integer'},
-                                                     'virt-type': {'type': 'string'}},
-                                      'required': ['arches', 'cpu-cores', 'memory'],
-                                      'type': 'object'},
-                     'InstanceTypesResult': {'additionalProperties': False,
-                                             'properties': {'cost-currency': {'type': 'string'},
-                                                            'cost-divisor': {'type': 'integer'},
-                                                            'cost-unit': {'type': 'string'},
-                                                            'error': {'$ref': '#/definitions/Error'},
-                                                            'instance-types': {'items': {'$ref': '#/definitions/InstanceType'},
-                                                                               'type': 'array'}},
-                                             'type': 'object'},
-                     'InstanceTypesResults': {'additionalProperties': False,
-                                              'properties': {'results': {'items': {'$ref': '#/definitions/InstanceTypesResult'},
-                                                                         'type': 'array'}},
-                                              'required': ['results'],
-                                              'type': 'object'},
-                     'ListCloudInfo': {'additionalProperties': False,
-                                       'properties': {'CloudDetails': {'$ref': '#/definitions/CloudDetails'},
-                                                      'user-access': {'type': 'string'}},
-                                       'required': ['CloudDetails', 'user-access'],
-                                       'type': 'object'},
-                     'ListCloudInfoResult': {'additionalProperties': False,
-                                             'properties': {'error': {'$ref': '#/definitions/Error'},
-                                                            'result': {'$ref': '#/definitions/ListCloudInfo'}},
-                                             'type': 'object'},
-                     'ListCloudInfoResults': {'additionalProperties': False,
-                                              'properties': {'results': {'items': {'$ref': '#/definitions/ListCloudInfoResult'},
-                                                                         'type': 'array'}},
-                                              'required': ['results'],
-                                              'type': 'object'},
-                     'ListCloudsRequest': {'additionalProperties': False,
-                                           'properties': {'all': {'type': 'boolean'},
-                                                          'user-tag': {'type': 'string'}},
-                                           'required': ['user-tag'],
-                                           'type': 'object'},
-                     'ModelAccess': {'additionalProperties': False,
-                                     'properties': {'access': {'type': 'string'},
-                                                    'model': {'type': 'string'}},
-                                     'type': 'object'},
-                     'ModifyCloudAccess': {'additionalProperties': False,
-                                           'properties': {'access': {'type': 'string'},
-                                                          'action': {'type': 'string'},
-                                                          'cloud-tag': {'type': 'string'},
-                                                          'user-tag': {'type': 'string'}},
-                                           'required': ['user-tag',
-                                                        'cloud-tag',
-                                                        'action',
-                                                        'access'],
-                                           'type': 'object'},
-                     'ModifyCloudAccessRequest': {'additionalProperties': False,
-                                                  'properties': {'changes': {'items': {'$ref': '#/definitions/ModifyCloudAccess'},
-                                                                             'type': 'array'}},
-                                                  'required': ['changes'],
-                                                  'type': 'object'},
-                     'RevokeCredentialArg': {'additionalProperties': False,
-                                             'properties': {'force': {'type': 'boolean'},
-                                                            'tag': {'type': 'string'}},
-                                             'required': ['tag', 'force'],
-                                             'type': 'object'},
-                     'RevokeCredentialArgs': {'additionalProperties': False,
-                                              'properties': {'credentials': {'items': {'$ref': '#/definitions/RevokeCredentialArg'},
-                                                                             'type': 'array'}},
-                                              'required': ['credentials'],
-                                              'type': 'object'},
-                     'StringsResult': {'additionalProperties': False,
-                                       'properties': {'error': {'$ref': '#/definitions/Error'},
-                                                      'result': {'items': {'type': 'string'},
-                                                                 'type': 'array'}},
-                                       'type': 'object'},
-                     'StringsResults': {'additionalProperties': False,
-                                        'properties': {'results': {'items': {'$ref': '#/definitions/StringsResult'},
-                                                                   'type': 'array'}},
-                                        'required': ['results'],
-                                        'type': 'object'},
-                     'TaggedCredential': {'additionalProperties': False,
-                                          'properties': {'credential': {'$ref': '#/definitions/CloudCredential'},
-                                                         'tag': {'type': 'string'}},
-                                          'required': ['tag', 'credential'],
-                                          'type': 'object'},
-                     'TaggedCredentials': {'additionalProperties': False,
-                                           'properties': {'credentials': {'items': {'$ref': '#/definitions/TaggedCredential'},
-                                                                          'type': 'array'}},
-                                           'type': 'object'},
-                     'UpdateCloudArgs': {'additionalProperties': False,
-                                         'properties': {'clouds': {'items': {'$ref': '#/definitions/AddCloudArgs'},
-                                                                   'type': 'array'}},
-                                         'required': ['clouds'],
-                                         'type': 'object'},
-                     'UpdateCredentialArgs': {'additionalProperties': False,
-                                              'properties': {'credentials': {'items': {'$ref': '#/definitions/TaggedCredential'},
-                                                                             'type': 'array'},
-                                                             'force': {'type': 'boolean'}},
-                                              'required': ['credentials', 'force'],
-                                              'type': 'object'},
-                     'UpdateCredentialModelResult': {'additionalProperties': False,
-                                                     'properties': {'errors': {'items': {'$ref': '#/definitions/ErrorResult'},
-                                                                               'type': 'array'},
-                                                                    'name': {'type': 'string'},
-                                                                    'uuid': {'type': 'string'}},
-                                                     'required': ['uuid', 'name'],
-                                                     'type': 'object'},
-                     'UpdateCredentialResult': {'additionalProperties': False,
-                                                'properties': {'error': {'$ref': '#/definitions/Error'},
-                                                               'models': {'items': {'$ref': '#/definitions/UpdateCredentialModelResult'},
-                                                                          'type': 'array'},
-                                                               'tag': {'type': 'string'}},
-                                                'required': ['tag'],
-                                                'type': 'object'},
-                     'UpdateCredentialResults': {'additionalProperties': False,
-                                                 'properties': {'results': {'items': {'$ref': '#/definitions/UpdateCredentialResult'},
-                                                                            'type': 'array'}},
-                                                 'type': 'object'},
-                     'UserCloud': {'additionalProperties': False,
-                                   'properties': {'cloud-tag': {'type': 'string'},
-                                                  'user-tag': {'type': 'string'}},
-                                   'required': ['user-tag', 'cloud-tag'],
-                                   'type': 'object'},
-                     'UserClouds': {'additionalProperties': False,
-                                    'properties': {'user-clouds': {'items': {'$ref': '#/definitions/UserCloud'},
-                                                                   'type': 'array'}},
-                                    'type': 'object'},
-                     'Value': {'additionalProperties': False,
-                               'properties': {'allocate-public-ip': {'type': 'boolean'},
-                                              'arch': {'type': 'string'},
-                                              'container': {'type': 'string'},
-                                              'cores': {'type': 'integer'},
-                                              'cpu-power': {'type': 'integer'},
-                                              'image-id': {'type': 'string'},
-                                              'instance-role': {'type': 'string'},
-                                              'instance-type': {'type': 'string'},
-                                              'mem': {'type': 'integer'},
-                                              'root-disk': {'type': 'integer'},
-                                              'root-disk-source': {'type': 'string'},
-                                              'spaces': {'items': {'type': 'string'},
-                                                         'type': 'array'},
-                                              'tags': {'items': {'type': 'string'},
-                                                       'type': 'array'},
-                                              'virt-type': {'type': 'string'},
-                                              'zones': {'items': {'type': 'string'},
-                                                        'type': 'array'}},
-                               'type': 'object'}},
-     'properties': {'AddCloud': {'description': 'AddCloud adds a new cloud, '
-                                                'different from the one managed by '
-                                                'the controller.',
-                                 'properties': {'Params': {'$ref': '#/definitions/AddCloudArgs'}},
-                                 'type': 'object'},
-                    'AddCredentials': {'description': 'AddCredentials adds new '
-                                                      'credentials.\n'
-                                                      'In contrast to '
-                                                      'UpdateCredentials() below, '
-                                                      'the new credentials can be\n'
-                                                      'for a cloud that the '
-                                                      'controller does not manage '
-                                                      '(this is required\n'
-                                                      'for CAAS models)',
-                                       'properties': {'Params': {'$ref': '#/definitions/TaggedCredentials'},
-                                                      'Result': {'$ref': '#/definitions/ErrorResults'}},
-                                       'type': 'object'},
-                    'CheckCredentialsModels': {'description': 'CheckCredentialsModels '
-                                                              'validates supplied '
-                                                              "cloud credentials' "
-                                                              'content against\n'
-                                                              'models that '
-                                                              'currently use these '
-                                                              'credentials.\n'
-                                                              'If there are any '
-                                                              'models that are '
-                                                              'using a credential '
-                                                              'and these models or '
-                                                              'their\n'
-                                                              'cloud instances are '
-                                                              'not going to be '
-                                                              'accessible with '
-                                                              'corresponding '
-                                                              'credential,\n'
-                                                              'there will be '
-                                                              'detailed validation '
-                                                              'errors per model.\n'
-                                                              "There's no Juju API "
-                                                              'client which uses '
-                                                              'this, but JAAS '
-                                                              'does,',
-                                               'properties': {'Params': {'$ref': '#/definitions/TaggedCredentials'},
-                                                              'Result': {'$ref': '#/definitions/UpdateCredentialResults'}},
-                                               'type': 'object'},
-                    'Cloud': {'description': 'Cloud returns the cloud definitions '
-                                             'for the specified clouds.',
-                              'properties': {'Params': {'$ref': '#/definitions/Entities'},
-                                             'Result': {'$ref': '#/definitions/CloudResults'}},
-                              'type': 'object'},
-                    'CloudInfo': {'description': 'CloudInfo returns information '
-                                                 'about the specified clouds.',
-                                  'properties': {'Params': {'$ref': '#/definitions/Entities'},
-                                                 'Result': {'$ref': '#/definitions/CloudInfoResults'}},
-                                  'type': 'object'},
-                    'Clouds': {'description': 'Clouds returns the definitions of '
-                                              'all clouds supported by the '
-                                              'controller\n'
-                                              'that the logged in user can see.',
-                               'properties': {'Result': {'$ref': '#/definitions/CloudsResult'}},
-                               'type': 'object'},
-                    'Credential': {'description': 'Credential returns the '
-                                                  'specified cloud credential for '
-                                                  'each tag, minus secrets.',
-                                   'properties': {'Params': {'$ref': '#/definitions/Entities'},
-                                                  'Result': {'$ref': '#/definitions/CloudCredentialResults'}},
-                                   'type': 'object'},
-                    'CredentialContents': {'description': 'CredentialContents '
-                                                          'returns the specified '
-                                                          'cloud credentials,\n'
-                                                          'including the secrets '
-                                                          'if requested.\n'
-                                                          'If no specific '
-                                                          'credential name/cloud '
-                                                          'was passed in, all '
-                                                          'credentials for this '
-                                                          'user\n'
-                                                          'are returned.\n'
-                                                          'Only credential owner '
-                                                          'can see its contents as '
-                                                          'well as what models use '
-                                                          'it.\n'
-                                                          'Controller admin has no '
-                                                          'special superpowers '
-                                                          'here and is treated the '
-                                                          'same as all other '
-                                                          'users.',
-                                           'properties': {'Params': {'$ref': '#/definitions/CloudCredentialArgs'},
-                                                          'Result': {'$ref': '#/definitions/CredentialContentResults'}},
-                                           'type': 'object'},
-                    'InstanceTypes': {'description': 'InstanceTypes returns '
-                                                     'instance type information '
-                                                     'for the cloud and region\n'
-                                                     'in which the current model '
-                                                     'is deployed.',
-                                      'properties': {'Params': {'$ref': '#/definitions/CloudInstanceTypesConstraints'},
-                                                     'Result': {'$ref': '#/definitions/InstanceTypesResults'}},
-                                      'type': 'object'},
-                    'ListCloudInfo': {'description': 'ListCloudInfo returns clouds '
-                                                     'that the specified user has '
-                                                     'access to.\n'
-                                                     'Controller admins '
-                                                     '(superuser) can list clouds '
-                                                     'for any user.\n'
-                                                     'Other users can only ask '
-                                                     'about their own clouds.',
-                                      'properties': {'Params': {'$ref': '#/definitions/ListCloudsRequest'},
-                                                     'Result': {'$ref': '#/definitions/ListCloudInfoResults'}},
-                                      'type': 'object'},
-                    'ModifyCloudAccess': {'description': 'ModifyCloudAccess '
-                                                         'changes the model access '
-                                                         'granted to users.',
-                                          'properties': {'Params': {'$ref': '#/definitions/ModifyCloudAccessRequest'},
-                                                         'Result': {'$ref': '#/definitions/ErrorResults'}},
-                                          'type': 'object'},
-                    'RemoveClouds': {'description': 'RemoveClouds removes the '
-                                                    'specified clouds from the '
-                                                    'controller.\n'
-                                                    'If a cloud is in use (has '
-                                                    'models deployed to it), the '
-                                                    'removal will fail.',
-                                     'properties': {'Params': {'$ref': '#/definitions/Entities'},
-                                                    'Result': {'$ref': '#/definitions/ErrorResults'}},
-                                     'type': 'object'},
-                    'RevokeCredentialsCheckModels': {'description': 'RevokeCredentialsCheckModels '
-                                                                    'revokes a set '
-                                                                    'of cloud '
-                                                                    'credentials.\n'
-                                                                    'If the '
-                                                                    'credentials '
-                                                                    'are used by '
-                                                                    'any of the '
-                                                                    'models, the '
-                                                                    'credential '
-                                                                    'deletion will '
-                                                                    'be aborted.\n'
-                                                                    'If '
-                                                                    'credential-in-use '
-                                                                    'needs to be '
-                                                                    'revoked '
-                                                                    'nonetheless, '
-                                                                    'this method '
-                                                                    'allows the '
-                                                                    'use of force.',
-                                                     'properties': {'Params': {'$ref': '#/definitions/RevokeCredentialArgs'},
-                                                                    'Result': {'$ref': '#/definitions/ErrorResults'}},
-                                                     'type': 'object'},
-                    'UpdateCloud': {'description': 'UpdateCloud updates an '
-                                                   'existing cloud that the '
-                                                   'controller knows about.',
-                                    'properties': {'Params': {'$ref': '#/definitions/UpdateCloudArgs'},
-                                                   'Result': {'$ref': '#/definitions/ErrorResults'}},
-                                    'type': 'object'},
-                    'UpdateCredentialsCheckModels': {'description': 'UpdateCredentialsCheckModels '
-                                                                    'updates a set '
-                                                                    'of cloud '
-                                                                    "credentials' "
-                                                                    'content.\n'
-                                                                    'If there are '
-                                                                    'any models '
-                                                                    'that are '
-                                                                    'using a '
-                                                                    'credential '
-                                                                    'and these '
-                                                                    'models\n'
-                                                                    'are not going '
-                                                                    'to be visible '
-                                                                    'with updated '
-                                                                    'credential '
-                                                                    'content,\n'
-                                                                    'there will be '
-                                                                    'detailed '
-                                                                    'validation '
-                                                                    'errors per '
-                                                                    'model.  Such '
-                                                                    'model errors '
-                                                                    'are returned\n'
-                                                                    'separately '
-                                                                    'and do not '
-                                                                    'contribute to '
-                                                                    'the overall '
-                                                                    'method error '
-                                                                    'status.\n'
-                                                                    'Controller '
-                                                                    'admins can '
-                                                                    "'force' an "
-                                                                    'update of the '
-                                                                    'credential\n'
-                                                                    'regardless of '
-                                                                    'whether it is '
-                                                                    'deemed valid '
-                                                                    'or not.',
-                                                     'properties': {'Params': {'$ref': '#/definitions/UpdateCredentialArgs'},
-                                                                    'Result': {'$ref': '#/definitions/UpdateCredentialResults'}},
-                                                     'type': 'object'},
-                    'UserCredentials': {'description': 'UserCredentials returns '
-                                                       'the cloud credentials for '
-                                                       'a set of users.',
-                                        'properties': {'Params': {'$ref': '#/definitions/UserClouds'},
-                                                       'Result': {'$ref': '#/definitions/StringsResults'}},
-                                        'type': 'object'}},
-     'type': 'object'}
-
+    schema = {
+        'definitions': {
+            'AddCloudArgs': {
+                'additionalProperties': False,
+                'properties': {
+                    'cloud': {'$ref': '#/definitions/Cloud'},
+                    'force': {'type': 'boolean'},
+                    'name': {'type': 'string'},
+                },
+                'required': ['cloud', 'name'],
+                'type': 'object',
+            },
+            'Cloud': {
+                'additionalProperties': False,
+                'properties': {
+                    'auth-types': {'items': {'type': 'string'}, 'type': 'array'},
+                    'ca-certificates': {'items': {'type': 'string'}, 'type': 'array'},
+                    'config': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'endpoint': {'type': 'string'},
+                    'host-cloud-region': {'type': 'string'},
+                    'identity-endpoint': {'type': 'string'},
+                    'is-controller-cloud': {'type': 'boolean'},
+                    'region-config': {
+                        'patternProperties': {
+                            '.*': {
+                                'patternProperties': {
+                                    '.*': {
+                                        'additionalProperties': True,
+                                        'type': 'object',
+                                    }
+                                },
+                                'type': 'object',
+                            }
+                        },
+                        'type': 'object',
+                    },
+                    'regions': {
+                        'items': {'$ref': '#/definitions/CloudRegion'},
+                        'type': 'array',
+                    },
+                    'skip-tls-verify': {'type': 'boolean'},
+                    'storage-endpoint': {'type': 'string'},
+                    'type': {'type': 'string'},
+                },
+                'required': ['type'],
+                'type': 'object',
+            },
+            'CloudCredential': {
+                'additionalProperties': False,
+                'properties': {
+                    'attrs': {
+                        'patternProperties': {'.*': {'type': 'string'}},
+                        'type': 'object',
+                    },
+                    'auth-type': {'type': 'string'},
+                    'redacted': {'items': {'type': 'string'}, 'type': 'array'},
+                },
+                'required': ['auth-type'],
+                'type': 'object',
+            },
+            'CloudCredentialArg': {
+                'additionalProperties': False,
+                'properties': {
+                    'cloud-name': {'type': 'string'},
+                    'credential-name': {'type': 'string'},
+                },
+                'required': ['cloud-name', 'credential-name'],
+                'type': 'object',
+            },
+            'CloudCredentialArgs': {
+                'additionalProperties': False,
+                'properties': {
+                    'credentials': {
+                        'items': {'$ref': '#/definitions/CloudCredentialArg'},
+                        'type': 'array',
+                    },
+                    'include-secrets': {'type': 'boolean'},
+                },
+                'required': ['include-secrets'],
+                'type': 'object',
+            },
+            'CloudCredentialResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'result': {'$ref': '#/definitions/CloudCredential'},
+                },
+                'type': 'object',
+            },
+            'CloudCredentialResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/CloudCredentialResult'},
+                        'type': 'array',
+                    }
+                },
+                'type': 'object',
+            },
+            'CloudDetails': {
+                'additionalProperties': False,
+                'properties': {
+                    'auth-types': {'items': {'type': 'string'}, 'type': 'array'},
+                    'endpoint': {'type': 'string'},
+                    'identity-endpoint': {'type': 'string'},
+                    'regions': {
+                        'items': {'$ref': '#/definitions/CloudRegion'},
+                        'type': 'array',
+                    },
+                    'storage-endpoint': {'type': 'string'},
+                    'type': {'type': 'string'},
+                },
+                'required': ['type'],
+                'type': 'object',
+            },
+            'CloudInfo': {
+                'additionalProperties': False,
+                'properties': {
+                    'CloudDetails': {'$ref': '#/definitions/CloudDetails'},
+                    'users': {
+                        'items': {'$ref': '#/definitions/CloudUserInfo'},
+                        'type': 'array',
+                    },
+                },
+                'required': ['CloudDetails', 'users'],
+                'type': 'object',
+            },
+            'CloudInfoResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'result': {'$ref': '#/definitions/CloudInfo'},
+                },
+                'type': 'object',
+            },
+            'CloudInfoResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/CloudInfoResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'CloudInstanceTypesConstraint': {
+                'additionalProperties': False,
+                'properties': {
+                    'cloud-tag': {'type': 'string'},
+                    'constraints': {'$ref': '#/definitions/Value'},
+                    'region': {'type': 'string'},
+                },
+                'required': ['cloud-tag', 'region'],
+                'type': 'object',
+            },
+            'CloudInstanceTypesConstraints': {
+                'additionalProperties': False,
+                'properties': {
+                    'constraints': {
+                        'items': {'$ref': '#/definitions/CloudInstanceTypesConstraint'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['constraints'],
+                'type': 'object',
+            },
+            'CloudRegion': {
+                'additionalProperties': False,
+                'properties': {
+                    'endpoint': {'type': 'string'},
+                    'identity-endpoint': {'type': 'string'},
+                    'name': {'type': 'string'},
+                    'storage-endpoint': {'type': 'string'},
+                },
+                'required': ['name'],
+                'type': 'object',
+            },
+            'CloudResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'cloud': {'$ref': '#/definitions/Cloud'},
+                    'error': {'$ref': '#/definitions/Error'},
+                },
+                'type': 'object',
+            },
+            'CloudResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/CloudResult'},
+                        'type': 'array',
+                    }
+                },
+                'type': 'object',
+            },
+            'CloudUserInfo': {
+                'additionalProperties': False,
+                'properties': {
+                    'access': {'type': 'string'},
+                    'display-name': {'type': 'string'},
+                    'user': {'type': 'string'},
+                },
+                'required': ['user', 'display-name', 'access'],
+                'type': 'object',
+            },
+            'CloudsResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'clouds': {
+                        'patternProperties': {'.*': {'$ref': '#/definitions/Cloud'}},
+                        'type': 'object',
+                    }
+                },
+                'type': 'object',
+            },
+            'ControllerCredentialInfo': {
+                'additionalProperties': False,
+                'properties': {
+                    'content': {'$ref': '#/definitions/CredentialContent'},
+                    'models': {
+                        'items': {'$ref': '#/definitions/ModelAccess'},
+                        'type': 'array',
+                    },
+                },
+                'type': 'object',
+            },
+            'CredentialContent': {
+                'additionalProperties': False,
+                'properties': {
+                    'attrs': {
+                        'patternProperties': {'.*': {'type': 'string'}},
+                        'type': 'object',
+                    },
+                    'auth-type': {'type': 'string'},
+                    'cloud': {'type': 'string'},
+                    'name': {'type': 'string'},
+                    'valid': {'type': 'boolean'},
+                },
+                'required': ['name', 'cloud', 'auth-type'],
+                'type': 'object',
+            },
+            'CredentialContentResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'result': {'$ref': '#/definitions/ControllerCredentialInfo'},
+                },
+                'type': 'object',
+            },
+            'CredentialContentResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/CredentialContentResult'},
+                        'type': 'array',
+                    }
+                },
+                'type': 'object',
+            },
+            'Entities': {
+                'additionalProperties': False,
+                'properties': {
+                    'entities': {
+                        'items': {'$ref': '#/definitions/Entity'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['entities'],
+                'type': 'object',
+            },
+            'Entity': {
+                'additionalProperties': False,
+                'properties': {'tag': {'type': 'string'}},
+                'required': ['tag'],
+                'type': 'object',
+            },
+            'Error': {
+                'additionalProperties': False,
+                'properties': {
+                    'code': {'type': 'string'},
+                    'info': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'message': {'type': 'string'},
+                },
+                'required': ['message', 'code'],
+                'type': 'object',
+            },
+            'ErrorResult': {
+                'additionalProperties': False,
+                'properties': {'error': {'$ref': '#/definitions/Error'}},
+                'type': 'object',
+            },
+            'ErrorResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/ErrorResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'InstanceType': {
+                'additionalProperties': False,
+                'properties': {
+                    'arches': {'items': {'type': 'string'}, 'type': 'array'},
+                    'cost': {'type': 'integer'},
+                    'cpu-cores': {'type': 'integer'},
+                    'memory': {'type': 'integer'},
+                    'name': {'type': 'string'},
+                    'root-disk': {'type': 'integer'},
+                    'virt-type': {'type': 'string'},
+                },
+                'required': ['arches', 'cpu-cores', 'memory'],
+                'type': 'object',
+            },
+            'InstanceTypesResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'cost-currency': {'type': 'string'},
+                    'cost-divisor': {'type': 'integer'},
+                    'cost-unit': {'type': 'string'},
+                    'error': {'$ref': '#/definitions/Error'},
+                    'instance-types': {
+                        'items': {'$ref': '#/definitions/InstanceType'},
+                        'type': 'array',
+                    },
+                },
+                'type': 'object',
+            },
+            'InstanceTypesResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/InstanceTypesResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'ListCloudInfo': {
+                'additionalProperties': False,
+                'properties': {
+                    'CloudDetails': {'$ref': '#/definitions/CloudDetails'},
+                    'user-access': {'type': 'string'},
+                },
+                'required': ['CloudDetails', 'user-access'],
+                'type': 'object',
+            },
+            'ListCloudInfoResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'result': {'$ref': '#/definitions/ListCloudInfo'},
+                },
+                'type': 'object',
+            },
+            'ListCloudInfoResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/ListCloudInfoResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'ListCloudsRequest': {
+                'additionalProperties': False,
+                'properties': {
+                    'all': {'type': 'boolean'},
+                    'user-tag': {'type': 'string'},
+                },
+                'required': ['user-tag'],
+                'type': 'object',
+            },
+            'ModelAccess': {
+                'additionalProperties': False,
+                'properties': {
+                    'access': {'type': 'string'},
+                    'model': {'type': 'string'},
+                },
+                'type': 'object',
+            },
+            'ModifyCloudAccess': {
+                'additionalProperties': False,
+                'properties': {
+                    'access': {'type': 'string'},
+                    'action': {'type': 'string'},
+                    'cloud-tag': {'type': 'string'},
+                    'user-tag': {'type': 'string'},
+                },
+                'required': ['user-tag', 'cloud-tag', 'action', 'access'],
+                'type': 'object',
+            },
+            'ModifyCloudAccessRequest': {
+                'additionalProperties': False,
+                'properties': {
+                    'changes': {
+                        'items': {'$ref': '#/definitions/ModifyCloudAccess'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['changes'],
+                'type': 'object',
+            },
+            'RevokeCredentialArg': {
+                'additionalProperties': False,
+                'properties': {'force': {'type': 'boolean'}, 'tag': {'type': 'string'}},
+                'required': ['tag', 'force'],
+                'type': 'object',
+            },
+            'RevokeCredentialArgs': {
+                'additionalProperties': False,
+                'properties': {
+                    'credentials': {
+                        'items': {'$ref': '#/definitions/RevokeCredentialArg'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['credentials'],
+                'type': 'object',
+            },
+            'StringsResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'result': {'items': {'type': 'string'}, 'type': 'array'},
+                },
+                'type': 'object',
+            },
+            'StringsResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/StringsResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'TaggedCredential': {
+                'additionalProperties': False,
+                'properties': {
+                    'credential': {'$ref': '#/definitions/CloudCredential'},
+                    'tag': {'type': 'string'},
+                },
+                'required': ['tag', 'credential'],
+                'type': 'object',
+            },
+            'TaggedCredentials': {
+                'additionalProperties': False,
+                'properties': {
+                    'credentials': {
+                        'items': {'$ref': '#/definitions/TaggedCredential'},
+                        'type': 'array',
+                    }
+                },
+                'type': 'object',
+            },
+            'UpdateCloudArgs': {
+                'additionalProperties': False,
+                'properties': {
+                    'clouds': {
+                        'items': {'$ref': '#/definitions/AddCloudArgs'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['clouds'],
+                'type': 'object',
+            },
+            'UpdateCredentialArgs': {
+                'additionalProperties': False,
+                'properties': {
+                    'credentials': {
+                        'items': {'$ref': '#/definitions/TaggedCredential'},
+                        'type': 'array',
+                    },
+                    'force': {'type': 'boolean'},
+                },
+                'required': ['credentials', 'force'],
+                'type': 'object',
+            },
+            'UpdateCredentialModelResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'errors': {
+                        'items': {'$ref': '#/definitions/ErrorResult'},
+                        'type': 'array',
+                    },
+                    'name': {'type': 'string'},
+                    'uuid': {'type': 'string'},
+                },
+                'required': ['uuid', 'name'],
+                'type': 'object',
+            },
+            'UpdateCredentialResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'models': {
+                        'items': {'$ref': '#/definitions/UpdateCredentialModelResult'},
+                        'type': 'array',
+                    },
+                    'tag': {'type': 'string'},
+                },
+                'required': ['tag'],
+                'type': 'object',
+            },
+            'UpdateCredentialResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/UpdateCredentialResult'},
+                        'type': 'array',
+                    }
+                },
+                'type': 'object',
+            },
+            'UserCloud': {
+                'additionalProperties': False,
+                'properties': {
+                    'cloud-tag': {'type': 'string'},
+                    'user-tag': {'type': 'string'},
+                },
+                'required': ['user-tag', 'cloud-tag'],
+                'type': 'object',
+            },
+            'UserClouds': {
+                'additionalProperties': False,
+                'properties': {
+                    'user-clouds': {
+                        'items': {'$ref': '#/definitions/UserCloud'},
+                        'type': 'array',
+                    }
+                },
+                'type': 'object',
+            },
+            'Value': {
+                'additionalProperties': False,
+                'properties': {
+                    'allocate-public-ip': {'type': 'boolean'},
+                    'arch': {'type': 'string'},
+                    'container': {'type': 'string'},
+                    'cores': {'type': 'integer'},
+                    'cpu-power': {'type': 'integer'},
+                    'image-id': {'type': 'string'},
+                    'instance-role': {'type': 'string'},
+                    'instance-type': {'type': 'string'},
+                    'mem': {'type': 'integer'},
+                    'root-disk': {'type': 'integer'},
+                    'root-disk-source': {'type': 'string'},
+                    'spaces': {'items': {'type': 'string'}, 'type': 'array'},
+                    'tags': {'items': {'type': 'string'}, 'type': 'array'},
+                    'virt-type': {'type': 'string'},
+                    'zones': {'items': {'type': 'string'}, 'type': 'array'},
+                },
+                'type': 'object',
+            },
+        },
+        'properties': {
+            'AddCloud': {
+                'description': 'AddCloud adds a new cloud, '
+                'different from the one managed by '
+                'the controller.',
+                'properties': {'Params': {'$ref': '#/definitions/AddCloudArgs'}},
+                'type': 'object',
+            },
+            'AddCredentials': {
+                'description': 'AddCredentials adds new '
+                'credentials.\n'
+                'In contrast to '
+                'UpdateCredentials() below, '
+                'the new credentials can be\n'
+                'for a cloud that the '
+                'controller does not manage '
+                '(this is required\n'
+                'for CAAS models)',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/TaggedCredentials'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+            'CheckCredentialsModels': {
+                'description': 'CheckCredentialsModels '
+                'validates supplied '
+                "cloud credentials' "
+                'content against\n'
+                'models that '
+                'currently use these '
+                'credentials.\n'
+                'If there are any '
+                'models that are '
+                'using a credential '
+                'and these models or '
+                'their\n'
+                'cloud instances are '
+                'not going to be '
+                'accessible with '
+                'corresponding '
+                'credential,\n'
+                'there will be '
+                'detailed validation '
+                'errors per model.\n'
+                "There's no Juju API "
+                'client which uses '
+                'this, but JAAS '
+                'does,',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/TaggedCredentials'},
+                    'Result': {'$ref': '#/definitions/UpdateCredentialResults'},
+                },
+                'type': 'object',
+            },
+            'Cloud': {
+                'description': 'Cloud returns the cloud definitions '
+                'for the specified clouds.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/Entities'},
+                    'Result': {'$ref': '#/definitions/CloudResults'},
+                },
+                'type': 'object',
+            },
+            'CloudInfo': {
+                'description': 'CloudInfo returns information '
+                'about the specified clouds.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/Entities'},
+                    'Result': {'$ref': '#/definitions/CloudInfoResults'},
+                },
+                'type': 'object',
+            },
+            'Clouds': {
+                'description': 'Clouds returns the definitions of '
+                'all clouds supported by the '
+                'controller\n'
+                'that the logged in user can see.',
+                'properties': {'Result': {'$ref': '#/definitions/CloudsResult'}},
+                'type': 'object',
+            },
+            'Credential': {
+                'description': 'Credential returns the '
+                'specified cloud credential for '
+                'each tag, minus secrets.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/Entities'},
+                    'Result': {'$ref': '#/definitions/CloudCredentialResults'},
+                },
+                'type': 'object',
+            },
+            'CredentialContents': {
+                'description': 'CredentialContents '
+                'returns the specified '
+                'cloud credentials,\n'
+                'including the secrets '
+                'if requested.\n'
+                'If no specific '
+                'credential name/cloud '
+                'was passed in, all '
+                'credentials for this '
+                'user\n'
+                'are returned.\n'
+                'Only credential owner '
+                'can see its contents as '
+                'well as what models use '
+                'it.\n'
+                'Controller admin has no '
+                'special superpowers '
+                'here and is treated the '
+                'same as all other '
+                'users.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/CloudCredentialArgs'},
+                    'Result': {'$ref': '#/definitions/CredentialContentResults'},
+                },
+                'type': 'object',
+            },
+            'InstanceTypes': {
+                'description': 'InstanceTypes returns '
+                'instance type information '
+                'for the cloud and region\n'
+                'in which the current model '
+                'is deployed.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/CloudInstanceTypesConstraints'},
+                    'Result': {'$ref': '#/definitions/InstanceTypesResults'},
+                },
+                'type': 'object',
+            },
+            'ListCloudInfo': {
+                'description': 'ListCloudInfo returns clouds '
+                'that the specified user has '
+                'access to.\n'
+                'Controller admins '
+                '(superuser) can list clouds '
+                'for any user.\n'
+                'Other users can only ask '
+                'about their own clouds.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/ListCloudsRequest'},
+                    'Result': {'$ref': '#/definitions/ListCloudInfoResults'},
+                },
+                'type': 'object',
+            },
+            'ModifyCloudAccess': {
+                'description': 'ModifyCloudAccess '
+                'changes the model access '
+                'granted to users.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/ModifyCloudAccessRequest'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+            'RemoveClouds': {
+                'description': 'RemoveClouds removes the '
+                'specified clouds from the '
+                'controller.\n'
+                'If a cloud is in use (has '
+                'models deployed to it), the '
+                'removal will fail.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/Entities'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+            'RevokeCredentialsCheckModels': {
+                'description': 'RevokeCredentialsCheckModels '
+                'revokes a set '
+                'of cloud '
+                'credentials.\n'
+                'If the '
+                'credentials '
+                'are used by '
+                'any of the '
+                'models, the '
+                'credential '
+                'deletion will '
+                'be aborted.\n'
+                'If '
+                'credential-in-use '
+                'needs to be '
+                'revoked '
+                'nonetheless, '
+                'this method '
+                'allows the '
+                'use of force.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/RevokeCredentialArgs'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+            'UpdateCloud': {
+                'description': 'UpdateCloud updates an '
+                'existing cloud that the '
+                'controller knows about.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/UpdateCloudArgs'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+            'UpdateCredentialsCheckModels': {
+                'description': 'UpdateCredentialsCheckModels '
+                'updates a set '
+                'of cloud '
+                "credentials' "
+                'content.\n'
+                'If there are '
+                'any models '
+                'that are '
+                'using a '
+                'credential '
+                'and these '
+                'models\n'
+                'are not going '
+                'to be visible '
+                'with updated '
+                'credential '
+                'content,\n'
+                'there will be '
+                'detailed '
+                'validation '
+                'errors per '
+                'model.  Such '
+                'model errors '
+                'are returned\n'
+                'separately '
+                'and do not '
+                'contribute to '
+                'the overall '
+                'method error '
+                'status.\n'
+                'Controller '
+                'admins can '
+                "'force' an "
+                'update of the '
+                'credential\n'
+                'regardless of '
+                'whether it is '
+                'deemed valid '
+                'or not.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/UpdateCredentialArgs'},
+                    'Result': {'$ref': '#/definitions/UpdateCredentialResults'},
+                },
+                'type': 'object',
+            },
+            'UserCredentials': {
+                'description': 'UserCredentials returns '
+                'the cloud credentials for '
+                'a set of users.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/UserClouds'},
+                    'Result': {'$ref': '#/definitions/StringsResults'},
+                },
+                'type': 'object',
+            },
+        },
+        'type': 'object',
+    }
 
     @ReturnMapping(None)
     async def AddCloud(self, cloud=None, force=None, name=None):
@@ -2423,7 +3494,6 @@ class CloudFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(ErrorResults)
     async def AddCredentials(self, credentials=None):
         """
@@ -2436,7 +3506,9 @@ class CloudFacade(Type):
         Returns -> ErrorResults
         """
         if credentials is not None and not isinstance(credentials, (bytes, str, list)):
-            raise TypeError(f'Expected credentials to be a Sequence, received: {type(credentials)}')
+            raise TypeError(
+                f'Expected credentials to be a Sequence, received: {type(credentials)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -2449,7 +3521,6 @@ class CloudFacade(Type):
         _params['credentials'] = credentials
         reply = await self.rpc(msg)
         return reply
-
 
     @ReturnMapping(UpdateCredentialResults)
     async def CheckCredentialsModels(self, credentials=None):
@@ -2465,7 +3536,9 @@ class CloudFacade(Type):
         Returns -> UpdateCredentialResults
         """
         if credentials is not None and not isinstance(credentials, (bytes, str, list)):
-            raise TypeError(f'Expected credentials to be a Sequence, received: {type(credentials)}')
+            raise TypeError(
+                f'Expected credentials to be a Sequence, received: {type(credentials)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -2479,7 +3552,6 @@ class CloudFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(CloudResults)
     async def Cloud(self, entities=None):
         """
@@ -2489,7 +3561,9 @@ class CloudFacade(Type):
         Returns -> CloudResults
         """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
+            raise TypeError(
+                f'Expected entities to be a Sequence, received: {type(entities)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -2503,7 +3577,6 @@ class CloudFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(CloudInfoResults)
     async def CloudInfo(self, entities=None):
         """
@@ -2513,7 +3586,9 @@ class CloudFacade(Type):
         Returns -> CloudInfoResults
         """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
+            raise TypeError(
+                f'Expected entities to be a Sequence, received: {type(entities)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -2526,7 +3601,6 @@ class CloudFacade(Type):
         _params['entities'] = entities
         reply = await self.rpc(msg)
         return reply
-
 
     @ReturnMapping(CloudsResult)
     async def Clouds(self):
@@ -2550,7 +3624,6 @@ class CloudFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(CloudCredentialResults)
     async def Credential(self, entities=None):
         """
@@ -2560,7 +3633,9 @@ class CloudFacade(Type):
         Returns -> CloudCredentialResults
         """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
+            raise TypeError(
+                f'Expected entities to be a Sequence, received: {type(entities)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -2573,7 +3648,6 @@ class CloudFacade(Type):
         _params['entities'] = entities
         reply = await self.rpc(msg)
         return reply
-
 
     @ReturnMapping(CredentialContentResults)
     async def CredentialContents(self, credentials=None, include_secrets=None):
@@ -2590,10 +3664,14 @@ class CloudFacade(Type):
         Returns -> CredentialContentResults
         """
         if credentials is not None and not isinstance(credentials, (bytes, str, list)):
-            raise TypeError(f'Expected credentials to be a Sequence, received: {type(credentials)}')
+            raise TypeError(
+                f'Expected credentials to be a Sequence, received: {type(credentials)}'
+            )
 
         if include_secrets is not None and not isinstance(include_secrets, bool):
-            raise TypeError(f'Expected include_secrets to be a bool, received: {type(include_secrets)}')
+            raise TypeError(
+                f'Expected include_secrets to be a bool, received: {type(include_secrets)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -2608,7 +3686,6 @@ class CloudFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(InstanceTypesResults)
     async def InstanceTypes(self, constraints=None):
         """
@@ -2619,7 +3696,9 @@ class CloudFacade(Type):
         Returns -> InstanceTypesResults
         """
         if constraints is not None and not isinstance(constraints, (bytes, str, list)):
-            raise TypeError(f'Expected constraints to be a Sequence, received: {type(constraints)}')
+            raise TypeError(
+                f'Expected constraints to be a Sequence, received: {type(constraints)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -2632,7 +3711,6 @@ class CloudFacade(Type):
         _params['constraints'] = constraints
         reply = await self.rpc(msg)
         return reply
-
 
     @ReturnMapping(ListCloudInfoResults)
     async def ListCloudInfo(self, all_=None, user_tag=None):
@@ -2649,7 +3727,9 @@ class CloudFacade(Type):
             raise TypeError(f'Expected all_ to be a bool, received: {type(all_)}')
 
         if user_tag is not None and not isinstance(user_tag, (bytes, str)):
-            raise TypeError(f'Expected user_tag to be a str, received: {type(user_tag)}')
+            raise TypeError(
+                f'Expected user_tag to be a str, received: {type(user_tag)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -2664,7 +3744,6 @@ class CloudFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(ErrorResults)
     async def ModifyCloudAccess(self, changes=None):
         """
@@ -2674,7 +3753,9 @@ class CloudFacade(Type):
         Returns -> ErrorResults
         """
         if changes is not None and not isinstance(changes, (bytes, str, list)):
-            raise TypeError(f'Expected changes to be a Sequence, received: {type(changes)}')
+            raise TypeError(
+                f'Expected changes to be a Sequence, received: {type(changes)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -2688,7 +3769,6 @@ class CloudFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(ErrorResults)
     async def RemoveClouds(self, entities=None):
         """
@@ -2699,7 +3779,9 @@ class CloudFacade(Type):
         Returns -> ErrorResults
         """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
+            raise TypeError(
+                f'Expected entities to be a Sequence, received: {type(entities)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -2713,7 +3795,6 @@ class CloudFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(ErrorResults)
     async def RevokeCredentialsCheckModels(self, credentials=None):
         """
@@ -2725,7 +3806,9 @@ class CloudFacade(Type):
         Returns -> ErrorResults
         """
         if credentials is not None and not isinstance(credentials, (bytes, str, list)):
-            raise TypeError(f'Expected credentials to be a Sequence, received: {type(credentials)}')
+            raise TypeError(
+                f'Expected credentials to be a Sequence, received: {type(credentials)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -2739,7 +3822,6 @@ class CloudFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(ErrorResults)
     async def UpdateCloud(self, clouds=None):
         """
@@ -2749,7 +3831,9 @@ class CloudFacade(Type):
         Returns -> ErrorResults
         """
         if clouds is not None and not isinstance(clouds, (bytes, str, list)):
-            raise TypeError(f'Expected clouds to be a Sequence, received: {type(clouds)}')
+            raise TypeError(
+                f'Expected clouds to be a Sequence, received: {type(clouds)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -2762,7 +3846,6 @@ class CloudFacade(Type):
         _params['clouds'] = clouds
         reply = await self.rpc(msg)
         return reply
-
 
     @ReturnMapping(UpdateCredentialResults)
     async def UpdateCredentialsCheckModels(self, credentials=None, force=None):
@@ -2780,7 +3863,9 @@ class CloudFacade(Type):
         Returns -> UpdateCredentialResults
         """
         if credentials is not None and not isinstance(credentials, (bytes, str, list)):
-            raise TypeError(f'Expected credentials to be a Sequence, received: {type(credentials)}')
+            raise TypeError(
+                f'Expected credentials to be a Sequence, received: {type(credentials)}'
+            )
 
         if force is not None and not isinstance(force, bool):
             raise TypeError(f'Expected force to be a bool, received: {type(force)}')
@@ -2798,7 +3883,6 @@ class CloudFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(StringsResults)
     async def UserCredentials(self, user_clouds=None):
         """
@@ -2808,7 +3892,9 @@ class CloudFacade(Type):
         Returns -> StringsResults
         """
         if user_clouds is not None and not isinstance(user_clouds, (bytes, str, list)):
-            raise TypeError(f'Expected user_clouds to be a Sequence, received: {type(user_clouds)}')
+            raise TypeError(
+                f'Expected user_clouds to be a Sequence, received: {type(user_clouds)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -2821,4 +3907,3 @@ class CloudFacade(Type):
         _params['user-clouds'] = user_clouds
         reply = await self.rpc(msg)
         return reply
-

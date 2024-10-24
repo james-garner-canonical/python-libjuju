@@ -4,74 +4,134 @@
 from juju.client.facade import Type, ReturnMapping
 from juju.client._definitions import *
 
+
 class AnnotationsFacade(Type):
     name = 'Annotations'
     version = 2
-    schema =     {'definitions': {'AnnotationsGetResult': {'additionalProperties': False,
-                                              'properties': {'annotations': {'patternProperties': {'.*': {'type': 'string'}},
-                                                                             'type': 'object'},
-                                                             'entity': {'type': 'string'},
-                                                             'error': {'$ref': '#/definitions/ErrorResult'}},
-                                              'required': ['entity', 'annotations'],
-                                              'type': 'object'},
-                     'AnnotationsGetResults': {'additionalProperties': False,
-                                               'properties': {'results': {'items': {'$ref': '#/definitions/AnnotationsGetResult'},
-                                                                          'type': 'array'}},
-                                               'required': ['results'],
-                                               'type': 'object'},
-                     'AnnotationsSet': {'additionalProperties': False,
-                                        'properties': {'annotations': {'items': {'$ref': '#/definitions/EntityAnnotations'},
-                                                                       'type': 'array'}},
-                                        'required': ['annotations'],
-                                        'type': 'object'},
-                     'Entities': {'additionalProperties': False,
-                                  'properties': {'entities': {'items': {'$ref': '#/definitions/Entity'},
-                                                              'type': 'array'}},
-                                  'required': ['entities'],
-                                  'type': 'object'},
-                     'Entity': {'additionalProperties': False,
-                                'properties': {'tag': {'type': 'string'}},
-                                'required': ['tag'],
-                                'type': 'object'},
-                     'EntityAnnotations': {'additionalProperties': False,
-                                           'properties': {'annotations': {'patternProperties': {'.*': {'type': 'string'}},
-                                                                          'type': 'object'},
-                                                          'entity': {'type': 'string'}},
-                                           'required': ['entity', 'annotations'],
-                                           'type': 'object'},
-                     'Error': {'additionalProperties': False,
-                               'properties': {'code': {'type': 'string'},
-                                              'info': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                    'type': 'object'}},
-                                                       'type': 'object'},
-                                              'message': {'type': 'string'}},
-                               'required': ['message', 'code'],
-                               'type': 'object'},
-                     'ErrorResult': {'additionalProperties': False,
-                                     'properties': {'error': {'$ref': '#/definitions/Error'}},
-                                     'type': 'object'},
-                     'ErrorResults': {'additionalProperties': False,
-                                      'properties': {'results': {'items': {'$ref': '#/definitions/ErrorResult'},
-                                                                 'type': 'array'}},
-                                      'required': ['results'],
-                                      'type': 'object'}},
-     'properties': {'Get': {'description': 'Get returns annotations for given '
-                                           'entities.\n'
-                                           'If annotations cannot be retrieved for '
-                                           'a given entity, an error is returned.\n'
-                                           'Each entity is treated independently '
-                                           'and, hence, will fail or succeed '
-                                           'independently.',
-                            'properties': {'Params': {'$ref': '#/definitions/Entities'},
-                                           'Result': {'$ref': '#/definitions/AnnotationsGetResults'}},
-                            'type': 'object'},
-                    'Set': {'description': 'Set stores annotations for given '
-                                           'entities',
-                            'properties': {'Params': {'$ref': '#/definitions/AnnotationsSet'},
-                                           'Result': {'$ref': '#/definitions/ErrorResults'}},
-                            'type': 'object'}},
-     'type': 'object'}
-
+    schema = {
+        'definitions': {
+            'AnnotationsGetResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'annotations': {
+                        'patternProperties': {'.*': {'type': 'string'}},
+                        'type': 'object',
+                    },
+                    'entity': {'type': 'string'},
+                    'error': {'$ref': '#/definitions/ErrorResult'},
+                },
+                'required': ['entity', 'annotations'],
+                'type': 'object',
+            },
+            'AnnotationsGetResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/AnnotationsGetResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'AnnotationsSet': {
+                'additionalProperties': False,
+                'properties': {
+                    'annotations': {
+                        'items': {'$ref': '#/definitions/EntityAnnotations'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['annotations'],
+                'type': 'object',
+            },
+            'Entities': {
+                'additionalProperties': False,
+                'properties': {
+                    'entities': {
+                        'items': {'$ref': '#/definitions/Entity'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['entities'],
+                'type': 'object',
+            },
+            'Entity': {
+                'additionalProperties': False,
+                'properties': {'tag': {'type': 'string'}},
+                'required': ['tag'],
+                'type': 'object',
+            },
+            'EntityAnnotations': {
+                'additionalProperties': False,
+                'properties': {
+                    'annotations': {
+                        'patternProperties': {'.*': {'type': 'string'}},
+                        'type': 'object',
+                    },
+                    'entity': {'type': 'string'},
+                },
+                'required': ['entity', 'annotations'],
+                'type': 'object',
+            },
+            'Error': {
+                'additionalProperties': False,
+                'properties': {
+                    'code': {'type': 'string'},
+                    'info': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'message': {'type': 'string'},
+                },
+                'required': ['message', 'code'],
+                'type': 'object',
+            },
+            'ErrorResult': {
+                'additionalProperties': False,
+                'properties': {'error': {'$ref': '#/definitions/Error'}},
+                'type': 'object',
+            },
+            'ErrorResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/ErrorResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+        },
+        'properties': {
+            'Get': {
+                'description': 'Get returns annotations for given '
+                'entities.\n'
+                'If annotations cannot be retrieved for '
+                'a given entity, an error is returned.\n'
+                'Each entity is treated independently '
+                'and, hence, will fail or succeed '
+                'independently.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/Entities'},
+                    'Result': {'$ref': '#/definitions/AnnotationsGetResults'},
+                },
+                'type': 'object',
+            },
+            'Set': {
+                'description': 'Set stores annotations for given ' 'entities',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/AnnotationsSet'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+        },
+        'type': 'object',
+    }
 
     @ReturnMapping(AnnotationsGetResults)
     async def Get(self, entities=None):
@@ -84,7 +144,9 @@ class AnnotationsFacade(Type):
         Returns -> AnnotationsGetResults
         """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
+            raise TypeError(
+                f'Expected entities to be a Sequence, received: {type(entities)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -98,7 +160,6 @@ class AnnotationsFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(ErrorResults)
     async def Set(self, annotations=None):
         """
@@ -108,7 +169,9 @@ class AnnotationsFacade(Type):
         Returns -> ErrorResults
         """
         if annotations is not None and not isinstance(annotations, (bytes, str, list)):
-            raise TypeError(f'Expected annotations to be a Sequence, received: {type(annotations)}')
+            raise TypeError(
+                f'Expected annotations to be a Sequence, received: {type(annotations)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -122,56 +185,97 @@ class AnnotationsFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
+
 class BlockFacade(Type):
     name = 'Block'
     version = 2
-    schema =     {'definitions': {'Block': {'additionalProperties': False,
-                               'properties': {'id': {'type': 'string'},
-                                              'message': {'type': 'string'},
-                                              'tag': {'type': 'string'},
-                                              'type': {'type': 'string'}},
-                               'required': ['id', 'tag', 'type'],
-                               'type': 'object'},
-                     'BlockResult': {'additionalProperties': False,
-                                     'properties': {'error': {'$ref': '#/definitions/Error'},
-                                                    'result': {'$ref': '#/definitions/Block'}},
-                                     'required': ['result'],
-                                     'type': 'object'},
-                     'BlockResults': {'additionalProperties': False,
-                                      'properties': {'results': {'items': {'$ref': '#/definitions/BlockResult'},
-                                                                 'type': 'array'}},
-                                      'type': 'object'},
-                     'BlockSwitchParams': {'additionalProperties': False,
-                                           'properties': {'message': {'type': 'string'},
-                                                          'type': {'type': 'string'}},
-                                           'required': ['type'],
-                                           'type': 'object'},
-                     'Error': {'additionalProperties': False,
-                               'properties': {'code': {'type': 'string'},
-                                              'info': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                    'type': 'object'}},
-                                                       'type': 'object'},
-                                              'message': {'type': 'string'}},
-                               'required': ['message', 'code'],
-                               'type': 'object'},
-                     'ErrorResult': {'additionalProperties': False,
-                                     'properties': {'error': {'$ref': '#/definitions/Error'}},
-                                     'type': 'object'}},
-     'properties': {'List': {'description': 'List implements Block.List().',
-                             'properties': {'Result': {'$ref': '#/definitions/BlockResults'}},
-                             'type': 'object'},
-                    'SwitchBlockOff': {'description': 'SwitchBlockOff implements '
-                                                      'Block.SwitchBlockOff().',
-                                       'properties': {'Params': {'$ref': '#/definitions/BlockSwitchParams'},
-                                                      'Result': {'$ref': '#/definitions/ErrorResult'}},
-                                       'type': 'object'},
-                    'SwitchBlockOn': {'description': 'SwitchBlockOn implements '
-                                                     'Block.SwitchBlockOn().',
-                                      'properties': {'Params': {'$ref': '#/definitions/BlockSwitchParams'},
-                                                     'Result': {'$ref': '#/definitions/ErrorResult'}},
-                                      'type': 'object'}},
-     'type': 'object'}
-
+    schema = {
+        'definitions': {
+            'Block': {
+                'additionalProperties': False,
+                'properties': {
+                    'id': {'type': 'string'},
+                    'message': {'type': 'string'},
+                    'tag': {'type': 'string'},
+                    'type': {'type': 'string'},
+                },
+                'required': ['id', 'tag', 'type'],
+                'type': 'object',
+            },
+            'BlockResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'result': {'$ref': '#/definitions/Block'},
+                },
+                'required': ['result'],
+                'type': 'object',
+            },
+            'BlockResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/BlockResult'},
+                        'type': 'array',
+                    }
+                },
+                'type': 'object',
+            },
+            'BlockSwitchParams': {
+                'additionalProperties': False,
+                'properties': {
+                    'message': {'type': 'string'},
+                    'type': {'type': 'string'},
+                },
+                'required': ['type'],
+                'type': 'object',
+            },
+            'Error': {
+                'additionalProperties': False,
+                'properties': {
+                    'code': {'type': 'string'},
+                    'info': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'message': {'type': 'string'},
+                },
+                'required': ['message', 'code'],
+                'type': 'object',
+            },
+            'ErrorResult': {
+                'additionalProperties': False,
+                'properties': {'error': {'$ref': '#/definitions/Error'}},
+                'type': 'object',
+            },
+        },
+        'properties': {
+            'List': {
+                'description': 'List implements Block.List().',
+                'properties': {'Result': {'$ref': '#/definitions/BlockResults'}},
+                'type': 'object',
+            },
+            'SwitchBlockOff': {
+                'description': 'SwitchBlockOff implements ' 'Block.SwitchBlockOff().',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/BlockSwitchParams'},
+                    'Result': {'$ref': '#/definitions/ErrorResult'},
+                },
+                'type': 'object',
+            },
+            'SwitchBlockOn': {
+                'description': 'SwitchBlockOn implements ' 'Block.SwitchBlockOn().',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/BlockSwitchParams'},
+                    'Result': {'$ref': '#/definitions/ErrorResult'},
+                },
+                'type': 'object',
+            },
+        },
+        'type': 'object',
+    }
 
     @ReturnMapping(BlockResults)
     async def List(self):
@@ -193,7 +297,6 @@ class BlockFacade(Type):
 
         reply = await self.rpc(msg)
         return reply
-
 
     @ReturnMapping(ErrorResult)
     async def SwitchBlockOff(self, message=None, type_=None):
@@ -223,7 +326,6 @@ class BlockFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(ErrorResult)
     async def SwitchBlockOn(self, message=None, type_=None):
         """
@@ -252,78 +354,115 @@ class BlockFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
+
 class HighAvailabilityFacade(Type):
     name = 'HighAvailability'
     version = 2
-    schema =     {'definitions': {'ControllersChangeResult': {'additionalProperties': False,
-                                                 'properties': {'error': {'$ref': '#/definitions/Error'},
-                                                                'result': {'$ref': '#/definitions/ControllersChanges'}},
-                                                 'required': ['result'],
-                                                 'type': 'object'},
-                     'ControllersChangeResults': {'additionalProperties': False,
-                                                  'properties': {'results': {'items': {'$ref': '#/definitions/ControllersChangeResult'},
-                                                                             'type': 'array'}},
-                                                  'required': ['results'],
-                                                  'type': 'object'},
-                     'ControllersChanges': {'additionalProperties': False,
-                                            'properties': {'added': {'items': {'type': 'string'},
-                                                                     'type': 'array'},
-                                                           'converted': {'items': {'type': 'string'},
-                                                                         'type': 'array'},
-                                                           'maintained': {'items': {'type': 'string'},
-                                                                          'type': 'array'},
-                                                           'removed': {'items': {'type': 'string'},
-                                                                       'type': 'array'}},
-                                            'type': 'object'},
-                     'ControllersSpec': {'additionalProperties': False,
-                                         'properties': {'constraints': {'$ref': '#/definitions/Value'},
-                                                        'num-controllers': {'type': 'integer'},
-                                                        'placement': {'items': {'type': 'string'},
-                                                                      'type': 'array'}},
-                                         'required': ['num-controllers'],
-                                         'type': 'object'},
-                     'ControllersSpecs': {'additionalProperties': False,
-                                          'properties': {'specs': {'items': {'$ref': '#/definitions/ControllersSpec'},
-                                                                   'type': 'array'}},
-                                          'required': ['specs'],
-                                          'type': 'object'},
-                     'Error': {'additionalProperties': False,
-                               'properties': {'code': {'type': 'string'},
-                                              'info': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                    'type': 'object'}},
-                                                       'type': 'object'},
-                                              'message': {'type': 'string'}},
-                               'required': ['message', 'code'],
-                               'type': 'object'},
-                     'Value': {'additionalProperties': False,
-                               'properties': {'allocate-public-ip': {'type': 'boolean'},
-                                              'arch': {'type': 'string'},
-                                              'container': {'type': 'string'},
-                                              'cores': {'type': 'integer'},
-                                              'cpu-power': {'type': 'integer'},
-                                              'image-id': {'type': 'string'},
-                                              'instance-role': {'type': 'string'},
-                                              'instance-type': {'type': 'string'},
-                                              'mem': {'type': 'integer'},
-                                              'root-disk': {'type': 'integer'},
-                                              'root-disk-source': {'type': 'string'},
-                                              'spaces': {'items': {'type': 'string'},
-                                                         'type': 'array'},
-                                              'tags': {'items': {'type': 'string'},
-                                                       'type': 'array'},
-                                              'virt-type': {'type': 'string'},
-                                              'zones': {'items': {'type': 'string'},
-                                                        'type': 'array'}},
-                               'type': 'object'}},
-     'properties': {'EnableHA': {'description': 'EnableHA adds controller machines '
-                                                'as necessary to ensure the\n'
-                                                'controller has the number of '
-                                                'machines specified.',
-                                 'properties': {'Params': {'$ref': '#/definitions/ControllersSpecs'},
-                                                'Result': {'$ref': '#/definitions/ControllersChangeResults'}},
-                                 'type': 'object'}},
-     'type': 'object'}
-
+    schema = {
+        'definitions': {
+            'ControllersChangeResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'result': {'$ref': '#/definitions/ControllersChanges'},
+                },
+                'required': ['result'],
+                'type': 'object',
+            },
+            'ControllersChangeResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/ControllersChangeResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'ControllersChanges': {
+                'additionalProperties': False,
+                'properties': {
+                    'added': {'items': {'type': 'string'}, 'type': 'array'},
+                    'converted': {'items': {'type': 'string'}, 'type': 'array'},
+                    'maintained': {'items': {'type': 'string'}, 'type': 'array'},
+                    'removed': {'items': {'type': 'string'}, 'type': 'array'},
+                },
+                'type': 'object',
+            },
+            'ControllersSpec': {
+                'additionalProperties': False,
+                'properties': {
+                    'constraints': {'$ref': '#/definitions/Value'},
+                    'num-controllers': {'type': 'integer'},
+                    'placement': {'items': {'type': 'string'}, 'type': 'array'},
+                },
+                'required': ['num-controllers'],
+                'type': 'object',
+            },
+            'ControllersSpecs': {
+                'additionalProperties': False,
+                'properties': {
+                    'specs': {
+                        'items': {'$ref': '#/definitions/ControllersSpec'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['specs'],
+                'type': 'object',
+            },
+            'Error': {
+                'additionalProperties': False,
+                'properties': {
+                    'code': {'type': 'string'},
+                    'info': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'message': {'type': 'string'},
+                },
+                'required': ['message', 'code'],
+                'type': 'object',
+            },
+            'Value': {
+                'additionalProperties': False,
+                'properties': {
+                    'allocate-public-ip': {'type': 'boolean'},
+                    'arch': {'type': 'string'},
+                    'container': {'type': 'string'},
+                    'cores': {'type': 'integer'},
+                    'cpu-power': {'type': 'integer'},
+                    'image-id': {'type': 'string'},
+                    'instance-role': {'type': 'string'},
+                    'instance-type': {'type': 'string'},
+                    'mem': {'type': 'integer'},
+                    'root-disk': {'type': 'integer'},
+                    'root-disk-source': {'type': 'string'},
+                    'spaces': {'items': {'type': 'string'}, 'type': 'array'},
+                    'tags': {'items': {'type': 'string'}, 'type': 'array'},
+                    'virt-type': {'type': 'string'},
+                    'zones': {'items': {'type': 'string'}, 'type': 'array'},
+                },
+                'type': 'object',
+            },
+        },
+        'properties': {
+            'EnableHA': {
+                'description': 'EnableHA adds controller machines '
+                'as necessary to ensure the\n'
+                'controller has the number of '
+                'machines specified.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/ControllersSpecs'},
+                    'Result': {'$ref': '#/definitions/ControllersChangeResults'},
+                },
+                'type': 'object',
+            }
+        },
+        'type': 'object',
+    }
 
     @ReturnMapping(ControllersChangeResults)
     async def EnableHA(self, specs=None):
@@ -349,81 +488,140 @@ class HighAvailabilityFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
+
 class MetricsDebugFacade(Type):
     name = 'MetricsDebug'
     version = 2
-    schema =     {'definitions': {'Entities': {'additionalProperties': False,
-                                  'properties': {'entities': {'items': {'$ref': '#/definitions/Entity'},
-                                                              'type': 'array'}},
-                                  'required': ['entities'],
-                                  'type': 'object'},
-                     'Entity': {'additionalProperties': False,
-                                'properties': {'tag': {'type': 'string'}},
-                                'required': ['tag'],
-                                'type': 'object'},
-                     'EntityMetrics': {'additionalProperties': False,
-                                       'properties': {'error': {'$ref': '#/definitions/Error'},
-                                                      'metrics': {'items': {'$ref': '#/definitions/MetricResult'},
-                                                                  'type': 'array'}},
-                                       'type': 'object'},
-                     'Error': {'additionalProperties': False,
-                               'properties': {'code': {'type': 'string'},
-                                              'info': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                    'type': 'object'}},
-                                                       'type': 'object'},
-                                              'message': {'type': 'string'}},
-                               'required': ['message', 'code'],
-                               'type': 'object'},
-                     'ErrorResult': {'additionalProperties': False,
-                                     'properties': {'error': {'$ref': '#/definitions/Error'}},
-                                     'type': 'object'},
-                     'ErrorResults': {'additionalProperties': False,
-                                      'properties': {'results': {'items': {'$ref': '#/definitions/ErrorResult'},
-                                                                 'type': 'array'}},
-                                      'required': ['results'],
-                                      'type': 'object'},
-                     'MeterStatusParam': {'additionalProperties': False,
-                                          'properties': {'code': {'type': 'string'},
-                                                         'info': {'type': 'string'},
-                                                         'tag': {'type': 'string'}},
-                                          'required': ['tag', 'code'],
-                                          'type': 'object'},
-                     'MeterStatusParams': {'additionalProperties': False,
-                                           'properties': {'statues': {'items': {'$ref': '#/definitions/MeterStatusParam'},
-                                                                      'type': 'array'}},
-                                           'required': ['statues'],
-                                           'type': 'object'},
-                     'MetricResult': {'additionalProperties': False,
-                                      'properties': {'key': {'type': 'string'},
-                                                     'labels': {'patternProperties': {'.*': {'type': 'string'}},
-                                                                'type': 'object'},
-                                                     'time': {'format': 'date-time',
-                                                              'type': 'string'},
-                                                     'unit': {'type': 'string'},
-                                                     'value': {'type': 'string'}},
-                                      'required': ['time',
-                                                   'key',
-                                                   'value',
-                                                   'unit',
-                                                   'labels'],
-                                      'type': 'object'},
-                     'MetricResults': {'additionalProperties': False,
-                                       'properties': {'results': {'items': {'$ref': '#/definitions/EntityMetrics'},
-                                                                  'type': 'array'}},
-                                       'required': ['results'],
-                                       'type': 'object'}},
-     'properties': {'GetMetrics': {'description': 'GetMetrics returns all metrics '
-                                                  'stored by the state server.',
-                                   'properties': {'Params': {'$ref': '#/definitions/Entities'},
-                                                  'Result': {'$ref': '#/definitions/MetricResults'}},
-                                   'type': 'object'},
-                    'SetMeterStatus': {'description': 'SetMeterStatus sets meter '
-                                                      'statuses for entities.',
-                                       'properties': {'Params': {'$ref': '#/definitions/MeterStatusParams'},
-                                                      'Result': {'$ref': '#/definitions/ErrorResults'}},
-                                       'type': 'object'}},
-     'type': 'object'}
-
+    schema = {
+        'definitions': {
+            'Entities': {
+                'additionalProperties': False,
+                'properties': {
+                    'entities': {
+                        'items': {'$ref': '#/definitions/Entity'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['entities'],
+                'type': 'object',
+            },
+            'Entity': {
+                'additionalProperties': False,
+                'properties': {'tag': {'type': 'string'}},
+                'required': ['tag'],
+                'type': 'object',
+            },
+            'EntityMetrics': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'metrics': {
+                        'items': {'$ref': '#/definitions/MetricResult'},
+                        'type': 'array',
+                    },
+                },
+                'type': 'object',
+            },
+            'Error': {
+                'additionalProperties': False,
+                'properties': {
+                    'code': {'type': 'string'},
+                    'info': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'message': {'type': 'string'},
+                },
+                'required': ['message', 'code'],
+                'type': 'object',
+            },
+            'ErrorResult': {
+                'additionalProperties': False,
+                'properties': {'error': {'$ref': '#/definitions/Error'}},
+                'type': 'object',
+            },
+            'ErrorResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/ErrorResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'MeterStatusParam': {
+                'additionalProperties': False,
+                'properties': {
+                    'code': {'type': 'string'},
+                    'info': {'type': 'string'},
+                    'tag': {'type': 'string'},
+                },
+                'required': ['tag', 'code'],
+                'type': 'object',
+            },
+            'MeterStatusParams': {
+                'additionalProperties': False,
+                'properties': {
+                    'statues': {
+                        'items': {'$ref': '#/definitions/MeterStatusParam'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['statues'],
+                'type': 'object',
+            },
+            'MetricResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'key': {'type': 'string'},
+                    'labels': {
+                        'patternProperties': {'.*': {'type': 'string'}},
+                        'type': 'object',
+                    },
+                    'time': {'format': 'date-time', 'type': 'string'},
+                    'unit': {'type': 'string'},
+                    'value': {'type': 'string'},
+                },
+                'required': ['time', 'key', 'value', 'unit', 'labels'],
+                'type': 'object',
+            },
+            'MetricResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/EntityMetrics'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+        },
+        'properties': {
+            'GetMetrics': {
+                'description': 'GetMetrics returns all metrics '
+                'stored by the state server.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/Entities'},
+                    'Result': {'$ref': '#/definitions/MetricResults'},
+                },
+                'type': 'object',
+            },
+            'SetMeterStatus': {
+                'description': 'SetMeterStatus sets meter ' 'statuses for entities.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/MeterStatusParams'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+        },
+        'type': 'object',
+    }
 
     @ReturnMapping(MetricResults)
     async def GetMetrics(self, entities=None):
@@ -434,7 +632,9 @@ class MetricsDebugFacade(Type):
         Returns -> MetricResults
         """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
+            raise TypeError(
+                f'Expected entities to be a Sequence, received: {type(entities)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -448,7 +648,6 @@ class MetricsDebugFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(ErrorResults)
     async def SetMeterStatus(self, statues=None):
         """
@@ -458,7 +657,9 @@ class MetricsDebugFacade(Type):
         Returns -> ErrorResults
         """
         if statues is not None and not isinstance(statues, (bytes, str, list)):
-            raise TypeError(f'Expected statues to be a Sequence, received: {type(statues)}')
+            raise TypeError(
+                f'Expected statues to be a Sequence, received: {type(statues)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -472,213 +673,334 @@ class MetricsDebugFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
+
 class SecretsFacade(Type):
     name = 'Secrets'
     version = 2
-    schema =     {'definitions': {'CreateSecretArg': {'additionalProperties': False,
-                                         'properties': {'UpsertSecretArg': {'$ref': '#/definitions/UpsertSecretArg'},
-                                                        'content': {'$ref': '#/definitions/SecretContentParams'},
-                                                        'description': {'type': 'string'},
-                                                        'expire-time': {'format': 'date-time',
-                                                                        'type': 'string'},
-                                                        'label': {'type': 'string'},
-                                                        'owner-tag': {'type': 'string'},
-                                                        'params': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                                'type': 'object'}},
-                                                                   'type': 'object'},
-                                                        'rotate-policy': {'type': 'string'},
-                                                        'uri': {'type': 'string'}},
-                                         'required': ['UpsertSecretArg',
-                                                      'owner-tag'],
-                                         'type': 'object'},
-                     'CreateSecretArgs': {'additionalProperties': False,
-                                          'properties': {'args': {'items': {'$ref': '#/definitions/CreateSecretArg'},
-                                                                  'type': 'array'}},
-                                          'required': ['args'],
-                                          'type': 'object'},
-                     'DeleteSecretArg': {'additionalProperties': False,
-                                         'properties': {'label': {'type': 'string'},
-                                                        'revisions': {'items': {'type': 'integer'},
-                                                                      'type': 'array'},
-                                                        'uri': {'type': 'string'}},
-                                         'required': ['uri', 'label'],
-                                         'type': 'object'},
-                     'DeleteSecretArgs': {'additionalProperties': False,
-                                          'properties': {'args': {'items': {'$ref': '#/definitions/DeleteSecretArg'},
-                                                                  'type': 'array'}},
-                                          'required': ['args'],
-                                          'type': 'object'},
-                     'Error': {'additionalProperties': False,
-                               'properties': {'code': {'type': 'string'},
-                                              'info': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                    'type': 'object'}},
-                                                       'type': 'object'},
-                                              'message': {'type': 'string'}},
-                               'required': ['message', 'code'],
-                               'type': 'object'},
-                     'ErrorResult': {'additionalProperties': False,
-                                     'properties': {'error': {'$ref': '#/definitions/Error'}},
-                                     'type': 'object'},
-                     'ErrorResults': {'additionalProperties': False,
-                                      'properties': {'results': {'items': {'$ref': '#/definitions/ErrorResult'},
-                                                                 'type': 'array'}},
-                                      'required': ['results'],
-                                      'type': 'object'},
-                     'GrantRevokeUserSecretArg': {'additionalProperties': False,
-                                                  'properties': {'applications': {'items': {'type': 'string'},
-                                                                                  'type': 'array'},
-                                                                 'label': {'type': 'string'},
-                                                                 'uri': {'type': 'string'}},
-                                                  'required': ['uri',
-                                                               'label',
-                                                               'applications'],
-                                                  'type': 'object'},
-                     'ListSecretResult': {'additionalProperties': False,
-                                          'properties': {'create-time': {'format': 'date-time',
-                                                                         'type': 'string'},
-                                                         'description': {'type': 'string'},
-                                                         'label': {'type': 'string'},
-                                                         'latest-expire-time': {'format': 'date-time',
-                                                                                'type': 'string'},
-                                                         'latest-revision': {'type': 'integer'},
-                                                         'next-rotate-time': {'format': 'date-time',
-                                                                              'type': 'string'},
-                                                         'owner-tag': {'type': 'string'},
-                                                         'revisions': {'items': {'$ref': '#/definitions/SecretRevision'},
-                                                                       'type': 'array'},
-                                                         'rotate-policy': {'type': 'string'},
-                                                         'update-time': {'format': 'date-time',
-                                                                         'type': 'string'},
-                                                         'uri': {'type': 'string'},
-                                                         'value': {'$ref': '#/definitions/SecretValueResult'},
-                                                         'version': {'type': 'integer'}},
-                                          'required': ['uri',
-                                                       'version',
-                                                       'owner-tag',
-                                                       'latest-revision',
-                                                       'create-time',
-                                                       'update-time',
-                                                       'revisions'],
-                                          'type': 'object'},
-                     'ListSecretResults': {'additionalProperties': False,
-                                           'properties': {'results': {'items': {'$ref': '#/definitions/ListSecretResult'},
-                                                                      'type': 'array'}},
-                                           'required': ['results'],
-                                           'type': 'object'},
-                     'ListSecretsArgs': {'additionalProperties': False,
-                                         'properties': {'filter': {'$ref': '#/definitions/SecretsFilter'},
-                                                        'show-secrets': {'type': 'boolean'}},
-                                         'required': ['show-secrets', 'filter'],
-                                         'type': 'object'},
-                     'SecretContentParams': {'additionalProperties': False,
-                                             'properties': {'data': {'patternProperties': {'.*': {'type': 'string'}},
-                                                                     'type': 'object'},
-                                                            'value-ref': {'$ref': '#/definitions/SecretValueRef'}},
-                                             'type': 'object'},
-                     'SecretRevision': {'additionalProperties': False,
-                                        'properties': {'backend-name': {'type': 'string'},
-                                                       'create-time': {'format': 'date-time',
-                                                                       'type': 'string'},
-                                                       'expire-time': {'format': 'date-time',
-                                                                       'type': 'string'},
-                                                       'revision': {'type': 'integer'},
-                                                       'update-time': {'format': 'date-time',
-                                                                       'type': 'string'},
-                                                       'value-ref': {'$ref': '#/definitions/SecretValueRef'}},
-                                        'required': ['revision'],
-                                        'type': 'object'},
-                     'SecretValueRef': {'additionalProperties': False,
-                                        'properties': {'backend-id': {'type': 'string'},
-                                                       'revision-id': {'type': 'string'}},
-                                        'required': ['backend-id', 'revision-id'],
-                                        'type': 'object'},
-                     'SecretValueResult': {'additionalProperties': False,
-                                           'properties': {'data': {'patternProperties': {'.*': {'type': 'string'}},
-                                                                   'type': 'object'},
-                                                          'error': {'$ref': '#/definitions/Error'}},
-                                           'type': 'object'},
-                     'SecretsFilter': {'additionalProperties': False,
-                                       'properties': {'label': {'type': 'string'},
-                                                      'owner-tag': {'type': 'string'},
-                                                      'revision': {'type': 'integer'},
-                                                      'uri': {'type': 'string'}},
-                                       'type': 'object'},
-                     'StringResult': {'additionalProperties': False,
-                                      'properties': {'error': {'$ref': '#/definitions/Error'},
-                                                     'result': {'type': 'string'}},
-                                      'required': ['result'],
-                                      'type': 'object'},
-                     'StringResults': {'additionalProperties': False,
-                                       'properties': {'results': {'items': {'$ref': '#/definitions/StringResult'},
-                                                                  'type': 'array'}},
-                                       'required': ['results'],
-                                       'type': 'object'},
-                     'UpdateUserSecretArg': {'additionalProperties': False,
-                                             'properties': {'UpsertSecretArg': {'$ref': '#/definitions/UpsertSecretArg'},
-                                                            'auto-prune': {'type': 'boolean'},
-                                                            'content': {'$ref': '#/definitions/SecretContentParams'},
-                                                            'description': {'type': 'string'},
-                                                            'existing-label': {'type': 'string'},
-                                                            'expire-time': {'format': 'date-time',
-                                                                            'type': 'string'},
-                                                            'label': {'type': 'string'},
-                                                            'params': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                                    'type': 'object'}},
-                                                                       'type': 'object'},
-                                                            'rotate-policy': {'type': 'string'},
-                                                            'uri': {'type': 'string'}},
-                                             'required': ['UpsertSecretArg',
-                                                          'uri',
-                                                          'existing-label'],
-                                             'type': 'object'},
-                     'UpdateUserSecretArgs': {'additionalProperties': False,
-                                              'properties': {'args': {'items': {'$ref': '#/definitions/UpdateUserSecretArg'},
-                                                                      'type': 'array'}},
-                                              'required': ['args'],
-                                              'type': 'object'},
-                     'UpsertSecretArg': {'additionalProperties': False,
-                                         'properties': {'content': {'$ref': '#/definitions/SecretContentParams'},
-                                                        'description': {'type': 'string'},
-                                                        'expire-time': {'format': 'date-time',
-                                                                        'type': 'string'},
-                                                        'label': {'type': 'string'},
-                                                        'params': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                                'type': 'object'}},
-                                                                   'type': 'object'},
-                                                        'rotate-policy': {'type': 'string'}},
-                                         'type': 'object'}},
-     'properties': {'CreateSecrets': {'description': 'CreateSecrets creates new '
-                                                     'secrets.',
-                                      'properties': {'Params': {'$ref': '#/definitions/CreateSecretArgs'},
-                                                     'Result': {'$ref': '#/definitions/StringResults'}},
-                                      'type': 'object'},
-                    'GrantSecret': {'description': 'GrantSecret grants access to a '
-                                                   'user secret.',
-                                    'properties': {'Params': {'$ref': '#/definitions/GrantRevokeUserSecretArg'},
-                                                   'Result': {'$ref': '#/definitions/ErrorResults'}},
-                                    'type': 'object'},
-                    'ListSecrets': {'description': 'ListSecrets lists available '
-                                                   'secrets.',
-                                    'properties': {'Params': {'$ref': '#/definitions/ListSecretsArgs'},
-                                                   'Result': {'$ref': '#/definitions/ListSecretResults'}},
-                                    'type': 'object'},
-                    'RemoveSecrets': {'description': 'RemoveSecrets remove user '
-                                                     'secret.',
-                                      'properties': {'Params': {'$ref': '#/definitions/DeleteSecretArgs'},
-                                                     'Result': {'$ref': '#/definitions/ErrorResults'}},
-                                      'type': 'object'},
-                    'RevokeSecret': {'description': 'RevokeSecret revokes access '
-                                                    'to a user secret.',
-                                     'properties': {'Params': {'$ref': '#/definitions/GrantRevokeUserSecretArg'},
-                                                    'Result': {'$ref': '#/definitions/ErrorResults'}},
-                                     'type': 'object'},
-                    'UpdateSecrets': {'description': 'UpdateSecrets creates new '
-                                                     'secrets.',
-                                      'properties': {'Params': {'$ref': '#/definitions/UpdateUserSecretArgs'},
-                                                     'Result': {'$ref': '#/definitions/ErrorResults'}},
-                                      'type': 'object'}},
-     'type': 'object'}
-
+    schema = {
+        'definitions': {
+            'CreateSecretArg': {
+                'additionalProperties': False,
+                'properties': {
+                    'UpsertSecretArg': {'$ref': '#/definitions/UpsertSecretArg'},
+                    'content': {'$ref': '#/definitions/SecretContentParams'},
+                    'description': {'type': 'string'},
+                    'expire-time': {'format': 'date-time', 'type': 'string'},
+                    'label': {'type': 'string'},
+                    'owner-tag': {'type': 'string'},
+                    'params': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'rotate-policy': {'type': 'string'},
+                    'uri': {'type': 'string'},
+                },
+                'required': ['UpsertSecretArg', 'owner-tag'],
+                'type': 'object',
+            },
+            'CreateSecretArgs': {
+                'additionalProperties': False,
+                'properties': {
+                    'args': {
+                        'items': {'$ref': '#/definitions/CreateSecretArg'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['args'],
+                'type': 'object',
+            },
+            'DeleteSecretArg': {
+                'additionalProperties': False,
+                'properties': {
+                    'label': {'type': 'string'},
+                    'revisions': {'items': {'type': 'integer'}, 'type': 'array'},
+                    'uri': {'type': 'string'},
+                },
+                'required': ['uri', 'label'],
+                'type': 'object',
+            },
+            'DeleteSecretArgs': {
+                'additionalProperties': False,
+                'properties': {
+                    'args': {
+                        'items': {'$ref': '#/definitions/DeleteSecretArg'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['args'],
+                'type': 'object',
+            },
+            'Error': {
+                'additionalProperties': False,
+                'properties': {
+                    'code': {'type': 'string'},
+                    'info': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'message': {'type': 'string'},
+                },
+                'required': ['message', 'code'],
+                'type': 'object',
+            },
+            'ErrorResult': {
+                'additionalProperties': False,
+                'properties': {'error': {'$ref': '#/definitions/Error'}},
+                'type': 'object',
+            },
+            'ErrorResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/ErrorResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'GrantRevokeUserSecretArg': {
+                'additionalProperties': False,
+                'properties': {
+                    'applications': {'items': {'type': 'string'}, 'type': 'array'},
+                    'label': {'type': 'string'},
+                    'uri': {'type': 'string'},
+                },
+                'required': ['uri', 'label', 'applications'],
+                'type': 'object',
+            },
+            'ListSecretResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'create-time': {'format': 'date-time', 'type': 'string'},
+                    'description': {'type': 'string'},
+                    'label': {'type': 'string'},
+                    'latest-expire-time': {'format': 'date-time', 'type': 'string'},
+                    'latest-revision': {'type': 'integer'},
+                    'next-rotate-time': {'format': 'date-time', 'type': 'string'},
+                    'owner-tag': {'type': 'string'},
+                    'revisions': {
+                        'items': {'$ref': '#/definitions/SecretRevision'},
+                        'type': 'array',
+                    },
+                    'rotate-policy': {'type': 'string'},
+                    'update-time': {'format': 'date-time', 'type': 'string'},
+                    'uri': {'type': 'string'},
+                    'value': {'$ref': '#/definitions/SecretValueResult'},
+                    'version': {'type': 'integer'},
+                },
+                'required': [
+                    'uri',
+                    'version',
+                    'owner-tag',
+                    'latest-revision',
+                    'create-time',
+                    'update-time',
+                    'revisions',
+                ],
+                'type': 'object',
+            },
+            'ListSecretResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/ListSecretResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'ListSecretsArgs': {
+                'additionalProperties': False,
+                'properties': {
+                    'filter': {'$ref': '#/definitions/SecretsFilter'},
+                    'show-secrets': {'type': 'boolean'},
+                },
+                'required': ['show-secrets', 'filter'],
+                'type': 'object',
+            },
+            'SecretContentParams': {
+                'additionalProperties': False,
+                'properties': {
+                    'data': {
+                        'patternProperties': {'.*': {'type': 'string'}},
+                        'type': 'object',
+                    },
+                    'value-ref': {'$ref': '#/definitions/SecretValueRef'},
+                },
+                'type': 'object',
+            },
+            'SecretRevision': {
+                'additionalProperties': False,
+                'properties': {
+                    'backend-name': {'type': 'string'},
+                    'create-time': {'format': 'date-time', 'type': 'string'},
+                    'expire-time': {'format': 'date-time', 'type': 'string'},
+                    'revision': {'type': 'integer'},
+                    'update-time': {'format': 'date-time', 'type': 'string'},
+                    'value-ref': {'$ref': '#/definitions/SecretValueRef'},
+                },
+                'required': ['revision'],
+                'type': 'object',
+            },
+            'SecretValueRef': {
+                'additionalProperties': False,
+                'properties': {
+                    'backend-id': {'type': 'string'},
+                    'revision-id': {'type': 'string'},
+                },
+                'required': ['backend-id', 'revision-id'],
+                'type': 'object',
+            },
+            'SecretValueResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'data': {
+                        'patternProperties': {'.*': {'type': 'string'}},
+                        'type': 'object',
+                    },
+                    'error': {'$ref': '#/definitions/Error'},
+                },
+                'type': 'object',
+            },
+            'SecretsFilter': {
+                'additionalProperties': False,
+                'properties': {
+                    'label': {'type': 'string'},
+                    'owner-tag': {'type': 'string'},
+                    'revision': {'type': 'integer'},
+                    'uri': {'type': 'string'},
+                },
+                'type': 'object',
+            },
+            'StringResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'result': {'type': 'string'},
+                },
+                'required': ['result'],
+                'type': 'object',
+            },
+            'StringResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/StringResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'UpdateUserSecretArg': {
+                'additionalProperties': False,
+                'properties': {
+                    'UpsertSecretArg': {'$ref': '#/definitions/UpsertSecretArg'},
+                    'auto-prune': {'type': 'boolean'},
+                    'content': {'$ref': '#/definitions/SecretContentParams'},
+                    'description': {'type': 'string'},
+                    'existing-label': {'type': 'string'},
+                    'expire-time': {'format': 'date-time', 'type': 'string'},
+                    'label': {'type': 'string'},
+                    'params': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'rotate-policy': {'type': 'string'},
+                    'uri': {'type': 'string'},
+                },
+                'required': ['UpsertSecretArg', 'uri', 'existing-label'],
+                'type': 'object',
+            },
+            'UpdateUserSecretArgs': {
+                'additionalProperties': False,
+                'properties': {
+                    'args': {
+                        'items': {'$ref': '#/definitions/UpdateUserSecretArg'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['args'],
+                'type': 'object',
+            },
+            'UpsertSecretArg': {
+                'additionalProperties': False,
+                'properties': {
+                    'content': {'$ref': '#/definitions/SecretContentParams'},
+                    'description': {'type': 'string'},
+                    'expire-time': {'format': 'date-time', 'type': 'string'},
+                    'label': {'type': 'string'},
+                    'params': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'rotate-policy': {'type': 'string'},
+                },
+                'type': 'object',
+            },
+        },
+        'properties': {
+            'CreateSecrets': {
+                'description': 'CreateSecrets creates new ' 'secrets.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/CreateSecretArgs'},
+                    'Result': {'$ref': '#/definitions/StringResults'},
+                },
+                'type': 'object',
+            },
+            'GrantSecret': {
+                'description': 'GrantSecret grants access to a ' 'user secret.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/GrantRevokeUserSecretArg'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+            'ListSecrets': {
+                'description': 'ListSecrets lists available ' 'secrets.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/ListSecretsArgs'},
+                    'Result': {'$ref': '#/definitions/ListSecretResults'},
+                },
+                'type': 'object',
+            },
+            'RemoveSecrets': {
+                'description': 'RemoveSecrets remove user ' 'secret.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/DeleteSecretArgs'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+            'RevokeSecret': {
+                'description': 'RevokeSecret revokes access ' 'to a user secret.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/GrantRevokeUserSecretArg'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+            'UpdateSecrets': {
+                'description': 'UpdateSecrets creates new ' 'secrets.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/UpdateUserSecretArgs'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+        },
+        'type': 'object',
+    }
 
     @ReturnMapping(StringResults)
     async def CreateSecrets(self, args=None):
@@ -703,7 +1025,6 @@ class SecretsFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(ErrorResults)
     async def GrantSecret(self, applications=None, label=None, uri=None):
         """
@@ -714,8 +1035,12 @@ class SecretsFacade(Type):
         uri : str
         Returns -> ErrorResults
         """
-        if applications is not None and not isinstance(applications, (bytes, str, list)):
-            raise TypeError(f'Expected applications to be a Sequence, received: {type(applications)}')
+        if applications is not None and not isinstance(
+            applications, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected applications to be a Sequence, received: {type(applications)}'
+            )
 
         if label is not None and not isinstance(label, (bytes, str)):
             raise TypeError(f'Expected label to be a str, received: {type(label)}')
@@ -737,7 +1062,6 @@ class SecretsFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(ListSecretResults)
     async def ListSecrets(self, filter_=None, show_secrets=None):
         """
@@ -748,10 +1072,14 @@ class SecretsFacade(Type):
         Returns -> ListSecretResults
         """
         if filter_ is not None and not isinstance(filter_, (dict, SecretsFilter)):
-            raise TypeError(f'Expected filter_ to be a SecretsFilter, received: {type(filter_)}')
+            raise TypeError(
+                f'Expected filter_ to be a SecretsFilter, received: {type(filter_)}'
+            )
 
         if show_secrets is not None and not isinstance(show_secrets, bool):
-            raise TypeError(f'Expected show_secrets to be a bool, received: {type(show_secrets)}')
+            raise TypeError(
+                f'Expected show_secrets to be a bool, received: {type(show_secrets)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -765,7 +1093,6 @@ class SecretsFacade(Type):
         _params['show-secrets'] = show_secrets
         reply = await self.rpc(msg)
         return reply
-
 
     @ReturnMapping(ErrorResults)
     async def RemoveSecrets(self, args=None):
@@ -790,7 +1117,6 @@ class SecretsFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(ErrorResults)
     async def RevokeSecret(self, applications=None, label=None, uri=None):
         """
@@ -801,8 +1127,12 @@ class SecretsFacade(Type):
         uri : str
         Returns -> ErrorResults
         """
-        if applications is not None and not isinstance(applications, (bytes, str, list)):
-            raise TypeError(f'Expected applications to be a Sequence, received: {type(applications)}')
+        if applications is not None and not isinstance(
+            applications, (bytes, str, list)
+        ):
+            raise TypeError(
+                f'Expected applications to be a Sequence, received: {type(applications)}'
+            )
 
         if label is not None and not isinstance(label, (bytes, str)):
             raise TypeError(f'Expected label to be a str, received: {type(label)}')
@@ -823,7 +1153,6 @@ class SecretsFacade(Type):
         _params['uri'] = uri
         reply = await self.rpc(msg)
         return reply
-
 
     @ReturnMapping(ErrorResults)
     async def UpdateSecrets(self, args=None):
@@ -847,4 +1176,3 @@ class SecretsFacade(Type):
         _params['args'] = args
         reply = await self.rpc(msg)
         return reply
-

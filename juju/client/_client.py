@@ -239,5 +239,3 @@ class SubnetsFacade(TypeFactory):
 
 class UserManagerFacade(TypeFactory):
     pass
-
-
