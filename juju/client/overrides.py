@@ -5,7 +5,7 @@ import re
 from collections import namedtuple
 
 from . import _client, _definitions
-from .facade import ReturnMapping, Type, TypeEncoder
+from .facade import Type, TypeEncoder
 
 __all__ = [
     'Delta',
@@ -64,7 +64,6 @@ class ResourcesFacade(Type):
     """Patch parts of ResourcesFacade to make it work.
     """
 
-    @ReturnMapping(_client.AddPendingResourcesResult)
     async def AddPendingResources(self,
                                   application_tag="",
                                   charm_url="",
@@ -95,7 +94,7 @@ class ResourcesFacade(Type):
         _params['resources'] = resources
         _params['charm-origin'] = charm_origin
         reply = await self.rpc(msg)
-        return reply
+        return _client.AddPendingResourcesResult.from_json(reply['result'])
 
 
 class AllWatcherFacade(Type):
@@ -134,7 +133,6 @@ class ActionFacade(Type):
                 self.matches[prefix] = [_definitions.Entity.from_json(r)
                                         for r in tags]
 
-    @ReturnMapping(_FindTagsResults)
     async def FindActionTagsByPrefix(self, prefixes):
         '''
         prefixes : typing.Sequence[str]
@@ -148,7 +146,7 @@ class ActionFacade(Type):
                    params=_params)
         _params['prefixes'] = prefixes
         reply = await self.rpc(msg)
-        return reply
+        return ActionFacade._FindTagsResults.from_json(reply['response'])
 
 
 class Number(_definitions.Number):
