@@ -14,7 +14,7 @@ import typing
 from collections import defaultdict
 from glob import glob
 from pathlib import Path
-from typing import Any, Dict, List, Mapping, Sequence, Tuple, TypeVar
+from typing import Any, Dict, List, Mapping, Protocol, Sequence, Tuple, TypeVar
 
 import packaging.version
 import typing_inspect
@@ -108,6 +108,11 @@ class TypeFactory:
 
 
 '''
+
+
+class Options(Protocol):
+    schema: str
+    output_dir: str
 
 
 class KindRegistry(dict):
@@ -801,7 +806,7 @@ def make_factory(name):
     factories[name].write(f'class {name}(TypeFactory):\n    pass\n\n')
 
 
-def write_facades(captures, options):
+def write_facades(captures: Dict[int, codegen.Capture], options: Options) -> None:
     """
     Write the Facades to the appropriate _client<version>.py
 
@@ -822,7 +827,7 @@ def write_facades(captures, options):
     return version
 
 
-def write_definitions(captures, options):
+def write_definitions(captures: codegen.Capture, options: Options) -> None:
     """
     Write auxillary (non versioned) classes to
     _definitions.py The auxillary classes currently get
@@ -838,7 +843,7 @@ def write_definitions(captures, options):
             print(captures[key], file=f)
 
 
-def write_client(captures, options):
+def write_client(captures: Dict[int, codegen.Capture], options: Options) -> None:
     """
     Write the TypeFactory classes to _client.py, along with some
     imports and tables so that we can look up versioned Facades.
@@ -873,7 +878,7 @@ def write_client(captures, options):
             f.write('\n')
 
 
-def generate_definitions(schemas):
+def generate_definitions(schemas: Dict[str, List[Schema]]) -> codegen.Capture:
     # Build all of the auxillary (unversioned) classes
     # TODO: get rid of some of the excess trips through loops in the
     # called functions.
@@ -892,7 +897,7 @@ def generate_definitions(schemas):
     return definitions
 
 
-def generate_facades(schemas: Dict[str, List[Schema]]) -> Dict[str, Dict[int, codegen.Capture]]:
+def generate_facades(schemas: Dict[str, List[Schema]]) -> Dict[int, codegen.Capture]:
     captures = defaultdict(codegen.Capture)
 
     # Build the Facade classes
@@ -917,7 +922,7 @@ def generate_facades(schemas: Dict[str, List[Schema]]) -> Dict[str, Dict[int, co
     return captures
 
 
-def load_schemas(options):
+def load_schemas(options: Options) -> Dict[str, List[Schema]]:
     schemas = {}
     for p in sorted(glob(options.schema)):
         try:
@@ -931,7 +936,7 @@ def load_schemas(options):
     return schemas
 
 
-def setup():
+def setup() -> Options:
     parser = argparse.ArgumentParser()
     parser.add_argument("-s", "--schema", default="juju/client/schemas-juju-*.json")
     parser.add_argument("-o", "--output_dir", default="juju/client")
@@ -939,7 +944,7 @@ def setup():
     return options
 
 
-def main():
+def main() -> None:
     options = setup()
 
     schemas = load_schemas(options)
