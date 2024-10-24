@@ -14,10 +14,11 @@ import typing
 from collections import defaultdict
 from glob import glob
 from pathlib import Path
-from typing import Any, Dict, List, Mapping, Protocol, Sequence, Tuple, TypeVar
+from typing import Any, Awaitable, Callable, Dict, List, Mapping, Protocol, Sequence, Tuple, TypeVar
 
 import packaging.version
 import typing_inspect
+from typing_extensions import ParamSpec
 
 from . import codegen
 
@@ -108,6 +109,18 @@ class TypeFactory:
 
 
 '''
+
+
+JSONObject = Dict[str, 'JSONData']
+JSONData = typing.Union[
+    'JSONObject',
+    List['JSONData'],
+    str,
+    int,
+    float,
+    bool,
+    None,
+]
 
 
 class Options(Protocol):
@@ -450,35 +463,41 @@ def retspec(schema, defs):
     return strcast(defs, False)
 
 
-def ReturnMapping(cls):
+C = TypeVar('C', bound='typing.Type[Type]')
+T = TypeVar('T')
+P = ParamSpec('P')
+@typing.overload
+def ReturnMapping(cls: None) -> Callable[
+    [Callable[P, Awaitable[T]]],
+    Callable[P, Awaitable[T]]
+]: ...
+@typing.overload
+def ReturnMapping(cls: C) -> Callable[
+    [Callable[P, Awaitable[Any]]],
+    Callable[P, Awaitable[typing.Optional[C]]]
+]: ...
+def ReturnMapping(cls: typing.Optional[C]) -> typing.Union[
+    Callable[[Callable[P, Awaitable[T]]], Callable[P, Awaitable[T]]],
+    Callable[[Callable[P, Awaitable[T]]], Callable[P, Awaitable[typing.Optional[C]]]],
+]:
     # Annotate the method with a return Type
     # so the value can be cast
-    def decorator(f):
+    if cls is None:
+        return lambda f: f
+
+    def decorator(f: Callable[P, Awaitable[T]]) -> Callable[P, Awaitable[C]]:
         @functools.wraps(f)
-        async def wrapper(*args, **kwargs):
-            nonlocal cls
+        async def wrapper(*args: P.args, **kwargs: P.kwargs) -> C:
             reply = await f(*args, **kwargs)
-            if cls is None:
-                return reply
-            if 'error' in reply:
-                cls = CLASSES['Error']
             if typing_inspect.is_generic_type(cls) and issubclass(typing_inspect.get_origin(cls), Sequence):
                 parameters = typing_inspect.get_parameters(cls)
                 result = []
                 item_cls = parameters[0]
                 for item in reply:
                     result.append(item_cls.from_json(item))
-                    """
-                    if 'error' in item:
-                        cls = CLASSES['Error']
-                    else:
-                        cls = item_cls
-                    result.append(cls.from_json(item))
-                    """
-            else:
-                result = cls.from_json(reply['response'])
+                return result
+            return cls.from_json(reply['response'])
 
-            return result
         return wrapper
     return decorator
 
@@ -618,12 +637,12 @@ class Type:
 
         return self.__dict__ == other.__dict__
 
-    async def rpc(self, msg):
+    async def rpc(self, msg: JSONObject) -> JSONObject:
         result = await self.connection.rpc(msg, encoder=TypeEncoder)
         return result
 
     @classmethod
-    def from_json(cls, data):
+    def from_json(cls: typing.Type[C], data: typing.Union[JSONData, C]) -> typing.Optional[C]:
         def _parse_nested_list_entry(expr, result_dict):
             if isinstance(expr, str):
                 if '>' in expr or '>=' in expr:
