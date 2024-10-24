@@ -4,33 +4,54 @@
 from juju.client.facade import Type, ReturnMapping
 from juju.client._definitions import *
 
+
 class CredentialManagerFacade(Type):
     name = 'CredentialManager'
     version = 1
-    schema =     {'definitions': {'Error': {'additionalProperties': False,
-                               'properties': {'code': {'type': 'string'},
-                                              'info': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                    'type': 'object'}},
-                                                       'type': 'object'},
-                                              'message': {'type': 'string'}},
-                               'required': ['message', 'code'],
-                               'type': 'object'},
-                     'ErrorResult': {'additionalProperties': False,
-                                     'properties': {'error': {'$ref': '#/definitions/Error'}},
-                                     'type': 'object'},
-                     'InvalidateCredentialArg': {'additionalProperties': False,
-                                                 'properties': {'reason': {'type': 'string'}},
-                                                 'type': 'object'}},
-     'properties': {'InvalidateModelCredential': {'description': 'InvalidateModelCredential '
-                                                                 'marks the cloud '
-                                                                 'credential for '
-                                                                 'this model as '
-                                                                 'invalid.',
-                                                  'properties': {'Params': {'$ref': '#/definitions/InvalidateCredentialArg'},
-                                                                 'Result': {'$ref': '#/definitions/ErrorResult'}},
-                                                  'type': 'object'}},
-     'type': 'object'}
-
+    schema = {
+        'definitions': {
+            'Error': {
+                'additionalProperties': False,
+                'properties': {
+                    'code': {'type': 'string'},
+                    'info': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'message': {'type': 'string'},
+                },
+                'required': ['message', 'code'],
+                'type': 'object',
+            },
+            'ErrorResult': {
+                'additionalProperties': False,
+                'properties': {'error': {'$ref': '#/definitions/Error'}},
+                'type': 'object',
+            },
+            'InvalidateCredentialArg': {
+                'additionalProperties': False,
+                'properties': {'reason': {'type': 'string'}},
+                'type': 'object',
+            },
+        },
+        'properties': {
+            'InvalidateModelCredential': {
+                'description': 'InvalidateModelCredential '
+                'marks the cloud '
+                'credential for '
+                'this model as '
+                'invalid.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/InvalidateCredentialArg'},
+                    'Result': {'$ref': '#/definitions/ErrorResult'},
+                },
+                'type': 'object',
+            }
+        },
+        'type': 'object',
+    }
 
     @ReturnMapping(ErrorResult)
     async def InvalidateModelCredential(self, reason=None):
@@ -55,54 +76,98 @@ class CredentialManagerFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
+
 class FirewallRulesFacade(Type):
     name = 'FirewallRules'
     version = 1
-    schema =     {'definitions': {'Error': {'additionalProperties': False,
-                               'properties': {'code': {'type': 'string'},
-                                              'info': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                    'type': 'object'}},
-                                                       'type': 'object'},
-                                              'message': {'type': 'string'}},
-                               'required': ['message', 'code'],
-                               'type': 'object'},
-                     'ErrorResult': {'additionalProperties': False,
-                                     'properties': {'error': {'$ref': '#/definitions/Error'}},
-                                     'type': 'object'},
-                     'ErrorResults': {'additionalProperties': False,
-                                      'properties': {'results': {'items': {'$ref': '#/definitions/ErrorResult'},
-                                                                 'type': 'array'}},
-                                      'required': ['results'],
-                                      'type': 'object'},
-                     'FirewallRule': {'additionalProperties': False,
-                                      'properties': {'known-service': {'type': 'string'},
-                                                     'whitelist-cidrs': {'items': {'type': 'string'},
-                                                                         'type': 'array'}},
-                                      'required': ['known-service'],
-                                      'type': 'object'},
-                     'FirewallRuleArgs': {'additionalProperties': False,
-                                          'properties': {'args': {'items': {'$ref': '#/definitions/FirewallRule'},
-                                                                  'type': 'array'}},
-                                          'required': ['args'],
-                                          'type': 'object'},
-                     'ListFirewallRulesResults': {'additionalProperties': False,
-                                                  'properties': {'Rules': {'items': {'$ref': '#/definitions/FirewallRule'},
-                                                                           'type': 'array'}},
-                                                  'required': ['Rules'],
-                                                  'type': 'object'}},
-     'properties': {'ListFirewallRules': {'description': 'ListFirewallRules '
-                                                         'returns all the firewall '
-                                                         'rules.',
-                                          'properties': {'Result': {'$ref': '#/definitions/ListFirewallRulesResults'}},
-                                          'type': 'object'},
-                    'SetFirewallRules': {'description': 'SetFirewallRules creates '
-                                                        'or updates the specified '
-                                                        'firewall rules.',
-                                         'properties': {'Params': {'$ref': '#/definitions/FirewallRuleArgs'},
-                                                        'Result': {'$ref': '#/definitions/ErrorResults'}},
-                                         'type': 'object'}},
-     'type': 'object'}
-
+    schema = {
+        'definitions': {
+            'Error': {
+                'additionalProperties': False,
+                'properties': {
+                    'code': {'type': 'string'},
+                    'info': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'message': {'type': 'string'},
+                },
+                'required': ['message', 'code'],
+                'type': 'object',
+            },
+            'ErrorResult': {
+                'additionalProperties': False,
+                'properties': {'error': {'$ref': '#/definitions/Error'}},
+                'type': 'object',
+            },
+            'ErrorResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/ErrorResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'FirewallRule': {
+                'additionalProperties': False,
+                'properties': {
+                    'known-service': {'type': 'string'},
+                    'whitelist-cidrs': {'items': {'type': 'string'}, 'type': 'array'},
+                },
+                'required': ['known-service'],
+                'type': 'object',
+            },
+            'FirewallRuleArgs': {
+                'additionalProperties': False,
+                'properties': {
+                    'args': {
+                        'items': {'$ref': '#/definitions/FirewallRule'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['args'],
+                'type': 'object',
+            },
+            'ListFirewallRulesResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'Rules': {
+                        'items': {'$ref': '#/definitions/FirewallRule'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['Rules'],
+                'type': 'object',
+            },
+        },
+        'properties': {
+            'ListFirewallRules': {
+                'description': 'ListFirewallRules '
+                'returns all the firewall '
+                'rules.',
+                'properties': {
+                    'Result': {'$ref': '#/definitions/ListFirewallRulesResults'}
+                },
+                'type': 'object',
+            },
+            'SetFirewallRules': {
+                'description': 'SetFirewallRules creates '
+                'or updates the specified '
+                'firewall rules.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/FirewallRuleArgs'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+        },
+        'type': 'object',
+    }
 
     @ReturnMapping(ListFirewallRulesResults)
     async def ListFirewallRules(self):
@@ -124,7 +189,6 @@ class FirewallRulesFacade(Type):
 
         reply = await self.rpc(msg)
         return reply
-
 
     @ReturnMapping(ErrorResults)
     async def SetFirewallRules(self, args=None):
@@ -149,93 +213,155 @@ class FirewallRulesFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
+
 class ImageMetadataManagerFacade(Type):
     name = 'ImageMetadataManager'
     version = 1
-    schema =     {'definitions': {'CloudImageMetadata': {'additionalProperties': False,
-                                            'properties': {'arch': {'type': 'string'},
-                                                           'image-id': {'type': 'string'},
-                                                           'priority': {'type': 'integer'},
-                                                           'region': {'type': 'string'},
-                                                           'root-storage-size': {'type': 'integer'},
-                                                           'root-storage-type': {'type': 'string'},
-                                                           'source': {'type': 'string'},
-                                                           'stream': {'type': 'string'},
-                                                           'version': {'type': 'string'},
-                                                           'virt-type': {'type': 'string'}},
-                                            'required': ['image-id',
-                                                         'region',
-                                                         'version',
-                                                         'arch',
-                                                         'source',
-                                                         'priority'],
-                                            'type': 'object'},
-                     'CloudImageMetadataList': {'additionalProperties': False,
-                                                'properties': {'metadata': {'items': {'$ref': '#/definitions/CloudImageMetadata'},
-                                                                            'type': 'array'}},
-                                                'type': 'object'},
-                     'Error': {'additionalProperties': False,
-                               'properties': {'code': {'type': 'string'},
-                                              'info': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                    'type': 'object'}},
-                                                       'type': 'object'},
-                                              'message': {'type': 'string'}},
-                               'required': ['message', 'code'],
-                               'type': 'object'},
-                     'ErrorResult': {'additionalProperties': False,
-                                     'properties': {'error': {'$ref': '#/definitions/Error'}},
-                                     'type': 'object'},
-                     'ErrorResults': {'additionalProperties': False,
-                                      'properties': {'results': {'items': {'$ref': '#/definitions/ErrorResult'},
-                                                                 'type': 'array'}},
-                                      'required': ['results'],
-                                      'type': 'object'},
-                     'ImageMetadataFilter': {'additionalProperties': False,
-                                             'properties': {'arches': {'items': {'type': 'string'},
-                                                                       'type': 'array'},
-                                                            'region': {'type': 'string'},
-                                                            'root-storage-type': {'type': 'string'},
-                                                            'stream': {'type': 'string'},
-                                                            'versions': {'items': {'type': 'string'},
-                                                                         'type': 'array'},
-                                                            'virt-type': {'type': 'string'}},
-                                             'type': 'object'},
-                     'ListCloudImageMetadataResult': {'additionalProperties': False,
-                                                      'properties': {'result': {'items': {'$ref': '#/definitions/CloudImageMetadata'},
-                                                                                'type': 'array'}},
-                                                      'required': ['result'],
-                                                      'type': 'object'},
-                     'MetadataImageIds': {'additionalProperties': False,
-                                          'properties': {'image-ids': {'items': {'type': 'string'},
-                                                                       'type': 'array'}},
-                                          'required': ['image-ids'],
-                                          'type': 'object'},
-                     'MetadataSaveParams': {'additionalProperties': False,
-                                            'properties': {'metadata': {'items': {'$ref': '#/definitions/CloudImageMetadataList'},
-                                                                        'type': 'array'}},
-                                            'type': 'object'}},
-     'properties': {'Delete': {'description': 'Delete deletes cloud image metadata '
-                                              'for given image ids.\n'
-                                              'It supports bulk calls.',
-                               'properties': {'Params': {'$ref': '#/definitions/MetadataImageIds'},
-                                              'Result': {'$ref': '#/definitions/ErrorResults'}},
-                               'type': 'object'},
-                    'List': {'description': 'List returns all found cloud image '
-                                            'metadata that satisfy\n'
-                                            'given filter.\n'
-                                            'Returned list contains metadata '
-                                            'ordered by priority.',
-                             'properties': {'Params': {'$ref': '#/definitions/ImageMetadataFilter'},
-                                            'Result': {'$ref': '#/definitions/ListCloudImageMetadataResult'}},
-                             'type': 'object'},
-                    'Save': {'description': 'Save stores given cloud image '
-                                            'metadata.\n'
-                                            'It supports bulk calls.',
-                             'properties': {'Params': {'$ref': '#/definitions/MetadataSaveParams'},
-                                            'Result': {'$ref': '#/definitions/ErrorResults'}},
-                             'type': 'object'}},
-     'type': 'object'}
-
+    schema = {
+        'definitions': {
+            'CloudImageMetadata': {
+                'additionalProperties': False,
+                'properties': {
+                    'arch': {'type': 'string'},
+                    'image-id': {'type': 'string'},
+                    'priority': {'type': 'integer'},
+                    'region': {'type': 'string'},
+                    'root-storage-size': {'type': 'integer'},
+                    'root-storage-type': {'type': 'string'},
+                    'source': {'type': 'string'},
+                    'stream': {'type': 'string'},
+                    'version': {'type': 'string'},
+                    'virt-type': {'type': 'string'},
+                },
+                'required': [
+                    'image-id',
+                    'region',
+                    'version',
+                    'arch',
+                    'source',
+                    'priority',
+                ],
+                'type': 'object',
+            },
+            'CloudImageMetadataList': {
+                'additionalProperties': False,
+                'properties': {
+                    'metadata': {
+                        'items': {'$ref': '#/definitions/CloudImageMetadata'},
+                        'type': 'array',
+                    }
+                },
+                'type': 'object',
+            },
+            'Error': {
+                'additionalProperties': False,
+                'properties': {
+                    'code': {'type': 'string'},
+                    'info': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'message': {'type': 'string'},
+                },
+                'required': ['message', 'code'],
+                'type': 'object',
+            },
+            'ErrorResult': {
+                'additionalProperties': False,
+                'properties': {'error': {'$ref': '#/definitions/Error'}},
+                'type': 'object',
+            },
+            'ErrorResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/ErrorResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'ImageMetadataFilter': {
+                'additionalProperties': False,
+                'properties': {
+                    'arches': {'items': {'type': 'string'}, 'type': 'array'},
+                    'region': {'type': 'string'},
+                    'root-storage-type': {'type': 'string'},
+                    'stream': {'type': 'string'},
+                    'versions': {'items': {'type': 'string'}, 'type': 'array'},
+                    'virt-type': {'type': 'string'},
+                },
+                'type': 'object',
+            },
+            'ListCloudImageMetadataResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'result': {
+                        'items': {'$ref': '#/definitions/CloudImageMetadata'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['result'],
+                'type': 'object',
+            },
+            'MetadataImageIds': {
+                'additionalProperties': False,
+                'properties': {
+                    'image-ids': {'items': {'type': 'string'}, 'type': 'array'}
+                },
+                'required': ['image-ids'],
+                'type': 'object',
+            },
+            'MetadataSaveParams': {
+                'additionalProperties': False,
+                'properties': {
+                    'metadata': {
+                        'items': {'$ref': '#/definitions/CloudImageMetadataList'},
+                        'type': 'array',
+                    }
+                },
+                'type': 'object',
+            },
+        },
+        'properties': {
+            'Delete': {
+                'description': 'Delete deletes cloud image metadata '
+                'for given image ids.\n'
+                'It supports bulk calls.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/MetadataImageIds'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+            'List': {
+                'description': 'List returns all found cloud image '
+                'metadata that satisfy\n'
+                'given filter.\n'
+                'Returned list contains metadata '
+                'ordered by priority.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/ImageMetadataFilter'},
+                    'Result': {'$ref': '#/definitions/ListCloudImageMetadataResult'},
+                },
+                'type': 'object',
+            },
+            'Save': {
+                'description': 'Save stores given cloud image '
+                'metadata.\n'
+                'It supports bulk calls.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/MetadataSaveParams'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+        },
+        'type': 'object',
+    }
 
     @ReturnMapping(ErrorResults)
     async def Delete(self, image_ids=None):
@@ -247,7 +373,9 @@ class ImageMetadataManagerFacade(Type):
         Returns -> ErrorResults
         """
         if image_ids is not None and not isinstance(image_ids, (bytes, str, list)):
-            raise TypeError(f'Expected image_ids to be a Sequence, received: {type(image_ids)}')
+            raise TypeError(
+                f'Expected image_ids to be a Sequence, received: {type(image_ids)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -261,9 +389,16 @@ class ImageMetadataManagerFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(ListCloudImageMetadataResult)
-    async def List(self, arches=None, region=None, root_storage_type=None, stream=None, versions=None, virt_type=None):
+    async def List(
+        self,
+        arches=None,
+        region=None,
+        root_storage_type=None,
+        stream=None,
+        versions=None,
+        virt_type=None,
+    ):
         """
         List returns all found cloud image metadata that satisfy
         given filter.
@@ -278,22 +413,32 @@ class ImageMetadataManagerFacade(Type):
         Returns -> ListCloudImageMetadataResult
         """
         if arches is not None and not isinstance(arches, (bytes, str, list)):
-            raise TypeError(f'Expected arches to be a Sequence, received: {type(arches)}')
+            raise TypeError(
+                f'Expected arches to be a Sequence, received: {type(arches)}'
+            )
 
         if region is not None and not isinstance(region, (bytes, str)):
             raise TypeError(f'Expected region to be a str, received: {type(region)}')
 
-        if root_storage_type is not None and not isinstance(root_storage_type, (bytes, str)):
-            raise TypeError(f'Expected root_storage_type to be a str, received: {type(root_storage_type)}')
+        if root_storage_type is not None and not isinstance(
+            root_storage_type, (bytes, str)
+        ):
+            raise TypeError(
+                f'Expected root_storage_type to be a str, received: {type(root_storage_type)}'
+            )
 
         if stream is not None and not isinstance(stream, (bytes, str)):
             raise TypeError(f'Expected stream to be a str, received: {type(stream)}')
 
         if versions is not None and not isinstance(versions, (bytes, str, list)):
-            raise TypeError(f'Expected versions to be a Sequence, received: {type(versions)}')
+            raise TypeError(
+                f'Expected versions to be a Sequence, received: {type(versions)}'
+            )
 
         if virt_type is not None and not isinstance(virt_type, (bytes, str)):
-            raise TypeError(f'Expected virt_type to be a str, received: {type(virt_type)}')
+            raise TypeError(
+                f'Expected virt_type to be a str, received: {type(virt_type)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -312,7 +457,6 @@ class ImageMetadataManagerFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(ErrorResults)
     async def Save(self, metadata=None):
         """
@@ -323,7 +467,9 @@ class ImageMetadataManagerFacade(Type):
         Returns -> ErrorResults
         """
         if metadata is not None and not isinstance(metadata, (bytes, str, list)):
-            raise TypeError(f'Expected metadata to be a Sequence, received: {type(metadata)}')
+            raise TypeError(
+                f'Expected metadata to be a Sequence, received: {type(metadata)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -337,80 +483,141 @@ class ImageMetadataManagerFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
+
 class KeyManagerFacade(Type):
     name = 'KeyManager'
     version = 1
-    schema =     {'definitions': {'Entities': {'additionalProperties': False,
-                                  'properties': {'entities': {'items': {'$ref': '#/definitions/Entity'},
-                                                              'type': 'array'}},
-                                  'required': ['entities'],
-                                  'type': 'object'},
-                     'Entity': {'additionalProperties': False,
-                                'properties': {'tag': {'type': 'string'}},
-                                'required': ['tag'],
-                                'type': 'object'},
-                     'Error': {'additionalProperties': False,
-                               'properties': {'code': {'type': 'string'},
-                                              'info': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                    'type': 'object'}},
-                                                       'type': 'object'},
-                                              'message': {'type': 'string'}},
-                               'required': ['message', 'code'],
-                               'type': 'object'},
-                     'ErrorResult': {'additionalProperties': False,
-                                     'properties': {'error': {'$ref': '#/definitions/Error'}},
-                                     'type': 'object'},
-                     'ErrorResults': {'additionalProperties': False,
-                                      'properties': {'results': {'items': {'$ref': '#/definitions/ErrorResult'},
-                                                                 'type': 'array'}},
-                                      'required': ['results'],
-                                      'type': 'object'},
-                     'ListSSHKeys': {'additionalProperties': False,
-                                     'properties': {'entities': {'$ref': '#/definitions/Entities'},
-                                                    'mode': {'type': 'boolean'}},
-                                     'required': ['entities', 'mode'],
-                                     'type': 'object'},
-                     'ModifyUserSSHKeys': {'additionalProperties': False,
-                                           'properties': {'ssh-keys': {'items': {'type': 'string'},
-                                                                       'type': 'array'},
-                                                          'user': {'type': 'string'}},
-                                           'required': ['user', 'ssh-keys'],
-                                           'type': 'object'},
-                     'StringsResult': {'additionalProperties': False,
-                                       'properties': {'error': {'$ref': '#/definitions/Error'},
-                                                      'result': {'items': {'type': 'string'},
-                                                                 'type': 'array'}},
-                                       'type': 'object'},
-                     'StringsResults': {'additionalProperties': False,
-                                        'properties': {'results': {'items': {'$ref': '#/definitions/StringsResult'},
-                                                                   'type': 'array'}},
-                                        'required': ['results'],
-                                        'type': 'object'}},
-     'properties': {'AddKeys': {'description': 'AddKeys adds new authorised ssh '
-                                               'keys for the specified user.',
-                                'properties': {'Params': {'$ref': '#/definitions/ModifyUserSSHKeys'},
-                                               'Result': {'$ref': '#/definitions/ErrorResults'}},
-                                'type': 'object'},
-                    'DeleteKeys': {'description': 'DeleteKeys deletes the '
-                                                  'authorised ssh keys for the '
-                                                  'specified user.',
-                                   'properties': {'Params': {'$ref': '#/definitions/ModifyUserSSHKeys'},
-                                                  'Result': {'$ref': '#/definitions/ErrorResults'}},
-                                   'type': 'object'},
-                    'ImportKeys': {'description': 'ImportKeys imports new '
-                                                  'authorised ssh keys from the '
-                                                  'specified key ids for the '
-                                                  'specified user.',
-                                   'properties': {'Params': {'$ref': '#/definitions/ModifyUserSSHKeys'},
-                                                  'Result': {'$ref': '#/definitions/ErrorResults'}},
-                                   'type': 'object'},
-                    'ListKeys': {'description': 'ListKeys returns the authorised '
-                                                'ssh keys for the specified users.',
-                                 'properties': {'Params': {'$ref': '#/definitions/ListSSHKeys'},
-                                                'Result': {'$ref': '#/definitions/StringsResults'}},
-                                 'type': 'object'}},
-     'type': 'object'}
-
+    schema = {
+        'definitions': {
+            'Entities': {
+                'additionalProperties': False,
+                'properties': {
+                    'entities': {
+                        'items': {'$ref': '#/definitions/Entity'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['entities'],
+                'type': 'object',
+            },
+            'Entity': {
+                'additionalProperties': False,
+                'properties': {'tag': {'type': 'string'}},
+                'required': ['tag'],
+                'type': 'object',
+            },
+            'Error': {
+                'additionalProperties': False,
+                'properties': {
+                    'code': {'type': 'string'},
+                    'info': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'message': {'type': 'string'},
+                },
+                'required': ['message', 'code'],
+                'type': 'object',
+            },
+            'ErrorResult': {
+                'additionalProperties': False,
+                'properties': {'error': {'$ref': '#/definitions/Error'}},
+                'type': 'object',
+            },
+            'ErrorResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/ErrorResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'ListSSHKeys': {
+                'additionalProperties': False,
+                'properties': {
+                    'entities': {'$ref': '#/definitions/Entities'},
+                    'mode': {'type': 'boolean'},
+                },
+                'required': ['entities', 'mode'],
+                'type': 'object',
+            },
+            'ModifyUserSSHKeys': {
+                'additionalProperties': False,
+                'properties': {
+                    'ssh-keys': {'items': {'type': 'string'}, 'type': 'array'},
+                    'user': {'type': 'string'},
+                },
+                'required': ['user', 'ssh-keys'],
+                'type': 'object',
+            },
+            'StringsResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'result': {'items': {'type': 'string'}, 'type': 'array'},
+                },
+                'type': 'object',
+            },
+            'StringsResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/StringsResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+        },
+        'properties': {
+            'AddKeys': {
+                'description': 'AddKeys adds new authorised ssh '
+                'keys for the specified user.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/ModifyUserSSHKeys'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+            'DeleteKeys': {
+                'description': 'DeleteKeys deletes the '
+                'authorised ssh keys for the '
+                'specified user.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/ModifyUserSSHKeys'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+            'ImportKeys': {
+                'description': 'ImportKeys imports new '
+                'authorised ssh keys from the '
+                'specified key ids for the '
+                'specified user.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/ModifyUserSSHKeys'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+            'ListKeys': {
+                'description': 'ListKeys returns the authorised '
+                'ssh keys for the specified users.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/ListSSHKeys'},
+                    'Result': {'$ref': '#/definitions/StringsResults'},
+                },
+                'type': 'object',
+            },
+        },
+        'type': 'object',
+    }
 
     @ReturnMapping(ErrorResults)
     async def AddKeys(self, ssh_keys=None, user=None):
@@ -422,7 +629,9 @@ class KeyManagerFacade(Type):
         Returns -> ErrorResults
         """
         if ssh_keys is not None and not isinstance(ssh_keys, (bytes, str, list)):
-            raise TypeError(f'Expected ssh_keys to be a Sequence, received: {type(ssh_keys)}')
+            raise TypeError(
+                f'Expected ssh_keys to be a Sequence, received: {type(ssh_keys)}'
+            )
 
         if user is not None and not isinstance(user, (bytes, str)):
             raise TypeError(f'Expected user to be a str, received: {type(user)}')
@@ -440,7 +649,6 @@ class KeyManagerFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(ErrorResults)
     async def DeleteKeys(self, ssh_keys=None, user=None):
         """
@@ -451,7 +659,9 @@ class KeyManagerFacade(Type):
         Returns -> ErrorResults
         """
         if ssh_keys is not None and not isinstance(ssh_keys, (bytes, str, list)):
-            raise TypeError(f'Expected ssh_keys to be a Sequence, received: {type(ssh_keys)}')
+            raise TypeError(
+                f'Expected ssh_keys to be a Sequence, received: {type(ssh_keys)}'
+            )
 
         if user is not None and not isinstance(user, (bytes, str)):
             raise TypeError(f'Expected user to be a str, received: {type(user)}')
@@ -469,7 +679,6 @@ class KeyManagerFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(ErrorResults)
     async def ImportKeys(self, ssh_keys=None, user=None):
         """
@@ -480,7 +689,9 @@ class KeyManagerFacade(Type):
         Returns -> ErrorResults
         """
         if ssh_keys is not None and not isinstance(ssh_keys, (bytes, str, list)):
-            raise TypeError(f'Expected ssh_keys to be a Sequence, received: {type(ssh_keys)}')
+            raise TypeError(
+                f'Expected ssh_keys to be a Sequence, received: {type(ssh_keys)}'
+            )
 
         if user is not None and not isinstance(user, (bytes, str)):
             raise TypeError(f'Expected user to be a str, received: {type(user)}')
@@ -498,7 +709,6 @@ class KeyManagerFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(StringsResults)
     async def ListKeys(self, entities=None, mode=None):
         """
@@ -509,7 +719,9 @@ class KeyManagerFacade(Type):
         Returns -> StringsResults
         """
         if entities is not None and not isinstance(entities, (dict, Entities)):
-            raise TypeError(f'Expected entities to be a Entities, received: {type(entities)}')
+            raise TypeError(
+                f'Expected entities to be a Entities, received: {type(entities)}'
+            )
 
         if mode is not None and not isinstance(mode, bool):
             raise TypeError(f'Expected mode to be a bool, received: {type(mode)}')
@@ -527,61 +739,88 @@ class KeyManagerFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
+
 class ModelUpgraderFacade(Type):
     name = 'ModelUpgrader'
     version = 1
-    schema =     {'definitions': {'Error': {'additionalProperties': False,
-                               'properties': {'code': {'type': 'string'},
-                                              'info': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                    'type': 'object'}},
-                                                       'type': 'object'},
-                                              'message': {'type': 'string'}},
-                               'required': ['message', 'code'],
-                               'type': 'object'},
-                     'ModelParam': {'additionalProperties': False,
-                                    'properties': {'model-tag': {'type': 'string'}},
-                                    'required': ['model-tag'],
-                                    'type': 'object'},
-                     'Number': {'additionalProperties': False,
-                                'properties': {'Build': {'type': 'integer'},
-                                               'Major': {'type': 'integer'},
-                                               'Minor': {'type': 'integer'},
-                                               'Patch': {'type': 'integer'},
-                                               'Tag': {'type': 'string'}},
-                                'required': ['Major',
-                                             'Minor',
-                                             'Tag',
-                                             'Patch',
-                                             'Build'],
-                                'type': 'object'},
-                     'UpgradeModelParams': {'additionalProperties': False,
-                                            'properties': {'agent-stream': {'type': 'string'},
-                                                           'dry-run': {'type': 'boolean'},
-                                                           'ignore-agent-versions': {'type': 'boolean'},
-                                                           'model-tag': {'type': 'string'},
-                                                           'target-version': {'$ref': '#/definitions/Number'}},
-                                            'required': ['model-tag',
-                                                         'target-version'],
-                                            'type': 'object'},
-                     'UpgradeModelResult': {'additionalProperties': False,
-                                            'properties': {'chosen-version': {'$ref': '#/definitions/Number'},
-                                                           'error': {'$ref': '#/definitions/Error'}},
-                                            'required': ['chosen-version'],
-                                            'type': 'object'}},
-     'properties': {'AbortModelUpgrade': {'description': 'AbortModelUpgrade aborts '
-                                                         'and archives the model '
-                                                         'upgrade\n'
-                                                         'synchronisation record, '
-                                                         'if any.',
-                                          'properties': {'Params': {'$ref': '#/definitions/ModelParam'}},
-                                          'type': 'object'},
-                    'UpgradeModel': {'description': 'UpgradeModel upgrades a '
-                                                    'model.',
-                                     'properties': {'Params': {'$ref': '#/definitions/UpgradeModelParams'},
-                                                    'Result': {'$ref': '#/definitions/UpgradeModelResult'}},
-                                     'type': 'object'}},
-     'type': 'object'}
-
+    schema = {
+        'definitions': {
+            'Error': {
+                'additionalProperties': False,
+                'properties': {
+                    'code': {'type': 'string'},
+                    'info': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'message': {'type': 'string'},
+                },
+                'required': ['message', 'code'],
+                'type': 'object',
+            },
+            'ModelParam': {
+                'additionalProperties': False,
+                'properties': {'model-tag': {'type': 'string'}},
+                'required': ['model-tag'],
+                'type': 'object',
+            },
+            'Number': {
+                'additionalProperties': False,
+                'properties': {
+                    'Build': {'type': 'integer'},
+                    'Major': {'type': 'integer'},
+                    'Minor': {'type': 'integer'},
+                    'Patch': {'type': 'integer'},
+                    'Tag': {'type': 'string'},
+                },
+                'required': ['Major', 'Minor', 'Tag', 'Patch', 'Build'],
+                'type': 'object',
+            },
+            'UpgradeModelParams': {
+                'additionalProperties': False,
+                'properties': {
+                    'agent-stream': {'type': 'string'},
+                    'dry-run': {'type': 'boolean'},
+                    'ignore-agent-versions': {'type': 'boolean'},
+                    'model-tag': {'type': 'string'},
+                    'target-version': {'$ref': '#/definitions/Number'},
+                },
+                'required': ['model-tag', 'target-version'],
+                'type': 'object',
+            },
+            'UpgradeModelResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'chosen-version': {'$ref': '#/definitions/Number'},
+                    'error': {'$ref': '#/definitions/Error'},
+                },
+                'required': ['chosen-version'],
+                'type': 'object',
+            },
+        },
+        'properties': {
+            'AbortModelUpgrade': {
+                'description': 'AbortModelUpgrade aborts '
+                'and archives the model '
+                'upgrade\n'
+                'synchronisation record, '
+                'if any.',
+                'properties': {'Params': {'$ref': '#/definitions/ModelParam'}},
+                'type': 'object',
+            },
+            'UpgradeModel': {
+                'description': 'UpgradeModel upgrades a ' 'model.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/UpgradeModelParams'},
+                    'Result': {'$ref': '#/definitions/UpgradeModelResult'},
+                },
+                'type': 'object',
+            },
+        },
+        'type': 'object',
+    }
 
     @ReturnMapping(None)
     async def AbortModelUpgrade(self, model_tag=None):
@@ -593,7 +832,9 @@ class ModelUpgraderFacade(Type):
         Returns -> None
         """
         if model_tag is not None and not isinstance(model_tag, (bytes, str)):
-            raise TypeError(f'Expected model_tag to be a str, received: {type(model_tag)}')
+            raise TypeError(
+                f'Expected model_tag to be a str, received: {type(model_tag)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -607,9 +848,15 @@ class ModelUpgraderFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(UpgradeModelResult)
-    async def UpgradeModel(self, agent_stream=None, dry_run=None, ignore_agent_versions=None, model_tag=None, target_version=None):
+    async def UpgradeModel(
+        self,
+        agent_stream=None,
+        dry_run=None,
+        ignore_agent_versions=None,
+        model_tag=None,
+        target_version=None,
+    ):
         """
         UpgradeModel upgrades a model.
 
@@ -621,19 +868,31 @@ class ModelUpgraderFacade(Type):
         Returns -> UpgradeModelResult
         """
         if agent_stream is not None and not isinstance(agent_stream, (bytes, str)):
-            raise TypeError(f'Expected agent_stream to be a str, received: {type(agent_stream)}')
+            raise TypeError(
+                f'Expected agent_stream to be a str, received: {type(agent_stream)}'
+            )
 
         if dry_run is not None and not isinstance(dry_run, bool):
             raise TypeError(f'Expected dry_run to be a bool, received: {type(dry_run)}')
 
-        if ignore_agent_versions is not None and not isinstance(ignore_agent_versions, bool):
-            raise TypeError(f'Expected ignore_agent_versions to be a bool, received: {type(ignore_agent_versions)}')
+        if ignore_agent_versions is not None and not isinstance(
+            ignore_agent_versions, bool
+        ):
+            raise TypeError(
+                f'Expected ignore_agent_versions to be a bool, received: {type(ignore_agent_versions)}'
+            )
 
         if model_tag is not None and not isinstance(model_tag, (bytes, str)):
-            raise TypeError(f'Expected model_tag to be a str, received: {type(model_tag)}')
+            raise TypeError(
+                f'Expected model_tag to be a str, received: {type(model_tag)}'
+            )
 
-        if target_version is not None and not isinstance(target_version, (dict, Number)):
-            raise TypeError(f'Expected target_version to be a Number, received: {type(target_version)}')
+        if target_version is not None and not isinstance(
+            target_version, (dict, Number)
+        ):
+            raise TypeError(
+                f'Expected target_version to be a Number, received: {type(target_version)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -651,46 +910,70 @@ class ModelUpgraderFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
+
 class PayloadsFacade(Type):
     name = 'Payloads'
     version = 1
-    schema =     {'definitions': {'Payload': {'additionalProperties': False,
-                                 'properties': {'class': {'type': 'string'},
-                                                'id': {'type': 'string'},
-                                                'labels': {'items': {'type': 'string'},
-                                                           'type': 'array'},
-                                                'machine': {'type': 'string'},
-                                                'status': {'type': 'string'},
-                                                'type': {'type': 'string'},
-                                                'unit': {'type': 'string'}},
-                                 'required': ['class',
-                                              'type',
-                                              'id',
-                                              'status',
-                                              'labels',
-                                              'unit',
-                                              'machine'],
-                                 'type': 'object'},
-                     'PayloadListArgs': {'additionalProperties': False,
-                                         'properties': {'patterns': {'items': {'type': 'string'},
-                                                                     'type': 'array'}},
-                                         'required': ['patterns'],
-                                         'type': 'object'},
-                     'PayloadListResults': {'additionalProperties': False,
-                                            'properties': {'results': {'items': {'$ref': '#/definitions/Payload'},
-                                                                       'type': 'array'}},
-                                            'required': ['results'],
-                                            'type': 'object'}},
-     'properties': {'List': {'description': 'List builds the list of payloads '
-                                            'being tracked for\n'
-                                            'the given unit and IDs. If no IDs are '
-                                            'provided then all tracked\n'
-                                            'payloads for the unit are returned.',
-                             'properties': {'Params': {'$ref': '#/definitions/PayloadListArgs'},
-                                            'Result': {'$ref': '#/definitions/PayloadListResults'}},
-                             'type': 'object'}},
-     'type': 'object'}
-
+    schema = {
+        'definitions': {
+            'Payload': {
+                'additionalProperties': False,
+                'properties': {
+                    'class': {'type': 'string'},
+                    'id': {'type': 'string'},
+                    'labels': {'items': {'type': 'string'}, 'type': 'array'},
+                    'machine': {'type': 'string'},
+                    'status': {'type': 'string'},
+                    'type': {'type': 'string'},
+                    'unit': {'type': 'string'},
+                },
+                'required': [
+                    'class',
+                    'type',
+                    'id',
+                    'status',
+                    'labels',
+                    'unit',
+                    'machine',
+                ],
+                'type': 'object',
+            },
+            'PayloadListArgs': {
+                'additionalProperties': False,
+                'properties': {
+                    'patterns': {'items': {'type': 'string'}, 'type': 'array'}
+                },
+                'required': ['patterns'],
+                'type': 'object',
+            },
+            'PayloadListResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/Payload'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+        },
+        'properties': {
+            'List': {
+                'description': 'List builds the list of payloads '
+                'being tracked for\n'
+                'the given unit and IDs. If no IDs are '
+                'provided then all tracked\n'
+                'payloads for the unit are returned.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/PayloadListArgs'},
+                    'Result': {'$ref': '#/definitions/PayloadListResults'},
+                },
+                'type': 'object',
+            }
+        },
+        'type': 'object',
+    }
 
     @ReturnMapping(PayloadListResults)
     async def List(self, patterns=None):
@@ -703,7 +986,9 @@ class PayloadsFacade(Type):
         Returns -> PayloadListResults
         """
         if patterns is not None and not isinstance(patterns, (bytes, str, list)):
-            raise TypeError(f'Expected patterns to be a Sequence, received: {type(patterns)}')
+            raise TypeError(
+                f'Expected patterns to be a Sequence, received: {type(patterns)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -717,12 +1002,14 @@ class PayloadsFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
+
 class PingerFacade(Type):
     name = 'Pinger'
     version = 1
-    schema =     {'properties': {'Ping': {'type': 'object'}, 'Stop': {'type': 'object'}},
-     'type': 'object'}
-
+    schema = {
+        'properties': {'Ping': {'type': 'object'}, 'Stop': {'type': 'object'}},
+        'type': 'object',
+    }
 
     @ReturnMapping(None)
     async def Ping(self):
@@ -743,7 +1030,6 @@ class PingerFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(None)
     async def Stop(self):
         """
@@ -763,133 +1049,209 @@ class PingerFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
+
 class SecretBackendsFacade(Type):
     name = 'SecretBackends'
     version = 1
-    schema =     {'definitions': {'AddSecretBackendArg': {'additionalProperties': False,
-                                             'properties': {'SecretBackend': {'$ref': '#/definitions/SecretBackend'},
-                                                            'backend-type': {'type': 'string'},
-                                                            'config': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                                    'type': 'object'}},
-                                                                       'type': 'object'},
-                                                            'id': {'type': 'string'},
-                                                            'name': {'type': 'string'},
-                                                            'token-rotate-interval': {'type': 'integer'}},
-                                             'required': ['name',
-                                                          'backend-type',
-                                                          'config',
-                                                          'SecretBackend'],
-                                             'type': 'object'},
-                     'AddSecretBackendArgs': {'additionalProperties': False,
-                                              'properties': {'args': {'items': {'$ref': '#/definitions/AddSecretBackendArg'},
-                                                                      'type': 'array'}},
-                                              'required': ['args'],
-                                              'type': 'object'},
-                     'Error': {'additionalProperties': False,
-                               'properties': {'code': {'type': 'string'},
-                                              'info': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                    'type': 'object'}},
-                                                       'type': 'object'},
-                                              'message': {'type': 'string'}},
-                               'required': ['message', 'code'],
-                               'type': 'object'},
-                     'ErrorResult': {'additionalProperties': False,
-                                     'properties': {'error': {'$ref': '#/definitions/Error'}},
-                                     'type': 'object'},
-                     'ErrorResults': {'additionalProperties': False,
-                                      'properties': {'results': {'items': {'$ref': '#/definitions/ErrorResult'},
-                                                                 'type': 'array'}},
-                                      'required': ['results'],
-                                      'type': 'object'},
-                     'ListSecretBackendsArgs': {'additionalProperties': False,
-                                                'properties': {'names': {'items': {'type': 'string'},
-                                                                         'type': 'array'},
-                                                               'reveal': {'type': 'boolean'}},
-                                                'required': ['names', 'reveal'],
-                                                'type': 'object'},
-                     'ListSecretBackendsResults': {'additionalProperties': False,
-                                                   'properties': {'results': {'items': {'$ref': '#/definitions/SecretBackendResult'},
-                                                                              'type': 'array'}},
-                                                   'required': ['results'],
-                                                   'type': 'object'},
-                     'RemoveSecretBackendArg': {'additionalProperties': False,
-                                                'properties': {'force': {'type': 'boolean'},
-                                                               'name': {'type': 'string'}},
-                                                'required': ['name'],
-                                                'type': 'object'},
-                     'RemoveSecretBackendArgs': {'additionalProperties': False,
-                                                 'properties': {'args': {'items': {'$ref': '#/definitions/RemoveSecretBackendArg'},
-                                                                         'type': 'array'}},
-                                                 'required': ['args'],
-                                                 'type': 'object'},
-                     'SecretBackend': {'additionalProperties': False,
-                                       'properties': {'backend-type': {'type': 'string'},
-                                                      'config': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                              'type': 'object'}},
-                                                                 'type': 'object'},
-                                                      'name': {'type': 'string'},
-                                                      'token-rotate-interval': {'type': 'integer'}},
-                                       'required': ['name',
-                                                    'backend-type',
-                                                    'config'],
-                                       'type': 'object'},
-                     'SecretBackendResult': {'additionalProperties': False,
-                                             'properties': {'error': {'$ref': '#/definitions/Error'},
-                                                            'id': {'type': 'string'},
-                                                            'message': {'type': 'string'},
-                                                            'num-secrets': {'type': 'integer'},
-                                                            'result': {'$ref': '#/definitions/SecretBackend'},
-                                                            'status': {'type': 'string'}},
-                                             'required': ['result',
-                                                          'id',
-                                                          'num-secrets',
-                                                          'status'],
-                                             'type': 'object'},
-                     'UpdateSecretBackendArg': {'additionalProperties': False,
-                                                'properties': {'config': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                                       'type': 'object'}},
-                                                                          'type': 'object'},
-                                                               'force': {'type': 'boolean'},
-                                                               'name': {'type': 'string'},
-                                                               'name-change': {'type': 'string'},
-                                                               'reset': {'items': {'type': 'string'},
-                                                                         'type': 'array'},
-                                                               'token-rotate-interval': {'type': 'integer'}},
-                                                'required': ['name',
-                                                             'token-rotate-interval',
-                                                             'config',
-                                                             'reset'],
-                                                'type': 'object'},
-                     'UpdateSecretBackendArgs': {'additionalProperties': False,
-                                                 'properties': {'args': {'items': {'$ref': '#/definitions/UpdateSecretBackendArg'},
-                                                                         'type': 'array'}},
-                                                 'required': ['args'],
-                                                 'type': 'object'}},
-     'properties': {'AddSecretBackends': {'description': 'AddSecretBackends adds '
-                                                         'new secret backends.',
-                                          'properties': {'Params': {'$ref': '#/definitions/AddSecretBackendArgs'},
-                                                         'Result': {'$ref': '#/definitions/ErrorResults'}},
-                                          'type': 'object'},
-                    'ListSecretBackends': {'description': 'ListSecretBackends '
-                                                          'lists available secret '
-                                                          'backends.',
-                                           'properties': {'Params': {'$ref': '#/definitions/ListSecretBackendsArgs'},
-                                                          'Result': {'$ref': '#/definitions/ListSecretBackendsResults'}},
-                                           'type': 'object'},
-                    'RemoveSecretBackends': {'description': 'RemoveSecretBackends '
-                                                            'removes secret '
-                                                            'backends.',
-                                             'properties': {'Params': {'$ref': '#/definitions/RemoveSecretBackendArgs'},
-                                                            'Result': {'$ref': '#/definitions/ErrorResults'}},
-                                             'type': 'object'},
-                    'UpdateSecretBackends': {'description': 'UpdateSecretBackends '
-                                                            'updates secret '
-                                                            'backends.',
-                                             'properties': {'Params': {'$ref': '#/definitions/UpdateSecretBackendArgs'},
-                                                            'Result': {'$ref': '#/definitions/ErrorResults'}},
-                                             'type': 'object'}},
-     'type': 'object'}
-
+    schema = {
+        'definitions': {
+            'AddSecretBackendArg': {
+                'additionalProperties': False,
+                'properties': {
+                    'SecretBackend': {'$ref': '#/definitions/SecretBackend'},
+                    'backend-type': {'type': 'string'},
+                    'config': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'id': {'type': 'string'},
+                    'name': {'type': 'string'},
+                    'token-rotate-interval': {'type': 'integer'},
+                },
+                'required': ['name', 'backend-type', 'config', 'SecretBackend'],
+                'type': 'object',
+            },
+            'AddSecretBackendArgs': {
+                'additionalProperties': False,
+                'properties': {
+                    'args': {
+                        'items': {'$ref': '#/definitions/AddSecretBackendArg'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['args'],
+                'type': 'object',
+            },
+            'Error': {
+                'additionalProperties': False,
+                'properties': {
+                    'code': {'type': 'string'},
+                    'info': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'message': {'type': 'string'},
+                },
+                'required': ['message', 'code'],
+                'type': 'object',
+            },
+            'ErrorResult': {
+                'additionalProperties': False,
+                'properties': {'error': {'$ref': '#/definitions/Error'}},
+                'type': 'object',
+            },
+            'ErrorResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/ErrorResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'ListSecretBackendsArgs': {
+                'additionalProperties': False,
+                'properties': {
+                    'names': {'items': {'type': 'string'}, 'type': 'array'},
+                    'reveal': {'type': 'boolean'},
+                },
+                'required': ['names', 'reveal'],
+                'type': 'object',
+            },
+            'ListSecretBackendsResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/SecretBackendResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'RemoveSecretBackendArg': {
+                'additionalProperties': False,
+                'properties': {
+                    'force': {'type': 'boolean'},
+                    'name': {'type': 'string'},
+                },
+                'required': ['name'],
+                'type': 'object',
+            },
+            'RemoveSecretBackendArgs': {
+                'additionalProperties': False,
+                'properties': {
+                    'args': {
+                        'items': {'$ref': '#/definitions/RemoveSecretBackendArg'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['args'],
+                'type': 'object',
+            },
+            'SecretBackend': {
+                'additionalProperties': False,
+                'properties': {
+                    'backend-type': {'type': 'string'},
+                    'config': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'name': {'type': 'string'},
+                    'token-rotate-interval': {'type': 'integer'},
+                },
+                'required': ['name', 'backend-type', 'config'],
+                'type': 'object',
+            },
+            'SecretBackendResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'id': {'type': 'string'},
+                    'message': {'type': 'string'},
+                    'num-secrets': {'type': 'integer'},
+                    'result': {'$ref': '#/definitions/SecretBackend'},
+                    'status': {'type': 'string'},
+                },
+                'required': ['result', 'id', 'num-secrets', 'status'],
+                'type': 'object',
+            },
+            'UpdateSecretBackendArg': {
+                'additionalProperties': False,
+                'properties': {
+                    'config': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'force': {'type': 'boolean'},
+                    'name': {'type': 'string'},
+                    'name-change': {'type': 'string'},
+                    'reset': {'items': {'type': 'string'}, 'type': 'array'},
+                    'token-rotate-interval': {'type': 'integer'},
+                },
+                'required': ['name', 'token-rotate-interval', 'config', 'reset'],
+                'type': 'object',
+            },
+            'UpdateSecretBackendArgs': {
+                'additionalProperties': False,
+                'properties': {
+                    'args': {
+                        'items': {'$ref': '#/definitions/UpdateSecretBackendArg'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['args'],
+                'type': 'object',
+            },
+        },
+        'properties': {
+            'AddSecretBackends': {
+                'description': 'AddSecretBackends adds ' 'new secret backends.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/AddSecretBackendArgs'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+            'ListSecretBackends': {
+                'description': 'ListSecretBackends '
+                'lists available secret '
+                'backends.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/ListSecretBackendsArgs'},
+                    'Result': {'$ref': '#/definitions/ListSecretBackendsResults'},
+                },
+                'type': 'object',
+            },
+            'RemoveSecretBackends': {
+                'description': 'RemoveSecretBackends ' 'removes secret ' 'backends.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/RemoveSecretBackendArgs'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+            'UpdateSecretBackends': {
+                'description': 'UpdateSecretBackends ' 'updates secret ' 'backends.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/UpdateSecretBackendArgs'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+        },
+        'type': 'object',
+    }
 
     @ReturnMapping(ErrorResults)
     async def AddSecretBackends(self, args=None):
@@ -913,7 +1275,6 @@ class SecretBackendsFacade(Type):
         _params['args'] = args
         reply = await self.rpc(msg)
         return reply
-
 
     @ReturnMapping(ListSecretBackendsResults)
     async def ListSecretBackends(self, names=None, reveal=None):
@@ -943,7 +1304,6 @@ class SecretBackendsFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(ErrorResults)
     async def RemoveSecretBackends(self, args=None):
         """
@@ -966,7 +1326,6 @@ class SecretBackendsFacade(Type):
         _params['args'] = args
         reply = await self.rpc(msg)
         return reply
-
 
     @ReturnMapping(ErrorResults)
     async def UpdateSecretBackends(self, args=None):
@@ -991,88 +1350,133 @@ class SecretBackendsFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
+
 class SecretsFacade(Type):
     name = 'Secrets'
     version = 1
-    schema =     {'definitions': {'Error': {'additionalProperties': False,
-                               'properties': {'code': {'type': 'string'},
-                                              'info': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                    'type': 'object'}},
-                                                       'type': 'object'},
-                                              'message': {'type': 'string'}},
-                               'required': ['message', 'code'],
-                               'type': 'object'},
-                     'ListSecretResult': {'additionalProperties': False,
-                                          'properties': {'create-time': {'format': 'date-time',
-                                                                         'type': 'string'},
-                                                         'description': {'type': 'string'},
-                                                         'label': {'type': 'string'},
-                                                         'latest-expire-time': {'format': 'date-time',
-                                                                                'type': 'string'},
-                                                         'latest-revision': {'type': 'integer'},
-                                                         'next-rotate-time': {'format': 'date-time',
-                                                                              'type': 'string'},
-                                                         'owner-tag': {'type': 'string'},
-                                                         'revisions': {'items': {'$ref': '#/definitions/SecretRevision'},
-                                                                       'type': 'array'},
-                                                         'rotate-policy': {'type': 'string'},
-                                                         'update-time': {'format': 'date-time',
-                                                                         'type': 'string'},
-                                                         'uri': {'type': 'string'},
-                                                         'value': {'$ref': '#/definitions/SecretValueResult'},
-                                                         'version': {'type': 'integer'}},
-                                          'required': ['uri',
-                                                       'version',
-                                                       'owner-tag',
-                                                       'latest-revision',
-                                                       'create-time',
-                                                       'update-time',
-                                                       'revisions'],
-                                          'type': 'object'},
-                     'ListSecretResults': {'additionalProperties': False,
-                                           'properties': {'results': {'items': {'$ref': '#/definitions/ListSecretResult'},
-                                                                      'type': 'array'}},
-                                           'required': ['results'],
-                                           'type': 'object'},
-                     'ListSecretsArgs': {'additionalProperties': False,
-                                         'properties': {'filter': {'$ref': '#/definitions/SecretsFilter'},
-                                                        'show-secrets': {'type': 'boolean'}},
-                                         'required': ['show-secrets', 'filter'],
-                                         'type': 'object'},
-                     'SecretRevision': {'additionalProperties': False,
-                                        'properties': {'backend-name': {'type': 'string'},
-                                                       'create-time': {'format': 'date-time',
-                                                                       'type': 'string'},
-                                                       'expire-time': {'format': 'date-time',
-                                                                       'type': 'string'},
-                                                       'revision': {'type': 'integer'},
-                                                       'update-time': {'format': 'date-time',
-                                                                       'type': 'string'},
-                                                       'value-ref': {'$ref': '#/definitions/SecretValueRef'}},
-                                        'required': ['revision'],
-                                        'type': 'object'},
-                     'SecretValueRef': {'additionalProperties': False,
-                                        'properties': {'backend-id': {'type': 'string'},
-                                                       'revision-id': {'type': 'string'}},
-                                        'required': ['backend-id', 'revision-id'],
-                                        'type': 'object'},
-                     'SecretValueResult': {'additionalProperties': False,
-                                           'properties': {'data': {'patternProperties': {'.*': {'type': 'string'}},
-                                                                   'type': 'object'},
-                                                          'error': {'$ref': '#/definitions/Error'}},
-                                           'type': 'object'},
-                     'SecretsFilter': {'additionalProperties': False,
-                                       'properties': {'owner-tag': {'type': 'string'},
-                                                      'revision': {'type': 'integer'},
-                                                      'uri': {'type': 'string'}},
-                                       'type': 'object'}},
-     'properties': {'ListSecrets': {'description': 'ListSecrets lists available '
-                                                   'secrets.',
-                                    'properties': {'Params': {'$ref': '#/definitions/ListSecretsArgs'},
-                                                   'Result': {'$ref': '#/definitions/ListSecretResults'}},
-                                    'type': 'object'}},
-     'type': 'object'}
-
+    schema = {
+        'definitions': {
+            'Error': {
+                'additionalProperties': False,
+                'properties': {
+                    'code': {'type': 'string'},
+                    'info': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'message': {'type': 'string'},
+                },
+                'required': ['message', 'code'],
+                'type': 'object',
+            },
+            'ListSecretResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'create-time': {'format': 'date-time', 'type': 'string'},
+                    'description': {'type': 'string'},
+                    'label': {'type': 'string'},
+                    'latest-expire-time': {'format': 'date-time', 'type': 'string'},
+                    'latest-revision': {'type': 'integer'},
+                    'next-rotate-time': {'format': 'date-time', 'type': 'string'},
+                    'owner-tag': {'type': 'string'},
+                    'revisions': {
+                        'items': {'$ref': '#/definitions/SecretRevision'},
+                        'type': 'array',
+                    },
+                    'rotate-policy': {'type': 'string'},
+                    'update-time': {'format': 'date-time', 'type': 'string'},
+                    'uri': {'type': 'string'},
+                    'value': {'$ref': '#/definitions/SecretValueResult'},
+                    'version': {'type': 'integer'},
+                },
+                'required': [
+                    'uri',
+                    'version',
+                    'owner-tag',
+                    'latest-revision',
+                    'create-time',
+                    'update-time',
+                    'revisions',
+                ],
+                'type': 'object',
+            },
+            'ListSecretResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/ListSecretResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'ListSecretsArgs': {
+                'additionalProperties': False,
+                'properties': {
+                    'filter': {'$ref': '#/definitions/SecretsFilter'},
+                    'show-secrets': {'type': 'boolean'},
+                },
+                'required': ['show-secrets', 'filter'],
+                'type': 'object',
+            },
+            'SecretRevision': {
+                'additionalProperties': False,
+                'properties': {
+                    'backend-name': {'type': 'string'},
+                    'create-time': {'format': 'date-time', 'type': 'string'},
+                    'expire-time': {'format': 'date-time', 'type': 'string'},
+                    'revision': {'type': 'integer'},
+                    'update-time': {'format': 'date-time', 'type': 'string'},
+                    'value-ref': {'$ref': '#/definitions/SecretValueRef'},
+                },
+                'required': ['revision'],
+                'type': 'object',
+            },
+            'SecretValueRef': {
+                'additionalProperties': False,
+                'properties': {
+                    'backend-id': {'type': 'string'},
+                    'revision-id': {'type': 'string'},
+                },
+                'required': ['backend-id', 'revision-id'],
+                'type': 'object',
+            },
+            'SecretValueResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'data': {
+                        'patternProperties': {'.*': {'type': 'string'}},
+                        'type': 'object',
+                    },
+                    'error': {'$ref': '#/definitions/Error'},
+                },
+                'type': 'object',
+            },
+            'SecretsFilter': {
+                'additionalProperties': False,
+                'properties': {
+                    'owner-tag': {'type': 'string'},
+                    'revision': {'type': 'integer'},
+                    'uri': {'type': 'string'},
+                },
+                'type': 'object',
+            },
+        },
+        'properties': {
+            'ListSecrets': {
+                'description': 'ListSecrets lists available ' 'secrets.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/ListSecretsArgs'},
+                    'Result': {'$ref': '#/definitions/ListSecretResults'},
+                },
+                'type': 'object',
+            }
+        },
+        'type': 'object',
+    }
 
     @ReturnMapping(ListSecretResults)
     async def ListSecrets(self, filter_=None, show_secrets=None):
@@ -1084,10 +1488,14 @@ class SecretsFacade(Type):
         Returns -> ListSecretResults
         """
         if filter_ is not None and not isinstance(filter_, (dict, SecretsFilter)):
-            raise TypeError(f'Expected filter_ to be a SecretsFilter, received: {type(filter_)}')
+            raise TypeError(
+                f'Expected filter_ to be a SecretsFilter, received: {type(filter_)}'
+            )
 
         if show_secrets is not None and not isinstance(show_secrets, bool):
-            raise TypeError(f'Expected show_secrets to be a bool, received: {type(show_secrets)}')
+            raise TypeError(
+                f'Expected show_secrets to be a bool, received: {type(show_secrets)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -1101,4 +1509,3 @@ class SecretsFacade(Type):
         _params['show-secrets'] = show_secrets
         reply = await self.rpc(msg)
         return reply
-

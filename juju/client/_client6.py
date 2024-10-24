@@ -4,109 +4,160 @@
 from juju.client.facade import Type, ReturnMapping
 from juju.client._definitions import *
 
+
 class BundleFacade(Type):
     name = 'Bundle'
     version = 6
-    schema =     {'definitions': {'BundleChange': {'additionalProperties': False,
-                                      'properties': {'args': {'items': {'additionalProperties': True,
-                                                                        'type': 'object'},
-                                                              'type': 'array'},
-                                                     'id': {'type': 'string'},
-                                                     'method': {'type': 'string'},
-                                                     'requires': {'items': {'type': 'string'},
-                                                                  'type': 'array'}},
-                                      'required': ['id',
-                                                   'method',
-                                                   'args',
-                                                   'requires'],
-                                      'type': 'object'},
-                     'BundleChangesMapArgs': {'additionalProperties': False,
-                                              'properties': {'args': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                                   'type': 'object'}},
-                                                                      'type': 'object'},
-                                                             'id': {'type': 'string'},
-                                                             'method': {'type': 'string'},
-                                                             'requires': {'items': {'type': 'string'},
-                                                                          'type': 'array'}},
-                                              'required': ['id',
-                                                           'method',
-                                                           'args',
-                                                           'requires'],
-                                              'type': 'object'},
-                     'BundleChangesMapArgsResults': {'additionalProperties': False,
-                                                     'properties': {'changes': {'items': {'$ref': '#/definitions/BundleChangesMapArgs'},
-                                                                                'type': 'array'},
-                                                                    'errors': {'items': {'type': 'string'},
-                                                                               'type': 'array'}},
-                                                     'type': 'object'},
-                     'BundleChangesParams': {'additionalProperties': False,
-                                             'properties': {'bundleURL': {'type': 'string'},
-                                                            'yaml': {'type': 'string'}},
-                                             'required': ['yaml', 'bundleURL'],
-                                             'type': 'object'},
-                     'BundleChangesResults': {'additionalProperties': False,
-                                              'properties': {'changes': {'items': {'$ref': '#/definitions/BundleChange'},
-                                                                         'type': 'array'},
-                                                             'errors': {'items': {'type': 'string'},
-                                                                        'type': 'array'}},
-                                              'type': 'object'},
-                     'Error': {'additionalProperties': False,
-                               'properties': {'code': {'type': 'string'},
-                                              'info': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                    'type': 'object'}},
-                                                       'type': 'object'},
-                                              'message': {'type': 'string'}},
-                               'required': ['message', 'code'],
-                               'type': 'object'},
-                     'ExportBundleParams': {'additionalProperties': False,
-                                            'properties': {'include-charm-defaults': {'type': 'boolean'},
-                                                           'include-series': {'type': 'boolean'}},
-                                            'type': 'object'},
-                     'StringResult': {'additionalProperties': False,
-                                      'properties': {'error': {'$ref': '#/definitions/Error'},
-                                                     'result': {'type': 'string'}},
-                                      'required': ['result'],
-                                      'type': 'object'}},
-     'properties': {'ExportBundle': {'description': 'ExportBundle exports the '
-                                                    'current model configuration '
-                                                    'as bundle.',
-                                     'properties': {'Params': {'$ref': '#/definitions/ExportBundleParams'},
-                                                    'Result': {'$ref': '#/definitions/StringResult'}},
-                                     'type': 'object'},
-                    'GetChanges': {'description': 'GetChanges returns the list of '
-                                                  'changes required to deploy the '
-                                                  'given bundle\n'
-                                                  'data. The changes are sorted by '
-                                                  'requirements, so that they can '
-                                                  'be applied in\n'
-                                                  'order.\n'
-                                                  'GetChanges has been superseded '
-                                                  'in favour of GetChangesMapArgs. '
-                                                  "It's\n"
-                                                  'preferable to use that new '
-                                                  'method to add new functionality '
-                                                  'and move clients\n'
-                                                  'away from this one.',
-                                   'properties': {'Params': {'$ref': '#/definitions/BundleChangesParams'},
-                                                  'Result': {'$ref': '#/definitions/BundleChangesResults'}},
-                                   'type': 'object'},
-                    'GetChangesMapArgs': {'description': 'GetChangesMapArgs '
-                                                         'returns the list of '
-                                                         'changes required to '
-                                                         'deploy the given\n'
-                                                         'bundle data. The changes '
-                                                         'are sorted by '
-                                                         'requirements, so that '
-                                                         'they can be\n'
-                                                         'applied in order.\n'
-                                                         'V4 GetChangesMapArgs is '
-                                                         'not supported on '
-                                                         'anything less than v4',
-                                          'properties': {'Params': {'$ref': '#/definitions/BundleChangesParams'},
-                                                         'Result': {'$ref': '#/definitions/BundleChangesMapArgsResults'}},
-                                          'type': 'object'}},
-     'type': 'object'}
-
+    schema = {
+        'definitions': {
+            'BundleChange': {
+                'additionalProperties': False,
+                'properties': {
+                    'args': {
+                        'items': {'additionalProperties': True, 'type': 'object'},
+                        'type': 'array',
+                    },
+                    'id': {'type': 'string'},
+                    'method': {'type': 'string'},
+                    'requires': {'items': {'type': 'string'}, 'type': 'array'},
+                },
+                'required': ['id', 'method', 'args', 'requires'],
+                'type': 'object',
+            },
+            'BundleChangesMapArgs': {
+                'additionalProperties': False,
+                'properties': {
+                    'args': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'id': {'type': 'string'},
+                    'method': {'type': 'string'},
+                    'requires': {'items': {'type': 'string'}, 'type': 'array'},
+                },
+                'required': ['id', 'method', 'args', 'requires'],
+                'type': 'object',
+            },
+            'BundleChangesMapArgsResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'changes': {
+                        'items': {'$ref': '#/definitions/BundleChangesMapArgs'},
+                        'type': 'array',
+                    },
+                    'errors': {'items': {'type': 'string'}, 'type': 'array'},
+                },
+                'type': 'object',
+            },
+            'BundleChangesParams': {
+                'additionalProperties': False,
+                'properties': {
+                    'bundleURL': {'type': 'string'},
+                    'yaml': {'type': 'string'},
+                },
+                'required': ['yaml', 'bundleURL'],
+                'type': 'object',
+            },
+            'BundleChangesResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'changes': {
+                        'items': {'$ref': '#/definitions/BundleChange'},
+                        'type': 'array',
+                    },
+                    'errors': {'items': {'type': 'string'}, 'type': 'array'},
+                },
+                'type': 'object',
+            },
+            'Error': {
+                'additionalProperties': False,
+                'properties': {
+                    'code': {'type': 'string'},
+                    'info': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'message': {'type': 'string'},
+                },
+                'required': ['message', 'code'],
+                'type': 'object',
+            },
+            'ExportBundleParams': {
+                'additionalProperties': False,
+                'properties': {
+                    'include-charm-defaults': {'type': 'boolean'},
+                    'include-series': {'type': 'boolean'},
+                },
+                'type': 'object',
+            },
+            'StringResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'result': {'type': 'string'},
+                },
+                'required': ['result'],
+                'type': 'object',
+            },
+        },
+        'properties': {
+            'ExportBundle': {
+                'description': 'ExportBundle exports the '
+                'current model configuration '
+                'as bundle.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/ExportBundleParams'},
+                    'Result': {'$ref': '#/definitions/StringResult'},
+                },
+                'type': 'object',
+            },
+            'GetChanges': {
+                'description': 'GetChanges returns the list of '
+                'changes required to deploy the '
+                'given bundle\n'
+                'data. The changes are sorted by '
+                'requirements, so that they can '
+                'be applied in\n'
+                'order.\n'
+                'GetChanges has been superseded '
+                'in favour of GetChangesMapArgs. '
+                "It's\n"
+                'preferable to use that new '
+                'method to add new functionality '
+                'and move clients\n'
+                'away from this one.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/BundleChangesParams'},
+                    'Result': {'$ref': '#/definitions/BundleChangesResults'},
+                },
+                'type': 'object',
+            },
+            'GetChangesMapArgs': {
+                'description': 'GetChangesMapArgs '
+                'returns the list of '
+                'changes required to '
+                'deploy the given\n'
+                'bundle data. The changes '
+                'are sorted by '
+                'requirements, so that '
+                'they can be\n'
+                'applied in order.\n'
+                'V4 GetChangesMapArgs is '
+                'not supported on '
+                'anything less than v4',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/BundleChangesParams'},
+                    'Result': {'$ref': '#/definitions/BundleChangesMapArgsResults'},
+                },
+                'type': 'object',
+            },
+        },
+        'type': 'object',
+    }
 
     @ReturnMapping(StringResult)
     async def ExportBundle(self, include_charm_defaults=None, include_series=None):
@@ -117,11 +168,17 @@ class BundleFacade(Type):
         include_series : bool
         Returns -> StringResult
         """
-        if include_charm_defaults is not None and not isinstance(include_charm_defaults, bool):
-            raise TypeError(f'Expected include_charm_defaults to be a bool, received: {type(include_charm_defaults)}')
+        if include_charm_defaults is not None and not isinstance(
+            include_charm_defaults, bool
+        ):
+            raise TypeError(
+                f'Expected include_charm_defaults to be a bool, received: {type(include_charm_defaults)}'
+            )
 
         if include_series is not None and not isinstance(include_series, bool):
-            raise TypeError(f'Expected include_series to be a bool, received: {type(include_series)}')
+            raise TypeError(
+                f'Expected include_series to be a bool, received: {type(include_series)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -135,7 +192,6 @@ class BundleFacade(Type):
         _params['include-series'] = include_series
         reply = await self.rpc(msg)
         return reply
-
 
     @ReturnMapping(BundleChangesResults)
     async def GetChanges(self, bundleurl=None, yaml=None):
@@ -152,7 +208,9 @@ class BundleFacade(Type):
         Returns -> BundleChangesResults
         """
         if bundleurl is not None and not isinstance(bundleurl, (bytes, str)):
-            raise TypeError(f'Expected bundleurl to be a str, received: {type(bundleurl)}')
+            raise TypeError(
+                f'Expected bundleurl to be a str, received: {type(bundleurl)}'
+            )
 
         if yaml is not None and not isinstance(yaml, (bytes, str)):
             raise TypeError(f'Expected yaml to be a str, received: {type(yaml)}')
@@ -170,7 +228,6 @@ class BundleFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(BundleChangesMapArgsResults)
     async def GetChangesMapArgs(self, bundleurl=None, yaml=None):
         """
@@ -184,7 +241,9 @@ class BundleFacade(Type):
         Returns -> BundleChangesMapArgsResults
         """
         if bundleurl is not None and not isinstance(bundleurl, (bytes, str)):
-            raise TypeError(f'Expected bundleurl to be a str, received: {type(bundleurl)}')
+            raise TypeError(
+                f'Expected bundleurl to be a str, received: {type(bundleurl)}'
+            )
 
         if yaml is not None and not isinstance(yaml, (bytes, str)):
             raise TypeError(f'Expected yaml to be a str, received: {type(yaml)}')
@@ -202,438 +261,687 @@ class BundleFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
+
 class CharmsFacade(Type):
     name = 'Charms'
     version = 6
-    schema =     {'definitions': {'AddCharmWithOrigin': {'additionalProperties': False,
-                                            'properties': {'charm-origin': {'$ref': '#/definitions/CharmOrigin'},
-                                                           'force': {'type': 'boolean'},
-                                                           'url': {'type': 'string'}},
-                                            'required': ['url',
-                                                         'charm-origin',
-                                                         'force'],
-                                            'type': 'object'},
-                     'ApplicationCharmPlacement': {'additionalProperties': False,
-                                                   'properties': {'application': {'type': 'string'},
-                                                                  'charm-url': {'type': 'string'}},
-                                                   'required': ['application',
-                                                                'charm-url'],
-                                                   'type': 'object'},
-                     'ApplicationCharmPlacements': {'additionalProperties': False,
-                                                    'properties': {'placements': {'items': {'$ref': '#/definitions/ApplicationCharmPlacement'},
-                                                                                  'type': 'array'}},
-                                                    'required': ['placements'],
-                                                    'type': 'object'},
-                     'Base': {'additionalProperties': False,
-                              'properties': {'channel': {'type': 'string'},
-                                             'name': {'type': 'string'}},
-                              'required': ['name', 'channel'],
-                              'type': 'object'},
-                     'Charm': {'additionalProperties': False,
-                               'properties': {'actions': {'$ref': '#/definitions/CharmActions'},
-                                              'config': {'patternProperties': {'.*': {'$ref': '#/definitions/CharmOption'}},
-                                                         'type': 'object'},
-                                              'lxd-profile': {'$ref': '#/definitions/CharmLXDProfile'},
-                                              'manifest': {'$ref': '#/definitions/CharmManifest'},
-                                              'meta': {'$ref': '#/definitions/CharmMeta'},
-                                              'metrics': {'$ref': '#/definitions/CharmMetrics'},
-                                              'revision': {'type': 'integer'},
-                                              'url': {'type': 'string'}},
-                               'required': ['revision', 'url', 'config'],
-                               'type': 'object'},
-                     'CharmActionSpec': {'additionalProperties': False,
-                                         'properties': {'description': {'type': 'string'},
-                                                        'params': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                                'type': 'object'}},
-                                                                   'type': 'object'}},
-                                         'required': ['description', 'params'],
-                                         'type': 'object'},
-                     'CharmActions': {'additionalProperties': False,
-                                      'properties': {'specs': {'patternProperties': {'.*': {'$ref': '#/definitions/CharmActionSpec'}},
-                                                               'type': 'object'}},
-                                      'type': 'object'},
-                     'CharmBase': {'additionalProperties': False,
-                                   'properties': {'architectures': {'items': {'type': 'string'},
-                                                                    'type': 'array'},
-                                                  'channel': {'type': 'string'},
-                                                  'name': {'type': 'string'}},
-                                   'type': 'object'},
-                     'CharmContainer': {'additionalProperties': False,
-                                        'properties': {'mounts': {'items': {'$ref': '#/definitions/CharmMount'},
-                                                                  'type': 'array'},
-                                                       'resource': {'type': 'string'}},
-                                        'type': 'object'},
-                     'CharmDeployment': {'additionalProperties': False,
-                                         'properties': {'min-version': {'type': 'string'},
-                                                        'mode': {'type': 'string'},
-                                                        'service': {'type': 'string'},
-                                                        'type': {'type': 'string'}},
-                                         'required': ['type',
-                                                      'mode',
-                                                      'service',
-                                                      'min-version'],
-                                         'type': 'object'},
-                     'CharmDevice': {'additionalProperties': False,
-                                     'properties': {'CountMax': {'type': 'integer'},
-                                                    'CountMin': {'type': 'integer'},
-                                                    'Description': {'type': 'string'},
-                                                    'Name': {'type': 'string'},
-                                                    'Type': {'type': 'string'}},
-                                     'required': ['Name',
-                                                  'Description',
-                                                  'Type',
-                                                  'CountMin',
-                                                  'CountMax'],
-                                     'type': 'object'},
-                     'CharmLXDProfile': {'additionalProperties': False,
-                                         'properties': {'config': {'patternProperties': {'.*': {'type': 'string'}},
-                                                                   'type': 'object'},
-                                                        'description': {'type': 'string'},
-                                                        'devices': {'patternProperties': {'.*': {'patternProperties': {'.*': {'type': 'string'}},
-                                                                                                 'type': 'object'}},
-                                                                    'type': 'object'}},
-                                         'required': ['config',
-                                                      'description',
-                                                      'devices'],
-                                         'type': 'object'},
-                     'CharmManifest': {'additionalProperties': False,
-                                       'properties': {'bases': {'items': {'$ref': '#/definitions/CharmBase'},
-                                                                'type': 'array'}},
-                                       'type': 'object'},
-                     'CharmMeta': {'additionalProperties': False,
-                                   'properties': {'assumes-expr': {'$ref': '#/definitions/ExpressionTree'},
-                                                  'categories': {'items': {'type': 'string'},
-                                                                 'type': 'array'},
-                                                  'containers': {'patternProperties': {'.*': {'$ref': '#/definitions/CharmContainer'}},
-                                                                 'type': 'object'},
-                                                  'deployment': {'$ref': '#/definitions/CharmDeployment'},
-                                                  'description': {'type': 'string'},
-                                                  'devices': {'patternProperties': {'.*': {'$ref': '#/definitions/CharmDevice'}},
-                                                              'type': 'object'},
-                                                  'extra-bindings': {'patternProperties': {'.*': {'type': 'string'}},
-                                                                     'type': 'object'},
-                                                  'min-juju-version': {'type': 'string'},
-                                                  'name': {'type': 'string'},
-                                                  'payload-classes': {'patternProperties': {'.*': {'$ref': '#/definitions/CharmPayloadClass'}},
-                                                                      'type': 'object'},
-                                                  'peers': {'patternProperties': {'.*': {'$ref': '#/definitions/CharmRelation'}},
-                                                            'type': 'object'},
-                                                  'provides': {'patternProperties': {'.*': {'$ref': '#/definitions/CharmRelation'}},
-                                                               'type': 'object'},
-                                                  'requires': {'patternProperties': {'.*': {'$ref': '#/definitions/CharmRelation'}},
-                                                               'type': 'object'},
-                                                  'resources': {'patternProperties': {'.*': {'$ref': '#/definitions/CharmResourceMeta'}},
-                                                                'type': 'object'},
-                                                  'series': {'items': {'type': 'string'},
-                                                             'type': 'array'},
-                                                  'storage': {'patternProperties': {'.*': {'$ref': '#/definitions/CharmStorage'}},
-                                                              'type': 'object'},
-                                                  'subordinate': {'type': 'boolean'},
-                                                  'summary': {'type': 'string'},
-                                                  'tags': {'items': {'type': 'string'},
-                                                           'type': 'array'},
-                                                  'terms': {'items': {'type': 'string'},
-                                                            'type': 'array'}},
-                                   'required': ['name',
-                                                'summary',
-                                                'description',
-                                                'subordinate'],
-                                   'type': 'object'},
-                     'CharmMetric': {'additionalProperties': False,
-                                     'properties': {'description': {'type': 'string'},
-                                                    'type': {'type': 'string'}},
-                                     'required': ['type', 'description'],
-                                     'type': 'object'},
-                     'CharmMetrics': {'additionalProperties': False,
-                                      'properties': {'metrics': {'patternProperties': {'.*': {'$ref': '#/definitions/CharmMetric'}},
-                                                                 'type': 'object'},
-                                                     'plan': {'$ref': '#/definitions/CharmPlan'}},
-                                      'required': ['metrics', 'plan'],
-                                      'type': 'object'},
-                     'CharmMount': {'additionalProperties': False,
-                                    'properties': {'location': {'type': 'string'},
-                                                   'storage': {'type': 'string'}},
-                                    'type': 'object'},
-                     'CharmOption': {'additionalProperties': False,
-                                     'properties': {'default': {'additionalProperties': True,
-                                                                'type': 'object'},
-                                                    'description': {'type': 'string'},
-                                                    'type': {'type': 'string'}},
-                                     'required': ['type'],
-                                     'type': 'object'},
-                     'CharmOrigin': {'additionalProperties': False,
-                                     'properties': {'architecture': {'type': 'string'},
-                                                    'base': {'$ref': '#/definitions/Base'},
-                                                    'branch': {'type': 'string'},
-                                                    'hash': {'type': 'string'},
-                                                    'id': {'type': 'string'},
-                                                    'instance-key': {'type': 'string'},
-                                                    'revision': {'type': 'integer'},
-                                                    'risk': {'type': 'string'},
-                                                    'source': {'type': 'string'},
-                                                    'track': {'type': 'string'},
-                                                    'type': {'type': 'string'}},
-                                     'required': ['source', 'type', 'id'],
-                                     'type': 'object'},
-                     'CharmOriginResult': {'additionalProperties': False,
-                                           'properties': {'charm-origin': {'$ref': '#/definitions/CharmOrigin'},
-                                                          'error': {'$ref': '#/definitions/Error'}},
-                                           'required': ['charm-origin'],
-                                           'type': 'object'},
-                     'CharmPayloadClass': {'additionalProperties': False,
-                                           'properties': {'name': {'type': 'string'},
-                                                          'type': {'type': 'string'}},
-                                           'required': ['name', 'type'],
-                                           'type': 'object'},
-                     'CharmPlan': {'additionalProperties': False,
-                                   'properties': {'required': {'type': 'boolean'}},
-                                   'required': ['required'],
-                                   'type': 'object'},
-                     'CharmRelation': {'additionalProperties': False,
-                                       'properties': {'interface': {'type': 'string'},
-                                                      'limit': {'type': 'integer'},
-                                                      'name': {'type': 'string'},
-                                                      'optional': {'type': 'boolean'},
-                                                      'role': {'type': 'string'},
-                                                      'scope': {'type': 'string'}},
-                                       'required': ['name',
-                                                    'role',
-                                                    'interface',
-                                                    'optional',
-                                                    'limit',
-                                                    'scope'],
-                                       'type': 'object'},
-                     'CharmResource': {'additionalProperties': False,
-                                       'properties': {'description': {'type': 'string'},
-                                                      'fingerprint': {'items': {'type': 'integer'},
-                                                                      'type': 'array'},
-                                                      'name': {'type': 'string'},
-                                                      'origin': {'type': 'string'},
-                                                      'path': {'type': 'string'},
-                                                      'revision': {'type': 'integer'},
-                                                      'size': {'type': 'integer'},
-                                                      'type': {'type': 'string'}},
-                                       'required': ['name',
-                                                    'type',
-                                                    'path',
-                                                    'origin',
-                                                    'revision',
-                                                    'fingerprint',
-                                                    'size'],
-                                       'type': 'object'},
-                     'CharmResourceMeta': {'additionalProperties': False,
-                                           'properties': {'description': {'type': 'string'},
-                                                          'name': {'type': 'string'},
-                                                          'path': {'type': 'string'},
-                                                          'type': {'type': 'string'}},
-                                           'required': ['name',
-                                                        'type',
-                                                        'path',
-                                                        'description'],
-                                           'type': 'object'},
-                     'CharmResourceResult': {'additionalProperties': False,
-                                             'properties': {'CharmResource': {'$ref': '#/definitions/CharmResource'},
-                                                            'ErrorResult': {'$ref': '#/definitions/ErrorResult'},
-                                                            'description': {'type': 'string'},
-                                                            'error': {'$ref': '#/definitions/Error'},
-                                                            'fingerprint': {'items': {'type': 'integer'},
-                                                                            'type': 'array'},
-                                                            'name': {'type': 'string'},
-                                                            'origin': {'type': 'string'},
-                                                            'path': {'type': 'string'},
-                                                            'revision': {'type': 'integer'},
-                                                            'size': {'type': 'integer'},
-                                                            'type': {'type': 'string'}},
-                                             'required': ['ErrorResult',
-                                                          'name',
-                                                          'type',
-                                                          'path',
-                                                          'origin',
-                                                          'revision',
-                                                          'fingerprint',
-                                                          'size',
-                                                          'CharmResource'],
-                                             'type': 'object'},
-                     'CharmResourcesResults': {'additionalProperties': False,
-                                               'properties': {'results': {'items': {'items': {'$ref': '#/definitions/CharmResourceResult'},
-                                                                                    'type': 'array'},
-                                                                          'type': 'array'}},
-                                               'required': ['results'],
-                                               'type': 'object'},
-                     'CharmStorage': {'additionalProperties': False,
-                                      'properties': {'count-max': {'type': 'integer'},
-                                                     'count-min': {'type': 'integer'},
-                                                     'description': {'type': 'string'},
-                                                     'location': {'type': 'string'},
-                                                     'minimum-size': {'type': 'integer'},
-                                                     'name': {'type': 'string'},
-                                                     'properties': {'items': {'type': 'string'},
-                                                                    'type': 'array'},
-                                                     'read-only': {'type': 'boolean'},
-                                                     'shared': {'type': 'boolean'},
-                                                     'type': {'type': 'string'}},
-                                      'required': ['name',
-                                                   'description',
-                                                   'type',
-                                                   'shared',
-                                                   'read-only',
-                                                   'count-min',
-                                                   'count-max',
-                                                   'minimum-size'],
-                                      'type': 'object'},
-                     'CharmURL': {'additionalProperties': False,
-                                  'properties': {'url': {'type': 'string'}},
-                                  'required': ['url'],
-                                  'type': 'object'},
-                     'CharmURLAndOrigin': {'additionalProperties': False,
-                                           'properties': {'charm-origin': {'$ref': '#/definitions/CharmOrigin'},
-                                                          'charm-url': {'type': 'string'},
-                                                          'macaroon': {'$ref': '#/definitions/Macaroon'}},
-                                           'required': ['charm-url',
-                                                        'charm-origin'],
-                                           'type': 'object'},
-                     'CharmURLAndOrigins': {'additionalProperties': False,
-                                            'properties': {'entities': {'items': {'$ref': '#/definitions/CharmURLAndOrigin'},
-                                                                        'type': 'array'}},
-                                            'required': ['entities'],
-                                            'type': 'object'},
-                     'CharmsList': {'additionalProperties': False,
-                                    'properties': {'names': {'items': {'type': 'string'},
-                                                             'type': 'array'}},
-                                    'required': ['names'],
-                                    'type': 'object'},
-                     'CharmsListResult': {'additionalProperties': False,
-                                          'properties': {'charm-urls': {'items': {'type': 'string'},
-                                                                        'type': 'array'}},
-                                          'required': ['charm-urls'],
-                                          'type': 'object'},
-                     'DownloadInfoResult': {'additionalProperties': False,
-                                            'properties': {'charm-origin': {'$ref': '#/definitions/CharmOrigin'},
-                                                           'url': {'type': 'string'}},
-                                            'required': ['url', 'charm-origin'],
-                                            'type': 'object'},
-                     'DownloadInfoResults': {'additionalProperties': False,
-                                             'properties': {'results': {'items': {'$ref': '#/definitions/DownloadInfoResult'},
-                                                                        'type': 'array'}},
-                                             'required': ['results'],
-                                             'type': 'object'},
-                     'Error': {'additionalProperties': False,
-                               'properties': {'code': {'type': 'string'},
-                                              'info': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                    'type': 'object'}},
-                                                       'type': 'object'},
-                                              'message': {'type': 'string'}},
-                               'required': ['message', 'code'],
-                               'type': 'object'},
-                     'ErrorResult': {'additionalProperties': False,
-                                     'properties': {'error': {'$ref': '#/definitions/Error'}},
-                                     'type': 'object'},
-                     'ErrorResults': {'additionalProperties': False,
-                                      'properties': {'results': {'items': {'$ref': '#/definitions/ErrorResult'},
-                                                                 'type': 'array'}},
-                                      'required': ['results'],
-                                      'type': 'object'},
-                     'ExpressionTree': {'additionalProperties': False,
-                                        'properties': {'Expression': {'additionalProperties': True,
-                                                                      'type': 'object'}},
-                                        'required': ['Expression'],
-                                        'type': 'object'},
-                     'IsMeteredResult': {'additionalProperties': False,
-                                         'properties': {'metered': {'type': 'boolean'}},
-                                         'required': ['metered'],
-                                         'type': 'object'},
-                     'Macaroon': {'additionalProperties': False, 'type': 'object'},
-                     'ResolveCharmWithChannel': {'additionalProperties': False,
-                                                 'properties': {'charm-origin': {'$ref': '#/definitions/CharmOrigin'},
-                                                                'reference': {'type': 'string'},
-                                                                'switch-charm': {'type': 'boolean'}},
-                                                 'required': ['reference',
-                                                              'charm-origin'],
-                                                 'type': 'object'},
-                     'ResolveCharmWithChannelResult': {'additionalProperties': False,
-                                                       'properties': {'charm-origin': {'$ref': '#/definitions/CharmOrigin'},
-                                                                      'error': {'$ref': '#/definitions/Error'},
-                                                                      'supported-series': {'items': {'type': 'string'},
-                                                                                           'type': 'array'},
-                                                                      'url': {'type': 'string'}},
-                                                       'required': ['url',
-                                                                    'charm-origin',
-                                                                    'supported-series'],
-                                                       'type': 'object'},
-                     'ResolveCharmWithChannelResults': {'additionalProperties': False,
-                                                        'properties': {'Results': {'items': {'$ref': '#/definitions/ResolveCharmWithChannelResult'},
-                                                                                   'type': 'array'}},
-                                                        'required': ['Results'],
-                                                        'type': 'object'},
-                     'ResolveCharmsWithChannel': {'additionalProperties': False,
-                                                  'properties': {'macaroon': {'$ref': '#/definitions/Macaroon'},
-                                                                 'resolve': {'items': {'$ref': '#/definitions/ResolveCharmWithChannel'},
-                                                                             'type': 'array'}},
-                                                  'required': ['resolve'],
-                                                  'type': 'object'}},
-     'properties': {'AddCharm': {'description': 'AddCharm adds the given charm URL '
-                                                '(which must include revision) to '
-                                                'the\n'
-                                                'environment, if it does not exist '
-                                                'yet. Local charms are not '
-                                                'supported,\n'
-                                                'only charm store and charm hub '
-                                                'URLs. See also AddLocalCharm().',
-                                 'properties': {'Params': {'$ref': '#/definitions/AddCharmWithOrigin'},
-                                                'Result': {'$ref': '#/definitions/CharmOriginResult'}},
-                                 'type': 'object'},
-                    'CharmInfo': {'description': 'CharmInfo returns information '
-                                                 'about the requested charm.',
-                                  'properties': {'Params': {'$ref': '#/definitions/CharmURL'},
-                                                 'Result': {'$ref': '#/definitions/Charm'}},
-                                  'type': 'object'},
-                    'CheckCharmPlacement': {'description': 'CheckCharmPlacement '
-                                                           'checks if a charm is '
-                                                           'allowed to be placed '
-                                                           'with in a\n'
-                                                           'given application.',
-                                            'properties': {'Params': {'$ref': '#/definitions/ApplicationCharmPlacements'},
-                                                           'Result': {'$ref': '#/definitions/ErrorResults'}},
-                                            'type': 'object'},
-                    'GetDownloadInfos': {'description': 'GetDownloadInfos attempts '
-                                                        'to get the bundle '
-                                                        'corresponding to the '
-                                                        'charm url\n'
-                                                        'and origin.',
-                                         'properties': {'Params': {'$ref': '#/definitions/CharmURLAndOrigins'},
-                                                        'Result': {'$ref': '#/definitions/DownloadInfoResults'}},
-                                         'type': 'object'},
-                    'IsMetered': {'description': 'IsMetered returns whether or not '
-                                                 'the charm is metered.',
-                                  'properties': {'Params': {'$ref': '#/definitions/CharmURL'},
-                                                 'Result': {'$ref': '#/definitions/IsMeteredResult'}},
-                                  'type': 'object'},
-                    'List': {'description': 'List returns a list of charm URLs '
-                                            'currently in the state.\n'
-                                            'If supplied parameter contains any '
-                                            'names, the result will\n'
-                                            'be filtered to return only the charms '
-                                            'with supplied names.',
-                             'properties': {'Params': {'$ref': '#/definitions/CharmsList'},
-                                            'Result': {'$ref': '#/definitions/CharmsListResult'}},
-                             'type': 'object'},
-                    'ListCharmResources': {'description': 'ListCharmResources '
-                                                          'returns a series of '
-                                                          'resources for a given '
-                                                          'charm.',
-                                           'properties': {'Params': {'$ref': '#/definitions/CharmURLAndOrigins'},
-                                                          'Result': {'$ref': '#/definitions/CharmResourcesResults'}},
-                                           'type': 'object'},
-                    'ResolveCharms': {'description': 'ResolveCharms resolves the '
-                                                     'given charm URLs with an '
-                                                     'optionally specified\n'
-                                                     'preferred channel.  Channel '
-                                                     'provided via CharmOrigin.',
-                                      'properties': {'Params': {'$ref': '#/definitions/ResolveCharmsWithChannel'},
-                                                     'Result': {'$ref': '#/definitions/ResolveCharmWithChannelResults'}},
-                                      'type': 'object'}},
-     'type': 'object'}
-
+    schema = {
+        'definitions': {
+            'AddCharmWithOrigin': {
+                'additionalProperties': False,
+                'properties': {
+                    'charm-origin': {'$ref': '#/definitions/CharmOrigin'},
+                    'force': {'type': 'boolean'},
+                    'url': {'type': 'string'},
+                },
+                'required': ['url', 'charm-origin', 'force'],
+                'type': 'object',
+            },
+            'ApplicationCharmPlacement': {
+                'additionalProperties': False,
+                'properties': {
+                    'application': {'type': 'string'},
+                    'charm-url': {'type': 'string'},
+                },
+                'required': ['application', 'charm-url'],
+                'type': 'object',
+            },
+            'ApplicationCharmPlacements': {
+                'additionalProperties': False,
+                'properties': {
+                    'placements': {
+                        'items': {'$ref': '#/definitions/ApplicationCharmPlacement'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['placements'],
+                'type': 'object',
+            },
+            'Base': {
+                'additionalProperties': False,
+                'properties': {
+                    'channel': {'type': 'string'},
+                    'name': {'type': 'string'},
+                },
+                'required': ['name', 'channel'],
+                'type': 'object',
+            },
+            'Charm': {
+                'additionalProperties': False,
+                'properties': {
+                    'actions': {'$ref': '#/definitions/CharmActions'},
+                    'config': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/CharmOption'}
+                        },
+                        'type': 'object',
+                    },
+                    'lxd-profile': {'$ref': '#/definitions/CharmLXDProfile'},
+                    'manifest': {'$ref': '#/definitions/CharmManifest'},
+                    'meta': {'$ref': '#/definitions/CharmMeta'},
+                    'metrics': {'$ref': '#/definitions/CharmMetrics'},
+                    'revision': {'type': 'integer'},
+                    'url': {'type': 'string'},
+                },
+                'required': ['revision', 'url', 'config'],
+                'type': 'object',
+            },
+            'CharmActionSpec': {
+                'additionalProperties': False,
+                'properties': {
+                    'description': {'type': 'string'},
+                    'params': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                },
+                'required': ['description', 'params'],
+                'type': 'object',
+            },
+            'CharmActions': {
+                'additionalProperties': False,
+                'properties': {
+                    'specs': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/CharmActionSpec'}
+                        },
+                        'type': 'object',
+                    }
+                },
+                'type': 'object',
+            },
+            'CharmBase': {
+                'additionalProperties': False,
+                'properties': {
+                    'architectures': {'items': {'type': 'string'}, 'type': 'array'},
+                    'channel': {'type': 'string'},
+                    'name': {'type': 'string'},
+                },
+                'type': 'object',
+            },
+            'CharmContainer': {
+                'additionalProperties': False,
+                'properties': {
+                    'mounts': {
+                        'items': {'$ref': '#/definitions/CharmMount'},
+                        'type': 'array',
+                    },
+                    'resource': {'type': 'string'},
+                },
+                'type': 'object',
+            },
+            'CharmDeployment': {
+                'additionalProperties': False,
+                'properties': {
+                    'min-version': {'type': 'string'},
+                    'mode': {'type': 'string'},
+                    'service': {'type': 'string'},
+                    'type': {'type': 'string'},
+                },
+                'required': ['type', 'mode', 'service', 'min-version'],
+                'type': 'object',
+            },
+            'CharmDevice': {
+                'additionalProperties': False,
+                'properties': {
+                    'CountMax': {'type': 'integer'},
+                    'CountMin': {'type': 'integer'},
+                    'Description': {'type': 'string'},
+                    'Name': {'type': 'string'},
+                    'Type': {'type': 'string'},
+                },
+                'required': ['Name', 'Description', 'Type', 'CountMin', 'CountMax'],
+                'type': 'object',
+            },
+            'CharmLXDProfile': {
+                'additionalProperties': False,
+                'properties': {
+                    'config': {
+                        'patternProperties': {'.*': {'type': 'string'}},
+                        'type': 'object',
+                    },
+                    'description': {'type': 'string'},
+                    'devices': {
+                        'patternProperties': {
+                            '.*': {
+                                'patternProperties': {'.*': {'type': 'string'}},
+                                'type': 'object',
+                            }
+                        },
+                        'type': 'object',
+                    },
+                },
+                'required': ['config', 'description', 'devices'],
+                'type': 'object',
+            },
+            'CharmManifest': {
+                'additionalProperties': False,
+                'properties': {
+                    'bases': {
+                        'items': {'$ref': '#/definitions/CharmBase'},
+                        'type': 'array',
+                    }
+                },
+                'type': 'object',
+            },
+            'CharmMeta': {
+                'additionalProperties': False,
+                'properties': {
+                    'assumes-expr': {'$ref': '#/definitions/ExpressionTree'},
+                    'categories': {'items': {'type': 'string'}, 'type': 'array'},
+                    'containers': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/CharmContainer'}
+                        },
+                        'type': 'object',
+                    },
+                    'deployment': {'$ref': '#/definitions/CharmDeployment'},
+                    'description': {'type': 'string'},
+                    'devices': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/CharmDevice'}
+                        },
+                        'type': 'object',
+                    },
+                    'extra-bindings': {
+                        'patternProperties': {'.*': {'type': 'string'}},
+                        'type': 'object',
+                    },
+                    'min-juju-version': {'type': 'string'},
+                    'name': {'type': 'string'},
+                    'payload-classes': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/CharmPayloadClass'}
+                        },
+                        'type': 'object',
+                    },
+                    'peers': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/CharmRelation'}
+                        },
+                        'type': 'object',
+                    },
+                    'provides': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/CharmRelation'}
+                        },
+                        'type': 'object',
+                    },
+                    'requires': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/CharmRelation'}
+                        },
+                        'type': 'object',
+                    },
+                    'resources': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/CharmResourceMeta'}
+                        },
+                        'type': 'object',
+                    },
+                    'series': {'items': {'type': 'string'}, 'type': 'array'},
+                    'storage': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/CharmStorage'}
+                        },
+                        'type': 'object',
+                    },
+                    'subordinate': {'type': 'boolean'},
+                    'summary': {'type': 'string'},
+                    'tags': {'items': {'type': 'string'}, 'type': 'array'},
+                    'terms': {'items': {'type': 'string'}, 'type': 'array'},
+                },
+                'required': ['name', 'summary', 'description', 'subordinate'],
+                'type': 'object',
+            },
+            'CharmMetric': {
+                'additionalProperties': False,
+                'properties': {
+                    'description': {'type': 'string'},
+                    'type': {'type': 'string'},
+                },
+                'required': ['type', 'description'],
+                'type': 'object',
+            },
+            'CharmMetrics': {
+                'additionalProperties': False,
+                'properties': {
+                    'metrics': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/CharmMetric'}
+                        },
+                        'type': 'object',
+                    },
+                    'plan': {'$ref': '#/definitions/CharmPlan'},
+                },
+                'required': ['metrics', 'plan'],
+                'type': 'object',
+            },
+            'CharmMount': {
+                'additionalProperties': False,
+                'properties': {
+                    'location': {'type': 'string'},
+                    'storage': {'type': 'string'},
+                },
+                'type': 'object',
+            },
+            'CharmOption': {
+                'additionalProperties': False,
+                'properties': {
+                    'default': {'additionalProperties': True, 'type': 'object'},
+                    'description': {'type': 'string'},
+                    'type': {'type': 'string'},
+                },
+                'required': ['type'],
+                'type': 'object',
+            },
+            'CharmOrigin': {
+                'additionalProperties': False,
+                'properties': {
+                    'architecture': {'type': 'string'},
+                    'base': {'$ref': '#/definitions/Base'},
+                    'branch': {'type': 'string'},
+                    'hash': {'type': 'string'},
+                    'id': {'type': 'string'},
+                    'instance-key': {'type': 'string'},
+                    'revision': {'type': 'integer'},
+                    'risk': {'type': 'string'},
+                    'source': {'type': 'string'},
+                    'track': {'type': 'string'},
+                    'type': {'type': 'string'},
+                },
+                'required': ['source', 'type', 'id'],
+                'type': 'object',
+            },
+            'CharmOriginResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'charm-origin': {'$ref': '#/definitions/CharmOrigin'},
+                    'error': {'$ref': '#/definitions/Error'},
+                },
+                'required': ['charm-origin'],
+                'type': 'object',
+            },
+            'CharmPayloadClass': {
+                'additionalProperties': False,
+                'properties': {'name': {'type': 'string'}, 'type': {'type': 'string'}},
+                'required': ['name', 'type'],
+                'type': 'object',
+            },
+            'CharmPlan': {
+                'additionalProperties': False,
+                'properties': {'required': {'type': 'boolean'}},
+                'required': ['required'],
+                'type': 'object',
+            },
+            'CharmRelation': {
+                'additionalProperties': False,
+                'properties': {
+                    'interface': {'type': 'string'},
+                    'limit': {'type': 'integer'},
+                    'name': {'type': 'string'},
+                    'optional': {'type': 'boolean'},
+                    'role': {'type': 'string'},
+                    'scope': {'type': 'string'},
+                },
+                'required': ['name', 'role', 'interface', 'optional', 'limit', 'scope'],
+                'type': 'object',
+            },
+            'CharmResource': {
+                'additionalProperties': False,
+                'properties': {
+                    'description': {'type': 'string'},
+                    'fingerprint': {'items': {'type': 'integer'}, 'type': 'array'},
+                    'name': {'type': 'string'},
+                    'origin': {'type': 'string'},
+                    'path': {'type': 'string'},
+                    'revision': {'type': 'integer'},
+                    'size': {'type': 'integer'},
+                    'type': {'type': 'string'},
+                },
+                'required': [
+                    'name',
+                    'type',
+                    'path',
+                    'origin',
+                    'revision',
+                    'fingerprint',
+                    'size',
+                ],
+                'type': 'object',
+            },
+            'CharmResourceMeta': {
+                'additionalProperties': False,
+                'properties': {
+                    'description': {'type': 'string'},
+                    'name': {'type': 'string'},
+                    'path': {'type': 'string'},
+                    'type': {'type': 'string'},
+                },
+                'required': ['name', 'type', 'path', 'description'],
+                'type': 'object',
+            },
+            'CharmResourceResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'CharmResource': {'$ref': '#/definitions/CharmResource'},
+                    'ErrorResult': {'$ref': '#/definitions/ErrorResult'},
+                    'description': {'type': 'string'},
+                    'error': {'$ref': '#/definitions/Error'},
+                    'fingerprint': {'items': {'type': 'integer'}, 'type': 'array'},
+                    'name': {'type': 'string'},
+                    'origin': {'type': 'string'},
+                    'path': {'type': 'string'},
+                    'revision': {'type': 'integer'},
+                    'size': {'type': 'integer'},
+                    'type': {'type': 'string'},
+                },
+                'required': [
+                    'ErrorResult',
+                    'name',
+                    'type',
+                    'path',
+                    'origin',
+                    'revision',
+                    'fingerprint',
+                    'size',
+                    'CharmResource',
+                ],
+                'type': 'object',
+            },
+            'CharmResourcesResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {
+                            'items': {'$ref': '#/definitions/CharmResourceResult'},
+                            'type': 'array',
+                        },
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'CharmStorage': {
+                'additionalProperties': False,
+                'properties': {
+                    'count-max': {'type': 'integer'},
+                    'count-min': {'type': 'integer'},
+                    'description': {'type': 'string'},
+                    'location': {'type': 'string'},
+                    'minimum-size': {'type': 'integer'},
+                    'name': {'type': 'string'},
+                    'properties': {'items': {'type': 'string'}, 'type': 'array'},
+                    'read-only': {'type': 'boolean'},
+                    'shared': {'type': 'boolean'},
+                    'type': {'type': 'string'},
+                },
+                'required': [
+                    'name',
+                    'description',
+                    'type',
+                    'shared',
+                    'read-only',
+                    'count-min',
+                    'count-max',
+                    'minimum-size',
+                ],
+                'type': 'object',
+            },
+            'CharmURL': {
+                'additionalProperties': False,
+                'properties': {'url': {'type': 'string'}},
+                'required': ['url'],
+                'type': 'object',
+            },
+            'CharmURLAndOrigin': {
+                'additionalProperties': False,
+                'properties': {
+                    'charm-origin': {'$ref': '#/definitions/CharmOrigin'},
+                    'charm-url': {'type': 'string'},
+                    'macaroon': {'$ref': '#/definitions/Macaroon'},
+                },
+                'required': ['charm-url', 'charm-origin'],
+                'type': 'object',
+            },
+            'CharmURLAndOrigins': {
+                'additionalProperties': False,
+                'properties': {
+                    'entities': {
+                        'items': {'$ref': '#/definitions/CharmURLAndOrigin'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['entities'],
+                'type': 'object',
+            },
+            'CharmsList': {
+                'additionalProperties': False,
+                'properties': {'names': {'items': {'type': 'string'}, 'type': 'array'}},
+                'required': ['names'],
+                'type': 'object',
+            },
+            'CharmsListResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'charm-urls': {'items': {'type': 'string'}, 'type': 'array'}
+                },
+                'required': ['charm-urls'],
+                'type': 'object',
+            },
+            'DownloadInfoResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'charm-origin': {'$ref': '#/definitions/CharmOrigin'},
+                    'url': {'type': 'string'},
+                },
+                'required': ['url', 'charm-origin'],
+                'type': 'object',
+            },
+            'DownloadInfoResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/DownloadInfoResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'Error': {
+                'additionalProperties': False,
+                'properties': {
+                    'code': {'type': 'string'},
+                    'info': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'message': {'type': 'string'},
+                },
+                'required': ['message', 'code'],
+                'type': 'object',
+            },
+            'ErrorResult': {
+                'additionalProperties': False,
+                'properties': {'error': {'$ref': '#/definitions/Error'}},
+                'type': 'object',
+            },
+            'ErrorResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/ErrorResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'ExpressionTree': {
+                'additionalProperties': False,
+                'properties': {
+                    'Expression': {'additionalProperties': True, 'type': 'object'}
+                },
+                'required': ['Expression'],
+                'type': 'object',
+            },
+            'IsMeteredResult': {
+                'additionalProperties': False,
+                'properties': {'metered': {'type': 'boolean'}},
+                'required': ['metered'],
+                'type': 'object',
+            },
+            'Macaroon': {'additionalProperties': False, 'type': 'object'},
+            'ResolveCharmWithChannel': {
+                'additionalProperties': False,
+                'properties': {
+                    'charm-origin': {'$ref': '#/definitions/CharmOrigin'},
+                    'reference': {'type': 'string'},
+                    'switch-charm': {'type': 'boolean'},
+                },
+                'required': ['reference', 'charm-origin'],
+                'type': 'object',
+            },
+            'ResolveCharmWithChannelResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'charm-origin': {'$ref': '#/definitions/CharmOrigin'},
+                    'error': {'$ref': '#/definitions/Error'},
+                    'supported-series': {'items': {'type': 'string'}, 'type': 'array'},
+                    'url': {'type': 'string'},
+                },
+                'required': ['url', 'charm-origin', 'supported-series'],
+                'type': 'object',
+            },
+            'ResolveCharmWithChannelResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'Results': {
+                        'items': {
+                            '$ref': '#/definitions/ResolveCharmWithChannelResult'
+                        },
+                        'type': 'array',
+                    }
+                },
+                'required': ['Results'],
+                'type': 'object',
+            },
+            'ResolveCharmsWithChannel': {
+                'additionalProperties': False,
+                'properties': {
+                    'macaroon': {'$ref': '#/definitions/Macaroon'},
+                    'resolve': {
+                        'items': {'$ref': '#/definitions/ResolveCharmWithChannel'},
+                        'type': 'array',
+                    },
+                },
+                'required': ['resolve'],
+                'type': 'object',
+            },
+        },
+        'properties': {
+            'AddCharm': {
+                'description': 'AddCharm adds the given charm URL '
+                '(which must include revision) to '
+                'the\n'
+                'environment, if it does not exist '
+                'yet. Local charms are not '
+                'supported,\n'
+                'only charm store and charm hub '
+                'URLs. See also AddLocalCharm().',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/AddCharmWithOrigin'},
+                    'Result': {'$ref': '#/definitions/CharmOriginResult'},
+                },
+                'type': 'object',
+            },
+            'CharmInfo': {
+                'description': 'CharmInfo returns information '
+                'about the requested charm.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/CharmURL'},
+                    'Result': {'$ref': '#/definitions/Charm'},
+                },
+                'type': 'object',
+            },
+            'CheckCharmPlacement': {
+                'description': 'CheckCharmPlacement '
+                'checks if a charm is '
+                'allowed to be placed '
+                'with in a\n'
+                'given application.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/ApplicationCharmPlacements'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+            'GetDownloadInfos': {
+                'description': 'GetDownloadInfos attempts '
+                'to get the bundle '
+                'corresponding to the '
+                'charm url\n'
+                'and origin.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/CharmURLAndOrigins'},
+                    'Result': {'$ref': '#/definitions/DownloadInfoResults'},
+                },
+                'type': 'object',
+            },
+            'IsMetered': {
+                'description': 'IsMetered returns whether or not '
+                'the charm is metered.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/CharmURL'},
+                    'Result': {'$ref': '#/definitions/IsMeteredResult'},
+                },
+                'type': 'object',
+            },
+            'List': {
+                'description': 'List returns a list of charm URLs '
+                'currently in the state.\n'
+                'If supplied parameter contains any '
+                'names, the result will\n'
+                'be filtered to return only the charms '
+                'with supplied names.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/CharmsList'},
+                    'Result': {'$ref': '#/definitions/CharmsListResult'},
+                },
+                'type': 'object',
+            },
+            'ListCharmResources': {
+                'description': 'ListCharmResources '
+                'returns a series of '
+                'resources for a given '
+                'charm.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/CharmURLAndOrigins'},
+                    'Result': {'$ref': '#/definitions/CharmResourcesResults'},
+                },
+                'type': 'object',
+            },
+            'ResolveCharms': {
+                'description': 'ResolveCharms resolves the '
+                'given charm URLs with an '
+                'optionally specified\n'
+                'preferred channel.  Channel '
+                'provided via CharmOrigin.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/ResolveCharmsWithChannel'},
+                    'Result': {'$ref': '#/definitions/ResolveCharmWithChannelResults'},
+                },
+                'type': 'object',
+            },
+        },
+        'type': 'object',
+    }
 
     @ReturnMapping(CharmOriginResult)
     async def AddCharm(self, charm_origin=None, force=None, url=None):
@@ -647,8 +955,12 @@ class CharmsFacade(Type):
         url : str
         Returns -> CharmOriginResult
         """
-        if charm_origin is not None and not isinstance(charm_origin, (dict, CharmOrigin)):
-            raise TypeError(f'Expected charm_origin to be a CharmOrigin, received: {type(charm_origin)}')
+        if charm_origin is not None and not isinstance(
+            charm_origin, (dict, CharmOrigin)
+        ):
+            raise TypeError(
+                f'Expected charm_origin to be a CharmOrigin, received: {type(charm_origin)}'
+            )
 
         if force is not None and not isinstance(force, bool):
             raise TypeError(f'Expected force to be a bool, received: {type(force)}')
@@ -669,7 +981,6 @@ class CharmsFacade(Type):
         _params['url'] = url
         reply = await self.rpc(msg)
         return reply
-
 
     @ReturnMapping(Charm)
     async def CharmInfo(self, url=None):
@@ -694,7 +1005,6 @@ class CharmsFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(ErrorResults)
     async def CheckCharmPlacement(self, placements=None):
         """
@@ -705,7 +1015,9 @@ class CharmsFacade(Type):
         Returns -> ErrorResults
         """
         if placements is not None and not isinstance(placements, (bytes, str, list)):
-            raise TypeError(f'Expected placements to be a Sequence, received: {type(placements)}')
+            raise TypeError(
+                f'Expected placements to be a Sequence, received: {type(placements)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -719,7 +1031,6 @@ class CharmsFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(DownloadInfoResults)
     async def GetDownloadInfos(self, entities=None):
         """
@@ -730,7 +1041,9 @@ class CharmsFacade(Type):
         Returns -> DownloadInfoResults
         """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
+            raise TypeError(
+                f'Expected entities to be a Sequence, received: {type(entities)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -743,7 +1056,6 @@ class CharmsFacade(Type):
         _params['entities'] = entities
         reply = await self.rpc(msg)
         return reply
-
 
     @ReturnMapping(IsMeteredResult)
     async def IsMetered(self, url=None):
@@ -767,7 +1079,6 @@ class CharmsFacade(Type):
         _params['url'] = url
         reply = await self.rpc(msg)
         return reply
-
 
     @ReturnMapping(CharmsListResult)
     async def List(self, names=None):
@@ -794,7 +1105,6 @@ class CharmsFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(CharmResourcesResults)
     async def ListCharmResources(self, entities=None):
         """
@@ -804,7 +1114,9 @@ class CharmsFacade(Type):
         Returns -> CharmResourcesResults
         """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
+            raise TypeError(
+                f'Expected entities to be a Sequence, received: {type(entities)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -818,7 +1130,6 @@ class CharmsFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(ResolveCharmWithChannelResults)
     async def ResolveCharms(self, macaroon=None, resolve=None):
         """
@@ -830,10 +1141,14 @@ class CharmsFacade(Type):
         Returns -> ResolveCharmWithChannelResults
         """
         if macaroon is not None and not isinstance(macaroon, (dict, Macaroon)):
-            raise TypeError(f'Expected macaroon to be a Macaroon, received: {type(macaroon)}')
+            raise TypeError(
+                f'Expected macaroon to be a Macaroon, received: {type(macaroon)}'
+            )
 
         if resolve is not None and not isinstance(resolve, (bytes, str, list)):
-            raise TypeError(f'Expected resolve to be a Sequence, received: {type(resolve)}')
+            raise TypeError(
+                f'Expected resolve to be a Sequence, received: {type(resolve)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -848,443 +1163,649 @@ class CharmsFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
+
 class ClientFacade(Type):
     name = 'Client'
     version = 6
-    schema =     {'definitions': {'AllWatcherId': {'additionalProperties': False,
-                                      'properties': {'watcher-id': {'type': 'string'}},
-                                      'required': ['watcher-id'],
-                                      'type': 'object'},
-                     'ApplicationOfferStatus': {'additionalProperties': False,
-                                                'properties': {'active-connected-count': {'type': 'integer'},
-                                                               'application-name': {'type': 'string'},
-                                                               'charm': {'type': 'string'},
-                                                               'endpoints': {'patternProperties': {'.*': {'$ref': '#/definitions/RemoteEndpoint'}},
-                                                                             'type': 'object'},
-                                                               'err': {'$ref': '#/definitions/Error'},
-                                                               'offer-name': {'type': 'string'},
-                                                               'total-connected-count': {'type': 'integer'}},
-                                                'required': ['offer-name',
-                                                             'application-name',
-                                                             'charm',
-                                                             'endpoints',
-                                                             'active-connected-count',
-                                                             'total-connected-count'],
-                                                'type': 'object'},
-                     'ApplicationStatus': {'additionalProperties': False,
-                                           'properties': {'base': {'$ref': '#/definitions/Base'},
-                                                          'can-upgrade-to': {'type': 'string'},
-                                                          'charm': {'type': 'string'},
-                                                          'charm-channel': {'type': 'string'},
-                                                          'charm-profile': {'type': 'string'},
-                                                          'charm-version': {'type': 'string'},
-                                                          'endpoint-bindings': {'patternProperties': {'.*': {'type': 'string'}},
-                                                                                'type': 'object'},
-                                                          'err': {'$ref': '#/definitions/Error'},
-                                                          'exposed': {'type': 'boolean'},
-                                                          'exposed-endpoints': {'patternProperties': {'.*': {'$ref': '#/definitions/ExposedEndpoint'}},
-                                                                                'type': 'object'},
-                                                          'int': {'type': 'integer'},
-                                                          'life': {'type': 'string'},
-                                                          'meter-statuses': {'patternProperties': {'.*': {'$ref': '#/definitions/MeterStatus'}},
-                                                                             'type': 'object'},
-                                                          'provider-id': {'type': 'string'},
-                                                          'public-address': {'type': 'string'},
-                                                          'relations': {'patternProperties': {'.*': {'items': {'type': 'string'},
-                                                                                                     'type': 'array'}},
-                                                                        'type': 'object'},
-                                                          'status': {'$ref': '#/definitions/DetailedStatus'},
-                                                          'subordinate-to': {'items': {'type': 'string'},
-                                                                             'type': 'array'},
-                                                          'units': {'patternProperties': {'.*': {'$ref': '#/definitions/UnitStatus'}},
-                                                                    'type': 'object'},
-                                                          'workload-version': {'type': 'string'}},
-                                           'required': ['charm',
-                                                        'charm-version',
-                                                        'charm-profile',
-                                                        'base',
-                                                        'exposed',
-                                                        'life',
-                                                        'relations',
-                                                        'can-upgrade-to',
-                                                        'subordinate-to',
-                                                        'units',
-                                                        'meter-statuses',
-                                                        'status',
-                                                        'workload-version',
-                                                        'endpoint-bindings',
-                                                        'public-address'],
-                                           'type': 'object'},
-                     'Base': {'additionalProperties': False,
-                              'properties': {'channel': {'type': 'string'},
-                                             'name': {'type': 'string'}},
-                              'required': ['name', 'channel'],
-                              'type': 'object'},
-                     'Binary': {'additionalProperties': False,
-                                'properties': {'Arch': {'type': 'string'},
-                                               'Build': {'type': 'integer'},
-                                               'Major': {'type': 'integer'},
-                                               'Minor': {'type': 'integer'},
-                                               'Number': {'$ref': '#/definitions/Number'},
-                                               'Patch': {'type': 'integer'},
-                                               'Release': {'type': 'string'},
-                                               'Tag': {'type': 'string'}},
-                                'required': ['Major',
-                                             'Minor',
-                                             'Tag',
-                                             'Patch',
-                                             'Build',
-                                             'Number',
-                                             'Release',
-                                             'Arch'],
-                                'type': 'object'},
-                     'BranchStatus': {'additionalProperties': False,
-                                      'properties': {'assigned-units': {'patternProperties': {'.*': {'items': {'type': 'string'},
-                                                                                                     'type': 'array'}},
-                                                                        'type': 'object'},
-                                                     'created': {'type': 'integer'},
-                                                     'created-by': {'type': 'string'}},
-                                      'required': ['assigned-units',
-                                                   'created',
-                                                   'created-by'],
-                                      'type': 'object'},
-                     'DetailedStatus': {'additionalProperties': False,
-                                        'properties': {'data': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                             'type': 'object'}},
-                                                                'type': 'object'},
-                                                       'err': {'$ref': '#/definitions/Error'},
-                                                       'info': {'type': 'string'},
-                                                       'kind': {'type': 'string'},
-                                                       'life': {'type': 'string'},
-                                                       'since': {'format': 'date-time',
-                                                                 'type': 'string'},
-                                                       'status': {'type': 'string'},
-                                                       'version': {'type': 'string'}},
-                                        'required': ['status',
-                                                     'info',
-                                                     'data',
-                                                     'since',
-                                                     'kind',
-                                                     'version',
-                                                     'life'],
-                                        'type': 'object'},
-                     'EndpointStatus': {'additionalProperties': False,
-                                        'properties': {'application': {'type': 'string'},
-                                                       'name': {'type': 'string'},
-                                                       'role': {'type': 'string'},
-                                                       'subordinate': {'type': 'boolean'}},
-                                        'required': ['application',
-                                                     'name',
-                                                     'role',
-                                                     'subordinate'],
-                                        'type': 'object'},
-                     'Error': {'additionalProperties': False,
-                               'properties': {'code': {'type': 'string'},
-                                              'info': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                    'type': 'object'}},
-                                                       'type': 'object'},
-                                              'message': {'type': 'string'}},
-                               'required': ['message', 'code'],
-                               'type': 'object'},
-                     'ExposedEndpoint': {'additionalProperties': False,
-                                         'properties': {'expose-to-cidrs': {'items': {'type': 'string'},
-                                                                            'type': 'array'},
-                                                        'expose-to-spaces': {'items': {'type': 'string'},
-                                                                             'type': 'array'}},
-                                         'type': 'object'},
-                     'FindToolsParams': {'additionalProperties': False,
-                                         'properties': {'agentstream': {'type': 'string'},
-                                                        'arch': {'type': 'string'},
-                                                        'major': {'type': 'integer'},
-                                                        'number': {'$ref': '#/definitions/Number'},
-                                                        'os-type': {'type': 'string'}},
-                                         'required': ['number',
-                                                      'major',
-                                                      'arch',
-                                                      'os-type',
-                                                      'agentstream'],
-                                         'type': 'object'},
-                     'FindToolsResult': {'additionalProperties': False,
-                                         'properties': {'error': {'$ref': '#/definitions/Error'},
-                                                        'list': {'items': {'$ref': '#/definitions/Tools'},
-                                                                 'type': 'array'}},
-                                         'required': ['list'],
-                                         'type': 'object'},
-                     'FullStatus': {'additionalProperties': False,
-                                    'properties': {'applications': {'patternProperties': {'.*': {'$ref': '#/definitions/ApplicationStatus'}},
-                                                                    'type': 'object'},
-                                                   'branches': {'patternProperties': {'.*': {'$ref': '#/definitions/BranchStatus'}},
-                                                                'type': 'object'},
-                                                   'controller-timestamp': {'format': 'date-time',
-                                                                            'type': 'string'},
-                                                   'machines': {'patternProperties': {'.*': {'$ref': '#/definitions/MachineStatus'}},
-                                                                'type': 'object'},
-                                                   'model': {'$ref': '#/definitions/ModelStatusInfo'},
-                                                   'offers': {'patternProperties': {'.*': {'$ref': '#/definitions/ApplicationOfferStatus'}},
-                                                              'type': 'object'},
-                                                   'relations': {'items': {'$ref': '#/definitions/RelationStatus'},
-                                                                 'type': 'array'},
-                                                   'remote-applications': {'patternProperties': {'.*': {'$ref': '#/definitions/RemoteApplicationStatus'}},
-                                                                           'type': 'object'}},
-                                    'required': ['model',
-                                                 'machines',
-                                                 'applications',
-                                                 'remote-applications',
-                                                 'offers',
-                                                 'relations',
-                                                 'controller-timestamp',
-                                                 'branches'],
-                                    'type': 'object'},
-                     'History': {'additionalProperties': False,
-                                 'properties': {'error': {'$ref': '#/definitions/Error'},
-                                                'statuses': {'items': {'$ref': '#/definitions/DetailedStatus'},
-                                                             'type': 'array'}},
-                                 'required': ['statuses'],
-                                 'type': 'object'},
-                     'LXDProfile': {'additionalProperties': False,
-                                    'properties': {'config': {'patternProperties': {'.*': {'type': 'string'}},
-                                                              'type': 'object'},
-                                                   'description': {'type': 'string'},
-                                                   'devices': {'patternProperties': {'.*': {'patternProperties': {'.*': {'type': 'string'}},
-                                                                                            'type': 'object'}},
-                                                               'type': 'object'}},
-                                    'required': ['config',
-                                                 'description',
-                                                 'devices'],
-                                    'type': 'object'},
-                     'MachineStatus': {'additionalProperties': False,
-                                       'properties': {'agent-status': {'$ref': '#/definitions/DetailedStatus'},
-                                                      'base': {'$ref': '#/definitions/Base'},
-                                                      'constraints': {'type': 'string'},
-                                                      'containers': {'patternProperties': {'.*': {'$ref': '#/definitions/MachineStatus'}},
-                                                                     'type': 'object'},
-                                                      'display-name': {'type': 'string'},
-                                                      'dns-name': {'type': 'string'},
-                                                      'hardware': {'type': 'string'},
-                                                      'has-vote': {'type': 'boolean'},
-                                                      'hostname': {'type': 'string'},
-                                                      'id': {'type': 'string'},
-                                                      'instance-id': {'type': 'string'},
-                                                      'instance-status': {'$ref': '#/definitions/DetailedStatus'},
-                                                      'ip-addresses': {'items': {'type': 'string'},
-                                                                       'type': 'array'},
-                                                      'jobs': {'items': {'type': 'string'},
-                                                               'type': 'array'},
-                                                      'lxd-profiles': {'patternProperties': {'.*': {'$ref': '#/definitions/LXDProfile'}},
-                                                                       'type': 'object'},
-                                                      'modification-status': {'$ref': '#/definitions/DetailedStatus'},
-                                                      'network-interfaces': {'patternProperties': {'.*': {'$ref': '#/definitions/NetworkInterface'}},
-                                                                             'type': 'object'},
-                                                      'primary-controller-machine': {'type': 'boolean'},
-                                                      'wants-vote': {'type': 'boolean'}},
-                                       'required': ['agent-status',
-                                                    'instance-status',
-                                                    'modification-status',
-                                                    'dns-name',
-                                                    'instance-id',
-                                                    'display-name',
-                                                    'base',
-                                                    'id',
-                                                    'containers',
-                                                    'constraints',
-                                                    'hardware',
-                                                    'jobs',
-                                                    'has-vote',
-                                                    'wants-vote'],
-                                       'type': 'object'},
-                     'MeterStatus': {'additionalProperties': False,
-                                     'properties': {'color': {'type': 'string'},
-                                                    'message': {'type': 'string'}},
-                                     'required': ['color', 'message'],
-                                     'type': 'object'},
-                     'ModelStatusInfo': {'additionalProperties': False,
-                                         'properties': {'available-version': {'type': 'string'},
-                                                        'cloud-tag': {'type': 'string'},
-                                                        'meter-status': {'$ref': '#/definitions/MeterStatus'},
-                                                        'model-status': {'$ref': '#/definitions/DetailedStatus'},
-                                                        'name': {'type': 'string'},
-                                                        'region': {'type': 'string'},
-                                                        'sla': {'type': 'string'},
-                                                        'type': {'type': 'string'},
-                                                        'version': {'type': 'string'}},
-                                         'required': ['name',
-                                                      'type',
-                                                      'cloud-tag',
-                                                      'version',
-                                                      'available-version',
-                                                      'model-status',
-                                                      'meter-status',
-                                                      'sla'],
-                                         'type': 'object'},
-                     'NetworkInterface': {'additionalProperties': False,
-                                          'properties': {'dns-nameservers': {'items': {'type': 'string'},
-                                                                             'type': 'array'},
-                                                         'gateway': {'type': 'string'},
-                                                         'ip-addresses': {'items': {'type': 'string'},
-                                                                          'type': 'array'},
-                                                         'is-up': {'type': 'boolean'},
-                                                         'mac-address': {'type': 'string'},
-                                                         'space': {'type': 'string'}},
-                                          'required': ['ip-addresses',
-                                                       'mac-address',
-                                                       'is-up'],
-                                          'type': 'object'},
-                     'Number': {'additionalProperties': False,
-                                'properties': {'Build': {'type': 'integer'},
-                                               'Major': {'type': 'integer'},
-                                               'Minor': {'type': 'integer'},
-                                               'Patch': {'type': 'integer'},
-                                               'Tag': {'type': 'string'}},
-                                'required': ['Major',
-                                             'Minor',
-                                             'Tag',
-                                             'Patch',
-                                             'Build'],
-                                'type': 'object'},
-                     'RelationStatus': {'additionalProperties': False,
-                                        'properties': {'endpoints': {'items': {'$ref': '#/definitions/EndpointStatus'},
-                                                                     'type': 'array'},
-                                                       'id': {'type': 'integer'},
-                                                       'interface': {'type': 'string'},
-                                                       'key': {'type': 'string'},
-                                                       'scope': {'type': 'string'},
-                                                       'status': {'$ref': '#/definitions/DetailedStatus'}},
-                                        'required': ['id',
-                                                     'key',
-                                                     'interface',
-                                                     'scope',
-                                                     'endpoints',
-                                                     'status'],
-                                        'type': 'object'},
-                     'RemoteApplicationStatus': {'additionalProperties': False,
-                                                 'properties': {'endpoints': {'items': {'$ref': '#/definitions/RemoteEndpoint'},
-                                                                              'type': 'array'},
-                                                                'err': {'$ref': '#/definitions/Error'},
-                                                                'life': {'type': 'string'},
-                                                                'offer-name': {'type': 'string'},
-                                                                'offer-url': {'type': 'string'},
-                                                                'relations': {'patternProperties': {'.*': {'items': {'type': 'string'},
-                                                                                                           'type': 'array'}},
-                                                                              'type': 'object'},
-                                                                'status': {'$ref': '#/definitions/DetailedStatus'}},
-                                                 'required': ['offer-url',
-                                                              'offer-name',
-                                                              'endpoints',
-                                                              'life',
-                                                              'relations',
-                                                              'status'],
-                                                 'type': 'object'},
-                     'RemoteEndpoint': {'additionalProperties': False,
-                                        'properties': {'interface': {'type': 'string'},
-                                                       'limit': {'type': 'integer'},
-                                                       'name': {'type': 'string'},
-                                                       'role': {'type': 'string'}},
-                                        'required': ['name',
-                                                     'role',
-                                                     'interface',
-                                                     'limit'],
-                                        'type': 'object'},
-                     'StatusHistoryFilter': {'additionalProperties': False,
-                                             'properties': {'date': {'format': 'date-time',
-                                                                     'type': 'string'},
-                                                            'delta': {'type': 'integer'},
-                                                            'exclude': {'items': {'type': 'string'},
-                                                                        'type': 'array'},
-                                                            'size': {'type': 'integer'}},
-                                             'required': ['size',
-                                                          'date',
-                                                          'delta',
-                                                          'exclude'],
-                                             'type': 'object'},
-                     'StatusHistoryRequest': {'additionalProperties': False,
-                                              'properties': {'filter': {'$ref': '#/definitions/StatusHistoryFilter'},
-                                                             'historyKind': {'type': 'string'},
-                                                             'size': {'type': 'integer'},
-                                                             'tag': {'type': 'string'}},
-                                              'required': ['historyKind',
-                                                           'size',
-                                                           'filter',
-                                                           'tag'],
-                                              'type': 'object'},
-                     'StatusHistoryRequests': {'additionalProperties': False,
-                                               'properties': {'requests': {'items': {'$ref': '#/definitions/StatusHistoryRequest'},
-                                                                           'type': 'array'}},
-                                               'required': ['requests'],
-                                               'type': 'object'},
-                     'StatusHistoryResult': {'additionalProperties': False,
-                                             'properties': {'error': {'$ref': '#/definitions/Error'},
-                                                            'history': {'$ref': '#/definitions/History'}},
-                                             'required': ['history'],
-                                             'type': 'object'},
-                     'StatusHistoryResults': {'additionalProperties': False,
-                                              'properties': {'results': {'items': {'$ref': '#/definitions/StatusHistoryResult'},
-                                                                         'type': 'array'}},
-                                              'required': ['results'],
-                                              'type': 'object'},
-                     'StatusParams': {'additionalProperties': False,
-                                      'properties': {'patterns': {'items': {'type': 'string'},
-                                                                  'type': 'array'}},
-                                      'required': ['patterns'],
-                                      'type': 'object'},
-                     'Tools': {'additionalProperties': False,
-                               'properties': {'sha256': {'type': 'string'},
-                                              'size': {'type': 'integer'},
-                                              'url': {'type': 'string'},
-                                              'version': {'$ref': '#/definitions/Binary'}},
-                               'required': ['version', 'url', 'size'],
-                               'type': 'object'},
-                     'UnitStatus': {'additionalProperties': False,
-                                    'properties': {'address': {'type': 'string'},
-                                                   'agent-status': {'$ref': '#/definitions/DetailedStatus'},
-                                                   'charm': {'type': 'string'},
-                                                   'leader': {'type': 'boolean'},
-                                                   'machine': {'type': 'string'},
-                                                   'opened-ports': {'items': {'type': 'string'},
-                                                                    'type': 'array'},
-                                                   'provider-id': {'type': 'string'},
-                                                   'public-address': {'type': 'string'},
-                                                   'subordinates': {'patternProperties': {'.*': {'$ref': '#/definitions/UnitStatus'}},
-                                                                    'type': 'object'},
-                                                   'workload-status': {'$ref': '#/definitions/DetailedStatus'},
-                                                   'workload-version': {'type': 'string'}},
-                                    'required': ['agent-status',
-                                                 'workload-status',
-                                                 'workload-version',
-                                                 'machine',
-                                                 'opened-ports',
-                                                 'public-address',
-                                                 'charm',
-                                                 'subordinates'],
-                                    'type': 'object'}},
-     'properties': {'FindTools': {'description': 'FindTools returns a List '
-                                                 'containing all tools matching '
-                                                 'the given parameters.\n'
-                                                 'TODO(juju 3.1) - remove, used by '
-                                                 '2.9 client only',
-                                  'properties': {'Params': {'$ref': '#/definitions/FindToolsParams'},
-                                                 'Result': {'$ref': '#/definitions/FindToolsResult'}},
-                                  'type': 'object'},
-                    'FullStatus': {'description': 'FullStatus gives the '
-                                                  'information needed for juju '
-                                                  'status over the api',
-                                   'properties': {'Params': {'$ref': '#/definitions/StatusParams'},
-                                                  'Result': {'$ref': '#/definitions/FullStatus'}},
-                                   'type': 'object'},
-                    'StatusHistory': {'description': 'StatusHistory returns a '
-                                                     'slice of past statuses for '
-                                                     'several entities.',
-                                      'properties': {'Params': {'$ref': '#/definitions/StatusHistoryRequests'},
-                                                     'Result': {'$ref': '#/definitions/StatusHistoryResults'}},
-                                      'type': 'object'},
-                    'WatchAll': {'description': 'WatchAll initiates a watcher for '
-                                                'entities in the connected model.',
-                                 'properties': {'Result': {'$ref': '#/definitions/AllWatcherId'}},
-                                 'type': 'object'}},
-     'type': 'object'}
-
+    schema = {
+        'definitions': {
+            'AllWatcherId': {
+                'additionalProperties': False,
+                'properties': {'watcher-id': {'type': 'string'}},
+                'required': ['watcher-id'],
+                'type': 'object',
+            },
+            'ApplicationOfferStatus': {
+                'additionalProperties': False,
+                'properties': {
+                    'active-connected-count': {'type': 'integer'},
+                    'application-name': {'type': 'string'},
+                    'charm': {'type': 'string'},
+                    'endpoints': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/RemoteEndpoint'}
+                        },
+                        'type': 'object',
+                    },
+                    'err': {'$ref': '#/definitions/Error'},
+                    'offer-name': {'type': 'string'},
+                    'total-connected-count': {'type': 'integer'},
+                },
+                'required': [
+                    'offer-name',
+                    'application-name',
+                    'charm',
+                    'endpoints',
+                    'active-connected-count',
+                    'total-connected-count',
+                ],
+                'type': 'object',
+            },
+            'ApplicationStatus': {
+                'additionalProperties': False,
+                'properties': {
+                    'base': {'$ref': '#/definitions/Base'},
+                    'can-upgrade-to': {'type': 'string'},
+                    'charm': {'type': 'string'},
+                    'charm-channel': {'type': 'string'},
+                    'charm-profile': {'type': 'string'},
+                    'charm-version': {'type': 'string'},
+                    'endpoint-bindings': {
+                        'patternProperties': {'.*': {'type': 'string'}},
+                        'type': 'object',
+                    },
+                    'err': {'$ref': '#/definitions/Error'},
+                    'exposed': {'type': 'boolean'},
+                    'exposed-endpoints': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/ExposedEndpoint'}
+                        },
+                        'type': 'object',
+                    },
+                    'int': {'type': 'integer'},
+                    'life': {'type': 'string'},
+                    'meter-statuses': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/MeterStatus'}
+                        },
+                        'type': 'object',
+                    },
+                    'provider-id': {'type': 'string'},
+                    'public-address': {'type': 'string'},
+                    'relations': {
+                        'patternProperties': {
+                            '.*': {'items': {'type': 'string'}, 'type': 'array'}
+                        },
+                        'type': 'object',
+                    },
+                    'status': {'$ref': '#/definitions/DetailedStatus'},
+                    'subordinate-to': {'items': {'type': 'string'}, 'type': 'array'},
+                    'units': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/UnitStatus'}
+                        },
+                        'type': 'object',
+                    },
+                    'workload-version': {'type': 'string'},
+                },
+                'required': [
+                    'charm',
+                    'charm-version',
+                    'charm-profile',
+                    'base',
+                    'exposed',
+                    'life',
+                    'relations',
+                    'can-upgrade-to',
+                    'subordinate-to',
+                    'units',
+                    'meter-statuses',
+                    'status',
+                    'workload-version',
+                    'endpoint-bindings',
+                    'public-address',
+                ],
+                'type': 'object',
+            },
+            'Base': {
+                'additionalProperties': False,
+                'properties': {
+                    'channel': {'type': 'string'},
+                    'name': {'type': 'string'},
+                },
+                'required': ['name', 'channel'],
+                'type': 'object',
+            },
+            'Binary': {
+                'additionalProperties': False,
+                'properties': {
+                    'Arch': {'type': 'string'},
+                    'Build': {'type': 'integer'},
+                    'Major': {'type': 'integer'},
+                    'Minor': {'type': 'integer'},
+                    'Number': {'$ref': '#/definitions/Number'},
+                    'Patch': {'type': 'integer'},
+                    'Release': {'type': 'string'},
+                    'Tag': {'type': 'string'},
+                },
+                'required': [
+                    'Major',
+                    'Minor',
+                    'Tag',
+                    'Patch',
+                    'Build',
+                    'Number',
+                    'Release',
+                    'Arch',
+                ],
+                'type': 'object',
+            },
+            'BranchStatus': {
+                'additionalProperties': False,
+                'properties': {
+                    'assigned-units': {
+                        'patternProperties': {
+                            '.*': {'items': {'type': 'string'}, 'type': 'array'}
+                        },
+                        'type': 'object',
+                    },
+                    'created': {'type': 'integer'},
+                    'created-by': {'type': 'string'},
+                },
+                'required': ['assigned-units', 'created', 'created-by'],
+                'type': 'object',
+            },
+            'DetailedStatus': {
+                'additionalProperties': False,
+                'properties': {
+                    'data': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'err': {'$ref': '#/definitions/Error'},
+                    'info': {'type': 'string'},
+                    'kind': {'type': 'string'},
+                    'life': {'type': 'string'},
+                    'since': {'format': 'date-time', 'type': 'string'},
+                    'status': {'type': 'string'},
+                    'version': {'type': 'string'},
+                },
+                'required': [
+                    'status',
+                    'info',
+                    'data',
+                    'since',
+                    'kind',
+                    'version',
+                    'life',
+                ],
+                'type': 'object',
+            },
+            'EndpointStatus': {
+                'additionalProperties': False,
+                'properties': {
+                    'application': {'type': 'string'},
+                    'name': {'type': 'string'},
+                    'role': {'type': 'string'},
+                    'subordinate': {'type': 'boolean'},
+                },
+                'required': ['application', 'name', 'role', 'subordinate'],
+                'type': 'object',
+            },
+            'Error': {
+                'additionalProperties': False,
+                'properties': {
+                    'code': {'type': 'string'},
+                    'info': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'message': {'type': 'string'},
+                },
+                'required': ['message', 'code'],
+                'type': 'object',
+            },
+            'ExposedEndpoint': {
+                'additionalProperties': False,
+                'properties': {
+                    'expose-to-cidrs': {'items': {'type': 'string'}, 'type': 'array'},
+                    'expose-to-spaces': {'items': {'type': 'string'}, 'type': 'array'},
+                },
+                'type': 'object',
+            },
+            'FindToolsParams': {
+                'additionalProperties': False,
+                'properties': {
+                    'agentstream': {'type': 'string'},
+                    'arch': {'type': 'string'},
+                    'major': {'type': 'integer'},
+                    'number': {'$ref': '#/definitions/Number'},
+                    'os-type': {'type': 'string'},
+                },
+                'required': ['number', 'major', 'arch', 'os-type', 'agentstream'],
+                'type': 'object',
+            },
+            'FindToolsResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'list': {'items': {'$ref': '#/definitions/Tools'}, 'type': 'array'},
+                },
+                'required': ['list'],
+                'type': 'object',
+            },
+            'FullStatus': {
+                'additionalProperties': False,
+                'properties': {
+                    'applications': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/ApplicationStatus'}
+                        },
+                        'type': 'object',
+                    },
+                    'branches': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/BranchStatus'}
+                        },
+                        'type': 'object',
+                    },
+                    'controller-timestamp': {'format': 'date-time', 'type': 'string'},
+                    'machines': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/MachineStatus'}
+                        },
+                        'type': 'object',
+                    },
+                    'model': {'$ref': '#/definitions/ModelStatusInfo'},
+                    'offers': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/ApplicationOfferStatus'}
+                        },
+                        'type': 'object',
+                    },
+                    'relations': {
+                        'items': {'$ref': '#/definitions/RelationStatus'},
+                        'type': 'array',
+                    },
+                    'remote-applications': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/RemoteApplicationStatus'}
+                        },
+                        'type': 'object',
+                    },
+                },
+                'required': [
+                    'model',
+                    'machines',
+                    'applications',
+                    'remote-applications',
+                    'offers',
+                    'relations',
+                    'controller-timestamp',
+                    'branches',
+                ],
+                'type': 'object',
+            },
+            'History': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'statuses': {
+                        'items': {'$ref': '#/definitions/DetailedStatus'},
+                        'type': 'array',
+                    },
+                },
+                'required': ['statuses'],
+                'type': 'object',
+            },
+            'LXDProfile': {
+                'additionalProperties': False,
+                'properties': {
+                    'config': {
+                        'patternProperties': {'.*': {'type': 'string'}},
+                        'type': 'object',
+                    },
+                    'description': {'type': 'string'},
+                    'devices': {
+                        'patternProperties': {
+                            '.*': {
+                                'patternProperties': {'.*': {'type': 'string'}},
+                                'type': 'object',
+                            }
+                        },
+                        'type': 'object',
+                    },
+                },
+                'required': ['config', 'description', 'devices'],
+                'type': 'object',
+            },
+            'MachineStatus': {
+                'additionalProperties': False,
+                'properties': {
+                    'agent-status': {'$ref': '#/definitions/DetailedStatus'},
+                    'base': {'$ref': '#/definitions/Base'},
+                    'constraints': {'type': 'string'},
+                    'containers': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/MachineStatus'}
+                        },
+                        'type': 'object',
+                    },
+                    'display-name': {'type': 'string'},
+                    'dns-name': {'type': 'string'},
+                    'hardware': {'type': 'string'},
+                    'has-vote': {'type': 'boolean'},
+                    'hostname': {'type': 'string'},
+                    'id': {'type': 'string'},
+                    'instance-id': {'type': 'string'},
+                    'instance-status': {'$ref': '#/definitions/DetailedStatus'},
+                    'ip-addresses': {'items': {'type': 'string'}, 'type': 'array'},
+                    'jobs': {'items': {'type': 'string'}, 'type': 'array'},
+                    'lxd-profiles': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/LXDProfile'}
+                        },
+                        'type': 'object',
+                    },
+                    'modification-status': {'$ref': '#/definitions/DetailedStatus'},
+                    'network-interfaces': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/NetworkInterface'}
+                        },
+                        'type': 'object',
+                    },
+                    'primary-controller-machine': {'type': 'boolean'},
+                    'wants-vote': {'type': 'boolean'},
+                },
+                'required': [
+                    'agent-status',
+                    'instance-status',
+                    'modification-status',
+                    'dns-name',
+                    'instance-id',
+                    'display-name',
+                    'base',
+                    'id',
+                    'containers',
+                    'constraints',
+                    'hardware',
+                    'jobs',
+                    'has-vote',
+                    'wants-vote',
+                ],
+                'type': 'object',
+            },
+            'MeterStatus': {
+                'additionalProperties': False,
+                'properties': {
+                    'color': {'type': 'string'},
+                    'message': {'type': 'string'},
+                },
+                'required': ['color', 'message'],
+                'type': 'object',
+            },
+            'ModelStatusInfo': {
+                'additionalProperties': False,
+                'properties': {
+                    'available-version': {'type': 'string'},
+                    'cloud-tag': {'type': 'string'},
+                    'meter-status': {'$ref': '#/definitions/MeterStatus'},
+                    'model-status': {'$ref': '#/definitions/DetailedStatus'},
+                    'name': {'type': 'string'},
+                    'region': {'type': 'string'},
+                    'sla': {'type': 'string'},
+                    'type': {'type': 'string'},
+                    'version': {'type': 'string'},
+                },
+                'required': [
+                    'name',
+                    'type',
+                    'cloud-tag',
+                    'version',
+                    'available-version',
+                    'model-status',
+                    'meter-status',
+                    'sla',
+                ],
+                'type': 'object',
+            },
+            'NetworkInterface': {
+                'additionalProperties': False,
+                'properties': {
+                    'dns-nameservers': {'items': {'type': 'string'}, 'type': 'array'},
+                    'gateway': {'type': 'string'},
+                    'ip-addresses': {'items': {'type': 'string'}, 'type': 'array'},
+                    'is-up': {'type': 'boolean'},
+                    'mac-address': {'type': 'string'},
+                    'space': {'type': 'string'},
+                },
+                'required': ['ip-addresses', 'mac-address', 'is-up'],
+                'type': 'object',
+            },
+            'Number': {
+                'additionalProperties': False,
+                'properties': {
+                    'Build': {'type': 'integer'},
+                    'Major': {'type': 'integer'},
+                    'Minor': {'type': 'integer'},
+                    'Patch': {'type': 'integer'},
+                    'Tag': {'type': 'string'},
+                },
+                'required': ['Major', 'Minor', 'Tag', 'Patch', 'Build'],
+                'type': 'object',
+            },
+            'RelationStatus': {
+                'additionalProperties': False,
+                'properties': {
+                    'endpoints': {
+                        'items': {'$ref': '#/definitions/EndpointStatus'},
+                        'type': 'array',
+                    },
+                    'id': {'type': 'integer'},
+                    'interface': {'type': 'string'},
+                    'key': {'type': 'string'},
+                    'scope': {'type': 'string'},
+                    'status': {'$ref': '#/definitions/DetailedStatus'},
+                },
+                'required': ['id', 'key', 'interface', 'scope', 'endpoints', 'status'],
+                'type': 'object',
+            },
+            'RemoteApplicationStatus': {
+                'additionalProperties': False,
+                'properties': {
+                    'endpoints': {
+                        'items': {'$ref': '#/definitions/RemoteEndpoint'},
+                        'type': 'array',
+                    },
+                    'err': {'$ref': '#/definitions/Error'},
+                    'life': {'type': 'string'},
+                    'offer-name': {'type': 'string'},
+                    'offer-url': {'type': 'string'},
+                    'relations': {
+                        'patternProperties': {
+                            '.*': {'items': {'type': 'string'}, 'type': 'array'}
+                        },
+                        'type': 'object',
+                    },
+                    'status': {'$ref': '#/definitions/DetailedStatus'},
+                },
+                'required': [
+                    'offer-url',
+                    'offer-name',
+                    'endpoints',
+                    'life',
+                    'relations',
+                    'status',
+                ],
+                'type': 'object',
+            },
+            'RemoteEndpoint': {
+                'additionalProperties': False,
+                'properties': {
+                    'interface': {'type': 'string'},
+                    'limit': {'type': 'integer'},
+                    'name': {'type': 'string'},
+                    'role': {'type': 'string'},
+                },
+                'required': ['name', 'role', 'interface', 'limit'],
+                'type': 'object',
+            },
+            'StatusHistoryFilter': {
+                'additionalProperties': False,
+                'properties': {
+                    'date': {'format': 'date-time', 'type': 'string'},
+                    'delta': {'type': 'integer'},
+                    'exclude': {'items': {'type': 'string'}, 'type': 'array'},
+                    'size': {'type': 'integer'},
+                },
+                'required': ['size', 'date', 'delta', 'exclude'],
+                'type': 'object',
+            },
+            'StatusHistoryRequest': {
+                'additionalProperties': False,
+                'properties': {
+                    'filter': {'$ref': '#/definitions/StatusHistoryFilter'},
+                    'historyKind': {'type': 'string'},
+                    'size': {'type': 'integer'},
+                    'tag': {'type': 'string'},
+                },
+                'required': ['historyKind', 'size', 'filter', 'tag'],
+                'type': 'object',
+            },
+            'StatusHistoryRequests': {
+                'additionalProperties': False,
+                'properties': {
+                    'requests': {
+                        'items': {'$ref': '#/definitions/StatusHistoryRequest'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['requests'],
+                'type': 'object',
+            },
+            'StatusHistoryResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'history': {'$ref': '#/definitions/History'},
+                },
+                'required': ['history'],
+                'type': 'object',
+            },
+            'StatusHistoryResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/StatusHistoryResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'StatusParams': {
+                'additionalProperties': False,
+                'properties': {
+                    'patterns': {'items': {'type': 'string'}, 'type': 'array'}
+                },
+                'required': ['patterns'],
+                'type': 'object',
+            },
+            'Tools': {
+                'additionalProperties': False,
+                'properties': {
+                    'sha256': {'type': 'string'},
+                    'size': {'type': 'integer'},
+                    'url': {'type': 'string'},
+                    'version': {'$ref': '#/definitions/Binary'},
+                },
+                'required': ['version', 'url', 'size'],
+                'type': 'object',
+            },
+            'UnitStatus': {
+                'additionalProperties': False,
+                'properties': {
+                    'address': {'type': 'string'},
+                    'agent-status': {'$ref': '#/definitions/DetailedStatus'},
+                    'charm': {'type': 'string'},
+                    'leader': {'type': 'boolean'},
+                    'machine': {'type': 'string'},
+                    'opened-ports': {'items': {'type': 'string'}, 'type': 'array'},
+                    'provider-id': {'type': 'string'},
+                    'public-address': {'type': 'string'},
+                    'subordinates': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/UnitStatus'}
+                        },
+                        'type': 'object',
+                    },
+                    'workload-status': {'$ref': '#/definitions/DetailedStatus'},
+                    'workload-version': {'type': 'string'},
+                },
+                'required': [
+                    'agent-status',
+                    'workload-status',
+                    'workload-version',
+                    'machine',
+                    'opened-ports',
+                    'public-address',
+                    'charm',
+                    'subordinates',
+                ],
+                'type': 'object',
+            },
+        },
+        'properties': {
+            'FindTools': {
+                'description': 'FindTools returns a List '
+                'containing all tools matching '
+                'the given parameters.\n'
+                'TODO(juju 3.1) - remove, used by '
+                '2.9 client only',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/FindToolsParams'},
+                    'Result': {'$ref': '#/definitions/FindToolsResult'},
+                },
+                'type': 'object',
+            },
+            'FullStatus': {
+                'description': 'FullStatus gives the '
+                'information needed for juju '
+                'status over the api',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/StatusParams'},
+                    'Result': {'$ref': '#/definitions/FullStatus'},
+                },
+                'type': 'object',
+            },
+            'StatusHistory': {
+                'description': 'StatusHistory returns a '
+                'slice of past statuses for '
+                'several entities.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/StatusHistoryRequests'},
+                    'Result': {'$ref': '#/definitions/StatusHistoryResults'},
+                },
+                'type': 'object',
+            },
+            'WatchAll': {
+                'description': 'WatchAll initiates a watcher for '
+                'entities in the connected model.',
+                'properties': {'Result': {'$ref': '#/definitions/AllWatcherId'}},
+                'type': 'object',
+            },
+        },
+        'type': 'object',
+    }
 
     @ReturnMapping(FindToolsResult)
-    async def FindTools(self, agentstream=None, arch=None, major=None, number=None, os_type=None):
+    async def FindTools(
+        self, agentstream=None, arch=None, major=None, number=None, os_type=None
+    ):
         """
         FindTools returns a List containing all tools matching the given parameters.
         TODO(juju 3.1) - remove, used by 2.9 client only
@@ -1297,7 +1818,9 @@ class ClientFacade(Type):
         Returns -> FindToolsResult
         """
         if agentstream is not None and not isinstance(agentstream, (bytes, str)):
-            raise TypeError(f'Expected agentstream to be a str, received: {type(agentstream)}')
+            raise TypeError(
+                f'Expected agentstream to be a str, received: {type(agentstream)}'
+            )
 
         if arch is not None and not isinstance(arch, (bytes, str)):
             raise TypeError(f'Expected arch to be a str, received: {type(arch)}')
@@ -1327,7 +1850,6 @@ class ClientFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(FullStatus)
     async def FullStatus(self, patterns=None):
         """
@@ -1337,7 +1859,9 @@ class ClientFacade(Type):
         Returns -> FullStatus
         """
         if patterns is not None and not isinstance(patterns, (bytes, str, list)):
-            raise TypeError(f'Expected patterns to be a Sequence, received: {type(patterns)}')
+            raise TypeError(
+                f'Expected patterns to be a Sequence, received: {type(patterns)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -1351,7 +1875,6 @@ class ClientFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(StatusHistoryResults)
     async def StatusHistory(self, requests=None):
         """
@@ -1361,7 +1884,9 @@ class ClientFacade(Type):
         Returns -> StatusHistoryResults
         """
         if requests is not None and not isinstance(requests, (bytes, str, list)):
-            raise TypeError(f'Expected requests to be a Sequence, received: {type(requests)}')
+            raise TypeError(
+                f'Expected requests to be a Sequence, received: {type(requests)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -1374,7 +1899,6 @@ class ClientFacade(Type):
         _params['requests'] = requests
         reply = await self.rpc(msg)
         return reply
-
 
     @ReturnMapping(AllWatcherId)
     async def WatchAll(self):
@@ -1397,203 +1921,338 @@ class ClientFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
+
 class SpacesFacade(Type):
     name = 'Spaces'
     version = 6
-    schema =     {'definitions': {'CreateSpaceParams': {'additionalProperties': False,
-                                           'properties': {'cidrs': {'items': {'type': 'string'},
-                                                                    'type': 'array'},
-                                                          'provider-id': {'type': 'string'},
-                                                          'public': {'type': 'boolean'},
-                                                          'space-tag': {'type': 'string'}},
-                                           'required': ['cidrs',
-                                                        'space-tag',
-                                                        'public'],
-                                           'type': 'object'},
-                     'CreateSpacesParams': {'additionalProperties': False,
-                                            'properties': {'spaces': {'items': {'$ref': '#/definitions/CreateSpaceParams'},
-                                                                      'type': 'array'}},
-                                            'required': ['spaces'],
-                                            'type': 'object'},
-                     'Entities': {'additionalProperties': False,
-                                  'properties': {'entities': {'items': {'$ref': '#/definitions/Entity'},
-                                                              'type': 'array'}},
-                                  'required': ['entities'],
-                                  'type': 'object'},
-                     'Entity': {'additionalProperties': False,
-                                'properties': {'tag': {'type': 'string'}},
-                                'required': ['tag'],
-                                'type': 'object'},
-                     'Error': {'additionalProperties': False,
-                               'properties': {'code': {'type': 'string'},
-                                              'info': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                    'type': 'object'}},
-                                                       'type': 'object'},
-                                              'message': {'type': 'string'}},
-                               'required': ['message', 'code'],
-                               'type': 'object'},
-                     'ErrorResult': {'additionalProperties': False,
-                                     'properties': {'error': {'$ref': '#/definitions/Error'}},
-                                     'type': 'object'},
-                     'ErrorResults': {'additionalProperties': False,
-                                      'properties': {'results': {'items': {'$ref': '#/definitions/ErrorResult'},
-                                                                 'type': 'array'}},
-                                      'required': ['results'],
-                                      'type': 'object'},
-                     'ListSpacesResults': {'additionalProperties': False,
-                                           'properties': {'results': {'items': {'$ref': '#/definitions/Space'},
-                                                                      'type': 'array'}},
-                                           'required': ['results'],
-                                           'type': 'object'},
-                     'MoveSubnetsParam': {'additionalProperties': False,
-                                          'properties': {'force': {'type': 'boolean'},
-                                                         'space-tag': {'type': 'string'},
-                                                         'subnets': {'items': {'type': 'string'},
-                                                                     'type': 'array'}},
-                                          'required': ['subnets',
-                                                       'space-tag',
-                                                       'force'],
-                                          'type': 'object'},
-                     'MoveSubnetsParams': {'additionalProperties': False,
-                                           'properties': {'args': {'items': {'$ref': '#/definitions/MoveSubnetsParam'},
-                                                                   'type': 'array'}},
-                                           'required': ['args'],
-                                           'type': 'object'},
-                     'MoveSubnetsResult': {'additionalProperties': False,
-                                           'properties': {'error': {'$ref': '#/definitions/Error'},
-                                                          'moved-subnets': {'items': {'$ref': '#/definitions/MovedSubnet'},
-                                                                            'type': 'array'},
-                                                          'new-space': {'type': 'string'}},
-                                           'required': ['new-space'],
-                                           'type': 'object'},
-                     'MoveSubnetsResults': {'additionalProperties': False,
-                                            'properties': {'results': {'items': {'$ref': '#/definitions/MoveSubnetsResult'},
-                                                                       'type': 'array'}},
-                                            'required': ['results'],
-                                            'type': 'object'},
-                     'MovedSubnet': {'additionalProperties': False,
-                                     'properties': {'cidr': {'type': 'string'},
-                                                    'old-space': {'type': 'string'},
-                                                    'subnet': {'type': 'string'}},
-                                     'required': ['subnet', 'old-space', 'cidr'],
-                                     'type': 'object'},
-                     'RemoveSpaceParam': {'additionalProperties': False,
-                                          'properties': {'dry-run': {'type': 'boolean'},
-                                                         'force': {'type': 'boolean'},
-                                                         'space': {'$ref': '#/definitions/Entity'}},
-                                          'required': ['space'],
-                                          'type': 'object'},
-                     'RemoveSpaceParams': {'additionalProperties': False,
-                                           'properties': {'space-param': {'items': {'$ref': '#/definitions/RemoveSpaceParam'},
-                                                                          'type': 'array'}},
-                                           'required': ['space-param'],
-                                           'type': 'object'},
-                     'RemoveSpaceResult': {'additionalProperties': False,
-                                           'properties': {'bindings': {'items': {'$ref': '#/definitions/Entity'},
-                                                                       'type': 'array'},
-                                                          'constraints': {'items': {'$ref': '#/definitions/Entity'},
-                                                                          'type': 'array'},
-                                                          'controller-settings': {'items': {'type': 'string'},
-                                                                                  'type': 'array'},
-                                                          'error': {'$ref': '#/definitions/Error'}},
-                                           'type': 'object'},
-                     'RemoveSpaceResults': {'additionalProperties': False,
-                                            'properties': {'results': {'items': {'$ref': '#/definitions/RemoveSpaceResult'},
-                                                                       'type': 'array'}},
-                                            'required': ['results'],
-                                            'type': 'object'},
-                     'RenameSpaceParams': {'additionalProperties': False,
-                                           'properties': {'from-space-tag': {'type': 'string'},
-                                                          'to-space-tag': {'type': 'string'}},
-                                           'required': ['from-space-tag',
-                                                        'to-space-tag'],
-                                           'type': 'object'},
-                     'RenameSpacesParams': {'additionalProperties': False,
-                                            'properties': {'changes': {'items': {'$ref': '#/definitions/RenameSpaceParams'},
-                                                                       'type': 'array'}},
-                                            'required': ['changes'],
-                                            'type': 'object'},
-                     'ShowSpaceResult': {'additionalProperties': False,
-                                         'properties': {'applications': {'items': {'type': 'string'},
-                                                                         'type': 'array'},
-                                                        'error': {'$ref': '#/definitions/Error'},
-                                                        'machine-count': {'type': 'integer'},
-                                                        'space': {'$ref': '#/definitions/Space'}},
-                                         'required': ['space',
-                                                      'applications',
-                                                      'machine-count'],
-                                         'type': 'object'},
-                     'ShowSpaceResults': {'additionalProperties': False,
-                                          'properties': {'results': {'items': {'$ref': '#/definitions/ShowSpaceResult'},
-                                                                     'type': 'array'}},
-                                          'required': ['results'],
-                                          'type': 'object'},
-                     'Space': {'additionalProperties': False,
-                               'properties': {'error': {'$ref': '#/definitions/Error'},
-                                              'id': {'type': 'string'},
-                                              'name': {'type': 'string'},
-                                              'subnets': {'items': {'$ref': '#/definitions/Subnet'},
-                                                          'type': 'array'}},
-                               'required': ['id', 'name', 'subnets'],
-                               'type': 'object'},
-                     'Subnet': {'additionalProperties': False,
-                                'properties': {'cidr': {'type': 'string'},
-                                               'life': {'type': 'string'},
-                                               'provider-id': {'type': 'string'},
-                                               'provider-network-id': {'type': 'string'},
-                                               'provider-space-id': {'type': 'string'},
-                                               'space-tag': {'type': 'string'},
-                                               'status': {'type': 'string'},
-                                               'vlan-tag': {'type': 'integer'},
-                                               'zones': {'items': {'type': 'string'},
-                                                         'type': 'array'}},
-                                'required': ['cidr',
-                                             'vlan-tag',
-                                             'life',
-                                             'space-tag',
-                                             'zones'],
-                                'type': 'object'}},
-     'properties': {'CreateSpaces': {'description': 'CreateSpaces creates a new '
-                                                    'Juju network space, '
-                                                    'associating the\n'
-                                                    'specified subnets with it '
-                                                    '(optional; can be empty).',
-                                     'properties': {'Params': {'$ref': '#/definitions/CreateSpacesParams'},
-                                                    'Result': {'$ref': '#/definitions/ErrorResults'}},
-                                     'type': 'object'},
-                    'ListSpaces': {'description': 'ListSpaces lists all the '
-                                                  'available spaces and their '
-                                                  'associated subnets.',
-                                   'properties': {'Result': {'$ref': '#/definitions/ListSpacesResults'}},
-                                   'type': 'object'},
-                    'MoveSubnets': {'description': 'MoveSubnets ensures that the '
-                                                   'input subnets are in the input '
-                                                   'space.',
-                                    'properties': {'Params': {'$ref': '#/definitions/MoveSubnetsParams'},
-                                                   'Result': {'$ref': '#/definitions/MoveSubnetsResults'}},
-                                    'type': 'object'},
-                    'ReloadSpaces': {'description': 'ReloadSpaces refreshes spaces '
-                                                    'from substrate',
-                                     'type': 'object'},
-                    'RemoveSpace': {'description': 'RemoveSpace removes a space.\n'
-                                                   'Returns SpaceResults if '
-                                                   'entities/settings are found '
-                                                   'which makes the deletion not '
-                                                   'possible.',
-                                    'properties': {'Params': {'$ref': '#/definitions/RemoveSpaceParams'},
-                                                   'Result': {'$ref': '#/definitions/RemoveSpaceResults'}},
-                                    'type': 'object'},
-                    'RenameSpace': {'description': 'RenameSpace renames a space.',
-                                    'properties': {'Params': {'$ref': '#/definitions/RenameSpacesParams'},
-                                                   'Result': {'$ref': '#/definitions/ErrorResults'}},
-                                    'type': 'object'},
-                    'ShowSpace': {'description': 'ShowSpace shows the spaces for a '
-                                                 'set of given entities.',
-                                  'properties': {'Params': {'$ref': '#/definitions/Entities'},
-                                                 'Result': {'$ref': '#/definitions/ShowSpaceResults'}},
-                                  'type': 'object'}},
-     'type': 'object'}
-
+    schema = {
+        'definitions': {
+            'CreateSpaceParams': {
+                'additionalProperties': False,
+                'properties': {
+                    'cidrs': {'items': {'type': 'string'}, 'type': 'array'},
+                    'provider-id': {'type': 'string'},
+                    'public': {'type': 'boolean'},
+                    'space-tag': {'type': 'string'},
+                },
+                'required': ['cidrs', 'space-tag', 'public'],
+                'type': 'object',
+            },
+            'CreateSpacesParams': {
+                'additionalProperties': False,
+                'properties': {
+                    'spaces': {
+                        'items': {'$ref': '#/definitions/CreateSpaceParams'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['spaces'],
+                'type': 'object',
+            },
+            'Entities': {
+                'additionalProperties': False,
+                'properties': {
+                    'entities': {
+                        'items': {'$ref': '#/definitions/Entity'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['entities'],
+                'type': 'object',
+            },
+            'Entity': {
+                'additionalProperties': False,
+                'properties': {'tag': {'type': 'string'}},
+                'required': ['tag'],
+                'type': 'object',
+            },
+            'Error': {
+                'additionalProperties': False,
+                'properties': {
+                    'code': {'type': 'string'},
+                    'info': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'message': {'type': 'string'},
+                },
+                'required': ['message', 'code'],
+                'type': 'object',
+            },
+            'ErrorResult': {
+                'additionalProperties': False,
+                'properties': {'error': {'$ref': '#/definitions/Error'}},
+                'type': 'object',
+            },
+            'ErrorResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/ErrorResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'ListSpacesResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/Space'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'MoveSubnetsParam': {
+                'additionalProperties': False,
+                'properties': {
+                    'force': {'type': 'boolean'},
+                    'space-tag': {'type': 'string'},
+                    'subnets': {'items': {'type': 'string'}, 'type': 'array'},
+                },
+                'required': ['subnets', 'space-tag', 'force'],
+                'type': 'object',
+            },
+            'MoveSubnetsParams': {
+                'additionalProperties': False,
+                'properties': {
+                    'args': {
+                        'items': {'$ref': '#/definitions/MoveSubnetsParam'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['args'],
+                'type': 'object',
+            },
+            'MoveSubnetsResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'moved-subnets': {
+                        'items': {'$ref': '#/definitions/MovedSubnet'},
+                        'type': 'array',
+                    },
+                    'new-space': {'type': 'string'},
+                },
+                'required': ['new-space'],
+                'type': 'object',
+            },
+            'MoveSubnetsResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/MoveSubnetsResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'MovedSubnet': {
+                'additionalProperties': False,
+                'properties': {
+                    'cidr': {'type': 'string'},
+                    'old-space': {'type': 'string'},
+                    'subnet': {'type': 'string'},
+                },
+                'required': ['subnet', 'old-space', 'cidr'],
+                'type': 'object',
+            },
+            'RemoveSpaceParam': {
+                'additionalProperties': False,
+                'properties': {
+                    'dry-run': {'type': 'boolean'},
+                    'force': {'type': 'boolean'},
+                    'space': {'$ref': '#/definitions/Entity'},
+                },
+                'required': ['space'],
+                'type': 'object',
+            },
+            'RemoveSpaceParams': {
+                'additionalProperties': False,
+                'properties': {
+                    'space-param': {
+                        'items': {'$ref': '#/definitions/RemoveSpaceParam'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['space-param'],
+                'type': 'object',
+            },
+            'RemoveSpaceResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'bindings': {
+                        'items': {'$ref': '#/definitions/Entity'},
+                        'type': 'array',
+                    },
+                    'constraints': {
+                        'items': {'$ref': '#/definitions/Entity'},
+                        'type': 'array',
+                    },
+                    'controller-settings': {
+                        'items': {'type': 'string'},
+                        'type': 'array',
+                    },
+                    'error': {'$ref': '#/definitions/Error'},
+                },
+                'type': 'object',
+            },
+            'RemoveSpaceResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/RemoveSpaceResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'RenameSpaceParams': {
+                'additionalProperties': False,
+                'properties': {
+                    'from-space-tag': {'type': 'string'},
+                    'to-space-tag': {'type': 'string'},
+                },
+                'required': ['from-space-tag', 'to-space-tag'],
+                'type': 'object',
+            },
+            'RenameSpacesParams': {
+                'additionalProperties': False,
+                'properties': {
+                    'changes': {
+                        'items': {'$ref': '#/definitions/RenameSpaceParams'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['changes'],
+                'type': 'object',
+            },
+            'ShowSpaceResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'applications': {'items': {'type': 'string'}, 'type': 'array'},
+                    'error': {'$ref': '#/definitions/Error'},
+                    'machine-count': {'type': 'integer'},
+                    'space': {'$ref': '#/definitions/Space'},
+                },
+                'required': ['space', 'applications', 'machine-count'],
+                'type': 'object',
+            },
+            'ShowSpaceResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/ShowSpaceResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'Space': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'id': {'type': 'string'},
+                    'name': {'type': 'string'},
+                    'subnets': {
+                        'items': {'$ref': '#/definitions/Subnet'},
+                        'type': 'array',
+                    },
+                },
+                'required': ['id', 'name', 'subnets'],
+                'type': 'object',
+            },
+            'Subnet': {
+                'additionalProperties': False,
+                'properties': {
+                    'cidr': {'type': 'string'},
+                    'life': {'type': 'string'},
+                    'provider-id': {'type': 'string'},
+                    'provider-network-id': {'type': 'string'},
+                    'provider-space-id': {'type': 'string'},
+                    'space-tag': {'type': 'string'},
+                    'status': {'type': 'string'},
+                    'vlan-tag': {'type': 'integer'},
+                    'zones': {'items': {'type': 'string'}, 'type': 'array'},
+                },
+                'required': ['cidr', 'vlan-tag', 'life', 'space-tag', 'zones'],
+                'type': 'object',
+            },
+        },
+        'properties': {
+            'CreateSpaces': {
+                'description': 'CreateSpaces creates a new '
+                'Juju network space, '
+                'associating the\n'
+                'specified subnets with it '
+                '(optional; can be empty).',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/CreateSpacesParams'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+            'ListSpaces': {
+                'description': 'ListSpaces lists all the '
+                'available spaces and their '
+                'associated subnets.',
+                'properties': {'Result': {'$ref': '#/definitions/ListSpacesResults'}},
+                'type': 'object',
+            },
+            'MoveSubnets': {
+                'description': 'MoveSubnets ensures that the '
+                'input subnets are in the input '
+                'space.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/MoveSubnetsParams'},
+                    'Result': {'$ref': '#/definitions/MoveSubnetsResults'},
+                },
+                'type': 'object',
+            },
+            'ReloadSpaces': {
+                'description': 'ReloadSpaces refreshes spaces ' 'from substrate',
+                'type': 'object',
+            },
+            'RemoveSpace': {
+                'description': 'RemoveSpace removes a space.\n'
+                'Returns SpaceResults if '
+                'entities/settings are found '
+                'which makes the deletion not '
+                'possible.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/RemoveSpaceParams'},
+                    'Result': {'$ref': '#/definitions/RemoveSpaceResults'},
+                },
+                'type': 'object',
+            },
+            'RenameSpace': {
+                'description': 'RenameSpace renames a space.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/RenameSpacesParams'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+            'ShowSpace': {
+                'description': 'ShowSpace shows the spaces for a '
+                'set of given entities.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/Entities'},
+                    'Result': {'$ref': '#/definitions/ShowSpaceResults'},
+                },
+                'type': 'object',
+            },
+        },
+        'type': 'object',
+    }
 
     @ReturnMapping(ErrorResults)
     async def CreateSpaces(self, spaces=None):
@@ -1605,7 +2264,9 @@ class SpacesFacade(Type):
         Returns -> ErrorResults
         """
         if spaces is not None and not isinstance(spaces, (bytes, str, list)):
-            raise TypeError(f'Expected spaces to be a Sequence, received: {type(spaces)}')
+            raise TypeError(
+                f'Expected spaces to be a Sequence, received: {type(spaces)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -1618,7 +2279,6 @@ class SpacesFacade(Type):
         _params['spaces'] = spaces
         reply = await self.rpc(msg)
         return reply
-
 
     @ReturnMapping(ListSpacesResults)
     async def ListSpaces(self):
@@ -1640,7 +2300,6 @@ class SpacesFacade(Type):
 
         reply = await self.rpc(msg)
         return reply
-
 
     @ReturnMapping(MoveSubnetsResults)
     async def MoveSubnets(self, args=None):
@@ -1665,7 +2324,6 @@ class SpacesFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(None)
     async def ReloadSpaces(self):
         """
@@ -1687,7 +2345,6 @@ class SpacesFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(RemoveSpaceResults)
     async def RemoveSpace(self, space_param=None):
         """
@@ -1698,7 +2355,9 @@ class SpacesFacade(Type):
         Returns -> RemoveSpaceResults
         """
         if space_param is not None and not isinstance(space_param, (bytes, str, list)):
-            raise TypeError(f'Expected space_param to be a Sequence, received: {type(space_param)}')
+            raise TypeError(
+                f'Expected space_param to be a Sequence, received: {type(space_param)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -1712,7 +2371,6 @@ class SpacesFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(ErrorResults)
     async def RenameSpace(self, changes=None):
         """
@@ -1722,7 +2380,9 @@ class SpacesFacade(Type):
         Returns -> ErrorResults
         """
         if changes is not None and not isinstance(changes, (bytes, str, list)):
-            raise TypeError(f'Expected changes to be a Sequence, received: {type(changes)}')
+            raise TypeError(
+                f'Expected changes to be a Sequence, received: {type(changes)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -1736,7 +2396,6 @@ class SpacesFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(ShowSpaceResults)
     async def ShowSpace(self, entities=None):
         """
@@ -1746,7 +2405,9 @@ class SpacesFacade(Type):
         Returns -> ShowSpaceResults
         """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
+            raise TypeError(
+                f'Expected entities to be a Sequence, received: {type(entities)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -1760,458 +2421,788 @@ class SpacesFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
+
 class StorageFacade(Type):
     name = 'Storage'
     version = 6
-    schema =     {'definitions': {'AddStorageDetails': {'additionalProperties': False,
-                                           'properties': {'storage-tags': {'items': {'type': 'string'},
-                                                                           'type': 'array'}},
-                                           'required': ['storage-tags'],
-                                           'type': 'object'},
-                     'AddStorageResult': {'additionalProperties': False,
-                                          'properties': {'error': {'$ref': '#/definitions/Error'},
-                                                         'result': {'$ref': '#/definitions/AddStorageDetails'}},
-                                          'type': 'object'},
-                     'AddStorageResults': {'additionalProperties': False,
-                                           'properties': {'results': {'items': {'$ref': '#/definitions/AddStorageResult'},
-                                                                      'type': 'array'}},
-                                           'required': ['results'],
-                                           'type': 'object'},
-                     'BulkImportStorageParams': {'additionalProperties': False,
-                                                 'properties': {'storage': {'items': {'$ref': '#/definitions/ImportStorageParams'},
-                                                                            'type': 'array'}},
-                                                 'required': ['storage'],
-                                                 'type': 'object'},
-                     'Entities': {'additionalProperties': False,
-                                  'properties': {'entities': {'items': {'$ref': '#/definitions/Entity'},
-                                                              'type': 'array'}},
-                                  'required': ['entities'],
-                                  'type': 'object'},
-                     'Entity': {'additionalProperties': False,
-                                'properties': {'tag': {'type': 'string'}},
-                                'required': ['tag'],
-                                'type': 'object'},
-                     'EntityStatus': {'additionalProperties': False,
-                                      'properties': {'data': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                           'type': 'object'}},
-                                                              'type': 'object'},
-                                                     'info': {'type': 'string'},
-                                                     'since': {'format': 'date-time',
-                                                               'type': 'string'},
-                                                     'status': {'type': 'string'}},
-                                      'required': ['status', 'info', 'since'],
-                                      'type': 'object'},
-                     'Error': {'additionalProperties': False,
-                               'properties': {'code': {'type': 'string'},
-                                              'info': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                    'type': 'object'}},
-                                                       'type': 'object'},
-                                              'message': {'type': 'string'}},
-                               'required': ['message', 'code'],
-                               'type': 'object'},
-                     'ErrorResult': {'additionalProperties': False,
-                                     'properties': {'error': {'$ref': '#/definitions/Error'}},
-                                     'type': 'object'},
-                     'ErrorResults': {'additionalProperties': False,
-                                      'properties': {'results': {'items': {'$ref': '#/definitions/ErrorResult'},
-                                                                 'type': 'array'}},
-                                      'required': ['results'],
-                                      'type': 'object'},
-                     'FilesystemAttachmentDetails': {'additionalProperties': False,
-                                                     'properties': {'FilesystemAttachmentInfo': {'$ref': '#/definitions/FilesystemAttachmentInfo'},
-                                                                    'life': {'type': 'string'},
-                                                                    'mount-point': {'type': 'string'},
-                                                                    'read-only': {'type': 'boolean'}},
-                                                     'required': ['FilesystemAttachmentInfo'],
-                                                     'type': 'object'},
-                     'FilesystemAttachmentInfo': {'additionalProperties': False,
-                                                  'properties': {'mount-point': {'type': 'string'},
-                                                                 'read-only': {'type': 'boolean'}},
-                                                  'type': 'object'},
-                     'FilesystemDetails': {'additionalProperties': False,
-                                           'properties': {'filesystem-tag': {'type': 'string'},
-                                                          'info': {'$ref': '#/definitions/FilesystemInfo'},
-                                                          'life': {'type': 'string'},
-                                                          'machine-attachments': {'patternProperties': {'.*': {'$ref': '#/definitions/FilesystemAttachmentDetails'}},
-                                                                                  'type': 'object'},
-                                                          'status': {'$ref': '#/definitions/EntityStatus'},
-                                                          'storage': {'$ref': '#/definitions/StorageDetails'},
-                                                          'unit-attachments': {'patternProperties': {'.*': {'$ref': '#/definitions/FilesystemAttachmentDetails'}},
-                                                                               'type': 'object'},
-                                                          'volume-tag': {'type': 'string'}},
-                                           'required': ['filesystem-tag',
-                                                        'info',
-                                                        'status'],
-                                           'type': 'object'},
-                     'FilesystemDetailsListResult': {'additionalProperties': False,
-                                                     'properties': {'error': {'$ref': '#/definitions/Error'},
-                                                                    'result': {'items': {'$ref': '#/definitions/FilesystemDetails'},
-                                                                               'type': 'array'}},
-                                                     'type': 'object'},
-                     'FilesystemDetailsListResults': {'additionalProperties': False,
-                                                      'properties': {'results': {'items': {'$ref': '#/definitions/FilesystemDetailsListResult'},
-                                                                                 'type': 'array'}},
-                                                      'type': 'object'},
-                     'FilesystemFilter': {'additionalProperties': False,
-                                          'properties': {'machines': {'items': {'type': 'string'},
-                                                                      'type': 'array'}},
-                                          'type': 'object'},
-                     'FilesystemFilters': {'additionalProperties': False,
-                                           'properties': {'filters': {'items': {'$ref': '#/definitions/FilesystemFilter'},
-                                                                      'type': 'array'}},
-                                           'type': 'object'},
-                     'FilesystemInfo': {'additionalProperties': False,
-                                        'properties': {'filesystem-id': {'type': 'string'},
-                                                       'pool': {'type': 'string'},
-                                                       'size': {'type': 'integer'}},
-                                        'required': ['filesystem-id',
-                                                     'pool',
-                                                     'size'],
-                                        'type': 'object'},
-                     'ImportStorageDetails': {'additionalProperties': False,
-                                              'properties': {'storage-tag': {'type': 'string'}},
-                                              'required': ['storage-tag'],
-                                              'type': 'object'},
-                     'ImportStorageParams': {'additionalProperties': False,
-                                             'properties': {'kind': {'type': 'integer'},
-                                                            'pool': {'type': 'string'},
-                                                            'provider-id': {'type': 'string'},
-                                                            'storage-name': {'type': 'string'}},
-                                             'required': ['kind',
-                                                          'pool',
-                                                          'provider-id',
-                                                          'storage-name'],
-                                             'type': 'object'},
-                     'ImportStorageResult': {'additionalProperties': False,
-                                             'properties': {'error': {'$ref': '#/definitions/Error'},
-                                                            'result': {'$ref': '#/definitions/ImportStorageDetails'}},
-                                             'type': 'object'},
-                     'ImportStorageResults': {'additionalProperties': False,
-                                              'properties': {'results': {'items': {'$ref': '#/definitions/ImportStorageResult'},
-                                                                         'type': 'array'}},
-                                              'required': ['results'],
-                                              'type': 'object'},
-                     'RemoveStorage': {'additionalProperties': False,
-                                       'properties': {'storage': {'items': {'$ref': '#/definitions/RemoveStorageInstance'},
-                                                                  'type': 'array'}},
-                                       'required': ['storage'],
-                                       'type': 'object'},
-                     'RemoveStorageInstance': {'additionalProperties': False,
-                                               'properties': {'destroy-attachments': {'type': 'boolean'},
-                                                              'destroy-storage': {'type': 'boolean'},
-                                                              'force': {'type': 'boolean'},
-                                                              'max-wait': {'type': 'integer'},
-                                                              'tag': {'type': 'string'}},
-                                               'required': ['tag'],
-                                               'type': 'object'},
-                     'StorageAddParams': {'additionalProperties': False,
-                                          'properties': {'name': {'type': 'string'},
-                                                         'storage': {'$ref': '#/definitions/StorageConstraints'},
-                                                         'unit': {'type': 'string'}},
-                                          'required': ['unit', 'name', 'storage'],
-                                          'type': 'object'},
-                     'StorageAttachmentDetails': {'additionalProperties': False,
-                                                  'properties': {'life': {'type': 'string'},
-                                                                 'location': {'type': 'string'},
-                                                                 'machine-tag': {'type': 'string'},
-                                                                 'storage-tag': {'type': 'string'},
-                                                                 'unit-tag': {'type': 'string'}},
-                                                  'required': ['storage-tag',
-                                                               'unit-tag',
-                                                               'machine-tag'],
-                                                  'type': 'object'},
-                     'StorageAttachmentId': {'additionalProperties': False,
-                                             'properties': {'storage-tag': {'type': 'string'},
-                                                            'unit-tag': {'type': 'string'}},
-                                             'required': ['storage-tag',
-                                                          'unit-tag'],
-                                             'type': 'object'},
-                     'StorageAttachmentIds': {'additionalProperties': False,
-                                              'properties': {'ids': {'items': {'$ref': '#/definitions/StorageAttachmentId'},
-                                                                     'type': 'array'}},
-                                              'required': ['ids'],
-                                              'type': 'object'},
-                     'StorageConstraints': {'additionalProperties': False,
-                                            'properties': {'count': {'type': 'integer'},
-                                                           'pool': {'type': 'string'},
-                                                           'size': {'type': 'integer'}},
-                                            'type': 'object'},
-                     'StorageDetachmentParams': {'additionalProperties': False,
-                                                 'properties': {'force': {'type': 'boolean'},
-                                                                'ids': {'$ref': '#/definitions/StorageAttachmentIds'},
-                                                                'max-wait': {'type': 'integer'}},
-                                                 'required': ['ids'],
-                                                 'type': 'object'},
-                     'StorageDetails': {'additionalProperties': False,
-                                        'properties': {'attachments': {'patternProperties': {'.*': {'$ref': '#/definitions/StorageAttachmentDetails'}},
-                                                                       'type': 'object'},
-                                                       'kind': {'type': 'integer'},
-                                                       'life': {'type': 'string'},
-                                                       'owner-tag': {'type': 'string'},
-                                                       'persistent': {'type': 'boolean'},
-                                                       'status': {'$ref': '#/definitions/EntityStatus'},
-                                                       'storage-tag': {'type': 'string'}},
-                                        'required': ['storage-tag',
-                                                     'owner-tag',
-                                                     'kind',
-                                                     'status',
-                                                     'persistent'],
-                                        'type': 'object'},
-                     'StorageDetailsListResult': {'additionalProperties': False,
-                                                  'properties': {'error': {'$ref': '#/definitions/Error'},
-                                                                 'result': {'items': {'$ref': '#/definitions/StorageDetails'},
-                                                                            'type': 'array'}},
-                                                  'type': 'object'},
-                     'StorageDetailsListResults': {'additionalProperties': False,
-                                                   'properties': {'results': {'items': {'$ref': '#/definitions/StorageDetailsListResult'},
-                                                                              'type': 'array'}},
-                                                   'type': 'object'},
-                     'StorageDetailsResult': {'additionalProperties': False,
-                                              'properties': {'error': {'$ref': '#/definitions/Error'},
-                                                             'result': {'$ref': '#/definitions/StorageDetails'}},
-                                              'type': 'object'},
-                     'StorageDetailsResults': {'additionalProperties': False,
-                                               'properties': {'results': {'items': {'$ref': '#/definitions/StorageDetailsResult'},
-                                                                          'type': 'array'}},
-                                               'type': 'object'},
-                     'StorageFilter': {'additionalProperties': False,
-                                       'type': 'object'},
-                     'StorageFilters': {'additionalProperties': False,
-                                        'properties': {'filters': {'items': {'$ref': '#/definitions/StorageFilter'},
-                                                                   'type': 'array'}},
-                                        'type': 'object'},
-                     'StoragePool': {'additionalProperties': False,
-                                     'properties': {'attrs': {'patternProperties': {'.*': {'additionalProperties': True,
-                                                                                           'type': 'object'}},
-                                                              'type': 'object'},
-                                                    'name': {'type': 'string'},
-                                                    'provider': {'type': 'string'}},
-                                     'required': ['name', 'provider', 'attrs'],
-                                     'type': 'object'},
-                     'StoragePoolArgs': {'additionalProperties': False,
-                                         'properties': {'pools': {'items': {'$ref': '#/definitions/StoragePool'},
-                                                                  'type': 'array'}},
-                                         'required': ['pools'],
-                                         'type': 'object'},
-                     'StoragePoolDeleteArg': {'additionalProperties': False,
-                                              'properties': {'name': {'type': 'string'}},
-                                              'required': ['name'],
-                                              'type': 'object'},
-                     'StoragePoolDeleteArgs': {'additionalProperties': False,
-                                               'properties': {'pools': {'items': {'$ref': '#/definitions/StoragePoolDeleteArg'},
-                                                                        'type': 'array'}},
-                                               'required': ['pools'],
-                                               'type': 'object'},
-                     'StoragePoolFilter': {'additionalProperties': False,
-                                           'properties': {'names': {'items': {'type': 'string'},
-                                                                    'type': 'array'},
-                                                          'providers': {'items': {'type': 'string'},
-                                                                        'type': 'array'}},
-                                           'type': 'object'},
-                     'StoragePoolFilters': {'additionalProperties': False,
-                                            'properties': {'filters': {'items': {'$ref': '#/definitions/StoragePoolFilter'},
-                                                                       'type': 'array'}},
-                                            'type': 'object'},
-                     'StoragePoolsResult': {'additionalProperties': False,
-                                            'properties': {'error': {'$ref': '#/definitions/Error'},
-                                                           'storage-pools': {'items': {'$ref': '#/definitions/StoragePool'},
-                                                                             'type': 'array'}},
-                                            'type': 'object'},
-                     'StoragePoolsResults': {'additionalProperties': False,
-                                             'properties': {'results': {'items': {'$ref': '#/definitions/StoragePoolsResult'},
-                                                                        'type': 'array'}},
-                                             'type': 'object'},
-                     'StoragesAddParams': {'additionalProperties': False,
-                                           'properties': {'storages': {'items': {'$ref': '#/definitions/StorageAddParams'},
-                                                                       'type': 'array'}},
-                                           'required': ['storages'],
-                                           'type': 'object'},
-                     'VolumeAttachmentDetails': {'additionalProperties': False,
-                                                 'properties': {'VolumeAttachmentInfo': {'$ref': '#/definitions/VolumeAttachmentInfo'},
-                                                                'bus-address': {'type': 'string'},
-                                                                'device-link': {'type': 'string'},
-                                                                'device-name': {'type': 'string'},
-                                                                'life': {'type': 'string'},
-                                                                'plan-info': {'$ref': '#/definitions/VolumeAttachmentPlanInfo'},
-                                                                'read-only': {'type': 'boolean'}},
-                                                 'required': ['VolumeAttachmentInfo'],
-                                                 'type': 'object'},
-                     'VolumeAttachmentInfo': {'additionalProperties': False,
-                                              'properties': {'bus-address': {'type': 'string'},
-                                                             'device-link': {'type': 'string'},
-                                                             'device-name': {'type': 'string'},
-                                                             'plan-info': {'$ref': '#/definitions/VolumeAttachmentPlanInfo'},
-                                                             'read-only': {'type': 'boolean'}},
-                                              'type': 'object'},
-                     'VolumeAttachmentPlanInfo': {'additionalProperties': False,
-                                                  'properties': {'device-attributes': {'patternProperties': {'.*': {'type': 'string'}},
-                                                                                       'type': 'object'},
-                                                                 'device-type': {'type': 'string'}},
-                                                  'type': 'object'},
-                     'VolumeDetails': {'additionalProperties': False,
-                                       'properties': {'info': {'$ref': '#/definitions/VolumeInfo'},
-                                                      'life': {'type': 'string'},
-                                                      'machine-attachments': {'patternProperties': {'.*': {'$ref': '#/definitions/VolumeAttachmentDetails'}},
-                                                                              'type': 'object'},
-                                                      'status': {'$ref': '#/definitions/EntityStatus'},
-                                                      'storage': {'$ref': '#/definitions/StorageDetails'},
-                                                      'unit-attachments': {'patternProperties': {'.*': {'$ref': '#/definitions/VolumeAttachmentDetails'}},
-                                                                           'type': 'object'},
-                                                      'volume-tag': {'type': 'string'}},
-                                       'required': ['volume-tag', 'info', 'status'],
-                                       'type': 'object'},
-                     'VolumeDetailsListResult': {'additionalProperties': False,
-                                                 'properties': {'error': {'$ref': '#/definitions/Error'},
-                                                                'result': {'items': {'$ref': '#/definitions/VolumeDetails'},
-                                                                           'type': 'array'}},
-                                                 'type': 'object'},
-                     'VolumeDetailsListResults': {'additionalProperties': False,
-                                                  'properties': {'results': {'items': {'$ref': '#/definitions/VolumeDetailsListResult'},
-                                                                             'type': 'array'}},
-                                                  'type': 'object'},
-                     'VolumeFilter': {'additionalProperties': False,
-                                      'properties': {'machines': {'items': {'type': 'string'},
-                                                                  'type': 'array'}},
-                                      'type': 'object'},
-                     'VolumeFilters': {'additionalProperties': False,
-                                       'properties': {'filters': {'items': {'$ref': '#/definitions/VolumeFilter'},
-                                                                  'type': 'array'}},
-                                       'type': 'object'},
-                     'VolumeInfo': {'additionalProperties': False,
-                                    'properties': {'hardware-id': {'type': 'string'},
-                                                   'persistent': {'type': 'boolean'},
-                                                   'pool': {'type': 'string'},
-                                                   'size': {'type': 'integer'},
-                                                   'volume-id': {'type': 'string'},
-                                                   'wwn': {'type': 'string'}},
-                                    'required': ['volume-id', 'size', 'persistent'],
-                                    'type': 'object'}},
-     'properties': {'AddToUnit': {'description': 'AddToUnit validates and creates '
-                                                 'additional storage instances for '
-                                                 'units.\n'
-                                                 'A "CHANGE" block can block this '
-                                                 'operation.',
-                                  'properties': {'Params': {'$ref': '#/definitions/StoragesAddParams'},
-                                                 'Result': {'$ref': '#/definitions/AddStorageResults'}},
-                                  'type': 'object'},
-                    'Attach': {'description': 'Attach attaches existing storage '
-                                              'instances to units.\n'
-                                              'A "CHANGE" block can block this '
-                                              'operation.',
-                               'properties': {'Params': {'$ref': '#/definitions/StorageAttachmentIds'},
-                                              'Result': {'$ref': '#/definitions/ErrorResults'}},
-                               'type': 'object'},
-                    'CreatePool': {'description': 'CreatePool creates a new pool '
-                                                  'with specified parameters.',
-                                   'properties': {'Params': {'$ref': '#/definitions/StoragePoolArgs'},
-                                                  'Result': {'$ref': '#/definitions/ErrorResults'}},
-                                   'type': 'object'},
-                    'DetachStorage': {'description': 'DetachStorage sets the '
-                                                     'specified storage '
-                                                     'attachments to Dying, unless '
-                                                     'they are\n'
-                                                     'already Dying or Dead. Any '
-                                                     'associated, persistent '
-                                                     'storage will remain\n'
-                                                     'alive. This call can be '
-                                                     'forced.',
-                                      'properties': {'Params': {'$ref': '#/definitions/StorageDetachmentParams'},
-                                                     'Result': {'$ref': '#/definitions/ErrorResults'}},
-                                      'type': 'object'},
-                    'Import': {'description': 'Import imports existing storage '
-                                              'into the model.\n'
-                                              'A "CHANGE" block can block this '
-                                              'operation.',
-                               'properties': {'Params': {'$ref': '#/definitions/BulkImportStorageParams'},
-                                              'Result': {'$ref': '#/definitions/ImportStorageResults'}},
-                               'type': 'object'},
-                    'ListFilesystems': {'description': 'ListFilesystems returns a '
-                                                       'list of filesystems in the '
-                                                       'environment matching\n'
-                                                       'the provided filter. Each '
-                                                       'result describes a '
-                                                       'filesystem in detail, '
-                                                       'including\n'
-                                                       "the filesystem's "
-                                                       'attachments.',
-                                        'properties': {'Params': {'$ref': '#/definitions/FilesystemFilters'},
-                                                       'Result': {'$ref': '#/definitions/FilesystemDetailsListResults'}},
-                                        'type': 'object'},
-                    'ListPools': {'description': 'ListPools returns a list of '
-                                                 'pools.\n'
-                                                 'If filter is provided, returned '
-                                                 'list only contains pools that '
-                                                 'match\n'
-                                                 'the filter.\n'
-                                                 'Pools can be filtered on names '
-                                                 'and provider types.\n'
-                                                 'If both names and types are '
-                                                 'provided as filter,\n'
-                                                 'pools that match either are '
-                                                 'returned.\n'
-                                                 'This method lists union of pools '
-                                                 'and environment provider types.\n'
-                                                 'If no filter is provided, all '
-                                                 'pools are returned.',
-                                  'properties': {'Params': {'$ref': '#/definitions/StoragePoolFilters'},
-                                                 'Result': {'$ref': '#/definitions/StoragePoolsResults'}},
-                                  'type': 'object'},
-                    'ListStorageDetails': {'description': 'ListStorageDetails '
-                                                          'returns storage '
-                                                          'matching a filter.',
-                                           'properties': {'Params': {'$ref': '#/definitions/StorageFilters'},
-                                                          'Result': {'$ref': '#/definitions/StorageDetailsListResults'}},
-                                           'type': 'object'},
-                    'ListVolumes': {'description': 'ListVolumes lists volumes with '
-                                                   'the given filters. Each filter '
-                                                   'produces\n'
-                                                   'an independent list of '
-                                                   'volumes, or an error if the '
-                                                   'filter is invalid\n'
-                                                   'or the volumes could not be '
-                                                   'listed.',
-                                    'properties': {'Params': {'$ref': '#/definitions/VolumeFilters'},
-                                                   'Result': {'$ref': '#/definitions/VolumeDetailsListResults'}},
-                                    'type': 'object'},
-                    'Remove': {'description': 'Remove sets the specified storage '
-                                              'entities to Dying, unless they are\n'
-                                              'already Dying or Dead, such that '
-                                              'the storage will eventually be '
-                                              'removed\n'
-                                              'from the model. If the arguments '
-                                              'specify that the storage should be\n'
-                                              'destroyed, then the associated '
-                                              'cloud storage will be destroyed '
-                                              'first;\n'
-                                              'otherwise it will only be released '
-                                              "from Juju's control.",
-                               'properties': {'Params': {'$ref': '#/definitions/RemoveStorage'},
-                                              'Result': {'$ref': '#/definitions/ErrorResults'}},
-                               'type': 'object'},
-                    'RemovePool': {'description': 'RemovePool deletes the named '
-                                                  'pool',
-                                   'properties': {'Params': {'$ref': '#/definitions/StoragePoolDeleteArgs'},
-                                                  'Result': {'$ref': '#/definitions/ErrorResults'}},
-                                   'type': 'object'},
-                    'StorageDetails': {'description': 'StorageDetails retrieves '
-                                                      'and returns detailed '
-                                                      'information about desired\n'
-                                                      'storage identified by '
-                                                      'supplied tags. If specified '
-                                                      'storage cannot be\n'
-                                                      'retrieved, individual error '
-                                                      'is returned instead of '
-                                                      'storage information.',
-                                       'properties': {'Params': {'$ref': '#/definitions/Entities'},
-                                                      'Result': {'$ref': '#/definitions/StorageDetailsResults'}},
-                                       'type': 'object'},
-                    'UpdatePool': {'description': 'UpdatePool deletes the named '
-                                                  'pool',
-                                   'properties': {'Params': {'$ref': '#/definitions/StoragePoolArgs'},
-                                                  'Result': {'$ref': '#/definitions/ErrorResults'}},
-                                   'type': 'object'}},
-     'type': 'object'}
-
+    schema = {
+        'definitions': {
+            'AddStorageDetails': {
+                'additionalProperties': False,
+                'properties': {
+                    'storage-tags': {'items': {'type': 'string'}, 'type': 'array'}
+                },
+                'required': ['storage-tags'],
+                'type': 'object',
+            },
+            'AddStorageResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'result': {'$ref': '#/definitions/AddStorageDetails'},
+                },
+                'type': 'object',
+            },
+            'AddStorageResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/AddStorageResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'BulkImportStorageParams': {
+                'additionalProperties': False,
+                'properties': {
+                    'storage': {
+                        'items': {'$ref': '#/definitions/ImportStorageParams'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['storage'],
+                'type': 'object',
+            },
+            'Entities': {
+                'additionalProperties': False,
+                'properties': {
+                    'entities': {
+                        'items': {'$ref': '#/definitions/Entity'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['entities'],
+                'type': 'object',
+            },
+            'Entity': {
+                'additionalProperties': False,
+                'properties': {'tag': {'type': 'string'}},
+                'required': ['tag'],
+                'type': 'object',
+            },
+            'EntityStatus': {
+                'additionalProperties': False,
+                'properties': {
+                    'data': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'info': {'type': 'string'},
+                    'since': {'format': 'date-time', 'type': 'string'},
+                    'status': {'type': 'string'},
+                },
+                'required': ['status', 'info', 'since'],
+                'type': 'object',
+            },
+            'Error': {
+                'additionalProperties': False,
+                'properties': {
+                    'code': {'type': 'string'},
+                    'info': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'message': {'type': 'string'},
+                },
+                'required': ['message', 'code'],
+                'type': 'object',
+            },
+            'ErrorResult': {
+                'additionalProperties': False,
+                'properties': {'error': {'$ref': '#/definitions/Error'}},
+                'type': 'object',
+            },
+            'ErrorResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/ErrorResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'FilesystemAttachmentDetails': {
+                'additionalProperties': False,
+                'properties': {
+                    'FilesystemAttachmentInfo': {
+                        '$ref': '#/definitions/FilesystemAttachmentInfo'
+                    },
+                    'life': {'type': 'string'},
+                    'mount-point': {'type': 'string'},
+                    'read-only': {'type': 'boolean'},
+                },
+                'required': ['FilesystemAttachmentInfo'],
+                'type': 'object',
+            },
+            'FilesystemAttachmentInfo': {
+                'additionalProperties': False,
+                'properties': {
+                    'mount-point': {'type': 'string'},
+                    'read-only': {'type': 'boolean'},
+                },
+                'type': 'object',
+            },
+            'FilesystemDetails': {
+                'additionalProperties': False,
+                'properties': {
+                    'filesystem-tag': {'type': 'string'},
+                    'info': {'$ref': '#/definitions/FilesystemInfo'},
+                    'life': {'type': 'string'},
+                    'machine-attachments': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/FilesystemAttachmentDetails'}
+                        },
+                        'type': 'object',
+                    },
+                    'status': {'$ref': '#/definitions/EntityStatus'},
+                    'storage': {'$ref': '#/definitions/StorageDetails'},
+                    'unit-attachments': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/FilesystemAttachmentDetails'}
+                        },
+                        'type': 'object',
+                    },
+                    'volume-tag': {'type': 'string'},
+                },
+                'required': ['filesystem-tag', 'info', 'status'],
+                'type': 'object',
+            },
+            'FilesystemDetailsListResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'result': {
+                        'items': {'$ref': '#/definitions/FilesystemDetails'},
+                        'type': 'array',
+                    },
+                },
+                'type': 'object',
+            },
+            'FilesystemDetailsListResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/FilesystemDetailsListResult'},
+                        'type': 'array',
+                    }
+                },
+                'type': 'object',
+            },
+            'FilesystemFilter': {
+                'additionalProperties': False,
+                'properties': {
+                    'machines': {'items': {'type': 'string'}, 'type': 'array'}
+                },
+                'type': 'object',
+            },
+            'FilesystemFilters': {
+                'additionalProperties': False,
+                'properties': {
+                    'filters': {
+                        'items': {'$ref': '#/definitions/FilesystemFilter'},
+                        'type': 'array',
+                    }
+                },
+                'type': 'object',
+            },
+            'FilesystemInfo': {
+                'additionalProperties': False,
+                'properties': {
+                    'filesystem-id': {'type': 'string'},
+                    'pool': {'type': 'string'},
+                    'size': {'type': 'integer'},
+                },
+                'required': ['filesystem-id', 'pool', 'size'],
+                'type': 'object',
+            },
+            'ImportStorageDetails': {
+                'additionalProperties': False,
+                'properties': {'storage-tag': {'type': 'string'}},
+                'required': ['storage-tag'],
+                'type': 'object',
+            },
+            'ImportStorageParams': {
+                'additionalProperties': False,
+                'properties': {
+                    'kind': {'type': 'integer'},
+                    'pool': {'type': 'string'},
+                    'provider-id': {'type': 'string'},
+                    'storage-name': {'type': 'string'},
+                },
+                'required': ['kind', 'pool', 'provider-id', 'storage-name'],
+                'type': 'object',
+            },
+            'ImportStorageResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'result': {'$ref': '#/definitions/ImportStorageDetails'},
+                },
+                'type': 'object',
+            },
+            'ImportStorageResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/ImportStorageResult'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['results'],
+                'type': 'object',
+            },
+            'RemoveStorage': {
+                'additionalProperties': False,
+                'properties': {
+                    'storage': {
+                        'items': {'$ref': '#/definitions/RemoveStorageInstance'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['storage'],
+                'type': 'object',
+            },
+            'RemoveStorageInstance': {
+                'additionalProperties': False,
+                'properties': {
+                    'destroy-attachments': {'type': 'boolean'},
+                    'destroy-storage': {'type': 'boolean'},
+                    'force': {'type': 'boolean'},
+                    'max-wait': {'type': 'integer'},
+                    'tag': {'type': 'string'},
+                },
+                'required': ['tag'],
+                'type': 'object',
+            },
+            'StorageAddParams': {
+                'additionalProperties': False,
+                'properties': {
+                    'name': {'type': 'string'},
+                    'storage': {'$ref': '#/definitions/StorageConstraints'},
+                    'unit': {'type': 'string'},
+                },
+                'required': ['unit', 'name', 'storage'],
+                'type': 'object',
+            },
+            'StorageAttachmentDetails': {
+                'additionalProperties': False,
+                'properties': {
+                    'life': {'type': 'string'},
+                    'location': {'type': 'string'},
+                    'machine-tag': {'type': 'string'},
+                    'storage-tag': {'type': 'string'},
+                    'unit-tag': {'type': 'string'},
+                },
+                'required': ['storage-tag', 'unit-tag', 'machine-tag'],
+                'type': 'object',
+            },
+            'StorageAttachmentId': {
+                'additionalProperties': False,
+                'properties': {
+                    'storage-tag': {'type': 'string'},
+                    'unit-tag': {'type': 'string'},
+                },
+                'required': ['storage-tag', 'unit-tag'],
+                'type': 'object',
+            },
+            'StorageAttachmentIds': {
+                'additionalProperties': False,
+                'properties': {
+                    'ids': {
+                        'items': {'$ref': '#/definitions/StorageAttachmentId'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['ids'],
+                'type': 'object',
+            },
+            'StorageConstraints': {
+                'additionalProperties': False,
+                'properties': {
+                    'count': {'type': 'integer'},
+                    'pool': {'type': 'string'},
+                    'size': {'type': 'integer'},
+                },
+                'type': 'object',
+            },
+            'StorageDetachmentParams': {
+                'additionalProperties': False,
+                'properties': {
+                    'force': {'type': 'boolean'},
+                    'ids': {'$ref': '#/definitions/StorageAttachmentIds'},
+                    'max-wait': {'type': 'integer'},
+                },
+                'required': ['ids'],
+                'type': 'object',
+            },
+            'StorageDetails': {
+                'additionalProperties': False,
+                'properties': {
+                    'attachments': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/StorageAttachmentDetails'}
+                        },
+                        'type': 'object',
+                    },
+                    'kind': {'type': 'integer'},
+                    'life': {'type': 'string'},
+                    'owner-tag': {'type': 'string'},
+                    'persistent': {'type': 'boolean'},
+                    'status': {'$ref': '#/definitions/EntityStatus'},
+                    'storage-tag': {'type': 'string'},
+                },
+                'required': [
+                    'storage-tag',
+                    'owner-tag',
+                    'kind',
+                    'status',
+                    'persistent',
+                ],
+                'type': 'object',
+            },
+            'StorageDetailsListResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'result': {
+                        'items': {'$ref': '#/definitions/StorageDetails'},
+                        'type': 'array',
+                    },
+                },
+                'type': 'object',
+            },
+            'StorageDetailsListResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/StorageDetailsListResult'},
+                        'type': 'array',
+                    }
+                },
+                'type': 'object',
+            },
+            'StorageDetailsResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'result': {'$ref': '#/definitions/StorageDetails'},
+                },
+                'type': 'object',
+            },
+            'StorageDetailsResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/StorageDetailsResult'},
+                        'type': 'array',
+                    }
+                },
+                'type': 'object',
+            },
+            'StorageFilter': {'additionalProperties': False, 'type': 'object'},
+            'StorageFilters': {
+                'additionalProperties': False,
+                'properties': {
+                    'filters': {
+                        'items': {'$ref': '#/definitions/StorageFilter'},
+                        'type': 'array',
+                    }
+                },
+                'type': 'object',
+            },
+            'StoragePool': {
+                'additionalProperties': False,
+                'properties': {
+                    'attrs': {
+                        'patternProperties': {
+                            '.*': {'additionalProperties': True, 'type': 'object'}
+                        },
+                        'type': 'object',
+                    },
+                    'name': {'type': 'string'},
+                    'provider': {'type': 'string'},
+                },
+                'required': ['name', 'provider', 'attrs'],
+                'type': 'object',
+            },
+            'StoragePoolArgs': {
+                'additionalProperties': False,
+                'properties': {
+                    'pools': {
+                        'items': {'$ref': '#/definitions/StoragePool'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['pools'],
+                'type': 'object',
+            },
+            'StoragePoolDeleteArg': {
+                'additionalProperties': False,
+                'properties': {'name': {'type': 'string'}},
+                'required': ['name'],
+                'type': 'object',
+            },
+            'StoragePoolDeleteArgs': {
+                'additionalProperties': False,
+                'properties': {
+                    'pools': {
+                        'items': {'$ref': '#/definitions/StoragePoolDeleteArg'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['pools'],
+                'type': 'object',
+            },
+            'StoragePoolFilter': {
+                'additionalProperties': False,
+                'properties': {
+                    'names': {'items': {'type': 'string'}, 'type': 'array'},
+                    'providers': {'items': {'type': 'string'}, 'type': 'array'},
+                },
+                'type': 'object',
+            },
+            'StoragePoolFilters': {
+                'additionalProperties': False,
+                'properties': {
+                    'filters': {
+                        'items': {'$ref': '#/definitions/StoragePoolFilter'},
+                        'type': 'array',
+                    }
+                },
+                'type': 'object',
+            },
+            'StoragePoolsResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'storage-pools': {
+                        'items': {'$ref': '#/definitions/StoragePool'},
+                        'type': 'array',
+                    },
+                },
+                'type': 'object',
+            },
+            'StoragePoolsResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/StoragePoolsResult'},
+                        'type': 'array',
+                    }
+                },
+                'type': 'object',
+            },
+            'StoragesAddParams': {
+                'additionalProperties': False,
+                'properties': {
+                    'storages': {
+                        'items': {'$ref': '#/definitions/StorageAddParams'},
+                        'type': 'array',
+                    }
+                },
+                'required': ['storages'],
+                'type': 'object',
+            },
+            'VolumeAttachmentDetails': {
+                'additionalProperties': False,
+                'properties': {
+                    'VolumeAttachmentInfo': {
+                        '$ref': '#/definitions/VolumeAttachmentInfo'
+                    },
+                    'bus-address': {'type': 'string'},
+                    'device-link': {'type': 'string'},
+                    'device-name': {'type': 'string'},
+                    'life': {'type': 'string'},
+                    'plan-info': {'$ref': '#/definitions/VolumeAttachmentPlanInfo'},
+                    'read-only': {'type': 'boolean'},
+                },
+                'required': ['VolumeAttachmentInfo'],
+                'type': 'object',
+            },
+            'VolumeAttachmentInfo': {
+                'additionalProperties': False,
+                'properties': {
+                    'bus-address': {'type': 'string'},
+                    'device-link': {'type': 'string'},
+                    'device-name': {'type': 'string'},
+                    'plan-info': {'$ref': '#/definitions/VolumeAttachmentPlanInfo'},
+                    'read-only': {'type': 'boolean'},
+                },
+                'type': 'object',
+            },
+            'VolumeAttachmentPlanInfo': {
+                'additionalProperties': False,
+                'properties': {
+                    'device-attributes': {
+                        'patternProperties': {'.*': {'type': 'string'}},
+                        'type': 'object',
+                    },
+                    'device-type': {'type': 'string'},
+                },
+                'type': 'object',
+            },
+            'VolumeDetails': {
+                'additionalProperties': False,
+                'properties': {
+                    'info': {'$ref': '#/definitions/VolumeInfo'},
+                    'life': {'type': 'string'},
+                    'machine-attachments': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/VolumeAttachmentDetails'}
+                        },
+                        'type': 'object',
+                    },
+                    'status': {'$ref': '#/definitions/EntityStatus'},
+                    'storage': {'$ref': '#/definitions/StorageDetails'},
+                    'unit-attachments': {
+                        'patternProperties': {
+                            '.*': {'$ref': '#/definitions/VolumeAttachmentDetails'}
+                        },
+                        'type': 'object',
+                    },
+                    'volume-tag': {'type': 'string'},
+                },
+                'required': ['volume-tag', 'info', 'status'],
+                'type': 'object',
+            },
+            'VolumeDetailsListResult': {
+                'additionalProperties': False,
+                'properties': {
+                    'error': {'$ref': '#/definitions/Error'},
+                    'result': {
+                        'items': {'$ref': '#/definitions/VolumeDetails'},
+                        'type': 'array',
+                    },
+                },
+                'type': 'object',
+            },
+            'VolumeDetailsListResults': {
+                'additionalProperties': False,
+                'properties': {
+                    'results': {
+                        'items': {'$ref': '#/definitions/VolumeDetailsListResult'},
+                        'type': 'array',
+                    }
+                },
+                'type': 'object',
+            },
+            'VolumeFilter': {
+                'additionalProperties': False,
+                'properties': {
+                    'machines': {'items': {'type': 'string'}, 'type': 'array'}
+                },
+                'type': 'object',
+            },
+            'VolumeFilters': {
+                'additionalProperties': False,
+                'properties': {
+                    'filters': {
+                        'items': {'$ref': '#/definitions/VolumeFilter'},
+                        'type': 'array',
+                    }
+                },
+                'type': 'object',
+            },
+            'VolumeInfo': {
+                'additionalProperties': False,
+                'properties': {
+                    'hardware-id': {'type': 'string'},
+                    'persistent': {'type': 'boolean'},
+                    'pool': {'type': 'string'},
+                    'size': {'type': 'integer'},
+                    'volume-id': {'type': 'string'},
+                    'wwn': {'type': 'string'},
+                },
+                'required': ['volume-id', 'size', 'persistent'],
+                'type': 'object',
+            },
+        },
+        'properties': {
+            'AddToUnit': {
+                'description': 'AddToUnit validates and creates '
+                'additional storage instances for '
+                'units.\n'
+                'A "CHANGE" block can block this '
+                'operation.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/StoragesAddParams'},
+                    'Result': {'$ref': '#/definitions/AddStorageResults'},
+                },
+                'type': 'object',
+            },
+            'Attach': {
+                'description': 'Attach attaches existing storage '
+                'instances to units.\n'
+                'A "CHANGE" block can block this '
+                'operation.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/StorageAttachmentIds'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+            'CreatePool': {
+                'description': 'CreatePool creates a new pool '
+                'with specified parameters.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/StoragePoolArgs'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+            'DetachStorage': {
+                'description': 'DetachStorage sets the '
+                'specified storage '
+                'attachments to Dying, unless '
+                'they are\n'
+                'already Dying or Dead. Any '
+                'associated, persistent '
+                'storage will remain\n'
+                'alive. This call can be '
+                'forced.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/StorageDetachmentParams'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+            'Import': {
+                'description': 'Import imports existing storage '
+                'into the model.\n'
+                'A "CHANGE" block can block this '
+                'operation.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/BulkImportStorageParams'},
+                    'Result': {'$ref': '#/definitions/ImportStorageResults'},
+                },
+                'type': 'object',
+            },
+            'ListFilesystems': {
+                'description': 'ListFilesystems returns a '
+                'list of filesystems in the '
+                'environment matching\n'
+                'the provided filter. Each '
+                'result describes a '
+                'filesystem in detail, '
+                'including\n'
+                "the filesystem's "
+                'attachments.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/FilesystemFilters'},
+                    'Result': {'$ref': '#/definitions/FilesystemDetailsListResults'},
+                },
+                'type': 'object',
+            },
+            'ListPools': {
+                'description': 'ListPools returns a list of '
+                'pools.\n'
+                'If filter is provided, returned '
+                'list only contains pools that '
+                'match\n'
+                'the filter.\n'
+                'Pools can be filtered on names '
+                'and provider types.\n'
+                'If both names and types are '
+                'provided as filter,\n'
+                'pools that match either are '
+                'returned.\n'
+                'This method lists union of pools '
+                'and environment provider types.\n'
+                'If no filter is provided, all '
+                'pools are returned.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/StoragePoolFilters'},
+                    'Result': {'$ref': '#/definitions/StoragePoolsResults'},
+                },
+                'type': 'object',
+            },
+            'ListStorageDetails': {
+                'description': 'ListStorageDetails '
+                'returns storage '
+                'matching a filter.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/StorageFilters'},
+                    'Result': {'$ref': '#/definitions/StorageDetailsListResults'},
+                },
+                'type': 'object',
+            },
+            'ListVolumes': {
+                'description': 'ListVolumes lists volumes with '
+                'the given filters. Each filter '
+                'produces\n'
+                'an independent list of '
+                'volumes, or an error if the '
+                'filter is invalid\n'
+                'or the volumes could not be '
+                'listed.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/VolumeFilters'},
+                    'Result': {'$ref': '#/definitions/VolumeDetailsListResults'},
+                },
+                'type': 'object',
+            },
+            'Remove': {
+                'description': 'Remove sets the specified storage '
+                'entities to Dying, unless they are\n'
+                'already Dying or Dead, such that '
+                'the storage will eventually be '
+                'removed\n'
+                'from the model. If the arguments '
+                'specify that the storage should be\n'
+                'destroyed, then the associated '
+                'cloud storage will be destroyed '
+                'first;\n'
+                'otherwise it will only be released '
+                "from Juju's control.",
+                'properties': {
+                    'Params': {'$ref': '#/definitions/RemoveStorage'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+            'RemovePool': {
+                'description': 'RemovePool deletes the named ' 'pool',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/StoragePoolDeleteArgs'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+            'StorageDetails': {
+                'description': 'StorageDetails retrieves '
+                'and returns detailed '
+                'information about desired\n'
+                'storage identified by '
+                'supplied tags. If specified '
+                'storage cannot be\n'
+                'retrieved, individual error '
+                'is returned instead of '
+                'storage information.',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/Entities'},
+                    'Result': {'$ref': '#/definitions/StorageDetailsResults'},
+                },
+                'type': 'object',
+            },
+            'UpdatePool': {
+                'description': 'UpdatePool deletes the named ' 'pool',
+                'properties': {
+                    'Params': {'$ref': '#/definitions/StoragePoolArgs'},
+                    'Result': {'$ref': '#/definitions/ErrorResults'},
+                },
+                'type': 'object',
+            },
+        },
+        'type': 'object',
+    }
 
     @ReturnMapping(AddStorageResults)
     async def AddToUnit(self, storages=None):
@@ -2223,7 +3214,9 @@ class StorageFacade(Type):
         Returns -> AddStorageResults
         """
         if storages is not None and not isinstance(storages, (bytes, str, list)):
-            raise TypeError(f'Expected storages to be a Sequence, received: {type(storages)}')
+            raise TypeError(
+                f'Expected storages to be a Sequence, received: {type(storages)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -2236,7 +3229,6 @@ class StorageFacade(Type):
         _params['storages'] = storages
         reply = await self.rpc(msg)
         return reply
-
 
     @ReturnMapping(ErrorResults)
     async def Attach(self, ids=None):
@@ -2262,7 +3254,6 @@ class StorageFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(ErrorResults)
     async def CreatePool(self, pools=None):
         """
@@ -2286,7 +3277,6 @@ class StorageFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(ErrorResults)
     async def DetachStorage(self, force=None, ids=None, max_wait=None):
         """
@@ -2303,10 +3293,14 @@ class StorageFacade(Type):
             raise TypeError(f'Expected force to be a bool, received: {type(force)}')
 
         if ids is not None and not isinstance(ids, (dict, StorageAttachmentIds)):
-            raise TypeError(f'Expected ids to be a StorageAttachmentIds, received: {type(ids)}')
+            raise TypeError(
+                f'Expected ids to be a StorageAttachmentIds, received: {type(ids)}'
+            )
 
         if max_wait is not None and not isinstance(max_wait, int):
-            raise TypeError(f'Expected max_wait to be a int, received: {type(max_wait)}')
+            raise TypeError(
+                f'Expected max_wait to be a int, received: {type(max_wait)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -2322,7 +3316,6 @@ class StorageFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(ImportStorageResults)
     async def Import(self, storage=None):
         """
@@ -2333,7 +3326,9 @@ class StorageFacade(Type):
         Returns -> ImportStorageResults
         """
         if storage is not None and not isinstance(storage, (bytes, str, list)):
-            raise TypeError(f'Expected storage to be a Sequence, received: {type(storage)}')
+            raise TypeError(
+                f'Expected storage to be a Sequence, received: {type(storage)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -2347,7 +3342,6 @@ class StorageFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(FilesystemDetailsListResults)
     async def ListFilesystems(self, filters=None):
         """
@@ -2359,7 +3353,9 @@ class StorageFacade(Type):
         Returns -> FilesystemDetailsListResults
         """
         if filters is not None and not isinstance(filters, (bytes, str, list)):
-            raise TypeError(f'Expected filters to be a Sequence, received: {type(filters)}')
+            raise TypeError(
+                f'Expected filters to be a Sequence, received: {type(filters)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -2372,7 +3368,6 @@ class StorageFacade(Type):
         _params['filters'] = filters
         reply = await self.rpc(msg)
         return reply
-
 
     @ReturnMapping(StoragePoolsResults)
     async def ListPools(self, filters=None):
@@ -2390,7 +3385,9 @@ class StorageFacade(Type):
         Returns -> StoragePoolsResults
         """
         if filters is not None and not isinstance(filters, (bytes, str, list)):
-            raise TypeError(f'Expected filters to be a Sequence, received: {type(filters)}')
+            raise TypeError(
+                f'Expected filters to be a Sequence, received: {type(filters)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -2404,7 +3401,6 @@ class StorageFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(StorageDetailsListResults)
     async def ListStorageDetails(self, filters=None):
         """
@@ -2414,7 +3410,9 @@ class StorageFacade(Type):
         Returns -> StorageDetailsListResults
         """
         if filters is not None and not isinstance(filters, (bytes, str, list)):
-            raise TypeError(f'Expected filters to be a Sequence, received: {type(filters)}')
+            raise TypeError(
+                f'Expected filters to be a Sequence, received: {type(filters)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -2428,7 +3426,6 @@ class StorageFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(VolumeDetailsListResults)
     async def ListVolumes(self, filters=None):
         """
@@ -2440,7 +3437,9 @@ class StorageFacade(Type):
         Returns -> VolumeDetailsListResults
         """
         if filters is not None and not isinstance(filters, (bytes, str, list)):
-            raise TypeError(f'Expected filters to be a Sequence, received: {type(filters)}')
+            raise TypeError(
+                f'Expected filters to be a Sequence, received: {type(filters)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -2453,7 +3452,6 @@ class StorageFacade(Type):
         _params['filters'] = filters
         reply = await self.rpc(msg)
         return reply
-
 
     @ReturnMapping(ErrorResults)
     async def Remove(self, storage=None):
@@ -2468,7 +3466,9 @@ class StorageFacade(Type):
         Returns -> ErrorResults
         """
         if storage is not None and not isinstance(storage, (bytes, str, list)):
-            raise TypeError(f'Expected storage to be a Sequence, received: {type(storage)}')
+            raise TypeError(
+                f'Expected storage to be a Sequence, received: {type(storage)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -2481,7 +3481,6 @@ class StorageFacade(Type):
         _params['storage'] = storage
         reply = await self.rpc(msg)
         return reply
-
 
     @ReturnMapping(ErrorResults)
     async def RemovePool(self, pools=None):
@@ -2506,7 +3505,6 @@ class StorageFacade(Type):
         reply = await self.rpc(msg)
         return reply
 
-
     @ReturnMapping(StorageDetailsResults)
     async def StorageDetails(self, entities=None):
         """
@@ -2518,7 +3516,9 @@ class StorageFacade(Type):
         Returns -> StorageDetailsResults
         """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
+            raise TypeError(
+                f'Expected entities to be a Sequence, received: {type(entities)}'
+            )
 
         # map input types to rpc msg
         _params = {}
@@ -2531,7 +3531,6 @@ class StorageFacade(Type):
         _params['entities'] = entities
         reply = await self.rpc(msg)
         return reply
-
 
     @ReturnMapping(ErrorResults)
     async def UpdatePool(self, pools=None):
@@ -2555,4 +3554,3 @@ class StorageFacade(Type):
         _params['pools'] = pools
         reply = await self.rpc(msg)
         return reply
-
