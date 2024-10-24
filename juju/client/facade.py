@@ -188,7 +188,6 @@ class TypeRegistry(dict):
         return self.getRefType(obj["$ref"])
 
 
-CLASSES = {}
 factories: Dict[str, codegen.CodeWriter] = {}
 
 
@@ -451,8 +450,6 @@ def buildTypes(schema: Schema, capture: Dict[str, codegen.CodeWriter]) -> None:
         co = compile(source, __name__, 'exec')
         ns = _getns(schema)
         exec(co, ns)
-        cls = ns[name]
-        CLASSES[name] = cls
 
 
 def retspec(schema, defs):
@@ -906,9 +903,6 @@ def generate_facades(schemas: Dict[str, List[Schema]]) -> Dict[int, Dict[str, co
             buildMethods(cls, capture)
             # Build the override RPC method if the Facade is a watcher.
             buildWatcherRPCMethods(cls, capture)
-            # Mark this Facade class as being done for this version --
-            # helps mitigate some excessive looping.
-            CLASSES[schema.name] = cls
 
     return captures
 
