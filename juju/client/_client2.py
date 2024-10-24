@@ -472,7 +472,13 @@ class MetricsDebugFacade(Type):
 class SecretsFacade(Type):
     name = 'Secrets'
     version = 2
-    schema =     {'definitions': {'CreateSecretArg': {'additionalProperties': False,
+    schema =     {'definitions': {'AccessInfo': {'additionalProperties': False,
+                                    'properties': {'role': {'type': 'string'},
+                                                   'scope-tag': {'type': 'string'},
+                                                   'target-tag': {'type': 'string'}},
+                                    'required': ['target-tag', 'scope-tag', 'role'],
+                                    'type': 'object'},
+                     'CreateSecretArg': {'additionalProperties': False,
                                          'properties': {'UpsertSecretArg': {'$ref': '#/definitions/UpsertSecretArg'},
                                                         'content': {'$ref': '#/definitions/SecretContentParams'},
                                                         'description': {'type': 'string'},
@@ -531,7 +537,9 @@ class SecretsFacade(Type):
                                                                'applications'],
                                                   'type': 'object'},
                      'ListSecretResult': {'additionalProperties': False,
-                                          'properties': {'create-time': {'format': 'date-time',
+                                          'properties': {'access': {'items': {'$ref': '#/definitions/AccessInfo'},
+                                                                    'type': 'array'},
+                                                         'create-time': {'format': 'date-time',
                                                                          'type': 'string'},
                                                          'description': {'type': 'string'},
                                                          'label': {'type': 'string'},

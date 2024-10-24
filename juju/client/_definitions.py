@@ -4,6 +4,36 @@
 from juju.client.facade import Type, ReturnMapping
 
 
+class AccessInfo(Type):
+    _toSchema = {'role': 'role', 'scope_tag': 'scope-tag', 'target_tag': 'target-tag'}
+    _toPy = {'role': 'role', 'scope-tag': 'scope_tag', 'target-tag': 'target_tag'}
+    def __init__(self, role=None, scope_tag=None, target_tag=None, **unknown_fields):
+        '''
+        role : str
+        scope_tag : str
+        target_tag : str
+        '''
+        role_ = role
+        scope_tag_ = scope_tag
+        target_tag_ = target_tag
+
+        # Validate arguments against known Juju API types.
+        if role_ is not None and not isinstance(role_, (bytes, str)):
+            raise Exception("Expected role_ to be a str, received: {}".format(type(role_)))
+
+        if scope_tag_ is not None and not isinstance(scope_tag_, (bytes, str)):
+            raise Exception("Expected scope_tag_ to be a str, received: {}".format(type(scope_tag_)))
+
+        if target_tag_ is not None and not isinstance(target_tag_, (bytes, str)):
+            raise Exception("Expected target_tag_ to be a str, received: {}".format(type(target_tag_)))
+
+        self.role = role_
+        self.scope_tag = scope_tag_
+        self.target_tag = target_tag_
+        self.unknown_fields = unknown_fields
+
+
+
 class Action(Type):
     _toSchema = {'execution_group': 'execution-group', 'name': 'name', 'parallel': 'parallel', 'parameters': 'parameters', 'receiver': 'receiver', 'tag': 'tag'}
     _toPy = {'execution-group': 'execution_group', 'name': 'name', 'parallel': 'parallel', 'parameters': 'parameters', 'receiver': 'receiver', 'tag': 'tag'}
@@ -8603,10 +8633,11 @@ class ListSecretBackendsResults(Type):
 
 
 class ListSecretResult(Type):
-    _toSchema = {'create_time': 'create-time', 'description': 'description', 'label': 'label', 'latest_expire_time': 'latest-expire-time', 'latest_revision': 'latest-revision', 'next_rotate_time': 'next-rotate-time', 'owner_tag': 'owner-tag', 'revisions': 'revisions', 'rotate_policy': 'rotate-policy', 'update_time': 'update-time', 'uri': 'uri', 'value': 'value', 'version': 'version'}
-    _toPy = {'create-time': 'create_time', 'description': 'description', 'label': 'label', 'latest-expire-time': 'latest_expire_time', 'latest-revision': 'latest_revision', 'next-rotate-time': 'next_rotate_time', 'owner-tag': 'owner_tag', 'revisions': 'revisions', 'rotate-policy': 'rotate_policy', 'update-time': 'update_time', 'uri': 'uri', 'value': 'value', 'version': 'version'}
-    def __init__(self, create_time=None, description=None, label=None, latest_expire_time=None, latest_revision=None, next_rotate_time=None, owner_tag=None, revisions=None, rotate_policy=None, update_time=None, uri=None, value=None, version=None, **unknown_fields):
+    _toSchema = {'access': 'access', 'create_time': 'create-time', 'description': 'description', 'label': 'label', 'latest_expire_time': 'latest-expire-time', 'latest_revision': 'latest-revision', 'next_rotate_time': 'next-rotate-time', 'owner_tag': 'owner-tag', 'revisions': 'revisions', 'rotate_policy': 'rotate-policy', 'update_time': 'update-time', 'uri': 'uri', 'value': 'value', 'version': 'version'}
+    _toPy = {'access': 'access', 'create-time': 'create_time', 'description': 'description', 'label': 'label', 'latest-expire-time': 'latest_expire_time', 'latest-revision': 'latest_revision', 'next-rotate-time': 'next_rotate_time', 'owner-tag': 'owner_tag', 'revisions': 'revisions', 'rotate-policy': 'rotate_policy', 'update-time': 'update_time', 'uri': 'uri', 'value': 'value', 'version': 'version'}
+    def __init__(self, access=None, create_time=None, description=None, label=None, latest_expire_time=None, latest_revision=None, next_rotate_time=None, owner_tag=None, revisions=None, rotate_policy=None, update_time=None, uri=None, value=None, version=None, **unknown_fields):
         '''
+        access : typing.Sequence[~AccessInfo]
         create_time : str
         description : str
         label : str
@@ -8621,6 +8652,7 @@ class ListSecretResult(Type):
         value : SecretValueResult
         version : int
         '''
+        access_ = [AccessInfo.from_json(o) for o in access or []]
         create_time_ = create_time
         description_ = description
         label_ = label
@@ -8636,6 +8668,9 @@ class ListSecretResult(Type):
         version_ = version
 
         # Validate arguments against known Juju API types.
+        if access_ is not None and not isinstance(access_, (bytes, str, list)):
+            raise Exception("Expected access_ to be a Sequence, received: {}".format(type(access_)))
+
         if create_time_ is not None and not isinstance(create_time_, (bytes, str)):
             raise Exception("Expected create_time_ to be a str, received: {}".format(type(create_time_)))
 
@@ -8675,6 +8710,7 @@ class ListSecretResult(Type):
         if version_ is not None and not isinstance(version_, int):
             raise Exception("Expected version_ to be a int, received: {}".format(type(version_)))
 
+        self.access = access_
         self.create_time = create_time_
         self.description = description_
         self.label = label_
