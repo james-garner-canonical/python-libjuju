@@ -4,7 +4,6 @@
 from juju.client.facade import Type, ReturnMapping
 from juju.client._definitions import *
 
-
 class AdminFacade(Type):
     name = 'Admin'
     version = 3
@@ -115,11 +114,11 @@ class AdminFacade(Type):
                                      'properties': {'Result': {'$ref': '#/definitions/RedirectInfoResult'}},
                                      'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(LoginResult)
     async def Login(self, auth_tag=None, bakery_version=None, cli_args=None, client_version=None, credentials=None, macaroons=None, nonce=None, token=None, user_data=None):
-        '''
+        """
         Login logs in with the provided credentials.  All subsequent requests on the
         connection will act as the authenticated user.
 
@@ -133,40 +132,42 @@ class AdminFacade(Type):
         token : str
         user_data : str
         Returns -> LoginResult
-        '''
+        """
         if auth_tag is not None and not isinstance(auth_tag, (bytes, str)):
-            raise Exception("Expected auth_tag to be a str, received: {}".format(type(auth_tag)))
+            raise TypeError(f'Expected auth_tag to be a str, received: {type(auth_tag)}')
 
         if bakery_version is not None and not isinstance(bakery_version, int):
-            raise Exception("Expected bakery_version to be a int, received: {}".format(type(bakery_version)))
+            raise TypeError(f'Expected bakery_version to be a int, received: {type(bakery_version)}')
 
         if cli_args is not None and not isinstance(cli_args, (bytes, str)):
-            raise Exception("Expected cli_args to be a str, received: {}".format(type(cli_args)))
+            raise TypeError(f'Expected cli_args to be a str, received: {type(cli_args)}')
 
         if client_version is not None and not isinstance(client_version, (bytes, str)):
-            raise Exception("Expected client_version to be a str, received: {}".format(type(client_version)))
+            raise TypeError(f'Expected client_version to be a str, received: {type(client_version)}')
 
         if credentials is not None and not isinstance(credentials, (bytes, str)):
-            raise Exception("Expected credentials to be a str, received: {}".format(type(credentials)))
+            raise TypeError(f'Expected credentials to be a str, received: {type(credentials)}')
 
         if macaroons is not None and not isinstance(macaroons, (bytes, str, list)):
-            raise Exception("Expected macaroons to be a Sequence, received: {}".format(type(macaroons)))
+            raise TypeError(f'Expected macaroons to be a Sequence, received: {type(macaroons)}')
 
         if nonce is not None and not isinstance(nonce, (bytes, str)):
-            raise Exception("Expected nonce to be a str, received: {}".format(type(nonce)))
+            raise TypeError(f'Expected nonce to be a str, received: {type(nonce)}')
 
         if token is not None and not isinstance(token, (bytes, str)):
-            raise Exception("Expected token to be a str, received: {}".format(type(token)))
+            raise TypeError(f'Expected token to be a str, received: {type(token)}')
 
         if user_data is not None and not isinstance(user_data, (bytes, str)):
-            raise Exception("Expected user_data to be a str, received: {}".format(type(user_data)))
+            raise TypeError(f'Expected user_data to be a str, received: {type(user_data)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Admin',
-                   request='Login',
-                   version=3,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Admin',
+            'request': 'Login',
+            'version': 3,
+            'params': _params,
+        }
         _params['auth-tag'] = auth_tag
         _params['bakery-version'] = bakery_version
         _params['cli-args'] = cli_args
@@ -180,29 +181,28 @@ class AdminFacade(Type):
         return reply
 
 
-
     @ReturnMapping(RedirectInfoResult)
     async def RedirectInfo(self):
-        '''
+        """
         RedirectInfo returns redirected host information for the model.
         In Juju it always returns an error because the Juju controller
         does not multiplex controllers.
 
 
         Returns -> RedirectInfoResult
-        '''
+        """
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Admin',
-                   request='RedirectInfo',
-                   version=3,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Admin',
+            'request': 'RedirectInfo',
+            'version': 3,
+            'params': _params,
+        }
 
         reply = await self.rpc(msg)
         return reply
-
-
 
 class AllWatcherFacade(Type):
     name = 'AllWatcher'
@@ -226,49 +226,51 @@ class AllWatcherFacade(Type):
                     'Stop': {'description': 'Stop stops the watcher.',
                              'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(AllWatcherNextResults)
     async def Next(self):
-        '''
+        """
         Next will return the current state of everything on the first call
         and subsequent calls will
 
 
         Returns -> AllWatcherNextResults
-        '''
+        """
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='AllWatcher',
-                   request='Next',
-                   version=3,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'AllWatcher',
+            'request': 'Next',
+            'version': 3,
+            'params': _params,
+        }
 
         reply = await self.rpc(msg)
         return reply
-
 
 
     @ReturnMapping(None)
     async def Stop(self):
-        '''
+        """
         Stop stops the watcher.
 
 
         Returns -> None
-        '''
+        """
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='AllWatcher',
-                   request='Stop',
-                   version=3,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'AllWatcher',
+            'request': 'Stop',
+            'version': 3,
+            'params': _params,
+        }
 
         reply = await self.rpc(msg)
         return reply
-
 
 
     async def rpc(self, msg):
@@ -282,7 +284,6 @@ class AllWatcherFacade(Type):
         from .facade import TypeEncoder
         reply = await self.connection.rpc(msg, encoder=TypeEncoder)
         return reply
-
 
 
 class BackupsFacade(Type):
@@ -356,36 +357,36 @@ class BackupsFacade(Type):
                                               'Result': {'$ref': '#/definitions/BackupsMetadataResult'}},
                                'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(BackupsMetadataResult)
     async def Create(self, no_download=None, notes=None):
-        '''
+        """
         Create is the API method that requests juju to create a new backup
         of its state.
 
         no_download : bool
         notes : str
         Returns -> BackupsMetadataResult
-        '''
+        """
         if no_download is not None and not isinstance(no_download, bool):
-            raise Exception("Expected no_download to be a bool, received: {}".format(type(no_download)))
+            raise TypeError(f'Expected no_download to be a bool, received: {type(no_download)}')
 
         if notes is not None and not isinstance(notes, (bytes, str)):
-            raise Exception("Expected notes to be a str, received: {}".format(type(notes)))
+            raise TypeError(f'Expected notes to be a str, received: {type(notes)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Backups',
-                   request='Create',
-                   version=3,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Backups',
+            'request': 'Create',
+            'version': 3,
+            'params': _params,
+        }
         _params['no-download'] = no_download
         _params['notes'] = notes
         reply = await self.rpc(msg)
         return reply
-
-
 
 class ModelConfigFacade(Type):
     name = 'ModelConfig'
@@ -514,172 +515,179 @@ class ModelConfigFacade(Type):
                                     'properties': {'Params': {'$ref': '#/definitions/ModelSLA'}},
                                     'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(GetConstraintsResults)
     async def GetModelConstraints(self):
-        '''
+        """
         GetModelConstraints returns the constraints for the model.
 
 
         Returns -> GetConstraintsResults
-        '''
+        """
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='ModelConfig',
-                   request='GetModelConstraints',
-                   version=3,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'ModelConfig',
+            'request': 'GetModelConstraints',
+            'version': 3,
+            'params': _params,
+        }
 
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ModelConfigResults)
     async def ModelGet(self):
-        '''
+        """
         ModelGet implements the server-side part of the
         model-config CLI command.
 
 
         Returns -> ModelConfigResults
-        '''
+        """
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='ModelConfig',
-                   request='ModelGet',
-                   version=3,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'ModelConfig',
+            'request': 'ModelGet',
+            'version': 3,
+            'params': _params,
+        }
 
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(None)
     async def ModelSet(self, config=None):
-        '''
+        """
         ModelSet implements the server-side part of the
         set-model-config CLI command.
 
         config : typing.Mapping[str, typing.Any]
         Returns -> None
-        '''
+        """
         if config is not None and not isinstance(config, dict):
-            raise Exception("Expected config to be a Mapping, received: {}".format(type(config)))
+            raise TypeError(f'Expected config to be a Mapping, received: {type(config)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='ModelConfig',
-                   request='ModelSet',
-                   version=3,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'ModelConfig',
+            'request': 'ModelSet',
+            'version': 3,
+            'params': _params,
+        }
         _params['config'] = config
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(None)
     async def ModelUnset(self, keys=None):
-        '''
+        """
         ModelUnset implements the server-side part of the
         set-model-config CLI command.
 
         keys : typing.Sequence[str]
         Returns -> None
-        '''
+        """
         if keys is not None and not isinstance(keys, (bytes, str, list)):
-            raise Exception("Expected keys to be a Sequence, received: {}".format(type(keys)))
+            raise TypeError(f'Expected keys to be a Sequence, received: {type(keys)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='ModelConfig',
-                   request='ModelUnset',
-                   version=3,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'ModelConfig',
+            'request': 'ModelUnset',
+            'version': 3,
+            'params': _params,
+        }
         _params['keys'] = keys
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(StringResult)
     async def SLALevel(self):
-        '''
+        """
         SLALevel returns the current sla level for the model.
 
 
         Returns -> StringResult
-        '''
+        """
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='ModelConfig',
-                   request='SLALevel',
-                   version=3,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'ModelConfig',
+            'request': 'SLALevel',
+            'version': 3,
+            'params': _params,
+        }
 
         reply = await self.rpc(msg)
         return reply
-
 
 
     @ReturnMapping(ModelSequencesResult)
     async def Sequences(self):
-        '''
+        """
         Sequences returns the model's sequence names and next values.
 
 
         Returns -> ModelSequencesResult
-        '''
+        """
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='ModelConfig',
-                   request='Sequences',
-                   version=3,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'ModelConfig',
+            'request': 'Sequences',
+            'version': 3,
+            'params': _params,
+        }
 
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(None)
     async def SetModelConstraints(self, application=None, constraints=None):
-        '''
+        """
         SetModelConstraints sets the constraints for the model.
 
         application : str
         constraints : Value
         Returns -> None
-        '''
+        """
         if application is not None and not isinstance(application, (bytes, str)):
-            raise Exception("Expected application to be a str, received: {}".format(type(application)))
+            raise TypeError(f'Expected application to be a str, received: {type(application)}')
 
         if constraints is not None and not isinstance(constraints, (dict, Value)):
-            raise Exception("Expected constraints to be a Value, received: {}".format(type(constraints)))
+            raise TypeError(f'Expected constraints to be a Value, received: {type(constraints)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='ModelConfig',
-                   request='SetModelConstraints',
-                   version=3,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'ModelConfig',
+            'request': 'SetModelConstraints',
+            'version': 3,
+            'params': _params,
+        }
         _params['application'] = application
         _params['constraints'] = constraints
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(None)
     async def SetSLALevel(self, modelslainfo=None, creds=None, level=None, owner=None):
-        '''
+        """
         SetSLALevel sets the sla level on the model.
 
         modelslainfo : ModelSLAInfo
@@ -687,33 +695,33 @@ class ModelConfigFacade(Type):
         level : str
         owner : str
         Returns -> None
-        '''
+        """
         if modelslainfo is not None and not isinstance(modelslainfo, (dict, ModelSLAInfo)):
-            raise Exception("Expected modelslainfo to be a ModelSLAInfo, received: {}".format(type(modelslainfo)))
+            raise TypeError(f'Expected modelslainfo to be a ModelSLAInfo, received: {type(modelslainfo)}')
 
         if creds is not None and not isinstance(creds, (bytes, str, list)):
-            raise Exception("Expected creds to be a Sequence, received: {}".format(type(creds)))
+            raise TypeError(f'Expected creds to be a Sequence, received: {type(creds)}')
 
         if level is not None and not isinstance(level, (bytes, str)):
-            raise Exception("Expected level to be a str, received: {}".format(type(level)))
+            raise TypeError(f'Expected level to be a str, received: {type(level)}')
 
         if owner is not None and not isinstance(owner, (bytes, str)):
-            raise Exception("Expected owner to be a str, received: {}".format(type(owner)))
+            raise TypeError(f'Expected owner to be a str, received: {type(owner)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='ModelConfig',
-                   request='SetSLALevel',
-                   version=3,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'ModelConfig',
+            'request': 'SetSLALevel',
+            'version': 3,
+            'params': _params,
+        }
         _params['ModelSLAInfo'] = modelslainfo
         _params['creds'] = creds
         _params['level'] = level
         _params['owner'] = owner
         reply = await self.rpc(msg)
         return reply
-
-
 
 class ResourcesFacade(Type):
     name = 'Resources'
@@ -882,11 +890,11 @@ class ResourcesFacade(Type):
                                                      'Result': {'$ref': '#/definitions/ResourcesResults'}},
                                       'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(AddPendingResourcesResult)
     async def AddPendingResources(self, entity=None, charm_origin=None, macaroon=None, resources=None, tag=None, url=None):
-        '''
+        """
         AddPendingResources adds the provided resources (info) to the Juju
         model in a pending state, meaning they are not available until
         resolved. Handles CharmHub and Local charms.
@@ -898,31 +906,33 @@ class ResourcesFacade(Type):
         tag : str
         url : str
         Returns -> AddPendingResourcesResult
-        '''
+        """
         if entity is not None and not isinstance(entity, (dict, Entity)):
-            raise Exception("Expected entity to be a Entity, received: {}".format(type(entity)))
+            raise TypeError(f'Expected entity to be a Entity, received: {type(entity)}')
 
         if charm_origin is not None and not isinstance(charm_origin, (dict, CharmOrigin)):
-            raise Exception("Expected charm_origin to be a CharmOrigin, received: {}".format(type(charm_origin)))
+            raise TypeError(f'Expected charm_origin to be a CharmOrigin, received: {type(charm_origin)}')
 
         if macaroon is not None and not isinstance(macaroon, (dict, Macaroon)):
-            raise Exception("Expected macaroon to be a Macaroon, received: {}".format(type(macaroon)))
+            raise TypeError(f'Expected macaroon to be a Macaroon, received: {type(macaroon)}')
 
         if resources is not None and not isinstance(resources, (bytes, str, list)):
-            raise Exception("Expected resources to be a Sequence, received: {}".format(type(resources)))
+            raise TypeError(f'Expected resources to be a Sequence, received: {type(resources)}')
 
         if tag is not None and not isinstance(tag, (bytes, str)):
-            raise Exception("Expected tag to be a str, received: {}".format(type(tag)))
+            raise TypeError(f'Expected tag to be a str, received: {type(tag)}')
 
         if url is not None and not isinstance(url, (bytes, str)):
-            raise Exception("Expected url to be a str, received: {}".format(type(url)))
+            raise TypeError(f'Expected url to be a str, received: {type(url)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Resources',
-                   request='AddPendingResources',
-                   version=3,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Resources',
+            'request': 'AddPendingResources',
+            'version': 3,
+            'params': _params,
+        }
         _params['Entity'] = entity
         _params['charm-origin'] = charm_origin
         _params['macaroon'] = macaroon
@@ -933,29 +943,28 @@ class ResourcesFacade(Type):
         return reply
 
 
-
     @ReturnMapping(ResourcesResults)
     async def ListResources(self, entities=None):
-        '''
+        """
         ListResources returns the list of resources for the given application.
 
         entities : typing.Sequence[~Entity]
         Returns -> ResourcesResults
-        '''
+        """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise Exception("Expected entities to be a Sequence, received: {}".format(type(entities)))
+            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Resources',
-                   request='ListResources',
-                   version=3,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Resources',
+            'request': 'ListResources',
+            'version': 3,
+            'params': _params,
+        }
         _params['entities'] = entities
         reply = await self.rpc(msg)
         return reply
-
-
 
 class UserManagerFacade(Type):
     name = 'UserManager'
@@ -1142,106 +1151,110 @@ class UserManagerFacade(Type):
                                                 'Result': {'$ref': '#/definitions/UserInfoResults'}},
                                  'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(AddUserResults)
     async def AddUser(self, users=None):
-        '''
+        """
         AddUser adds a user with a username, and either a password or
         a randomly generated secret key which will be returned.
 
         users : typing.Sequence[~AddUser]
         Returns -> AddUserResults
-        '''
+        """
         if users is not None and not isinstance(users, (bytes, str, list)):
-            raise Exception("Expected users to be a Sequence, received: {}".format(type(users)))
+            raise TypeError(f'Expected users to be a Sequence, received: {type(users)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='UserManager',
-                   request='AddUser',
-                   version=3,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'UserManager',
+            'request': 'AddUser',
+            'version': 3,
+            'params': _params,
+        }
         _params['users'] = users
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ErrorResults)
     async def DisableUser(self, entities=None):
-        '''
+        """
         DisableUser disables one or more users.  If the user is already disabled,
         the action is considered a success.
 
         entities : typing.Sequence[~Entity]
         Returns -> ErrorResults
-        '''
+        """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise Exception("Expected entities to be a Sequence, received: {}".format(type(entities)))
+            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='UserManager',
-                   request='DisableUser',
-                   version=3,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'UserManager',
+            'request': 'DisableUser',
+            'version': 3,
+            'params': _params,
+        }
         _params['entities'] = entities
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ErrorResults)
     async def EnableUser(self, entities=None):
-        '''
+        """
         EnableUser enables one or more users.  If the user is already enabled,
         the action is considered a success.
 
         entities : typing.Sequence[~Entity]
         Returns -> ErrorResults
-        '''
+        """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise Exception("Expected entities to be a Sequence, received: {}".format(type(entities)))
+            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='UserManager',
-                   request='EnableUser',
-                   version=3,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'UserManager',
+            'request': 'EnableUser',
+            'version': 3,
+            'params': _params,
+        }
         _params['entities'] = entities
         reply = await self.rpc(msg)
         return reply
-
 
 
     @ReturnMapping(ModelUserInfoResults)
     async def ModelUserInfo(self, entities=None):
-        '''
+        """
         ModelUserInfo returns information on all users in the model.
 
         entities : typing.Sequence[~Entity]
         Returns -> ModelUserInfoResults
-        '''
+        """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise Exception("Expected entities to be a Sequence, received: {}".format(type(entities)))
+            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='UserManager',
-                   request='ModelUserInfo',
-                   version=3,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'UserManager',
+            'request': 'ModelUserInfo',
+            'version': 3,
+            'params': _params,
+        }
         _params['entities'] = entities
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ErrorResults)
     async def RemoveUser(self, entities=None):
-        '''
+        """
         RemoveUser permanently removes a user from the current controller for each
         entity provided. While the user is permanently removed we keep it's
         information around for auditing purposes.
@@ -1250,25 +1263,26 @@ class UserManagerFacade(Type):
 
         entities : typing.Sequence[~Entity]
         Returns -> ErrorResults
-        '''
+        """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise Exception("Expected entities to be a Sequence, received: {}".format(type(entities)))
+            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='UserManager',
-                   request='RemoveUser',
-                   version=3,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'UserManager',
+            'request': 'RemoveUser',
+            'version': 3,
+            'params': _params,
+        }
         _params['entities'] = entities
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(AddUserResults)
     async def ResetPassword(self, entities=None):
-        '''
+        """
         ResetPassword resets password for supplied users by
         invalidating current passwords (if any) and generating
         new random secret keys which will be returned.
@@ -1276,69 +1290,72 @@ class UserManagerFacade(Type):
 
         entities : typing.Sequence[~Entity]
         Returns -> AddUserResults
-        '''
+        """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise Exception("Expected entities to be a Sequence, received: {}".format(type(entities)))
+            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='UserManager',
-                   request='ResetPassword',
-                   version=3,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'UserManager',
+            'request': 'ResetPassword',
+            'version': 3,
+            'params': _params,
+        }
         _params['entities'] = entities
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ErrorResults)
     async def SetPassword(self, changes=None):
-        '''
+        """
         SetPassword changes the stored password for the specified users.
 
         changes : typing.Sequence[~EntityPassword]
         Returns -> ErrorResults
-        '''
+        """
         if changes is not None and not isinstance(changes, (bytes, str, list)):
-            raise Exception("Expected changes to be a Sequence, received: {}".format(type(changes)))
+            raise TypeError(f'Expected changes to be a Sequence, received: {type(changes)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='UserManager',
-                   request='SetPassword',
-                   version=3,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'UserManager',
+            'request': 'SetPassword',
+            'version': 3,
+            'params': _params,
+        }
         _params['changes'] = changes
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(UserInfoResults)
     async def UserInfo(self, entities=None, include_disabled=None):
-        '''
+        """
         UserInfo returns information on a user.
 
         entities : typing.Sequence[~Entity]
         include_disabled : bool
         Returns -> UserInfoResults
-        '''
+        """
         if entities is not None and not isinstance(entities, (bytes, str, list)):
-            raise Exception("Expected entities to be a Sequence, received: {}".format(type(entities)))
+            raise TypeError(f'Expected entities to be a Sequence, received: {type(entities)}')
 
         if include_disabled is not None and not isinstance(include_disabled, bool):
-            raise Exception("Expected include_disabled to be a bool, received: {}".format(type(include_disabled)))
+            raise TypeError(f'Expected include_disabled to be a bool, received: {type(include_disabled)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='UserManager',
-                   request='UserInfo',
-                   version=3,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'UserManager',
+            'request': 'UserInfo',
+            'version': 3,
+            'params': _params,
+        }
         _params['entities'] = entities
         _params['include-disabled'] = include_disabled
         reply = await self.rpc(msg)
         return reply
-
 

@@ -4,7 +4,6 @@
 from juju.client.facade import Type, ReturnMapping
 from juju.client._definitions import *
 
-
 class CredentialManagerFacade(Type):
     name = 'CredentialManager'
     version = 1
@@ -31,30 +30,30 @@ class CredentialManagerFacade(Type):
                                                                  'Result': {'$ref': '#/definitions/ErrorResult'}},
                                                   'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(ErrorResult)
     async def InvalidateModelCredential(self, reason=None):
-        '''
+        """
         InvalidateModelCredential marks the cloud credential for this model as invalid.
 
         reason : str
         Returns -> ErrorResult
-        '''
+        """
         if reason is not None and not isinstance(reason, (bytes, str)):
-            raise Exception("Expected reason to be a str, received: {}".format(type(reason)))
+            raise TypeError(f'Expected reason to be a str, received: {type(reason)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='CredentialManager',
-                   request='InvalidateModelCredential',
-                   version=1,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'CredentialManager',
+            'request': 'InvalidateModelCredential',
+            'version': 1,
+            'params': _params,
+        }
         _params['reason'] = reason
         reply = await self.rpc(msg)
         return reply
-
-
 
 class FirewallRulesFacade(Type):
     name = 'FirewallRules'
@@ -103,51 +102,52 @@ class FirewallRulesFacade(Type):
                                                         'Result': {'$ref': '#/definitions/ErrorResults'}},
                                          'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(ListFirewallRulesResults)
     async def ListFirewallRules(self):
-        '''
+        """
         ListFirewallRules returns all the firewall rules.
 
 
         Returns -> ListFirewallRulesResults
-        '''
+        """
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='FirewallRules',
-                   request='ListFirewallRules',
-                   version=1,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'FirewallRules',
+            'request': 'ListFirewallRules',
+            'version': 1,
+            'params': _params,
+        }
 
         reply = await self.rpc(msg)
         return reply
-
 
 
     @ReturnMapping(ErrorResults)
     async def SetFirewallRules(self, args=None):
-        '''
+        """
         SetFirewallRules creates or updates the specified firewall rules.
 
         args : typing.Sequence[~FirewallRule]
         Returns -> ErrorResults
-        '''
+        """
         if args is not None and not isinstance(args, (bytes, str, list)):
-            raise Exception("Expected args to be a Sequence, received: {}".format(type(args)))
+            raise TypeError(f'Expected args to be a Sequence, received: {type(args)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='FirewallRules',
-                   request='SetFirewallRules',
-                   version=1,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'FirewallRules',
+            'request': 'SetFirewallRules',
+            'version': 1,
+            'params': _params,
+        }
         _params['args'] = args
         reply = await self.rpc(msg)
         return reply
-
-
 
 class ImageMetadataManagerFacade(Type):
     name = 'ImageMetadataManager'
@@ -235,35 +235,36 @@ class ImageMetadataManagerFacade(Type):
                                             'Result': {'$ref': '#/definitions/ErrorResults'}},
                              'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(ErrorResults)
     async def Delete(self, image_ids=None):
-        '''
+        """
         Delete deletes cloud image metadata for given image ids.
         It supports bulk calls.
 
         image_ids : typing.Sequence[str]
         Returns -> ErrorResults
-        '''
+        """
         if image_ids is not None and not isinstance(image_ids, (bytes, str, list)):
-            raise Exception("Expected image_ids to be a Sequence, received: {}".format(type(image_ids)))
+            raise TypeError(f'Expected image_ids to be a Sequence, received: {type(image_ids)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='ImageMetadataManager',
-                   request='Delete',
-                   version=1,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'ImageMetadataManager',
+            'request': 'Delete',
+            'version': 1,
+            'params': _params,
+        }
         _params['image-ids'] = image_ids
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ListCloudImageMetadataResult)
     async def List(self, arches=None, region=None, root_storage_type=None, stream=None, versions=None, virt_type=None):
-        '''
+        """
         List returns all found cloud image metadata that satisfy
         given filter.
         Returned list contains metadata ordered by priority.
@@ -275,31 +276,33 @@ class ImageMetadataManagerFacade(Type):
         versions : typing.Sequence[str]
         virt_type : str
         Returns -> ListCloudImageMetadataResult
-        '''
+        """
         if arches is not None and not isinstance(arches, (bytes, str, list)):
-            raise Exception("Expected arches to be a Sequence, received: {}".format(type(arches)))
+            raise TypeError(f'Expected arches to be a Sequence, received: {type(arches)}')
 
         if region is not None and not isinstance(region, (bytes, str)):
-            raise Exception("Expected region to be a str, received: {}".format(type(region)))
+            raise TypeError(f'Expected region to be a str, received: {type(region)}')
 
         if root_storage_type is not None and not isinstance(root_storage_type, (bytes, str)):
-            raise Exception("Expected root_storage_type to be a str, received: {}".format(type(root_storage_type)))
+            raise TypeError(f'Expected root_storage_type to be a str, received: {type(root_storage_type)}')
 
         if stream is not None and not isinstance(stream, (bytes, str)):
-            raise Exception("Expected stream to be a str, received: {}".format(type(stream)))
+            raise TypeError(f'Expected stream to be a str, received: {type(stream)}')
 
         if versions is not None and not isinstance(versions, (bytes, str, list)):
-            raise Exception("Expected versions to be a Sequence, received: {}".format(type(versions)))
+            raise TypeError(f'Expected versions to be a Sequence, received: {type(versions)}')
 
         if virt_type is not None and not isinstance(virt_type, (bytes, str)):
-            raise Exception("Expected virt_type to be a str, received: {}".format(type(virt_type)))
+            raise TypeError(f'Expected virt_type to be a str, received: {type(virt_type)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='ImageMetadataManager',
-                   request='List',
-                   version=1,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'ImageMetadataManager',
+            'request': 'List',
+            'version': 1,
+            'params': _params,
+        }
         _params['arches'] = arches
         _params['region'] = region
         _params['root-storage-type'] = root_storage_type
@@ -310,30 +313,29 @@ class ImageMetadataManagerFacade(Type):
         return reply
 
 
-
     @ReturnMapping(ErrorResults)
     async def Save(self, metadata=None):
-        '''
+        """
         Save stores given cloud image metadata.
         It supports bulk calls.
 
         metadata : typing.Sequence[~CloudImageMetadataList]
         Returns -> ErrorResults
-        '''
+        """
         if metadata is not None and not isinstance(metadata, (bytes, str, list)):
-            raise Exception("Expected metadata to be a Sequence, received: {}".format(type(metadata)))
+            raise TypeError(f'Expected metadata to be a Sequence, received: {type(metadata)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='ImageMetadataManager',
-                   request='Save',
-                   version=1,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'ImageMetadataManager',
+            'request': 'Save',
+            'version': 1,
+            'params': _params,
+        }
         _params['metadata'] = metadata
         reply = await self.rpc(msg)
         return reply
-
-
 
 class KeyManagerFacade(Type):
     name = 'KeyManager'
@@ -408,119 +410,122 @@ class KeyManagerFacade(Type):
                                                 'Result': {'$ref': '#/definitions/StringsResults'}},
                                  'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(ErrorResults)
     async def AddKeys(self, ssh_keys=None, user=None):
-        '''
+        """
         AddKeys adds new authorised ssh keys for the specified user.
 
         ssh_keys : typing.Sequence[str]
         user : str
         Returns -> ErrorResults
-        '''
+        """
         if ssh_keys is not None and not isinstance(ssh_keys, (bytes, str, list)):
-            raise Exception("Expected ssh_keys to be a Sequence, received: {}".format(type(ssh_keys)))
+            raise TypeError(f'Expected ssh_keys to be a Sequence, received: {type(ssh_keys)}')
 
         if user is not None and not isinstance(user, (bytes, str)):
-            raise Exception("Expected user to be a str, received: {}".format(type(user)))
+            raise TypeError(f'Expected user to be a str, received: {type(user)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='KeyManager',
-                   request='AddKeys',
-                   version=1,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'KeyManager',
+            'request': 'AddKeys',
+            'version': 1,
+            'params': _params,
+        }
         _params['ssh-keys'] = ssh_keys
         _params['user'] = user
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ErrorResults)
     async def DeleteKeys(self, ssh_keys=None, user=None):
-        '''
+        """
         DeleteKeys deletes the authorised ssh keys for the specified user.
 
         ssh_keys : typing.Sequence[str]
         user : str
         Returns -> ErrorResults
-        '''
+        """
         if ssh_keys is not None and not isinstance(ssh_keys, (bytes, str, list)):
-            raise Exception("Expected ssh_keys to be a Sequence, received: {}".format(type(ssh_keys)))
+            raise TypeError(f'Expected ssh_keys to be a Sequence, received: {type(ssh_keys)}')
 
         if user is not None and not isinstance(user, (bytes, str)):
-            raise Exception("Expected user to be a str, received: {}".format(type(user)))
+            raise TypeError(f'Expected user to be a str, received: {type(user)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='KeyManager',
-                   request='DeleteKeys',
-                   version=1,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'KeyManager',
+            'request': 'DeleteKeys',
+            'version': 1,
+            'params': _params,
+        }
         _params['ssh-keys'] = ssh_keys
         _params['user'] = user
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ErrorResults)
     async def ImportKeys(self, ssh_keys=None, user=None):
-        '''
+        """
         ImportKeys imports new authorised ssh keys from the specified key ids for the specified user.
 
         ssh_keys : typing.Sequence[str]
         user : str
         Returns -> ErrorResults
-        '''
+        """
         if ssh_keys is not None and not isinstance(ssh_keys, (bytes, str, list)):
-            raise Exception("Expected ssh_keys to be a Sequence, received: {}".format(type(ssh_keys)))
+            raise TypeError(f'Expected ssh_keys to be a Sequence, received: {type(ssh_keys)}')
 
         if user is not None and not isinstance(user, (bytes, str)):
-            raise Exception("Expected user to be a str, received: {}".format(type(user)))
+            raise TypeError(f'Expected user to be a str, received: {type(user)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='KeyManager',
-                   request='ImportKeys',
-                   version=1,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'KeyManager',
+            'request': 'ImportKeys',
+            'version': 1,
+            'params': _params,
+        }
         _params['ssh-keys'] = ssh_keys
         _params['user'] = user
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(StringsResults)
     async def ListKeys(self, entities=None, mode=None):
-        '''
+        """
         ListKeys returns the authorised ssh keys for the specified users.
 
         entities : Entities
         mode : bool
         Returns -> StringsResults
-        '''
+        """
         if entities is not None and not isinstance(entities, (dict, Entities)):
-            raise Exception("Expected entities to be a Entities, received: {}".format(type(entities)))
+            raise TypeError(f'Expected entities to be a Entities, received: {type(entities)}')
 
         if mode is not None and not isinstance(mode, bool):
-            raise Exception("Expected mode to be a bool, received: {}".format(type(mode)))
+            raise TypeError(f'Expected mode to be a bool, received: {type(mode)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='KeyManager',
-                   request='ListKeys',
-                   version=1,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'KeyManager',
+            'request': 'ListKeys',
+            'version': 1,
+            'params': _params,
+        }
         _params['entities'] = entities
         _params['mode'] = mode
         reply = await self.rpc(msg)
         return reply
-
-
 
 class ModelUpgraderFacade(Type):
     name = 'ModelUpgrader'
@@ -576,35 +581,36 @@ class ModelUpgraderFacade(Type):
                                                     'Result': {'$ref': '#/definitions/UpgradeModelResult'}},
                                      'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(None)
     async def AbortModelUpgrade(self, model_tag=None):
-        '''
+        """
         AbortModelUpgrade aborts and archives the model upgrade
         synchronisation record, if any.
 
         model_tag : str
         Returns -> None
-        '''
+        """
         if model_tag is not None and not isinstance(model_tag, (bytes, str)):
-            raise Exception("Expected model_tag to be a str, received: {}".format(type(model_tag)))
+            raise TypeError(f'Expected model_tag to be a str, received: {type(model_tag)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='ModelUpgrader',
-                   request='AbortModelUpgrade',
-                   version=1,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'ModelUpgrader',
+            'request': 'AbortModelUpgrade',
+            'version': 1,
+            'params': _params,
+        }
         _params['model-tag'] = model_tag
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(UpgradeModelResult)
     async def UpgradeModel(self, agent_stream=None, dry_run=None, ignore_agent_versions=None, model_tag=None, target_version=None):
-        '''
+        """
         UpgradeModel upgrades a model.
 
         agent_stream : str
@@ -613,28 +619,30 @@ class ModelUpgraderFacade(Type):
         model_tag : str
         target_version : Number
         Returns -> UpgradeModelResult
-        '''
+        """
         if agent_stream is not None and not isinstance(agent_stream, (bytes, str)):
-            raise Exception("Expected agent_stream to be a str, received: {}".format(type(agent_stream)))
+            raise TypeError(f'Expected agent_stream to be a str, received: {type(agent_stream)}')
 
         if dry_run is not None and not isinstance(dry_run, bool):
-            raise Exception("Expected dry_run to be a bool, received: {}".format(type(dry_run)))
+            raise TypeError(f'Expected dry_run to be a bool, received: {type(dry_run)}')
 
         if ignore_agent_versions is not None and not isinstance(ignore_agent_versions, bool):
-            raise Exception("Expected ignore_agent_versions to be a bool, received: {}".format(type(ignore_agent_versions)))
+            raise TypeError(f'Expected ignore_agent_versions to be a bool, received: {type(ignore_agent_versions)}')
 
         if model_tag is not None and not isinstance(model_tag, (bytes, str)):
-            raise Exception("Expected model_tag to be a str, received: {}".format(type(model_tag)))
+            raise TypeError(f'Expected model_tag to be a str, received: {type(model_tag)}')
 
         if target_version is not None and not isinstance(target_version, (dict, Number)):
-            raise Exception("Expected target_version to be a Number, received: {}".format(type(target_version)))
+            raise TypeError(f'Expected target_version to be a Number, received: {type(target_version)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='ModelUpgrader',
-                   request='UpgradeModel',
-                   version=1,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'ModelUpgrader',
+            'request': 'UpgradeModel',
+            'version': 1,
+            'params': _params,
+        }
         _params['agent-stream'] = agent_stream
         _params['dry-run'] = dry_run
         _params['ignore-agent-versions'] = ignore_agent_versions
@@ -642,8 +650,6 @@ class ModelUpgraderFacade(Type):
         _params['target-version'] = target_version
         reply = await self.rpc(msg)
         return reply
-
-
 
 class PayloadsFacade(Type):
     name = 'Payloads'
@@ -684,77 +690,78 @@ class PayloadsFacade(Type):
                                             'Result': {'$ref': '#/definitions/PayloadListResults'}},
                              'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(PayloadListResults)
     async def List(self, patterns=None):
-        '''
+        """
         List builds the list of payloads being tracked for
         the given unit and IDs. If no IDs are provided then all tracked
         payloads for the unit are returned.
 
         patterns : typing.Sequence[str]
         Returns -> PayloadListResults
-        '''
+        """
         if patterns is not None and not isinstance(patterns, (bytes, str, list)):
-            raise Exception("Expected patterns to be a Sequence, received: {}".format(type(patterns)))
+            raise TypeError(f'Expected patterns to be a Sequence, received: {type(patterns)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Payloads',
-                   request='List',
-                   version=1,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Payloads',
+            'request': 'List',
+            'version': 1,
+            'params': _params,
+        }
         _params['patterns'] = patterns
         reply = await self.rpc(msg)
         return reply
-
-
 
 class PingerFacade(Type):
     name = 'Pinger'
     version = 1
     schema =     {'properties': {'Ping': {'type': 'object'}, 'Stop': {'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(None)
     async def Ping(self):
-        '''
+        """
 
         Returns -> None
-        '''
+        """
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Pinger',
-                   request='Ping',
-                   version=1,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Pinger',
+            'request': 'Ping',
+            'version': 1,
+            'params': _params,
+        }
 
         reply = await self.rpc(msg)
         return reply
-
 
 
     @ReturnMapping(None)
     async def Stop(self):
-        '''
+        """
 
         Returns -> None
-        '''
+        """
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Pinger',
-                   request='Stop',
-                   version=1,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Pinger',
+            'request': 'Stop',
+            'version': 1,
+            'params': _params,
+        }
 
         reply = await self.rpc(msg)
         return reply
-
-
 
 class SecretBackendsFacade(Type):
     name = 'SecretBackends'
@@ -882,104 +889,107 @@ class SecretBackendsFacade(Type):
                                                             'Result': {'$ref': '#/definitions/ErrorResults'}},
                                              'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(ErrorResults)
     async def AddSecretBackends(self, args=None):
-        '''
+        """
         AddSecretBackends adds new secret backends.
 
         args : typing.Sequence[~AddSecretBackendArg]
         Returns -> ErrorResults
-        '''
+        """
         if args is not None and not isinstance(args, (bytes, str, list)):
-            raise Exception("Expected args to be a Sequence, received: {}".format(type(args)))
+            raise TypeError(f'Expected args to be a Sequence, received: {type(args)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='SecretBackends',
-                   request='AddSecretBackends',
-                   version=1,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'SecretBackends',
+            'request': 'AddSecretBackends',
+            'version': 1,
+            'params': _params,
+        }
         _params['args'] = args
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ListSecretBackendsResults)
     async def ListSecretBackends(self, names=None, reveal=None):
-        '''
+        """
         ListSecretBackends lists available secret backends.
 
         names : typing.Sequence[str]
         reveal : bool
         Returns -> ListSecretBackendsResults
-        '''
+        """
         if names is not None and not isinstance(names, (bytes, str, list)):
-            raise Exception("Expected names to be a Sequence, received: {}".format(type(names)))
+            raise TypeError(f'Expected names to be a Sequence, received: {type(names)}')
 
         if reveal is not None and not isinstance(reveal, bool):
-            raise Exception("Expected reveal to be a bool, received: {}".format(type(reveal)))
+            raise TypeError(f'Expected reveal to be a bool, received: {type(reveal)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='SecretBackends',
-                   request='ListSecretBackends',
-                   version=1,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'SecretBackends',
+            'request': 'ListSecretBackends',
+            'version': 1,
+            'params': _params,
+        }
         _params['names'] = names
         _params['reveal'] = reveal
         reply = await self.rpc(msg)
         return reply
 
 
-
     @ReturnMapping(ErrorResults)
     async def RemoveSecretBackends(self, args=None):
-        '''
+        """
         RemoveSecretBackends removes secret backends.
 
         args : typing.Sequence[~RemoveSecretBackendArg]
         Returns -> ErrorResults
-        '''
+        """
         if args is not None and not isinstance(args, (bytes, str, list)):
-            raise Exception("Expected args to be a Sequence, received: {}".format(type(args)))
+            raise TypeError(f'Expected args to be a Sequence, received: {type(args)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='SecretBackends',
-                   request='RemoveSecretBackends',
-                   version=1,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'SecretBackends',
+            'request': 'RemoveSecretBackends',
+            'version': 1,
+            'params': _params,
+        }
         _params['args'] = args
         reply = await self.rpc(msg)
         return reply
-
 
 
     @ReturnMapping(ErrorResults)
     async def UpdateSecretBackends(self, args=None):
-        '''
+        """
         UpdateSecretBackends updates secret backends.
 
         args : typing.Sequence[~UpdateSecretBackendArg]
         Returns -> ErrorResults
-        '''
+        """
         if args is not None and not isinstance(args, (bytes, str, list)):
-            raise Exception("Expected args to be a Sequence, received: {}".format(type(args)))
+            raise TypeError(f'Expected args to be a Sequence, received: {type(args)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='SecretBackends',
-                   request='UpdateSecretBackends',
-                   version=1,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'SecretBackends',
+            'request': 'UpdateSecretBackends',
+            'version': 1,
+            'params': _params,
+        }
         _params['args'] = args
         reply = await self.rpc(msg)
         return reply
-
-
 
 class SecretsFacade(Type):
     name = 'Secrets'
@@ -1062,32 +1072,33 @@ class SecretsFacade(Type):
                                                    'Result': {'$ref': '#/definitions/ListSecretResults'}},
                                     'type': 'object'}},
      'type': 'object'}
-    
+
 
     @ReturnMapping(ListSecretResults)
     async def ListSecrets(self, filter_=None, show_secrets=None):
-        '''
+        """
         ListSecrets lists available secrets.
 
         filter_ : SecretsFilter
         show_secrets : bool
         Returns -> ListSecretResults
-        '''
+        """
         if filter_ is not None and not isinstance(filter_, (dict, SecretsFilter)):
-            raise Exception("Expected filter_ to be a SecretsFilter, received: {}".format(type(filter_)))
+            raise TypeError(f'Expected filter_ to be a SecretsFilter, received: {type(filter_)}')
 
         if show_secrets is not None and not isinstance(show_secrets, bool):
-            raise Exception("Expected show_secrets to be a bool, received: {}".format(type(show_secrets)))
+            raise TypeError(f'Expected show_secrets to be a bool, received: {type(show_secrets)}')
 
         # map input types to rpc msg
-        _params = dict()
-        msg = dict(type='Secrets',
-                   request='ListSecrets',
-                   version=1,
-                   params=_params)
+        _params = {}
+        msg = {
+            'type': 'Secrets',
+            'request': 'ListSecrets',
+            'version': 1,
+            'params': _params,
+        }
         _params['filter'] = filter_
         _params['show-secrets'] = show_secrets
         reply = await self.rpc(msg)
         return reply
-
 
