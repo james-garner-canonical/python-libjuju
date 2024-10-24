@@ -680,6 +680,8 @@ class Schema(dict):
         self.registry = KindRegistry()
         self.types = TypeRegistry(self)
 
+        self.buildDefinitions()
+
     def referenceName(self, ref):
         if ref.startswith("#/definitions/"):
             ref = ref.rsplit("/", 1)[-1]
@@ -856,11 +858,6 @@ def generate_definitions(schemas: Dict[str, List[Schema]]) -> Dict[str, List[str
     # TODO: get rid of some of the excess trips through loops in the
     # called functions.
     definitions: Dict[str, List[str]] = {}
-
-    for juju_version in sorted(schemas.keys()):
-        for schema in schemas[juju_version]:
-            schema.buildDefinitions()
-
     # ensure we write the latest ones first, so that earlier revisions
     # get dropped.
     for juju_version in sorted(schemas.keys(), reverse=True):
