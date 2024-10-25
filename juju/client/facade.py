@@ -789,7 +789,7 @@ def write_definitions(captures: Dict[str, List[str]], options: Options) -> None:
     """
     with open(f'{options.output_dir}/_definitions.py', 'w') as f:
         f.write(HEADER)
-        f.write("from juju.client.facade import Type, JSONObject\n\n")
+        f.write("from juju.client.facade import Type\n\n")
         for key in sorted(captures):
             if 'Facade' in key:
                 continue
