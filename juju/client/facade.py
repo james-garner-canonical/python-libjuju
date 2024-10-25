@@ -180,9 +180,6 @@ class TypeRegistry(dict):
             raise ValueError("%s has type %s" % (obj, kind))
         return result
 
-    def refType(self, obj):
-        return self.get(obj["$ref"])
-
 
 factories: Dict[str, List[str]] = {}
 
@@ -720,7 +717,7 @@ class Schema(dict):
             for p in sorted(props):
                 prop = props[p]
                 if "$ref" in prop:
-                    add((p, self.types.refType(prop)))
+                    add((p, self.types.get(prop["$ref"])))
                 else:
                     kind = prop['type']
                     if kind == "array":
@@ -736,7 +733,8 @@ class Schema(dict):
                     pprops)
             pprop = pprops[".*"]
             if "$ref" in pprop:
-                add((name, Mapping[str, self.types.refType(pprop)]))
+                ref = pprop['$ref']
+                add((name, Mapping[str, self.types.get(ref)]))
                 return struct
             ppkind = pprop["type"]
             if ppkind == "array":
@@ -752,7 +750,8 @@ class Schema(dict):
     def buildArray(self, obj):
         # return a sequence from an array in the schema
         if "$ref" in obj:
-            return Sequence[self.types.refType(obj)]
+            ref = obj['$ref']
+            return Sequence[self.types.get(ref)]
         else:
             kind = obj.get("type")
             if kind and kind == "array":
