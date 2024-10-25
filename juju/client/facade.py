@@ -622,6 +622,7 @@ class Schema(dict):
         self.name: str = schema['Name']
         self.version: int = schema['Version']
         self.properties: Dict[str, JSONObject] = schema['Schema']['properties']
+        self.definitions: typing.Optional[Dict[str, JSONObject]] = schema['Schema'].get('definitions')
         self.update(schema['Schema'])
 
         self.registry: Dict[str, Struct] = {}
@@ -649,11 +650,10 @@ class Schema(dict):
         # but these may contain references themselves
         # so we dfs to the bottom and build upwards
         # when a types is already in the registry
-        defs = self.get('definitions')
-        if not defs:
+        if not self.definitions:
             return
         definitions = {}
-        for d, data in defs.items():
+        for d, data in self.definitions.items():
             if d in self.registry and d not in NAUGHTY_CLASSES:
                 continue
             if data.get("type") != "object":
