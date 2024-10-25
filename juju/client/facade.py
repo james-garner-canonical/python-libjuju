@@ -133,18 +133,6 @@ class Options(Protocol):
     output_dir: str
 
 
-class TypeRegistry(dict):
-    def get(self, name):
-        # Two way mapping
-        refname = get_reference_name(name)
-        if refname not in self:
-            result = typing.TypeVar(refname)
-            self[refname] = result
-            self[result] = refname
-
-        return self[refname]
-
-
 factories: Dict[str, List[str]] = {}
 
 
@@ -216,11 +204,11 @@ def strcast(kind, keep_builtins=False):
 
 class Args(list):
 
-    def __init__(self, schema, defs):
+    def __init__(self, schema: Schema, defs):  # defs is the weird type stuff we construct
         self.schema = schema
         self.defs = defs
         if defs:
-            rtypes = schema.registry.get(schema.types[defs])
+            rtypes = schema.registry.get(schema.types_to_names[defs])
             if len(rtypes) == 1:
                 if not self.do_explode(rtypes[0][1]):
                     for name, rtype in rtypes:
@@ -314,10 +302,8 @@ def buildValidation(name, instance_type, instance_sub_type, ident=None) -> str:
 
 def buildTypes(schema: Schema, capture: Dict[str, List[str]]) -> None:
     INDENT = "    "
-    for kind in sorted(schema.types, key=str):
-        if isinstance(kind, str):
-            continue
-        name = schema.types[kind]
+    for kind in sorted(schema.types_to_names, key=str):
+        name = schema.types_to_names[kind]
         if not name:
             # when running on juju 3.1.0 client-only schemas, we get a seemingly empty entry with no name
             # this breaks codegen when generating a class with no name so we explicitly skip it here
@@ -502,11 +488,11 @@ def _buildMethod(cls, name):
         prop = method['properties']
         spec = prop.get('Params')
         if spec:
-            params = cls.schema.types.get(spec['$ref'])
+            params = cls.schema.get_type(spec['$ref'])
         spec = prop.get('Result')
         if spec:
             if '$ref' in spec:
-                result = cls.schema.types.get(spec['$ref'])
+                result = cls.schema.get_type(spec['$ref'])
             else:
                 result = SCHEMA_TO_PYTHON[spec['type']]
     return makeFunc(cls, name, description, params, result)
@@ -638,9 +624,23 @@ class Schema(dict):
         self.update(schema['Schema'])
 
         self.registry: Dict[str, Struct] = {}
-        self.types = TypeRegistry()
+        self.names_to_types: Dict[str, TypeVar] = {}
+        self.types_to_names: Dict[TypeVar, str] = {}
 
         self.buildDefinitions()
+
+    def register_name(self, name: str) -> TypeVar:
+        assert name not in self.names_to_types
+        refname = get_reference_name(name)
+        typevar = TypeVar(refname)
+        self.names_to_types[name] = typevar  # not refname
+        self.types_to_names[typevar] = refname
+        return typevar
+
+    def get_type(self, name: str) -> TypeVar:
+        if name not in self.names_to_types:
+            self.register_name(name)
+        return self.names_to_types[name]
 
     def buildDefinitions(self):
         # here we are building the types out
@@ -661,7 +661,7 @@ class Schema(dict):
         for d, definition in definitions.items():
             node = self.buildObject(definition, d)
             self.registry[d] = node
-            self.types.get(d)
+            self.register_name(d)
 
     def buildObject(self, node, name=None) -> Struct:
         # we don't need to build types recursively here
@@ -678,7 +678,7 @@ class Schema(dict):
             for p in sorted(props):
                 prop = props[p]
                 if "$ref" in prop:
-                    add((p, self.types.get(prop["$ref"])))
+                    add((p, self.get_type(prop['$ref'])))
                 else:
                     kind = prop['type']
                     if kind == "array":
@@ -695,7 +695,7 @@ class Schema(dict):
             pprop = pprops[".*"]
             if "$ref" in pprop:
                 ref = pprop['$ref']
-                add((name, Mapping[str, self.types.get(ref)]))
+                add((name, Mapping[str, self.get_type(ref)]))
                 return struct
             ppkind = pprop["type"]
             if ppkind == "array":
@@ -712,7 +712,7 @@ class Schema(dict):
         # return a sequence from an array in the schema
         if "$ref" in obj:
             ref = obj['$ref']
-            return Sequence[self.types.get(ref)]
+            return Sequence[self.get_type(ref)]
         else:
             kind = obj.get("type")
             if kind and kind == "array":
