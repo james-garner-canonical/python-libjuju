@@ -140,15 +140,11 @@ class KindRegistry(dict):
         }}
 
     def getObj(self, name):
-        if name in self:
-            versions = self[name]
-            result = versions[max(versions)]
-        else:
-            result = None
-        if result:
-            obj = result["object"]
-            return obj
-        return None
+        if name not in self:
+            return None
+        versions = self[name]
+        result = versions[max(versions)]
+        return result['object']
 
 
 class TypeRegistry(dict):
