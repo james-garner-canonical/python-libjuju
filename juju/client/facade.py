@@ -139,14 +139,12 @@ class KindRegistry(dict):
             "object": obj,
         }}
 
-    def lookup(self, name):
-        versions = self.get(name)
-        if not versions:
-            return None
-        return versions[max(versions)]
-
     def getObj(self, name):
-        result = self.lookup(name)
+        if name in self:
+            versions = self[name]
+            result = versions[max(versions)]
+        else:
+            result = None
         if result:
             obj = result["object"]
             return obj
