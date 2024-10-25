@@ -134,13 +134,9 @@ class Options(Protocol):
 
 
 class TypeRegistry(dict):
-
-    def __init__(self, schema):
-        self.schema = schema
-
     def get(self, name):
         # Two way mapping
-        refname = self.schema.referenceName(name)
+        refname = get_reference_name(name)
         if refname not in self:
             result = typing.TypeVar(refname)
             self[refname] = result
@@ -642,14 +638,9 @@ class Schema(dict):
         self.update(schema['Schema'])
 
         self.registry: Dict[str, Struct] = {}
-        self.types = TypeRegistry(self)
+        self.types = TypeRegistry()
 
         self.buildDefinitions()
-
-    def referenceName(self, ref):
-        if ref.startswith("#/definitions/"):
-            ref = ref.rsplit("/", 1)[-1]
-        return ref
 
     def buildDefinitions(self):
         # here we are building the types out
@@ -729,6 +720,12 @@ class Schema(dict):
                 return self.buildArray(items)
             else:
                 return Sequence[SCHEMA_TO_PYTHON[obj['type']]]
+
+
+def get_reference_name(ref: str) -> str:
+    if ref.startswith("#/definitions/"):
+        _, _, ref = ref.rpartition("/")
+    return ref
 
 
 def _getns(schema):
