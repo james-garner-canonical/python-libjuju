@@ -19,6 +19,7 @@ from typing import (
     Mapping,
     Protocol,
     Sequence,
+    Tuple,
     TypeVar,
 )
 
@@ -132,16 +133,6 @@ class Options(Protocol):
     output_dir: str
 
 
-class KindRegistry(dict):
-
-    def getObj(self, name):
-        if name not in self:
-            return None
-        versions = self[name]
-        result = versions[max(versions)]
-        return result['object']
-
-
 class TypeRegistry(dict):
 
     def __init__(self, schema):
@@ -233,7 +224,7 @@ class Args(list):
         self.schema = schema
         self.defs = defs
         if defs:
-            rtypes = schema.registry.getObj(schema.types[defs])
+            rtypes = schema.get_registered_obj(schema.types[defs])
             if len(rtypes) == 1:
                 if not self.do_explode(rtypes[0][1]):
                     for name, rtype in rtypes:
@@ -642,13 +633,19 @@ class Type:
         return getattr(self, attr, default)
 
 
+Struct = List[Tuple[str, Any]]
+
+class ObjectDict(typing.TypedDict):
+    object: Struct
+
+
 class Schema(dict):
     def __init__(self, schema):
         self.name: str = schema['Name']
         self.version: int = schema['Version']
         self.update(schema['Schema'])
 
-        self.registry = KindRegistry()
+        self.registry: Dict[str, Dict[int, ObjectDict]] = {}
         self.types = TypeRegistry(self)
 
         self.buildDefinitions()
@@ -679,14 +676,21 @@ class Schema(dict):
             self.register_kind(d, self.version, node)
             self.types.get(d)
 
-    def register_kind(self, name, version, obj):
+    def register_kind(self, name: str, version: int, obj: Struct):
         self.registry[name] = {
             version: {
                 "object": obj,
             }
         }
 
-    def buildObject(self, node, name=None):
+    def get_registered_obj(self, name: str) -> typing.Optional[Struct]:
+        if name not in self.registry:
+            return None
+        versions = self.registry[name]
+        result = versions[max(versions)]
+        return result['object']
+
+    def buildObject(self, node, name=None) -> Struct:
         # we don't need to build types recursively here
         # they are all in definitions already
         # we only want to include the type reference
@@ -751,7 +755,7 @@ def _getns(schema):
           }
     # Copy our types into the globals of the method
     for facade in schema.registry:
-        ns[facade] = schema.registry.getObj(facade)
+        ns[facade] = schema.get_registered_obj(facade)
     return ns
 
 
