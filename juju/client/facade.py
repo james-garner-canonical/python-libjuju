@@ -25,6 +25,7 @@ from typing import (
 
 import packaging.version
 import typing_inspect
+from typing_extensions import NotRequired
 
 
 _marker = object()
@@ -504,7 +505,7 @@ def buildFacade(schema: Schema) -> typing.Tuple[typing.Type[Type], str]:
         (Type,),
         {'name': schema.name, 'version': schema.version, 'schema': schema},
     )
-    schema_text = textwrap.indent(pprint.pformat(schema), "    ")
+    schema_text = textwrap.indent(pprint.pformat(schema.schema), "    ")
     source = (
         f'class {schema.name}Facade(Type):\n'
         f'    name = {schema.name!r}\n'
@@ -617,13 +618,26 @@ class Type:
 
 Struct = List[Tuple[str, Any]]
 
-class Schema(dict):
-    def __init__(self, schema):
-        self.name: str = schema['Name']
-        self.version: int = schema['Version']
-        self.properties: Dict[str, JSONObject] = schema['Schema']['properties']
-        self.definitions: typing.Optional[Dict[str, JSONObject]] = schema['Schema'].get('definitions')
-        self.update(schema['Schema'])
+
+class RawDict(typing.TypedDict):
+    Name: str
+    Version: int
+    Schema: SchemaDict
+
+
+class SchemaDict(typing.TypedDict):
+    type: JSONObject
+    properties: Dict[str, JSONObject]
+    definitions: NotRequired[Dict[str, JSONObject]]
+
+
+class Schema:
+    def __init__(self, raw: RawDict):
+        self.name: str = raw['Name']
+        self.version: int = raw['Version']
+        self.schema: SchemaDict = raw['Schema']
+        self.properties: Dict[str, JSONObject] = self.schema['properties']
+        self.definitions: typing.Optional[Dict[str, JSONObject]] = self.schema.get('definitions')
 
         self.registry: Dict[str, Struct] = {}
         self.names_to_types: Dict[str, TypeVar] = {}
