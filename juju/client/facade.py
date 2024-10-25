@@ -898,17 +898,19 @@ def setup() -> Options:
 
 def main() -> None:
     options = setup()
-
     schemas = load_schemas(options)
 
-    # Generate some text blobs
+    # definitions
     definitions = generate_definitions(schemas)
-    captures = generate_facades(schemas)
-
-    # ... and write them out
+    # juju/client/_definitions.py
     write_definitions(definitions, options)
-    write_facades(captures, options)
+
+    # facades
+    captures = generate_facades(schemas)
+    # juju/client/_client.py
     write_client(captures, options)
+    # juju/client/_client{N}.py
+    write_facades(captures, options)
 
 
 if __name__ == '__main__':
