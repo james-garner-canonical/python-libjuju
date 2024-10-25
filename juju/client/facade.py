@@ -635,17 +635,13 @@ class Type:
 
 Struct = List[Tuple[str, Any]]
 
-class ObjectDict(typing.TypedDict):
-    object: Struct
-
-
 class Schema(dict):
     def __init__(self, schema):
         self.name: str = schema['Name']
         self.version: int = schema['Version']
         self.update(schema['Schema'])
 
-        self.registry: Dict[str, Dict[int, ObjectDict]] = {}
+        self.registry: Dict[str, Struct] = {}
         self.types = TypeRegistry(self)
 
         self.buildDefinitions()
@@ -677,18 +673,10 @@ class Schema(dict):
             self.types.get(d)
 
     def register_kind(self, name: str, version: int, obj: Struct):
-        self.registry[name] = {
-            version: {
-                "object": obj,
-            }
-        }
+        self.registry[name] = obj
 
     def get_registered_obj(self, name: str) -> typing.Optional[Struct]:
-        if name not in self.registry:
-            return None
-        versions = self.registry[name]
-        result = versions[max(versions)]
-        return result['object']
+        return self.registry.get(name)
 
     def buildObject(self, node, name=None) -> Struct:
         # we don't need to build types recursively here
