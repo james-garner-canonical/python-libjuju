@@ -171,15 +171,6 @@ class TypeRegistry(dict):
 
         return self[refname]
 
-    def objType(self, obj):
-        kind = obj.get('type')
-        if not kind:
-            raise ValueError("%s has no type" % obj)
-        result = SCHEMA_TO_PYTHON.get(kind)
-        if not result:
-            raise ValueError("%s has type %s" % (obj, kind))
-        return result
-
 
 factories: Dict[str, List[str]] = {}
 
@@ -725,7 +716,7 @@ class Schema(dict):
                     elif kind == "object":
                         struct.extend(self.buildObject(prop, p))
                     else:
-                        add((p, self.types.objType(prop)))
+                        add((p, SCHEMA_TO_PYTHON[prop['type']]))
         if pprops:
             if ".*" not in pprops:
                 raise ValueError(
@@ -758,7 +749,7 @@ class Schema(dict):
                 items = obj['items']
                 return self.buildArray(items)
             else:
-                return Sequence[self.types.objType(obj)]
+                return Sequence[SCHEMA_TO_PYTHON[obj['type']]]
 
 
 def _getns(schema):
