@@ -480,7 +480,7 @@ async def rpc(self, msg):
 def _buildMethod(cls, name):
     params = None
     result = None
-    method = cls.schema['properties'][name]
+    method = cls.schema.properties[name]
     description = ""
     if 'description' in method:
         description = method['description']
@@ -621,6 +621,7 @@ class Schema(dict):
     def __init__(self, schema):
         self.name: str = schema['Name']
         self.version: int = schema['Version']
+        self.properties: Dict[str, JSONObject] = schema['Schema']['properties']
         self.update(schema['Schema'])
 
         self.registry: Dict[str, Struct] = {}
@@ -844,13 +845,13 @@ def generate_facades(schemas: Dict[str, List[Schema]]) -> Dict[int, Dict[str, Li
             capture[cls_name] = [source]
 
             # Build the methods for each Facade class.
-            for methodname in sorted(cls.schema['properties']):
+            for methodname in sorted(cls.schema.properties):
                 method, source = _buildMethod(cls, methodname)
                 setattr(cls, methodname, method)
                 capture[cls_name].append(textwrap.indent(source, prefix='    '))
 
             # Build the override RPC method if the Facade is a watcher.
-            properties = cls.schema['properties']
+            properties = cls.schema.properties
             if "Next" in properties and "Stop" in properties:
                 method, source = makeRPCFunc(cls)
                 setattr(cls, "rpc", method)
