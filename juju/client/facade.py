@@ -139,17 +139,14 @@ class KindRegistry(dict):
             "object": obj,
         }}
 
-    def lookup(self, name, version=None):
-        """If version is omitted, max version is used"""
+    def lookup(self, name):
         versions = self.get(name)
         if not versions:
             return None
-        if version:
-            return versions[version]
         return versions[max(versions)]
 
-    def getObj(self, name, version=None):
-        result = self.lookup(name, version)
+    def getObj(self, name):
+        result = self.lookup(name)
         if result:
             obj = result["object"]
             return obj
