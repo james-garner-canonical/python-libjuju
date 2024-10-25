@@ -841,8 +841,8 @@ def write_client(captures: Dict[int, Dict[str, List[str]]], options: Options) ->
             f.write(f"    '{version}': _client{version},\n")
         f.write('}\n')
         f.write('\n')
-        f.write(LOOKUP_FACADE)
-        f.write(TYPE_FACTORY)
+        f.write(LOOKUP_FACADE)  # TODO: inline?
+        f.write(TYPE_FACTORY)  # TODO: inline?
         for key in sorted(factories):
             if 'Facade' not in key:
                 continue
@@ -857,8 +857,8 @@ def generate_definitions(schemas: Dict[str, List[Schema]]) -> Dict[str, List[str
     definitions: Dict[str, List[str]] = {}
     # ensure we write the latest ones first, so that earlier revisions
     # get dropped.
-    for juju_version in sorted(schemas.keys(), reverse=True):
-        for schema in schemas[juju_version]:
+    for juju_version in sorted(schemas, reverse=True):  # latest first
+        for schema in schemas[juju_version]:  # whatever order they are in the schema.json
             buildTypes(schema, definitions)
 
     return definitions
