@@ -134,7 +134,7 @@ class Options(Protocol):
     output_dir: str
 
 
-factories: Dict[str, List[str]] = {}
+FACTORIES: Dict[str, List[str]] = {}
 
 
 def booler(v):
@@ -754,8 +754,8 @@ def _getns(schema):
 
 
 def make_factory(name: str) -> None:
-    factories[name] = []
-    factories[name].append(f'class {name}(TypeFactory):\n    pass\n\n')
+    FACTORIES[name] = []
+    FACTORIES[name].append(f'class {name}(TypeFactory):\n    pass\n\n')
 
 
 def write_facades(captures: Dict[int, Dict[str, List[str]]], options: Options) -> None:
@@ -796,7 +796,11 @@ def write_definitions(captures: Dict[str, List[str]], options: Options) -> None:
             f.write('\n'.join(captures[key]))
 
 
-def write_client(captures: Dict[int, Dict[str, List[str]]], options: Options) -> None:
+def write_client(
+    captures: Dict[int, Dict[str, List[str]]],
+    factories: Dict[str, List[str]],
+    options: Options,
+) -> None:
     """
     Write the TypeFactory classes to _client.py, along with some
     imports and tables so that we can look up versioned Facades.
@@ -903,14 +907,14 @@ def main() -> None:
     # definitions
     definitions = generate_definitions(schemas)
     # juju/client/_definitions.py
-    write_definitions(definitions, options)
+    write_definitions(definitions, options)  # skip any definitions that DO have Facade in the name
 
     # facades
     captures = generate_facades(schemas)
     # juju/client/_client.py
-    write_client(captures, options)
+    write_client(captures=captures, factories=FACTORIES, options=options)  # skip any factories that DO have Facade in the name
     # juju/client/_client{N}.py
-    write_facades(captures, options)
+    write_facades(captures, options)  # skip any captures that DON'T have Facade in the name
 
 
 if __name__ == '__main__':
