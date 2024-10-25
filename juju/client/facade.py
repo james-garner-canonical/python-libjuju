@@ -224,7 +224,7 @@ class Args(list):
         self.schema = schema
         self.defs = defs
         if defs:
-            rtypes = schema.get_registered_obj(schema.types[defs])
+            rtypes = schema.registry.get(schema.types[defs])
             if len(rtypes) == 1:
                 if not self.do_explode(rtypes[0][1]):
                     for name, rtype in rtypes:
@@ -669,14 +669,8 @@ class Schema(dict):
             definitions[d] = data
         for d, definition in definitions.items():
             node = self.buildObject(definition, d)
-            self.register_kind(d, self.version, node)
+            self.registry[d] = node
             self.types.get(d)
-
-    def register_kind(self, name: str, version: int, obj: Struct):
-        self.registry[name] = obj
-
-    def get_registered_obj(self, name: str) -> typing.Optional[Struct]:
-        return self.registry.get(name)
 
     def buildObject(self, node, name=None) -> Struct:
         # we don't need to build types recursively here
@@ -743,7 +737,7 @@ def _getns(schema):
           }
     # Copy our types into the globals of the method
     for facade in schema.registry:
-        ns[facade] = schema.get_registered_obj(facade)
+        ns[facade] = schema.registry.get(facade)
     return ns
 
 
