@@ -171,9 +171,6 @@ class TypeRegistry(dict):
 
         return self[refname]
 
-    def getRefType(self, ref):
-        return self.get(ref)
-
     def objType(self, obj):
         kind = obj.get('type')
         if not kind:
@@ -184,7 +181,7 @@ class TypeRegistry(dict):
         return result
 
     def refType(self, obj):
-        return self.getRefType(obj["$ref"])
+        return self.get(obj["$ref"])
 
 
 factories: Dict[str, List[str]] = {}
@@ -706,7 +703,7 @@ class Schema(dict):
         for d, definition in definitions.items():
             node = self.buildObject(definition, d)
             self.registry.register(d, self.version, node)
-            self.types.getRefType(d)
+            self.types.get(d)
 
     def buildObject(self, node, name=None):
         # we don't need to build types recursively here
