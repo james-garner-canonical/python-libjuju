@@ -134,11 +134,6 @@ class Options(Protocol):
 
 class KindRegistry(dict):
 
-    def register(self, name, version, obj):
-        self[name] = {version: {
-            "object": obj,
-        }}
-
     def getObj(self, name):
         if name not in self:
             return None
@@ -681,8 +676,15 @@ class Schema(dict):
             definitions[d] = data
         for d, definition in definitions.items():
             node = self.buildObject(definition, d)
-            self.registry.register(d, self.version, node)
+            self.register_kind(d, self.version, node)
             self.types.get(d)
+
+    def register_kind(self, name, version, obj):
+        self.registry[name] = {
+            version: {
+                "object": obj,
+            }
+        }
 
     def buildObject(self, node, name=None):
         # we don't need to build types recursively here
