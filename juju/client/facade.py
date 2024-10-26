@@ -303,8 +303,7 @@ def buildValidation(name, instance_type, instance_sub_type, ident=None) -> str:
 
 def buildTypes(schema: Schema, capture: Dict[str, List[str]]) -> None:
     INDENT = "    "
-    for kind in sorted(schema.types_to_names, key=str):
-        name = schema.types_to_names[kind]
+    for kind, name in sorted(schema.types_to_names.items(), key=str):
         if not name:
             # when running on juju 3.1.0 client-only schemas, we get a seemingly empty entry with no name
             # this breaks codegen when generating a class with no name so we explicitly skip it here
