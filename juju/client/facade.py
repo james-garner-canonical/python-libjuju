@@ -134,9 +134,6 @@ class Options(Protocol):
     output_dir: str
 
 
-FACTORIES: Dict[str, List[str]] = {}
-
-
 def booler(v):
     if isinstance(v, str):
         if v == "false":
@@ -301,7 +298,16 @@ def buildValidation(name, instance_type, instance_sub_type, ident=None) -> str:
     )
 
 
-def buildTypes(schema: Schema, capture: Dict[str, List[str]]) -> None:
+def get_factories(schema: Schema) -> Dict[str, List[str]]:
+    return {
+        name: [f'class {name}(TypeFactory):\n    pass\n\n']
+        for name in schema.types_to_names.values()
+        if 'Facade' in name
+    }
+
+
+def get_definitions(schema: Schema) -> Dict[str, List[str]]:
+    definitions: Dict[str, List[str]] = {}
     INDENT = "    "
     for kind, name in sorted(schema.types_to_names.items(), key=str):
         if not name:
@@ -310,11 +316,7 @@ def buildTypes(schema: Schema, capture: Dict[str, List[str]]) -> None:
             # note that this is not a problem with the original 3.1.0 full schema (client + others)
             # nor is it a problem with client-only schemas for latter juju versions (e.g. 3.3.0)
             continue
-        if name in capture and name not in NAUGHTY_CLASSES:
-            continue
         if 'Facade' in name:
-            # Write Factory class for _client.py
-            FACTORIES[name] = [f'class {name}(TypeFactory):\n    pass\n\n']
             continue
         args = Args(schema, kind)
         # Write actual class
@@ -387,10 +389,11 @@ def buildTypes(schema: Schema, capture: Dict[str, List[str]]) -> None:
             lines.append(f'{INDENT * 2}self.unknown_fields = unknown_fields')
 
         lines.append('\n')
-        capture[name] = lines
+        definitions[name] = lines
         co = compile('\n'.join(lines), __name__, 'exec')
         ns = _getns(schema)
         exec(co, ns)
+    return definitions
 
 
 def retspec(schema, defs):
@@ -832,9 +835,18 @@ def generate_definitions(schemas: Dict[str, List[Schema]]) -> Dict[str, List[str
     # get dropped.
     for juju_version in sorted(schemas, reverse=True):  # latest first
         for schema in schemas[juju_version]:  # whatever order they are in the schema.json
-            buildTypes(schema, definitions)
-
+            for name, lines in get_definitions(schema).items():
+                if name not in definitions or name in NAUGHTY_CLASSES:
+                    definitions[name] = lines
     return definitions
+
+
+def generate_factories(schemas: Dict[str, List[Schema]]) -> Dict[str, List[str]]:
+    factories: Dict[str, List[str]] = {}
+    for juju_version in sorted(schemas, reverse=True):  # latest first
+        for schema in schemas[juju_version]:  # whatever order they are in the schema.json
+            factories.update(get_factories(schema))
+    return factories
 
 
 def generate_facades(schemas: Dict[str, List[Schema]]) -> Dict[int, Dict[str, List[str]]]:
@@ -895,6 +907,9 @@ def main() -> None:
     definitions = generate_definitions(schemas)
     # juju/client/_definitions.py
     write_definitions(definitions, options)
+
+    global FACTORIES
+    FACTORIES = generate_factories(schemas)
 
     # facades
     captures = generate_facades(schemas)
