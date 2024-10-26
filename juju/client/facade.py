@@ -772,8 +772,6 @@ def write_facades(captures: Dict[int, Dict[str, List[str]]], options: Options) -
             f.write('from juju.client._definitions import *\n')
             f.write('\n')
             for key in sorted(captures[version]):
-                if 'Facade' not in key:
-                    continue
                 f.write('\n'.join(captures[version][key]))
                 f.write('\n')
 
@@ -915,7 +913,7 @@ def main() -> None:
     # juju/client/_client.py
     write_client(captures=captures, factories=FACTORIES, options=options)  # skip any factories that DO have Facade in the name
     # juju/client/_client{N}.py
-    write_facades(captures, options)  # skip any captures that DON'T have Facade in the name
+    write_facades(captures, options)
 
 
 if __name__ == '__main__':
