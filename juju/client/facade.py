@@ -387,11 +387,9 @@ def buildTypes(schema: Schema, capture: Dict[str, List[str]]) -> None:
             # Results/Params so we can inspect it.
             lines.append(f'{INDENT * 2}self.unknown_fields = unknown_fields')
 
-        source = '\n'.join(lines)
-        capture[name] = []
-        capture[name].append(source)
-        capture[name].append('\n')
-        co = compile(source, __name__, 'exec')
+        lines.append('\n')
+        capture[name] = lines
+        co = compile('\n'.join(lines), __name__, 'exec')
         ns = _getns(schema)
         exec(co, ns)
 
