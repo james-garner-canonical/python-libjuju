@@ -15,10 +15,12 @@ from pathlib import Path
 from typing import (
     Any,
     Dict,
+    Iterable,
     List,
     Mapping,
     Protocol,
     Sequence,
+    Set,
     Tuple,
     TypeVar,
 )
@@ -296,14 +298,6 @@ def buildValidation(name, instance_type, instance_sub_type, ident=None) -> str:
         f"{ident}if {name} is not None and not isinstance({name}, {instance_sub_type}):\n"
         f"{ident}    raise TypeError(f'Expected {name} to be a {instance_type}, received: {{type({name})}}')\n"
     )
-
-
-def get_factories(schema: Schema) -> Dict[str, List[str]]:
-    return {
-        name: [f'class {name}(TypeFactory):\n    pass\n\n']
-        for name in schema.types_to_names.values()
-        if 'Facade' in name
-    }
 
 
 def get_definitions(schema: Schema) -> Dict[str, List[str]]:
@@ -791,7 +785,7 @@ def write_definitions(captures: Dict[str, List[str]], options: Options) -> None:
 
 def write_client(
     captures: Dict[int, Dict[str, List[str]]],
-    factories: Dict[str, List[str]],
+    factories: Iterable[str],
     options: Options,
 ) -> None:
     """
@@ -821,9 +815,8 @@ def write_client(
         f.write('\n')
         f.write(LOOKUP_FACADE)  # TODO: inline?
         f.write(TYPE_FACTORY)  # TODO: inline?
-        for key in sorted(factories):
-            f.write('\n'.join(factories[key]))
-            f.write('\n')
+        for name in sorted(factories):
+            f.write(f'class {name}(TypeFactory):\n    pass\n\n\n')
 
 
 def generate_definitions(schemas: Dict[str, List[Schema]]) -> Dict[str, List[str]]:
@@ -841,13 +834,16 @@ def generate_definitions(schemas: Dict[str, List[Schema]]) -> Dict[str, List[str
     return definitions
 
 
-def generate_factories(schemas: Dict[str, List[Schema]]) -> Dict[str, List[str]]:
-    factories: Dict[str, List[str]] = {}
-    for juju_version in sorted(schemas, reverse=True):  # latest first
-        for schema in schemas[juju_version]:  # whatever order they are in the schema.json
-            name = f'{schema.name}Facade'
-            factories[name] = [f'class {name}(TypeFactory):\n    pass\n\n']
-            factories.update(get_factories(schema))
+def generate_factories(schemas: Dict[str, List[Schema]]) -> Set[str]:
+    factories: Set[str] = set()
+    for list_of_schemas in schemas.values():
+        for schema in list_of_schemas:
+            factories.add(f'{schema.name}Facade')
+            factories.update(
+                get_reference_name(name)
+                for name in schema.names_to_types
+                if 'Facade' in name
+            )
     return factories
 
 
