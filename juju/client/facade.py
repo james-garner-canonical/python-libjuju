@@ -315,7 +315,7 @@ def buildTypes(schema: Schema, capture: Dict[str, List[str]]) -> None:
             continue
         args = Args(schema, kind)
         # Write Factory class for _client.py
-        make_factory(name)
+        FACTORIES[name] = [f'class {name}(TypeFactory):\n    pass\n\n']
         # Write actual class
         lines: typing.List[str] = [
             f'class {name}(Type):',
@@ -755,11 +755,6 @@ def _getns(schema):
     return ns
 
 
-def make_factory(name: str) -> None:
-    FACTORIES[name] = []
-    FACTORIES[name].append(f'class {name}(TypeFactory):\n    pass\n\n')
-
-
 def write_facades(captures: Dict[int, Dict[str, List[str]]], options: Options) -> None:
     """
     Write the Facades to the appropriate _client<version>.py
@@ -857,7 +852,7 @@ def generate_facades(schemas: Dict[str, List[Schema]]) -> Dict[int, Dict[str, Li
             cls, source = buildFacade(schema)
             cls_name = f'{schema.name}Facade'
             # Make the factory class for _client.py
-            make_factory(cls_name)  # adds to global factories ... sigh
+            FACTORIES[cls_name] = [f'class {cls_name}(TypeFactory):\n    pass\n\n']
 
             capture = captures.setdefault(schema.version, {})
             capture[cls_name] = [source]
