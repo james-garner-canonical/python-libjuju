@@ -391,8 +391,6 @@ def buildTypes(schema: Schema, capture: Dict[str, List[str]]) -> None:
         capture[name] = []
         capture[name].append(source)
         capture[name].append('\n')
-        if name is None:
-            print(source)
         co = compile(source, __name__, 'exec')
         ns = _getns(schema)
         exec(co, ns)
