@@ -845,6 +845,8 @@ def generate_factories(schemas: Dict[str, List[Schema]]) -> Dict[str, List[str]]
     factories: Dict[str, List[str]] = {}
     for juju_version in sorted(schemas, reverse=True):  # latest first
         for schema in schemas[juju_version]:  # whatever order they are in the schema.json
+            name = f'{schema.name}Facade'
+            factories[name] = [f'class {name}(TypeFactory):\n    pass\n\n']
             factories.update(get_factories(schema))
     return factories
 
@@ -856,9 +858,6 @@ def generate_facades(schemas: Dict[str, List[Schema]]) -> Dict[int, Dict[str, Li
         for schema in schemas[juju_version]:
             cls, source = buildFacade(schema)
             cls_name = f'{schema.name}Facade'
-            # Make the factory class for _client.py
-            FACTORIES[cls_name] = [f'class {cls_name}(TypeFactory):\n    pass\n\n']
-
             capture = captures.setdefault(schema.version, {})
             capture[cls_name] = [source]
 
@@ -902,19 +901,15 @@ def setup() -> Options:
 def main() -> None:
     options = setup()
     schemas = load_schemas(options)
-
     # definitions
     definitions = generate_definitions(schemas)
     # juju/client/_definitions.py
     write_definitions(definitions, options)
-
-    global FACTORIES
-    FACTORIES = generate_factories(schemas)
-
-    # facades
+    # facades and factories
     captures = generate_facades(schemas)
+    factories = generate_factories(schemas)
     # juju/client/_client.py
-    write_client(captures=captures, factories=FACTORIES, options=options)
+    write_client(captures=captures, factories=factories, options=options)
     # juju/client/_client{N}.py
     write_facades(captures, options)
 
