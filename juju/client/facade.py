@@ -313,9 +313,11 @@ def buildTypes(schema: Schema, capture: Dict[str, List[str]]) -> None:
             continue
         if name in capture and name not in NAUGHTY_CLASSES:
             continue
+        if 'Facade' in name:
+            # Write Factory class for _client.py
+            FACTORIES[name] = [f'class {name}(TypeFactory):\n    pass\n\n']
+            continue
         args = Args(schema, kind)
-        # Write Factory class for _client.py
-        FACTORIES[name] = [f'class {name}(TypeFactory):\n    pass\n\n']
         # Write actual class
         lines: typing.List[str] = [
             f'class {name}(Type):',
@@ -786,8 +788,6 @@ def write_definitions(captures: Dict[str, List[str]], options: Options) -> None:
         f.write(HEADER)
         f.write("from juju.client.facade import Type\n\n")
         for key in sorted(captures):
-            if 'Facade' in key:
-                continue
             f.write('\n'.join(captures[key]))
 
 
@@ -824,8 +824,6 @@ def write_client(
         f.write(LOOKUP_FACADE)  # TODO: inline?
         f.write(TYPE_FACTORY)  # TODO: inline?
         for key in sorted(factories):
-            if 'Facade' not in key:
-                continue
             f.write('\n'.join(factories[key]))
             f.write('\n')
 
@@ -901,12 +899,12 @@ def main() -> None:
     # definitions
     definitions = generate_definitions(schemas)
     # juju/client/_definitions.py
-    write_definitions(definitions, options)  # skip any definitions that DO have Facade in the name
+    write_definitions(definitions, options)
 
     # facades
     captures = generate_facades(schemas)
     # juju/client/_client.py
-    write_client(captures=captures, factories=FACTORIES, options=options)  # skip any factories that DO have Facade in the name
+    write_client(captures=captures, factories=FACTORIES, options=options)
     # juju/client/_client{N}.py
     write_facades(captures, options)
 
