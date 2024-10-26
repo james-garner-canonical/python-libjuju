@@ -456,7 +456,9 @@ def makeFunc(cls, name, description, params, result, _async=True):
     return func, fsource
 
 
-def makeRPCFunc(cls):
+RPCFunc = typing.Callable[[JSONObject], typing.Awaitable[JSONObject]]
+
+def makeRPCFunc(schema: Schema) -> Tuple[RPCFunc, str]:
     source = """
 
 async def rpc(self, msg):
@@ -472,7 +474,7 @@ async def rpc(self, msg):
     return reply
 
 """
-    ns = _getns(cls.schema)
+    ns = _getns(schema)
     exec(source, ns)
     func = ns["rpc"]
     return func, source
@@ -863,15 +865,14 @@ def generate_facades(schemas: Dict[str, List[Schema]]) -> Dict[int, Dict[str, Li
             capture[cls_name] = [source]
 
             # Build the methods for each Facade class.
-            for methodname in sorted(cls.schema.properties):
+            for methodname in sorted(schema.properties):
                 method, source = _buildMethod(cls, methodname)
                 setattr(cls, methodname, method)
                 capture[cls_name].append(textwrap.indent(source, prefix='    '))
 
             # Build the override RPC method if the Facade is a watcher.
-            properties = cls.schema.properties
-            if "Next" in properties and "Stop" in properties:
-                method, source = makeRPCFunc(cls)
+            if "Next" in schema.properties and "Stop" in schema.properties:
+                method, source = makeRPCFunc(schema)
                 setattr(cls, "rpc", method)
                 capture[cls_name].append(textwrap.indent(source, prefix='    '))
 
