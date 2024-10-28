@@ -198,6 +198,8 @@ def strcast(kind):
     return kind
 
 
+RType = Any
+
 class Args(list):
     def __init__(
         self,
@@ -218,65 +220,52 @@ class Args(list):
             )
             self.append((arg, kind))
 
-    def PyToSchemaMapping(self):
-        m = {}
-        for n, rt in self:
-            m[name_to_py(n)] = n
-        return m
+    def PyToSchemaMapping(self) -> Dict[str, str]:
+        return {name_to_py(name): name for name, _ in self}
 
-    def SchemaToPyMapping(self):
-        m = {}
-        for n, tr in self:
-            m[n] = name_to_py(n)
-        return m
+    def SchemaToPyMapping(self) -> Dict[str, str]:
+        return {name: name_to_py(name) for name, _ in self}
 
-    def _format(self, name, rtype, typed=True):
-        if typed:
-            return f'{name_to_py(name)} : {strcast(rtype)}'
-        else:
-            return name_to_py(name)
+    def _format(self, name: str, rtype: RType, typed: bool = True) -> str:
+        return (
+            f'{name_to_py(name)} : {strcast(rtype)}'
+            if typed
+            else name_to_py(name)
+        )
 
-    def _get_arg_str(self, typed=False, joined=", "):
-        if self:
-            parts = []
-            for item in self:
-                parts.append(self._format(item[0], item[1], typed))
-            if joined:
-                return joined.join(parts)
-            return parts
-        return ''
+    def _get_arg_strs(self, typed: bool = False) -> List[str]:
+        return [
+            self._format(name, rtype, typed=typed)
+            for name, rtype in self
+        ]
 
-    def as_kwargs(self):
-        if self:
-            parts = []
-            for item in self:
-                var_name = name_to_py(item[0])
-                var_type = var_type_to_py(item[1])
-                parts.append(f'{var_name}={var_type}')
-            return ', '.join(parts)
-        return ''
+    def as_kwargs(self) -> str:
+        return ', '.join(
+            f'{name_to_py(name)}={var_type_to_py(rtype)}'
+            for name, rtype in self
+        )
 
-    def as_validation(self):
+    def as_validation(self) -> str:
         """
         as_validation returns a series of validation statements for every item
         in the the Args.
         """
         parts = []
-        for item in self:
-            var_name = name_to_py(item[0])
-            var_type, var_sub_type, ok = kind_to_py(item[1])
+        for name, rtype in self:
+            var_name = name_to_py(name)
+            var_type, var_sub_type, ok = kind_to_py(rtype)
             if ok:
                 parts.append(buildValidation(var_name, var_type, var_sub_type))
         return '\n'.join(parts)
 
-    def typed(self):
-        return self._get_arg_str(True)
+    def typed(self) -> str:
+        return ', '.join(self._get_arg_strs(typed=True))
 
-    def __str__(self):
-        return self._get_arg_str(False)
+    def __str__(self) -> str:
+        return ', '.join(self._get_arg_strs(typed=False))
 
-    def get_doc(self):
-        return self._get_arg_str(True, "\n")
+    def get_doc(self) -> str:
+        return '\n'.join(self._get_arg_strs(typed=True))
 
 
 def buildValidation(name, instance_type, instance_sub_type, ident=None) -> str:
@@ -392,7 +381,7 @@ def makeFunc(
     args = Args(schema, name=params_name)
     assignments = []
     toschema = args.PyToSchemaMapping()
-    for arg in args._get_arg_str(False, False):
+    for arg in args._get_arg_strs(typed=False):
         assignments.append(f"{INDENT}_params[\'{toschema[arg]}\'] = {arg}")
     assignments = "\n".join(assignments)
     res = strcast(result) if result else None
