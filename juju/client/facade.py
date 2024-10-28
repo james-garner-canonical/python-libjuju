@@ -200,21 +200,27 @@ def strcast(kind, keep_builtins=False):
 
 
 class Args(list):
-
-    def __init__(self, schema: Schema, defs):  # defs is the weird type stuff we construct
+    def __init__(
+        self,
+        schema: Schema,
+        defs,  # defs is the weird type stuff we construct; presumably it's Optional here
+        name: typing.Optional[str],
+    ):
         self.schema = schema
         self.defs = defs
         if defs:
-            rtypes = schema.registry.get(schema.types_to_names[defs])
+            assert name is not None
+            rtypes = schema.registry[get_reference_name(name)]
             if len(rtypes) == 1:
-                if not self.do_explode(rtypes[0][1]):
+                [(_, kind)] = rtypes
+                if not self.do_explode(kind, name):
                     for name, rtype in rtypes:
                         self.append((name, rtype))
             else:
                 for name, rtype in rtypes:
                     self.append((name, rtype))
 
-    def do_explode(self, kind):
+    def do_explode(self, kind, name: str):
         if kind is Any:
             return False
         if kind in basic_types or type(kind) is typing.TypeVar:
@@ -223,8 +229,9 @@ class Args(list):
             return False
         if typing_inspect.is_generic_type(kind) and issubclass(typing_inspect.get_origin(kind), Mapping):
             return False
+        # TODO: we never reach here -- sort this out when we iron out how we're defining `kind`s
         self.clear()
-        self.extend(Args(self.schema, kind))
+        self.extend(Args(self.schema, defs=kind, name=name))
         return True
 
     def PyToSchemaMapping(self):
@@ -300,7 +307,10 @@ def buildValidation(name, instance_type, instance_sub_type, ident=None) -> str:
 def get_definitions(schema: Schema) -> Dict[str, List[str]]:
     definitions: Dict[str, List[str]] = {}
     INDENT = "    "
-    for kind, name in sorted(schema.types_to_names.items(), key=str):
+    for kind, name in sorted(
+        ((kind, get_reference_name(name)) for name, kind in schema.names_to_types.items()),
+        key=str,
+    ):
         if not name:
             # when running on juju 3.1.0 client-only schemas, we get a seemingly empty entry with no name
             # this breaks codegen when generating a class with no name so we explicitly skip it here
@@ -309,7 +319,7 @@ def get_definitions(schema: Schema) -> Dict[str, List[str]]:
             continue
         if 'Facade' in name:
             continue
-        args = Args(schema, kind)
+        args = Args(schema, defs=kind, name=name)
         # Write actual class
         lines: typing.List[str] = [
             f'class {name}(Type):',
@@ -400,9 +410,17 @@ def retspec(schema, defs):
     return strcast(defs, False)
 
 
-def makeFunc(schema: Schema, name: str, description: str, params, result, _async=True):
+def makeFunc(
+    schema: Schema,
+    name: str,
+    description: str,
+    params,
+    result,
+    params_name: str,
+    _async: bool = True,
+):
     INDENT = "    "
-    args = Args(schema, params)
+    args = Args(schema, defs=params, name=params_name)
     assignments = []
     toschema = args.PyToSchemaMapping()
     for arg in args._get_arg_str(False, False):
@@ -476,6 +494,7 @@ def _buildMethod(schema: Schema, name: str):
     result = None
     method = schema.properties[name]
     description = ""
+    params_name = None
     if 'description' in method:
         description = method['description']
     if 'properties' in method:
@@ -483,13 +502,21 @@ def _buildMethod(schema: Schema, name: str):
         spec = prop.get('Params')
         if spec:
             params = schema.get_type(spec['$ref'])
+            params_name = spec['$ref']
         spec = prop.get('Result')
         if spec:
             if '$ref' in spec:
                 result = schema.get_type(spec['$ref'])
             else:
                 result = SCHEMA_TO_PYTHON[spec['type']]
-    return makeFunc(schema, name, description, params, result)
+    return makeFunc(
+        schema=schema,
+        name=name,
+        description=description,
+        params=params,
+        result=result,
+        params_name=params_name,
+    )
 
 
 def buildFacade(schema: Schema) -> typing.Tuple[typing.Type[Type], str]:
@@ -634,17 +661,12 @@ class Schema:
 
         self.registry: Dict[str, Struct] = {}
         self.names_to_types: Dict[str, TypeVar] = {}
-        self.types_to_names: Dict[TypeVar, str] = {}
 
         self.buildDefinitions()
 
     def register_name(self, name: str) -> TypeVar:
         assert name not in self.names_to_types
-        refname = get_reference_name(name)
-        typevar = TypeVar(refname)
-        self.names_to_types[name] = typevar  # not refname
-        self.types_to_names[typevar] = refname
-        return typevar
+        self.names_to_types[name] = TypeVar(get_reference_name(name))
 
     def get_type(self, name: str) -> TypeVar:
         if name not in self.names_to_types:
