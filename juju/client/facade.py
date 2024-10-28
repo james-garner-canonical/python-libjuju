@@ -500,12 +500,12 @@ def _buildMethod(schema: Schema, name: str):
         prop = method['properties']
         spec = prop.get('Params')
         if spec:
-            params = schema.get_type(spec['$ref'])
+            params = get_type(spec['$ref'])
             params_name = spec['$ref']
         spec = prop.get('Result')
         if spec:
             if '$ref' in spec:
-                result = schema.get_type(spec['$ref'])
+                result = get_type(spec['$ref'])
             else:
                 result = SCHEMA_TO_PYTHON[spec['type']]
     return makeFunc(
@@ -662,9 +662,6 @@ class Schema:
             for name, definition in self.definitions.items()
         }
 
-    def get_type(self, name: str) -> TypeVar:
-        return TypeVar(get_reference_name(name))
-
     def buildObject(self, node: JSONObject, name: str) -> Struct:
         # we don't need to build types recursively here
         # they are all in definitions already
@@ -722,6 +719,10 @@ class Schema:
                 return self.buildArray(items)
             else:
                 return Sequence[SCHEMA_TO_PYTHON[obj['type']]]
+
+
+def get_type(name: str) -> TypeVar:
+    return TypeVar(get_reference_name(name))
 
 
 def get_reference_name(ref: str) -> str:
