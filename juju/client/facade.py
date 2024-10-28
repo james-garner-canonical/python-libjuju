@@ -307,10 +307,7 @@ def buildValidation(name, instance_type, instance_sub_type, ident=None) -> str:
 def get_definitions(schema: Schema) -> Dict[str, List[str]]:
     definitions: Dict[str, List[str]] = {}
     INDENT = "    "
-    for kind, name in sorted(
-        ((TypeVar(get_reference_name(name)), get_reference_name(name)) for name in schema.names),
-        key=str,
-    ):
+    for name in sorted(schema.names):
         if not name:
             # when running on juju 3.1.0 client-only schemas, we get a seemingly empty entry with no name
             # this breaks codegen when generating a class with no name so we explicitly skip it here
@@ -319,6 +316,8 @@ def get_definitions(schema: Schema) -> Dict[str, List[str]]:
             continue
         if 'Facade' in name:
             continue
+        name = get_reference_name(name)
+        kind = TypeVar(name)
         args = Args(schema, defs=kind, name=name)
         # Write actual class
         lines: typing.List[str] = [
