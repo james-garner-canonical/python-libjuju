@@ -459,7 +459,6 @@ async def rpc(self, msg):
 
 
 def _buildMethod(schema: Schema, name: str):
-    params = None
     result = None
     method = schema.properties[name]
     description = ""
@@ -470,7 +469,6 @@ def _buildMethod(schema: Schema, name: str):
         prop = method['properties']
         spec = prop.get('Params')
         if spec:
-            params = get_type(spec['$ref'])
             params_name = spec['$ref']
         spec = prop.get('Result')
         if spec:
@@ -657,7 +655,8 @@ class Schema:
                 raise ValueError(f'Cannot handle actual pattern in patternProperties {pattern_properties}')
             pattern_property = pattern_properties['.*']
             if '$ref' in pattern_property:
-                struct.append((name, Mapping[str, get_type(pattern_property['$ref'])]))
+                ref = pattern_property['$ref']
+                struct.append((name, Mapping[str, get_type(ref)]))
             elif pattern_property['type'] == 'array':
                 struct.append((name, Mapping[str, self.buildArray(pattern_property)]))
             else:
