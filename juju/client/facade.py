@@ -668,7 +668,6 @@ class Schema:
         # we only want to include the type reference
         # which we can derive from the name
         struct = []
-        add = struct.append
         props = node.get("properties")
         pprops = node.get("patternProperties")
         if props:
@@ -677,15 +676,15 @@ class Schema:
             for p in sorted(props):
                 prop = props[p]
                 if "$ref" in prop:
-                    add((p, self.get_type(prop['$ref'])))
+                    struct.append((p, self.get_type(prop['$ref'])))
                 else:
                     kind = prop['type']
                     if kind == "array":
-                        add((p, self.buildArray(prop)))
+                        struct.append((p, self.buildArray(prop)))
                     elif kind == "object":
                         struct.extend(self.buildObject(prop, p))
                     else:
-                        add((p, SCHEMA_TO_PYTHON[prop['type']]))
+                        struct.append((p, SCHEMA_TO_PYTHON[prop['type']]))
         if pprops:
             if ".*" not in pprops:
                 raise ValueError(
@@ -694,16 +693,16 @@ class Schema:
             pprop = pprops[".*"]
             if "$ref" in pprop:
                 ref = pprop['$ref']
-                add((name, Mapping[str, self.get_type(ref)]))
+                struct.append((name, Mapping[str, self.get_type(ref)]))
                 return struct
             ppkind = pprop["type"]
             if ppkind == "array":
-                add((name, Mapping[str, self.buildArray(pprop)]))
+                struct.append((name, Mapping[str, self.buildArray(pprop)]))
             else:
-                add((name, Mapping[str, SCHEMA_TO_PYTHON[ppkind]]))
+                struct.append((name, Mapping[str, SCHEMA_TO_PYTHON[ppkind]]))
 
         if not struct and node.get('additionalProperties', False):
-            add((name, SCHEMA_TO_PYTHON.get('object')))
+            struct.append((name, SCHEMA_TO_PYTHON.get('object')))
 
         return struct
 
