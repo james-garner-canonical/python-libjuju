@@ -203,36 +203,21 @@ class Args(list):
     def __init__(
         self,
         schema: Schema,
-        defs,  # defs is the weird type stuff we construct; presumably it's Optional here
-        name: typing.Optional[str],
+        name: str | None,
     ):
-        self.schema = schema
-        self.defs = defs
-        if defs:
-            assert name is not None
-            rtypes = schema.registry[get_reference_name(name)]
-            if len(rtypes) == 1:
-                [(_, kind)] = rtypes
-                if not self.do_explode(kind, name):
-                    for name, rtype in rtypes:
-                        self.append((name, rtype))
-            else:
-                for name, rtype in rtypes:
-                    self.append((name, rtype))
-
-    def do_explode(self, kind, name: str):
-        if kind is Any:
-            return False
-        if kind in basic_types or type(kind) is typing.TypeVar:
-            return False
-        if typing_inspect.is_generic_type(kind) and issubclass(typing_inspect.get_origin(kind), Sequence):
-            return False
-        if typing_inspect.is_generic_type(kind) and issubclass(typing_inspect.get_origin(kind), Mapping):
-            return False
-        # TODO: we never reach here -- sort this out when we iron out how we're defining `kind`s
-        self.clear()
-        self.extend(Args(self.schema, defs=kind, name=name))
-        return True
+        if name is None:
+            return
+        for arg, kind in schema.registry[get_reference_name(name)]:
+            assert (
+                kind is Any
+                or kind in basic_types
+                or type(kind) is typing.TypeVar
+                or (
+                    typing_inspect.is_generic_type(kind)
+                    and issubclass(typing_inspect.get_origin(kind), (Sequence, Mapping))
+                )
+            )
+            self.append((arg, kind))
 
     def PyToSchemaMapping(self):
         m = {}
@@ -317,8 +302,7 @@ def get_definitions(schema: Schema) -> Dict[str, List[str]]:
         if 'Facade' in name:
             continue
         name = get_reference_name(name)
-        kind = TypeVar(name)
-        args = Args(schema, defs=kind, name=name)
+        args = Args(schema, name=name)
         # Write actual class
         lines: typing.List[str] = [
             f'class {name}(Type):',
@@ -413,13 +397,12 @@ def makeFunc(
     schema: Schema,
     name: str,
     description: str,
-    params,
     result,
-    params_name: str,
+    params_name: str | None,
     _async: bool = True,
 ):
     INDENT = "    "
-    args = Args(schema, defs=params, name=params_name)
+    args = Args(schema, name=params_name)
     assignments = []
     toschema = args.PyToSchemaMapping()
     for arg in args._get_arg_str(False, False):
@@ -512,7 +495,6 @@ def _buildMethod(schema: Schema, name: str):
         schema=schema,
         name=name,
         description=description,
-        params=params,
         result=result,
         params_name=params_name,
     )
