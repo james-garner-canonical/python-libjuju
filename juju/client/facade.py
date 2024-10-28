@@ -307,7 +307,7 @@ def buildValidation(name, instance_type, instance_sub_type, ident=None) -> str:
 def get_definitions(schema: Schema) -> Dict[str, List[str]]:
     definitions: Dict[str, List[str]] = {}
     INDENT = "    "
-    for name in sorted(schema.names):
+    for name in sorted(schema.definitions):
         if not name:
             # when running on juju 3.1.0 client-only schemas, we get a seemingly empty entry with no name
             # this breaks codegen when generating a class with no name so we explicitly skip it here
@@ -656,37 +656,19 @@ class Schema:
         self.version: int = raw['Version']
         self.schema: SchemaDict = raw['Schema']
         self.properties: Dict[str, JSONObject] = self.schema['properties']
-        self.definitions: typing.Optional[Dict[str, JSONObject]] = self.schema.get('definitions')
-
-        self.registry: Dict[str, Struct] = {}
+        self.definitions: Dict[str, JSONObject] = self.schema.get('definitions', {})
         self.names: Set[str] = set()
-
-        self.buildDefinitions()
+        self.registry: Dict[str, Struct] = {
+            name: self.buildObject(definition, name)
+            for name, definition in self.definitions.items()
+        }
 
     def get_type(self, name: str) -> TypeVar:
         if name not in self.names:
             self.names.add(name)
         return TypeVar(get_reference_name(name))
 
-    def buildDefinitions(self):
-        # here we are building the types out
-        # anything in definitions is a type
-        # but these may contain references themselves
-        # so we dfs to the bottom and build upwards
-        # when a types is already in the registry
-        if not self.definitions:
-            return
-        definitions = {}
-        for d, data in self.definitions.items():
-            if data.get("type") != "object":
-                continue
-            definitions[d] = data
-        for d, definition in definitions.items():
-            node = self.buildObject(definition, d)
-            self.registry[d] = node
-            self.names.add(d)
-
-    def buildObject(self, node, name=None) -> Struct:
+    def buildObject(self, node: JSONObject, name: str) -> Struct:
         # we don't need to build types recursively here
         # they are all in definitions already
         # we only want to include the type reference
