@@ -676,7 +676,7 @@ class Schema:
             for p in sorted(props):
                 prop = props[p]
                 if "$ref" in prop:
-                    struct.append((p, self.get_type(prop['$ref'])))
+                    struct.append((p, get_type(prop['$ref'])))
                 else:
                     kind = prop['type']
                     if kind == "array":
@@ -693,7 +693,7 @@ class Schema:
             pprop = pprops[".*"]
             if "$ref" in pprop:
                 ref = pprop['$ref']
-                struct.append((name, Mapping[str, self.get_type(ref)]))
+                struct.append((name, Mapping[str, get_type(ref)]))
                 return struct
             ppkind = pprop["type"]
             if ppkind == "array":
@@ -710,7 +710,7 @@ class Schema:
         # return a sequence from an array in the schema
         if "$ref" in obj:
             ref = obj['$ref']
-            return Sequence[self.get_type(ref)]
+            return Sequence[get_type(ref)]
         else:
             kind = obj.get("type")
             if kind and kind == "array":
