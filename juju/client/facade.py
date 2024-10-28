@@ -200,31 +200,23 @@ def strcast(kind):
 
 RType = Any
 
-class Args(list):
+class Args:
     def __init__(
         self,
         schema: Schema,
         name: str | None,
     ):
-        if name is None:
-            return
-        for arg, kind in schema.registry[get_reference_name(name)]:
-            assert (
-                kind is Any
-                or kind in basic_types
-                or type(kind) is typing.TypeVar
-                or (
-                    typing_inspect.is_generic_type(kind)
-                    and issubclass(typing_inspect.get_origin(kind), (Sequence, Mapping))
-                )
-            )
-            self.append((arg, kind))
+        self.items = (
+            schema.registry[get_reference_name(name)]
+            if name is not None
+            else []
+        )
 
     def PyToSchemaMapping(self) -> Dict[str, str]:
-        return {name_to_py(name): name for name, _ in self}
+        return {name_to_py(name): name for name, _ in self.items}
 
     def SchemaToPyMapping(self) -> Dict[str, str]:
-        return {name: name_to_py(name) for name, _ in self}
+        return {name: name_to_py(name) for name, _ in self.items}
 
     def _format(self, name: str, rtype: RType, typed: bool = True) -> str:
         return (
@@ -236,13 +228,13 @@ class Args(list):
     def _get_arg_strs(self, typed: bool = False) -> List[str]:
         return [
             self._format(name, rtype, typed=typed)
-            for name, rtype in self
+            for name, rtype in self.items
         ]
 
     def as_kwargs(self) -> str:
         return ', '.join(
             f'{name_to_py(name)}={var_type_to_py(rtype)}'
-            for name, rtype in self
+            for name, rtype in self.items
         )
 
     def as_validation(self) -> str:
@@ -250,8 +242,8 @@ class Args(list):
         as_validation returns a series of validation statements for every item
         in the the Args.
         """
-        parts = []
-        for name, rtype in self:
+        parts: List[str] = []
+        for name, rtype in self.items:
             var_name = name_to_py(name)
             var_type, var_sub_type, ok = kind_to_py(rtype)
             if ok:
@@ -297,18 +289,18 @@ def get_definitions(schema: Schema) -> Dict[str, List[str]]:
             f'    _toSchema = {pprint.pformat(args.PyToSchemaMapping(), width=999)}',
             f'    _toPy = {pprint.pformat(args.SchemaToPyMapping(), width=999)}',
             f'',
-            f'    def __init__(self{", " if args else ""}{args.as_kwargs()}, **unknown_fields):',
+            f'    def __init__(self{", " if args.items else ""}{args.as_kwargs()}, **unknown_fields):',
             f'        """',
             textwrap.indent(args.get_doc(), INDENT * 2),
             f'        """',
         ]
-        if not args:
+        if not args.items:
             lines.append(f'{INDENT * 2}self.unknown_fields = unknown_fields')
         else:
             # do the validation first, before setting the variables
-            for arg in args:
-                arg_name = name_to_py(arg[0])
-                arg_type = arg[1]
+            for arg_name, rtype in args.items:
+                arg_name = name_to_py(arg_name)
+                arg_type = rtype
                 arg_type_name = strcast(arg_type)
                 # ARG
                 if arg_type in basic_types or arg_type is typing.Any:
@@ -345,17 +337,17 @@ def get_definitions(schema: Schema) -> Dict[str, List[str]]:
                         lines.append(f'{INDENT * 2}{arg_name}_ = {arg_name}')
                 else:
                     lines.append(f'{INDENT * 2}{arg_name}_ = {arg_name}')
-            if len(args) > 0:
+            if args.items:
                 lines.append('')
                 lines.append(f'{INDENT * 2}# Validate arguments against known Juju API types.')
-            for arg in args:
-                arg_name = f'{name_to_py(arg[0])}_'
-                arg_type, arg_sub_type, ok = kind_to_py(arg[1])
+            for arg_name, rtype in args.items:
+                arg_name = f'{name_to_py(arg_name)}_'
+                arg_type, arg_sub_type, ok = kind_to_py(rtype)
                 if ok:
                     lines.append(buildValidation(arg_name, arg_type, arg_sub_type, ident=INDENT * 2))
 
-            for arg in args:
-                arg_name = name_to_py(arg[0])
+            for arg_name, _ in args.items:
+                arg_name = name_to_py(arg_name)
                 lines.append(f'{INDENT * 2}self.{arg_name} = {arg_name}_')
             # Ensure that we take the kwargs (unknown_fields) and put it on the
             # Results/Params so we can inspect it.
@@ -391,7 +383,7 @@ def makeFunc(
         f'',
         (
             f'{"async " if _async else ""}'
-            f'def {name}(self{", " if args else ""}{args.as_kwargs()})'
+            f'def {name}(self{", " if args.items else ""}{args.as_kwargs()})'
             f' -> {result.__name__ if result is not None else "JSONObject"}:'
         ),
         f'    """',
