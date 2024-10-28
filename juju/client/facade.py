@@ -33,9 +33,6 @@ from typing_extensions import NotRequired
 _marker = object()
 
 JUJU_VERSION = re.compile(r'[0-9]+\.[0-9-]+[\.\-][0-9a-z]+(\.[0-9]+)?')
-# Workaround for https://bugs.launchpad.net/juju/+bug/1683906
-NAUGHTY_CLASSES = ['ClientFacade', 'Client', 'ModelStatusInfo']
-
 
 # Map basic types to Python's typing with a callable
 SCHEMA_TO_PYTHON = {
@@ -664,8 +661,6 @@ class Schema:
             return
         definitions = {}
         for d, data in self.definitions.items():
-            if d in self.registry and d not in NAUGHTY_CLASSES:
-                continue
             if data.get("type") != "object":
                 continue
             definitions[d] = data
@@ -820,17 +815,11 @@ def write_client(
 
 
 def generate_definitions(schemas: Dict[str, List[Schema]]) -> Dict[str, List[str]]:
-    # Build all of the auxillary (unversioned) classes
-    # TODO: get rid of some of the excess trips through loops in the
-    # called functions.
     definitions: Dict[str, List[str]] = {}
-    # ensure we write the latest ones first, so that earlier revisions
-    # get dropped.
-    for juju_version in sorted(schemas, reverse=True):  # latest first
-        for schema in schemas[juju_version]:  # whatever order they are in the schema.json
+    for juju_version in sorted(schemas):  # newer definitions overwrite older
+        for schema in schemas[juju_version]:
             for name, lines in get_definitions(schema).items():
-                if name not in definitions or name in NAUGHTY_CLASSES:
-                    definitions[name] = lines
+                definitions[name] = lines
     return definitions
 
 
