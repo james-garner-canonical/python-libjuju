@@ -379,19 +379,6 @@ def get_definitions(schema: Schema) -> Dict[str, List[str]]:
     return definitions
 
 
-def retspec(schema, defs):
-    # return specs
-    # only return 1, so if there is more than one type
-    # we need to include a union
-    # In truth there is only 1 return
-    # Error or the expected Type
-    if not defs:
-        return None
-    if defs in basic_types:
-        return strcast(defs)
-    return strcast(defs)
-
-
 def makeFunc(
     schema: Schema,
     name: str,
@@ -407,7 +394,7 @@ def makeFunc(
     for arg in args._get_arg_str(False, False):
         assignments.append(f"{INDENT}_params[\'{toschema[arg]}\'] = {arg}")
     assignments = "\n".join(assignments)
-    res = retspec(schema, result)
+    res = strcast(result) if result else None
     doc_string = (description + '\n\n' if description else '') + args.get_doc()
     lines = [
         f'',
