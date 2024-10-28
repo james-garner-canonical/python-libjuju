@@ -391,8 +391,8 @@ def get_definitions(schema: Schema) -> Dict[str, List[str]]:
         lines.append('\n')
         definitions[name] = lines
         co = compile('\n'.join(lines), __name__, 'exec')
-        ns = _getns(schema)
-        exec(co, ns)
+        namespace = get_namespace(schema)
+        exec(co, namespace)
     return definitions
 
 
@@ -458,9 +458,9 @@ def makeFunc(
         f'',
     ]
     fsource = '\n'.join(lines)
-    ns = _getns(schema)
-    exec(fsource, ns)
-    func = ns[name]
+    namespace = get_namespace(schema)
+    exec(fsource, namespace)
+    func = namespace[name]
     return func, fsource
 
 
@@ -482,9 +482,9 @@ async def rpc(self, msg):
     return reply
 
 """
-    ns = _getns(schema)
-    exec(source, ns)
-    func = ns["rpc"]
+    namespace = get_namespace(schema)
+    exec(source, namespace)
+    func = namespace["rpc"]
     return func, source
 
 
@@ -723,14 +723,12 @@ def get_reference_name(ref: str) -> str:
     return ref
 
 
-def _getns(schema):
-    ns = {'Type': Type,
-          'typing': typing,
-          }
-    # Copy our types into the globals of the method
-    for facade in schema.registry:
-        ns[facade] = schema.registry.get(facade)
-    return ns
+def get_namespace(schema: Schema) -> Dict[str, Any]:
+    return {
+        'Type': Type,
+        'typing': typing,
+        **schema.registry,
+    }
 
 
 def write_facades(captures: Dict[int, Dict[str, List[str]]], options: Options) -> None:
