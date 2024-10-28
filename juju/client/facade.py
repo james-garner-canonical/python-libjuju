@@ -308,7 +308,7 @@ def get_definitions(schema: Schema) -> Dict[str, List[str]]:
     definitions: Dict[str, List[str]] = {}
     INDENT = "    "
     for kind, name in sorted(
-        ((kind, get_reference_name(name)) for name, kind in schema.names_to_types.items()),
+        ((TypeVar(get_reference_name(name)), get_reference_name(name)) for name in schema.names),
         key=str,
     ):
         if not name:
@@ -660,18 +660,14 @@ class Schema:
         self.definitions: typing.Optional[Dict[str, JSONObject]] = self.schema.get('definitions')
 
         self.registry: Dict[str, Struct] = {}
-        self.names_to_types: Dict[str, TypeVar] = {}
+        self.names: Set[str] = set()
 
         self.buildDefinitions()
 
-    def register_name(self, name: str) -> TypeVar:
-        assert name not in self.names_to_types
-        self.names_to_types[name] = TypeVar(get_reference_name(name))
-
     def get_type(self, name: str) -> TypeVar:
-        if name not in self.names_to_types:
-            self.register_name(name)
-        return self.names_to_types[name]
+        if name not in self.names:
+            self.names.add(name)
+        return TypeVar(get_reference_name(name))
 
     def buildDefinitions(self):
         # here we are building the types out
@@ -689,7 +685,7 @@ class Schema:
         for d, definition in definitions.items():
             node = self.buildObject(definition, d)
             self.registry[d] = node
-            self.register_name(d)
+            self.names.add(d)
 
     def buildObject(self, node, name=None) -> Struct:
         # we don't need to build types recursively here
@@ -852,7 +848,7 @@ def generate_factories(schemas: Dict[str, List[Schema]]) -> Set[str]:
             factories.add(f'{schema.name}Facade')
             factories.update(
                 get_reference_name(name)
-                for name in schema.names_to_types
+                for name in schema.names
                 if 'Facade' in name
             )
     return factories
