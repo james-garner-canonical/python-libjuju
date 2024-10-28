@@ -668,41 +668,34 @@ class Schema:
         # we only want to include the type reference
         # which we can derive from the name
         struct = []
-        props = node.get("properties")
-        pprops = node.get("patternProperties")
-        if props:
-            # Sort these so the __init__ arg list for each Type remains
-            # consistently ordered across regens of client.py
-            for p in sorted(props):
-                prop = props[p]
-                if "$ref" in prop:
-                    struct.append((p, get_type(prop['$ref'])))
-                else:
-                    kind = prop['type']
-                    if kind == "array":
-                        struct.append((p, self.buildArray(prop)))
-                    elif kind == "object":
-                        struct.extend(self.buildObject(prop, p))
-                    else:
-                        struct.append((p, SCHEMA_TO_PYTHON[prop['type']]))
-        if pprops:
-            if ".*" not in pprops:
-                raise ValueError(
-                    "Cannot handle actual pattern in patternProperties %s" %
-                    pprops)
-            pprop = pprops[".*"]
-            if "$ref" in pprop:
-                ref = pprop['$ref']
-                struct.append((name, Mapping[str, get_type(ref)]))
-                return struct
-            ppkind = pprop["type"]
-            if ppkind == "array":
-                struct.append((name, Mapping[str, self.buildArray(pprop)]))
-            else:
-                struct.append((name, Mapping[str, SCHEMA_TO_PYTHON[ppkind]]))
 
-        if not struct and node.get('additionalProperties', False):
-            struct.append((name, SCHEMA_TO_PYTHON.get('object')))
+        for property_name in sorted(node.get('properties', [])):
+            property = node['properties'][property_name]
+            if '$ref' in property:
+                struct.append((property_name, get_type(property['$ref'])))
+                continue
+            kind = property['type']
+            if kind == 'array':
+                struct.append((property_name, self.buildArray(property)))
+            elif kind == 'object':
+                struct.extend(self.buildObject(property, property_name))
+            else:
+                struct.append((property_name, SCHEMA_TO_PYTHON[kind]))
+
+        pattern_properties = node.get('patternProperties')
+        if pattern_properties:
+            if '.*' not in pattern_properties:
+                raise ValueError(f'Cannot handle actual pattern in patternProperties {pattern_properties}')
+            pattern_property = pattern_properties['.*']
+            if '$ref' in pattern_property:
+                struct.append((name, Mapping[str, get_type(pattern_property['$ref'])]))
+            elif pattern_property['type'] == 'array':
+                struct.append((name, Mapping[str, self.buildArray(pattern_property)]))
+            else:
+                struct.append((name, Mapping[str, SCHEMA_TO_PYTHON[pattern_property['type']]]))
+
+        if not struct and 'additionalProperties' in node and node['additionalProperties']:
+            struct.append((name, Any))
 
         return struct
 
