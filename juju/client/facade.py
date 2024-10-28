@@ -321,6 +321,7 @@ def get_definitions(schema: Schema) -> Dict[str, List[str]]:
                 arg_name = name_to_py(arg[0])
                 arg_type = arg[1]
                 arg_type_name = strcast(arg_type)
+                # ARG
                 if arg_type in basic_types or arg_type is typing.Any:
                     lines.append(f'{INDENT * 2}{arg_name}_ = {arg_name}')
                 elif type(arg_type) is typing.TypeVar:
@@ -817,15 +818,15 @@ def generate_facades(schemas: Dict[str, List[Schema]]) -> Dict[int, Dict[str, Li
 
 
 def load_schemas(options: Options) -> Dict[str, List[Schema]]:
-    schemas = {}
-    for p in sorted(glob(options.schema)):
-        try:
-            juju_version = re.search(JUJU_VERSION, p).group()
-        except AttributeError:
-            print("Cannot extract a juju version from {}".format(p))
-            print("Schemas must include a juju version in the filename")
+    schemas: Dict[str, List[Schema]] = {}
+    for path in sorted(glob(options.schema)):
+        match = re.search(JUJU_VERSION, path)
+        if match is None:
+            print(f'Cannot extract a juju version from {path}')
+            print('Schemas must include a juju version in the filename')
             raise SystemExit(1)
-        new_schemas = json.loads(Path(p).read_text("utf-8"))
+        juju_version = match.group()
+        new_schemas = json.loads(Path(path).read_text("utf-8"))
         schemas[juju_version] = [Schema(s) for s in new_schemas]
     return schemas
 
