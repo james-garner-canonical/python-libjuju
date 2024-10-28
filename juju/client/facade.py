@@ -183,9 +183,8 @@ def kind_to_py(kind):
     return suffix, f'(dict, {suffix})', True
 
 
-def strcast(kind, keep_builtins=False):
-    if (kind in basic_types or
-            type(kind) in basic_types) and keep_builtins is False:
+def strcast(kind):
+    if kind in basic_types or type(kind) in basic_types:
         return kind.__name__
     if str(kind).startswith('~'):
         return str(kind)[1:]
@@ -389,8 +388,8 @@ def retspec(schema, defs):
     if not defs:
         return None
     if defs in basic_types:
-        return strcast(defs, False)
-    return strcast(defs, False)
+        return strcast(defs)
+    return strcast(defs)
 
 
 def makeFunc(
