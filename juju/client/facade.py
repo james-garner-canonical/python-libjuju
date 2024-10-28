@@ -657,15 +657,12 @@ class Schema:
         self.schema: SchemaDict = raw['Schema']
         self.properties: Dict[str, JSONObject] = self.schema['properties']
         self.definitions: Dict[str, JSONObject] = self.schema.get('definitions', {})
-        self.names: Set[str] = set()
         self.registry: Dict[str, Struct] = {
             name: self.buildObject(definition, name)
             for name, definition in self.definitions.items()
         }
 
     def get_type(self, name: str) -> TypeVar:
-        if name not in self.names:
-            self.names.add(name)
         return TypeVar(get_reference_name(name))
 
     def buildObject(self, node: JSONObject, name: str) -> Struct:
@@ -829,7 +826,7 @@ def generate_factories(schemas: Dict[str, List[Schema]]) -> Set[str]:
             factories.add(f'{schema.name}Facade')
             factories.update(
                 get_reference_name(name)
-                for name in schema.names
+                for name in schema.definitions
                 if 'Facade' in name
             )
     return factories
