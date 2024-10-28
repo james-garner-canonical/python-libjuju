@@ -400,15 +400,15 @@ def retspec(schema, defs):
     return strcast(defs, False)
 
 
-def makeFunc(cls, name, description, params, result, _async=True):
+def makeFunc(schema: Schema, name: str, description: str, params, result, _async=True):
     INDENT = "    "
-    args = Args(cls.schema, params)
+    args = Args(schema, params)
     assignments = []
     toschema = args.PyToSchemaMapping()
     for arg in args._get_arg_str(False, False):
         assignments.append(f"{INDENT}_params[\'{toschema[arg]}\'] = {arg}")
     assignments = "\n".join(assignments)
-    res = retspec(cls.schema, result)
+    res = retspec(schema, result)
     doc_string = (description + '\n\n' if description else '') + args.get_doc()
     lines = [
         f'',
@@ -426,9 +426,9 @@ def makeFunc(cls, name, description, params, result, _async=True):
         f'    # map input types to rpc msg',
         f'    _params = {{}}',
         f'    msg = {{',
-        f"        'type': '{cls.name}',",
+        f"        'type': '{schema.name}',",
         f"        'request': '{name}',",
-        f"        'version': {cls.version},",
+        f"        'version': {schema.version},",
         f"        'params': _params,",
         f'    }}',
         assignments,
@@ -441,7 +441,7 @@ def makeFunc(cls, name, description, params, result, _async=True):
         f'',
     ]
     fsource = '\n'.join(lines)
-    ns = _getns(cls.schema)
+    ns = _getns(schema)
     exec(fsource, ns)
     func = ns[name]
     return func, fsource
@@ -471,10 +471,10 @@ async def rpc(self, msg):
     return func, source
 
 
-def _buildMethod(cls, name):
+def _buildMethod(schema: Schema, name: str):
     params = None
     result = None
-    method = cls.schema.properties[name]
+    method = schema.properties[name]
     description = ""
     if 'description' in method:
         description = method['description']
@@ -482,14 +482,14 @@ def _buildMethod(cls, name):
         prop = method['properties']
         spec = prop.get('Params')
         if spec:
-            params = cls.schema.get_type(spec['$ref'])
+            params = schema.get_type(spec['$ref'])
         spec = prop.get('Result')
         if spec:
             if '$ref' in spec:
-                result = cls.schema.get_type(spec['$ref'])
+                result = schema.get_type(spec['$ref'])
             else:
                 result = SCHEMA_TO_PYTHON[spec['type']]
-    return makeFunc(cls, name, description, params, result)
+    return makeFunc(schema, name, description, params, result)
 
 
 def buildFacade(schema: Schema) -> typing.Tuple[typing.Type[Type], str]:
@@ -848,7 +848,7 @@ def generate_facades(schemas: Dict[str, List[Schema]]) -> Dict[int, Dict[str, Li
 
             # Build the methods for each Facade class.
             for methodname in sorted(schema.properties):
-                method, source = _buildMethod(cls, methodname)
+                method, source = _buildMethod(schema, methodname)
                 setattr(cls, methodname, method)
                 capture[cls_name].append(textwrap.indent(source, prefix='    '))
 
