@@ -255,10 +255,6 @@ def _buildMethod(schema: Schema, name: str):
         params = schema.registry[get_reference_name(params_name)]
     else:
         params = []
-    assignments = [
-        f"{INDENT}_params['{param.name}'] = {name_to_py(param.name)}"
-        for param in params
-    ]
     res = strcast(result) if result else None
     doc_string = (description + '\n\n' if description else '') + '\n'.join(
         f'{name_to_py(param.name)} : {param.to_annotation(nodiff=True)}'
@@ -284,7 +280,10 @@ def _buildMethod(schema: Schema, name: str):
         f"        'version': {schema.version},",
         f"        'params': _params,",
         f'    }}',
-        '\n'.join(assignments),
+        '\n'.join(
+            f"{INDENT}_params['{param.name}'] = {name_to_py(param.name)}"
+            for param in params
+        ),
         f'    reply = await self.rpc(msg)',
         (
             f"    return {result.__name__}.from_json(reply['response'])"
