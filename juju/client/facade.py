@@ -131,9 +131,6 @@ class Options(Protocol):
     output_dir: str
 
 
-basic_types = [str, bool, int, float]
-
-
 def name_to_py(name: str) -> str:
     result = name.replace("-", "_")
     result = result.lower()
