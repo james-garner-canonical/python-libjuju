@@ -208,14 +208,49 @@ def get_definitions(schema: Schema) -> Dict[str, List[str]]:
     return definitions
 
 
-def makeFunc(
-    schema: Schema,
-    name: str,
-    description: str,
-    result,
-    params_name: str | None,
-    _async: bool = True,
-):
+RPCFunc = typing.Callable[[JSONObject], typing.Awaitable[JSONObject]]
+
+def makeRPCFunc(schema: Schema) -> Tuple[RPCFunc, str]:
+    source = """
+
+async def rpc(self, msg):
+    '''
+    Patch rpc method to add Id.
+    '''
+    if not hasattr(self, 'Id'):
+        raise RuntimeError('Missing "Id" field')
+    msg['Id'] = id
+
+    from .facade import TypeEncoder
+    reply = await self.connection.rpc(msg, encoder=TypeEncoder)
+    return reply
+
+"""
+    namespace = get_namespace(schema)
+    exec(source, namespace)
+    func = namespace["rpc"]
+    return func, source
+
+
+def _buildMethod(schema: Schema, name: str):
+    result = None
+    method = schema.properties[name]
+    description = ""
+    params_name = None
+    if 'description' in method:
+        description = method['description']
+    if 'properties' in method:
+        prop = method['properties']
+        spec = prop.get('Params')
+        if spec:
+            params_name = spec['$ref']
+        spec = prop.get('Result')
+        if spec:
+            if '$ref' in spec:
+                result = get_type(spec['$ref'])
+            else:
+                result = SCHEMA_TO_PYTHON[spec['type']]
+    _async = True
     INDENT = "    "
     if params_name is not None:
         params = schema.registry[get_reference_name(params_name)]
@@ -265,57 +300,6 @@ def makeFunc(
     exec(fsource, namespace)
     func = namespace[name]
     return func, fsource
-
-
-RPCFunc = typing.Callable[[JSONObject], typing.Awaitable[JSONObject]]
-
-def makeRPCFunc(schema: Schema) -> Tuple[RPCFunc, str]:
-    source = """
-
-async def rpc(self, msg):
-    '''
-    Patch rpc method to add Id.
-    '''
-    if not hasattr(self, 'Id'):
-        raise RuntimeError('Missing "Id" field')
-    msg['Id'] = id
-
-    from .facade import TypeEncoder
-    reply = await self.connection.rpc(msg, encoder=TypeEncoder)
-    return reply
-
-"""
-    namespace = get_namespace(schema)
-    exec(source, namespace)
-    func = namespace["rpc"]
-    return func, source
-
-
-def _buildMethod(schema: Schema, name: str):
-    result = None
-    method = schema.properties[name]
-    description = ""
-    params_name = None
-    if 'description' in method:
-        description = method['description']
-    if 'properties' in method:
-        prop = method['properties']
-        spec = prop.get('Params')
-        if spec:
-            params_name = spec['$ref']
-        spec = prop.get('Result')
-        if spec:
-            if '$ref' in spec:
-                result = get_type(spec['$ref'])
-            else:
-                result = SCHEMA_TO_PYTHON[spec['type']]
-    return makeFunc(
-        schema=schema,
-        name=name,
-        description=description,
-        result=result,
-        params_name=params_name,
-    )
 
 
 def buildFacade(schema: Schema) -> typing.Tuple[typing.Type[Type], str]:
