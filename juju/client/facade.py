@@ -142,21 +142,6 @@ def name_to_py(name: str) -> str:
     return result
 
 
-def strcast(kind):
-    if kind in basic_types or type(kind) in basic_types:
-        return kind.__name__
-    if str(kind).startswith('~'):
-        return str(kind)[1:]
-    if kind is typing.Any:
-        return 'Any'
-    try:
-        if issubclass(kind, typing.GenericMeta):
-            return str(kind)[1:]
-    except AttributeError:
-        pass
-    return kind
-
-
 def buildValidation(name, instance_type, instance_sub_type, ident=None) -> str:
     if ident is None:
         ident = '    '
@@ -233,40 +218,43 @@ async def rpc(self, msg):
 
 
 def _buildMethod(schema: Schema, name: str):
-    result = None
     method = schema.properties[name]
-    description = method.get('description', '')
-    params_name = None
-    if 'properties' in method:
-        prop = method['properties']
-        spec = prop.get('Params')
-        if spec:
-            params_name = spec['$ref']
-        spec = prop.get('Result')
-        if spec:
-            if '$ref' in spec:
-                result = get_type(spec['$ref'])
-            else:
-                result = SCHEMA_TO_PYTHON[spec['type']]
+    properties = method.get('properties', typing.cast(PropertyDict, {}))
+
+    # params
+    params_spec = properties.get('Params', typing.cast(PropertyDict, {}))
+    params_name = params_spec.get('$ref', None)
     if params_name is not None:
         params = schema.registry[get_reference_name(params_name)]
     else:
         params = []
-    res = strcast(result) if result else None
+
+    # result
+    result_spec = properties.get('Result', typing.cast(PropertyDict, {}))
+    if '$ref' in result_spec:
+        result = get_reference_name(result_spec['$ref'])
+    elif result_spec:
+        result = SCHEMA_TO_PYTHON[result_spec['type']].__name__
+    else:
+        result = None
+
+    # doc_string
+    description = method.get('description', '')
     doc_string = (description + '\n\n' if description else '') + '\n'.join(
         f'{name_to_py(param.name)} : {param.to_annotation(nodiff=True)}'
         for param in params
     )
+
     lines = [
         f'',
         f'',
         (
             f'async def {name}(self{", " if params else ""}{", ".join(f"{name_to_py(param.name)}=None" for param in params)})'
-            f' -> {result.__name__ if result is not None else "JSONObject"}:'
+            f' -> {result if result is not None else "JSONObject"}:'
         ),
         f'    """',
         textwrap.indent(doc_string, '    '),
-        f'    Returns -> {res}',
+        f'    Returns -> {result}',
         f'    """',
         '\n'.join(s for s in (param.to_validation(indent_level=1) for param in params) if s is not None),
         f'    # map input types to rpc msg',
@@ -283,12 +271,13 @@ def _buildMethod(schema: Schema, name: str):
         ),
         f'    reply = await self.rpc(msg)',
         (
-            f"    return {result.__name__}.from_json(reply['response'])"
+            f"    return {result}.from_json(reply['response'])"
             if result is not None
             else f'    return reply'
         ),
         f'',
     ]
+
     namespace = schema.validate(lines)
     fsource = '\n'.join(lines)
     func = namespace[name]
@@ -462,7 +451,10 @@ PropertyDict = typing.TypedDict(
     {
         '$ref': NotRequired[str],
         'description': NotRequired[str],
+        'properties': NotRequired['PropertyDict'],
         'type': typing.Literal['array', 'object', 'string', 'integer', 'float', 'number', 'boolean', 'object'],
+        'Params': NotRequired['PropertyDict'],
+        'Result': NotRequired['PropertyDict'],
     }
 )
 
@@ -612,10 +604,6 @@ class Param:
                 types,
                 ident=indent,
             )
-
-
-def get_type(name: str) -> TypeVar:
-    return TypeVar(get_reference_name(name))
 
 
 def get_reference_name(ref: str) -> str:
