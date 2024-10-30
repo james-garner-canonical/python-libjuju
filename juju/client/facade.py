@@ -28,8 +28,6 @@ import packaging.version
 from typing_extensions import NotRequired
 
 
-_marker = object()
-
 JUJU_VERSION = re.compile(r'[0-9]+\.[0-9-]+[\.\-][0-9a-z]+(\.[0-9]+)?')
 
 # Map basic types to Python's typing with a callable
