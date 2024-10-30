@@ -235,10 +235,8 @@ async def rpc(self, msg):
 def _buildMethod(schema: Schema, name: str):
     result = None
     method = schema.properties[name]
-    description = ""
+    description = method.get('description', '')
     params_name = None
-    if 'description' in method:
-        description = method['description']
     if 'properties' in method:
         prop = method['properties']
         spec = prop.get('Params')
@@ -463,6 +461,7 @@ PropertyDict = typing.TypedDict(
     'PropertyDict',
     {
         '$ref': NotRequired[str],
+        'description': NotRequired[str],
         'type': typing.Literal['array', 'object', 'string', 'integer', 'float', 'number', 'boolean', 'object'],
     }
 )
