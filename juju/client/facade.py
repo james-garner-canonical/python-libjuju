@@ -4,6 +4,7 @@
 from __future__ import annotations
 import argparse
 import builtins
+import dataclasses
 import json
 import keyword
 import pprint
@@ -17,16 +18,13 @@ from typing import (
     Dict,
     Iterable,
     List,
-    Mapping,
     Protocol,
-    Sequence,
     Set,
     Tuple,
     TypeVar,
 )
 
 import packaging.version
-import typing_inspect
 from typing_extensions import NotRequired
 
 
@@ -35,13 +33,13 @@ _marker = object()
 JUJU_VERSION = re.compile(r'[0-9]+\.[0-9-]+[\.\-][0-9a-z]+(\.[0-9]+)?')
 
 # Map basic types to Python's typing with a callable
-SCHEMA_TO_PYTHON = {
+SCHEMA_TO_PYTHON: Dict[str, type] = {
     'string': str,
     'integer': int,
     'float': float,
     'number': float,
     'boolean': bool,
-    'object': Any,
+    'object': Any,  # type: ignore
 }
 
 
@@ -151,7 +149,7 @@ type_mapping = {
 }
 
 
-def name_to_py(name):
+def name_to_py(name: str) -> str:
     result = name.replace("-", "_")
     result = result.lower()
     if keyword.iskeyword(result) or result in dir(builtins):
@@ -161,26 +159,6 @@ def name_to_py(name):
 
 def var_type_to_py(kind):
     return 'None'
-
-
-def kind_to_py(kind):
-    if kind is None or kind is typing.Any:
-        return 'None', '', False
-
-    name = ""
-    if typing_inspect.is_generic_type(kind):
-        origin = typing_inspect.get_origin(kind)
-        name = origin.__name__
-    else:
-        name = kind.__name__
-
-    if (kind in basic_types or type(kind) in basic_types):
-        return name, type_mapping.get(name) or name, True
-    if (name in type_mapping):
-        return name, type_mapping[name], True
-
-    suffix = name.lstrip("~")
-    return suffix, f'(dict, {suffix})', True
 
 
 def strcast(kind):
@@ -196,68 +174,6 @@ def strcast(kind):
     except AttributeError:
         pass
     return kind
-
-
-RType = Any
-
-class Args:
-    def __init__(
-        self,
-        schema: Schema,
-        name: str | None,
-    ):
-        self.items = (
-            schema.registry[get_reference_name(name)]
-            if name is not None
-            else []
-        )
-
-    def PyToSchemaMapping(self) -> Dict[str, str]:
-        return {name_to_py(name): name for name, _ in self.items}
-
-    def SchemaToPyMapping(self) -> Dict[str, str]:
-        return {name: name_to_py(name) for name, _ in self.items}
-
-    def _format(self, name: str, rtype: RType, typed: bool = True) -> str:
-        return (
-            f'{name_to_py(name)} : {strcast(rtype)}'
-            if typed
-            else name_to_py(name)
-        )
-
-    def _get_arg_strs(self, typed: bool = False) -> List[str]:
-        return [
-            self._format(name, rtype, typed=typed)
-            for name, rtype in self.items
-        ]
-
-    def as_kwargs(self) -> str:
-        return ', '.join(
-            f'{name_to_py(name)}={var_type_to_py(rtype)}'
-            for name, rtype in self.items
-        )
-
-    def as_validation(self) -> str:
-        """
-        as_validation returns a series of validation statements for every item
-        in the the Args.
-        """
-        parts: List[str] = []
-        for name, rtype in self.items:
-            var_name = name_to_py(name)
-            var_type, var_sub_type, ok = kind_to_py(rtype)
-            if ok:
-                parts.append(buildValidation(var_name, var_type, var_sub_type))
-        return '\n'.join(parts)
-
-    def typed(self) -> str:
-        return ', '.join(self._get_arg_strs(typed=True))
-
-    def __str__(self) -> str:
-        return ', '.join(self._get_arg_strs(typed=False))
-
-    def get_doc(self) -> str:
-        return '\n'.join(self._get_arg_strs(typed=True))
 
 
 def buildValidation(name, instance_type, instance_sub_type, ident=None) -> str:
@@ -279,85 +195,37 @@ def get_definitions(schema: Schema) -> Dict[str, List[str]]:
             # note that this is not a problem with the original 3.1.0 full schema (client + others)
             # nor is it a problem with client-only schemas for latter juju versions (e.g. 3.3.0)
             continue
-        if 'Facade' in name:
+        if name == 'FacadeVersions':
+            # not part of the api that we expose to users
             continue
         name = get_reference_name(name)
-        args = Args(schema, name=name)
-        # Write actual class
+        params = schema.registry[name]
         lines: typing.List[str] = [
             f'class {name}(Type):',
-            f'    _toSchema = {pprint.pformat(args.PyToSchemaMapping(), width=999)}',
-            f'    _toPy = {pprint.pformat(args.SchemaToPyMapping(), width=999)}',
+            f'    _toSchema = {pprint.pformat({param.to_arg_name(): param.name for param in params}, width=999)}',
+            f'    _toPy = {pprint.pformat({param.name: param.to_arg_name() for param in params}, width=999)}',
             f'',
-            f'    def __init__(self{", " if args.items else ""}{args.as_kwargs()}, **unknown_fields):',
+            f'    def __init__(self{", " if params else ""}{", ".join(f"{param.to_arg_name()}=None" for param in params)}, **unknown_fields):',
             f'        """',
-            textwrap.indent(args.get_doc(), INDENT * 2),
+            *(f'        {param.to_arg_name()} : {param.to_annotation(nodiff=True)}' for param in params),
             f'        """',
         ]
-        if not args.items:
-            lines.append(f'{INDENT * 2}self.unknown_fields = unknown_fields')
-        else:
-            # do the validation first, before setting the variables
-            for arg_name, rtype in args.items:
-                arg_name = name_to_py(arg_name)
-                arg_type = rtype
-                arg_type_name = strcast(arg_type)
-                # ARG
-                if arg_type in basic_types or arg_type is typing.Any:
-                    lines.append(f'{INDENT * 2}{arg_name}_ = {arg_name}')
-                elif type(arg_type) is typing.TypeVar:
-                    lines.append(f'{INDENT * 2}{arg_name}_ = {arg_type_name}.from_json({arg_name}) if {arg_name} else None')
-                elif typing_inspect.is_generic_type(arg_type) and issubclass(typing_inspect.get_origin(arg_type), Sequence):
-                    parameters = typing_inspect.get_parameters(arg_type)
-                    value_type = (
-                        parameters[0]
-                        if len(parameters)
-                        else None
-                    )
-                    if type(value_type) is typing.TypeVar:
-                        lines.append(
-                            f'{INDENT * 2}{arg_name}_ = [{strcast(value_type)}.from_json(o) for o in {arg_name} or []]'
-                        )
-                    else:
-                        lines.append(f'{INDENT * 2}{arg_name}_ = {arg_name}')
-                elif typing_inspect.is_generic_type(arg_type) and issubclass(typing_inspect.get_origin(arg_type), Mapping):
-                    parameters = typing_inspect.get_parameters(arg_type)
-                    value_type = (
-                        parameters[0]
-                        if len(parameters)
-                        else None
-                    )
-                    if type(value_type) is typing.TypeVar:
-                        lines.append(
-                            f'{INDENT * 2}{arg_name}_ = {{'
-                            f'k: {strcast(value_type)}.from_json(v) '
-                            f'for k, v in ({arg_name} or {{}}).items()}}'
-                        )
-                    else:
-                        lines.append(f'{INDENT * 2}{arg_name}_ = {arg_name}')
-                else:
-                    lines.append(f'{INDENT * 2}{arg_name}_ = {arg_name}')
-            if args.items:
-                lines.append('')
-                lines.append(f'{INDENT * 2}# Validate arguments against known Juju API types.')
-            for arg_name, rtype in args.items:
-                arg_name = f'{name_to_py(arg_name)}_'
-                arg_type, arg_sub_type, ok = kind_to_py(rtype)
-                if ok:
-                    lines.append(buildValidation(arg_name, arg_type, arg_sub_type, ident=INDENT * 2))
-
-            for arg_name, _ in args.items:
-                arg_name = name_to_py(arg_name)
-                lines.append(f'{INDENT * 2}self.{arg_name} = {arg_name}_')
-            # Ensure that we take the kwargs (unknown_fields) and put it on the
-            # Results/Params so we can inspect it.
-            lines.append(f'{INDENT * 2}self.unknown_fields = unknown_fields')
-
-        lines.append('\n')
+        if params:
+            for param in params:
+                lines.append(param.to_alias_assignment(indent_level=2))
+            lines.append('')
+            lines.append(f'{INDENT * 2}# Validate arguments against known Juju API types.')
+            for param in params:
+                validation = param.to_validation(indent_level=2, alias=True)
+                if validation is not None:
+                    lines.append(validation)
+            for param in params:
+                lines.append(f'{INDENT * 2}self.{param.to_arg_name()} = {param.to_arg_name(alias=True)}')
+        lines.append(f'{INDENT * 2}self.unknown_fields = unknown_fields')
+        lines.append('')
+        lines.append('')
         definitions[name] = lines
-        co = compile('\n'.join(lines), __name__, 'exec')
-        namespace = get_namespace(schema)
-        exec(co, namespace)
+        schema.validate(lines)
     return definitions
 
 
@@ -370,27 +238,32 @@ def makeFunc(
     _async: bool = True,
 ):
     INDENT = "    "
-    args = Args(schema, name=params_name)
-    assignments = []
-    toschema = args.PyToSchemaMapping()
-    for arg in args._get_arg_strs(typed=False):
-        assignments.append(f"{INDENT}_params[\'{toschema[arg]}\'] = {arg}")
-    assignments = "\n".join(assignments)
+    if params_name is not None:
+        params = schema.registry[get_reference_name(params_name)]
+    else:
+        params = []
+    assignments = [
+        f"{INDENT}_params['{param.name}'] = {name_to_py(param.name)}"
+        for param in params
+    ]
     res = strcast(result) if result else None
-    doc_string = (description + '\n\n' if description else '') + args.get_doc()
+    doc_string = (description + '\n\n' if description else '') + '\n'.join(
+        f'{name_to_py(param.name)} : {param.to_annotation(nodiff=True)}'
+        for param in params
+    )
     lines = [
         f'',
         f'',
         (
             f'{"async " if _async else ""}'
-            f'def {name}(self{", " if args.items else ""}{args.as_kwargs()})'
+            f'def {name}(self{", " if params else ""}{", ".join(f"{name_to_py(param.name)}=None" for param in params)})'
             f' -> {result.__name__ if result is not None else "JSONObject"}:'
         ),
         f'    """',
         textwrap.indent(doc_string, INDENT),
         f'    Returns -> {res}',
         f'    """',
-        args.as_validation(),
+        '\n'.join(s for s in (param.to_validation(indent_level=1) for param in params) if s is not None),
         f'    # map input types to rpc msg',
         f'    _params = {{}}',
         f'    msg = {{',
@@ -399,7 +272,7 @@ def makeFunc(
         f"        'version': {schema.version},",
         f"        'params': _params,",
         f'    }}',
-        assignments,
+        '\n'.join(assignments),
         f'    reply = {"await " if _async else ""}self.rpc(msg)',
         (
             f"    return {result.__name__}.from_json(reply['response'])"
@@ -605,61 +478,182 @@ class Schema:
         self.schema: SchemaDict = raw['Schema']
         self.properties: Dict[str, JSONObject] = self.schema['properties']
         self.definitions: Dict[str, JSONObject] = self.schema.get('definitions', {})
-        self.registry: Dict[str, Struct] = {
-            name: self.buildObject(definition, name)
+        self.registry: Dict[str, List[Param]] = {
+            get_reference_name(name): Param.list_from_definition(get_reference_name(name), definition)
             for name, definition in self.definitions.items()
         }
 
-    def buildObject(self, node: JSONObject, name: str) -> Struct:
-        # we don't need to build types recursively here
-        # they are all in definitions already
-        # we only want to include the type reference
-        # which we can derive from the name
-        struct = []
+    def validate(self, lines: list[str]) -> None:
+        """Compile and execute generated lines of code in schema namespace."""
+        try:
+            co = compile('\n'.join(lines), __name__, 'exec')
+            namespace = get_namespace(self)
+            exec(co, namespace)
+        except Exception:
+            print('\n'.join(lines))
+            raise
 
-        for property_name in sorted(node.get('properties', [])):
-            property = node['properties'][property_name]
+
+class DefinitionDict(typing.TypedDict):
+    properties: NotRequired[Dict[str, PropertyDict]]
+    patternProperties: NotRequired[PatternPropertyDict]
+    additionalProperties: NotRequired[Any]
+
+
+PropertyDict = typing.TypedDict(
+    'PropertyDict',
+    {
+        '$ref': NotRequired[str],
+        'type': typing.Literal['array', 'object', 'string', 'integer', 'float', 'number', 'boolean', 'object'],
+    }
+)
+
+
+PatternPropertyDict = typing.TypedDict('PatternPropertyDict', {'.*': PropertyDict})
+
+
+@dataclasses.dataclass
+class Param:
+    name: str
+    kind: typing.Literal['basic', 'ref', 'untyped']
+    data: Any
+    array: bool = False
+    mapping: bool = False
+
+    @classmethod
+    def list_from_definition(cls, definition_name: str, definition: DefinitionDict) -> list[Param]:
+        params: list[Param] = []
+        for property_name, property in sorted(definition.get('properties', {}).items()):
             if '$ref' in property:
-                struct.append((property_name, get_type(property['$ref'])))
+                params.append(Param(name=property_name, kind='ref', data=get_reference_name(property['$ref'])))
                 continue
-            kind = property['type']
-            if kind == 'array':
-                struct.append((property_name, self.buildArray(property)))
-            elif kind == 'object':
-                struct.extend(self.buildObject(property, property_name))
+            if property['type'] == 'array':
+                params.append(cls.array_param(name=property_name, property=property))
+            elif property['type'] == 'object':
+                params.extend(
+                    cls.list_from_definition(
+                        definition_name=property_name,
+                        definition=typing.cast(DefinitionDict, property),
+                    )
+                )
             else:
-                struct.append((property_name, SCHEMA_TO_PYTHON[kind]))
+                params.append(Param(name=property_name, kind='basic', data=property['type']))
 
-        pattern_properties = node.get('patternProperties')
+        pattern_properties = definition.get('patternProperties')
         if pattern_properties:
             if '.*' not in pattern_properties:
                 raise ValueError(f'Cannot handle actual pattern in patternProperties {pattern_properties}')
             pattern_property = pattern_properties['.*']
             if '$ref' in pattern_property:
-                ref = pattern_property['$ref']
-                struct.append((name, Mapping[str, get_type(ref)]))
+                params.append(Param(name=definition_name, kind='ref', data=get_reference_name(pattern_property['$ref']), mapping=True))
             elif pattern_property['type'] == 'array':
-                struct.append((name, Mapping[str, self.buildArray(pattern_property)]))
+                params.append(cls.array_param(name=definition_name, property=pattern_property, mapping=True))
             else:
-                struct.append((name, Mapping[str, SCHEMA_TO_PYTHON[pattern_property['type']]]))
+                params.append(Param(name=definition_name, kind='basic', data=pattern_property['type'], mapping=True))
 
-        if not struct and 'additionalProperties' in node and node['additionalProperties']:
-            struct.append((name, Any))
+        if not params and 'additionalProperties' in definition and definition['additionalProperties']:
+            params.append(Param(name=definition_name, kind='untyped', data=None))
 
-        return struct
+        return params
 
-    def buildArray(self, obj):
-        # return a sequence from an array in the schema
-        if "$ref" in obj:
-            ref = obj['$ref']
-            return Sequence[get_type(ref)]
+    @classmethod
+    def array_param(cls, name: str, property: PropertyDict, mapping: bool = False) -> Param:
+        if "$ref" in property:
+            return Param(name=name, kind='ref', data=get_reference_name(property['$ref']), array=True, mapping=mapping)
+        kind = property.get("type")
+        if kind and kind == "array":
+            items = property['items']
+            return cls.array_param(name=name, property=items, mapping=mapping)
+        return Param(name=name, kind='basic', data=property['type'], array=True, mapping=mapping)
+
+    def to_arg_name(self, alias: bool = False) -> str:
+        return name_to_py(self.name) + ("_" if alias else "")
+
+    def to_annotation(self, nodiff: bool = False) -> str:
+        template = '{}'
+        if self.mapping:
+            template = template.format('typing.Mapping[str, {}]')
+        if self.array:
+            template = template.format('typing.Sequence[{}]')
+        if self.kind == 'basic':
+            kind = SCHEMA_TO_PYTHON[self.data].__name__
+            if nodiff and len(template) > 2 and kind == 'Any':
+                # match previous generated code exactly -- typing.Any when inside Sequence etc
+                kind = 'typing.Any'
+            template = template.format(kind)
+        elif self.kind == 'ref':
+            prefix = "~" if nodiff and len(template) > 2 else ""
+            # match previous generated code exactly -- prefix with ~ when inside Sequence etc
+            template = template.format(f'{prefix}{self.data}')
         else:
-            kind = obj.get("type")
-            if kind and kind == "array":
-                items = obj['items']
-                return self.buildArray(items)
-            else:
-                return Sequence[SCHEMA_TO_PYTHON[obj['type']]]
+            template = template.format('Any')
+        return template
+
+    def to_unparametrized_annotation(self) -> str | None:
+        if self.mapping:
+            return 'Mapping'
+        if self.array:
+            return 'Sequence'
+        if self.kind == 'basic':
+            return SCHEMA_TO_PYTHON[self.data].__name__
+        if self.kind == 'ref':
+            return self.data
+        if self.kind == 'untyped':
+            return None
+        raise ValueError()
+
+    def to_types(self) -> str | None:
+        if self.mapping:
+            return 'dict'
+        if self.array:
+            return '(bytes, str, list)'
+        if self.kind == 'basic':
+            if self.data == 'string':
+                return '(bytes, str)'
+            return SCHEMA_TO_PYTHON[self.data].__name__
+        if self.kind == 'ref':
+            return f'(dict, {self.data})'
+        if self.kind == 'untyped':
+            return None
+        raise ValueError()
+
+    def to_alias_assignment(self, indent_level: int = 0) -> str:
+        indent = " " * 4 * indent_level
+        return f'{indent}{self.to_arg_name(alias=True)} = {self.to_arg_evaluation()}'
+
+    def to_arg_evaluation(self) -> str:
+        if self.kind != 'ref':
+            return self.to_arg_name()
+        if self.array:
+            return (
+                f'['
+                f'{self.data}.from_json(o) '
+                f'for o in {self.to_arg_name()} or []'
+                f']'
+            )
+        if self.mapping:
+            assert not self.array  # unhandled case of both
+            return (
+                f'{{'
+                f'k: {self.data}.from_json(v) '
+                f'for k, v in ({self.to_arg_name()} or {{}}).items()'
+                f'}}'
+            )
+        return (
+            f'{self.data}.from_json({self.to_arg_name()}) '
+            f'if {self.to_arg_name()} else None'
+        )
+
+    def to_validation(self, indent_level: int = 0, alias: bool = False) -> str | None:
+        indent = " " * 4 * indent_level
+        types = self.to_types()
+        if types is not None:
+            return buildValidation(
+                self.to_arg_name(alias=alias),
+                self.to_unparametrized_annotation(),
+                types,
+                ident=indent,
+            )
 
 
 def get_type(name: str) -> TypeVar:
