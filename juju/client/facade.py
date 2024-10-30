@@ -20,7 +20,6 @@ from typing import (
     List,
     Protocol,
     Set,
-    Tuple,
     TypeVar,
 )
 
@@ -216,15 +215,16 @@ def get_definitions(schema: Schema) -> Dict[str, List[str]]:
         lines.append('')
         lines.append('')
         definitions[name] = lines
-        schema.validate(lines)
+        schema.validate_code(lines)
     return definitions
 
 
-RPCFunc = typing.Callable[[JSONObject], typing.Awaitable[JSONObject]]
-
-
-def makeRPCFunc(schema: Schema) -> Tuple[RPCFunc, str]:
-    source = """
+def get_rpc_definition() -> str:
+    # TODO: figure out if this makes any sense
+    # especially ... is it used?
+    # won't hasattr aways fail?
+    # why add builtin `id` into msg??
+    return """
 
 async def rpc(self, msg):
     '''
@@ -239,12 +239,9 @@ async def rpc(self, msg):
     return reply
 
 """
-    namespace = schema.validate([source])
-    func = namespace["rpc"]
-    return func, source
 
 
-def _buildMethod(schema: Schema, name: str):
+def get_method_definition(schema: Schema, name: str) -> str:
     method = schema.properties[name]
     properties = method.get('properties', typing.cast(PropertyDict, {}))
 
@@ -305,26 +302,8 @@ def _buildMethod(schema: Schema, name: str):
         f'',
     ]
 
-    namespace = schema.validate(lines)
-    fsource = '\n'.join(lines)
-    func = namespace[name]
-    return func, fsource
-
-
-def buildFacade(schema: Schema) -> typing.Tuple[typing.Type[Type], str]:
-    cls = type(
-        schema.name,
-        (Type,),
-        {'name': schema.name, 'version': schema.version, 'schema': schema},
-    )
-    schema_text = textwrap.indent(pprint.pformat(schema.schema), "    ")
-    source = (
-        f'class {schema.name}Facade(Type):\n'
-        f'    name = {schema.name!r}\n'
-        f'    version = {schema.version}\n'
-        f'    schema = {schema_text}\n'
-    )
-    return cls, source
+    schema.validate_code(lines)
+    return '\n'.join(lines)
 
 
 class TypeEncoder(json.JSONEncoder):
@@ -440,7 +419,7 @@ class Schema:
             for name, definition in self.definitions.items()
         }
 
-    def validate(self, lines: list[str]) -> Dict[str, Any]:
+    def validate_code(self, lines: list[str]) -> Dict[str, Any]:
         """Compile and execute generated lines of code in schema namespace."""
         try:
             co = compile('\n'.join(lines), __name__, 'exec')
@@ -697,28 +676,26 @@ def generate_factories(schemas: Dict[str, List[Schema]]) -> Set[str]:
 
 
 def generate_facades(schemas: Dict[str, List[Schema]]) -> Dict[int, Dict[str, List[str]]]:
-    captures: Dict[int, Dict[str, List[str]]] = {}
-    # Build the Facade classes
+    facades: Dict[int, Dict[str, List[str]]] = {}
     for juju_version in sorted(schemas.keys(), key=packaging.version.parse):
         for schema in schemas[juju_version]:
-            cls, source = buildFacade(schema)
-            cls_name = f'{schema.name}Facade'
-            capture = captures.setdefault(schema.version, {})
-            capture[cls_name] = [source]
-
-            # Build the methods for each Facade class.
+            facade_name = f'{schema.name}Facade'
+            lines = [
+                f'class {facade_name}(Type):',
+                f'    name = {schema.name!r}',
+                f'    version = {schema.version}',
+                f'    schema = {textwrap.indent(pprint.pformat(schema.schema), prefix="    ")}',
+            ]
+            schema.validate_code(lines)
             for methodname in sorted(schema.properties):
-                method, source = _buildMethod(schema, methodname)
-                setattr(cls, methodname, method)
-                capture[cls_name].append(textwrap.indent(source, prefix='    '))
-
+                lines.append(textwrap.indent(get_method_definition(schema, methodname), prefix='    '))
+                schema.validate_code(lines)
             # Build the override RPC method if the Facade is a watcher.
             if "Next" in schema.properties and "Stop" in schema.properties:
-                method, source = makeRPCFunc(schema)
-                setattr(cls, "rpc", method)
-                capture[cls_name].append(textwrap.indent(source, prefix='    '))
-
-    return captures
+                lines.append(textwrap.indent(get_rpc_definition(), prefix='    '))
+                schema.validate_code(lines)
+            facades.setdefault(schema.version, {})[facade_name] = lines
+    return facades
 
 
 def load_schemas(options: Options) -> Dict[str, List[Schema]]:
