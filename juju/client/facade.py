@@ -831,7 +831,7 @@ def write_definitions(captures: codegen.Capture, options: Options) -> None:
     """
     with open(f'{options.output_dir}/_definitions.py', 'w') as f:
         f.write(HEADER)
-        f.write("from juju.client.facade import Type, JSONObject\n\n")
+        f.write("from juju.client.facade import Type\n\n")
         for key in sorted(
                 [k for k in captures.keys() if "Facade" not in k]):
             print(captures[key], file=f)
