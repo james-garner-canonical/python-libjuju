@@ -188,7 +188,7 @@ def buildValidation(name, instance_type, instance_sub_type, ident=None) -> str:
 def get_definitions(schema: Schema) -> Dict[str, List[str]]:
     definitions: Dict[str, List[str]] = {}
     INDENT = "    "
-    for name in sorted(schema.definitions):
+    for name, params in sorted(schema.registry.items()):
         if not name:
             # when running on juju 3.1.0 client-only schemas, we get a seemingly empty entry with no name
             # this breaks codegen when generating a class with no name so we explicitly skip it here
@@ -198,8 +198,6 @@ def get_definitions(schema: Schema) -> Dict[str, List[str]]:
         if name == 'FacadeVersions':
             # not part of the api that we expose to users
             continue
-        name = get_reference_name(name)
-        params = schema.registry[name]
         lines: typing.List[str] = [
             f'class {name}(Type):',
             f'    _toSchema = {pprint.pformat({param.to_arg_name(): param.name for param in params}, width=999)}',
