@@ -291,9 +291,8 @@ def _buildMethod(schema: Schema, name: str):
         ),
         f'',
     ]
+    namespace = schema.validate(lines)
     fsource = '\n'.join(lines)
-    namespace = get_namespace(schema)
-    exec(fsource, namespace)
     func = namespace[name]
     return func, fsource
 
@@ -442,12 +441,13 @@ class Schema:
             for name, definition in self.definitions.items()
         }
 
-    def validate(self, lines: list[str]) -> None:
+    def validate(self, lines: list[str]) -> Dict[str, Any]:
         """Compile and execute generated lines of code in schema namespace."""
         try:
             co = compile('\n'.join(lines), __name__, 'exec')
             namespace = get_namespace(self)
             exec(co, namespace)
+            return namespace
         except Exception:
             print('\n'.join(lines))
             raise
