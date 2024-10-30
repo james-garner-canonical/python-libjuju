@@ -27,6 +27,8 @@ from typing import (
 import packaging.version
 from typing_extensions import NotRequired
 
+if typing.TYPE_CHECKING:
+    import juju.client.connection
 
 JUJU_VERSION = re.compile(r'[0-9]+\.[0-9-]+[\.\-][0-9a-z]+(\.[0-9]+)?')
 
@@ -289,34 +291,36 @@ def buildFacade(schema: Schema) -> typing.Tuple[typing.Type[Type], str]:
 
 
 class TypeEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Type):
-            return obj.serialize()
-        return json.JSONEncoder.default(self, obj)
+    def default(self, o: Any) -> JSONObject:
+        if isinstance(o, Type):
+            return o.serialize()
+        return json.JSONEncoder.default(self, o)
 
 
 C = TypeVar("C")
 
 class Type:
-    def connect(self, connection):
+    _toSchema: Dict[str, str]
+    _toPy: Dict[str, str]
+
+    def connect(self, connection: juju.client.connection.Connection) -> None:
         self.connection = connection
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f'{self.__class__}({self.__dict__})'
 
-    def __eq__(self, other):
+    def __eq__(self, other: Any) -> bool:
         if not isinstance(other, Type):
             return NotImplemented
-
         return self.__dict__ == other.__dict__
 
     async def rpc(self, msg: JSONObject) -> JSONObject:
-        result = await self.connection.rpc(msg, encoder=TypeEncoder)
-        return result
+        result = await self.connection.rpc(msg, encoder=TypeEncoder)  # type: ignore
+        return result  # type: ignore
 
     @classmethod
     def from_json(cls: typing.Type[C], data: typing.Union[JSONData, C]) -> typing.Optional[C]:
-        def _parse_nested_list_entry(expr, result_dict):
+        def _parse_nested_list_entry(expr: JSONData, result_dict: JSONObject) -> None:
             if isinstance(expr, str):
                 if '>' in expr or '>=' in expr:
                     # something like juju >= 2.9.31
@@ -344,9 +348,9 @@ class Type:
             except json.JSONDecodeError:
                 raise
         if isinstance(data, dict):
-            d = {}
-            for k, v in (data or {}).items():
-                d[cls._toPy.get(k, k)] = v
+            d: JSONObject = {}
+            for k, v in (data or {}).items():  # type: ignore
+                d[cls._toPy.get(k, k)] = v  # type: ignore
             try:
                 return cls(**d)
             except TypeError:
@@ -354,34 +358,34 @@ class Type:
         if isinstance(data, list):
             # check: https://juju.is/docs/sdk/assumes
             # assumes are in the form of a list
-            d = {}
-            _parse_nested_list_entry(data, d)
+            d: JSONObject = {}
+            _parse_nested_list_entry(data, d)  # type: ignore
             return cls(**d)
         return None
 
-    def serialize(self):
-        d = {}
+    def serialize(self) -> JSONObject:
+        d: JSONObject = {}
         for attr, tgt in self._toSchema.items():
             d[tgt] = getattr(self, attr)
         return d
 
-    def to_json(self):
+    def to_json(self) -> str:
         return json.dumps(self.serialize(), cls=TypeEncoder, sort_keys=True)
 
     # treat subscript gets as JSON representation
-    def __getitem__(self, key):
+    def __getitem__(self, key: str) -> Any:
         attr = self._toPy[key]
         return getattr(self, attr)
 
     # treat subscript sets as JSON representation
-    def __setitem__(self, key, value):
+    def __setitem__(self, key: str, value: Any) -> None:
         attr = self._toPy[key]
         setattr(self, attr, value)
 
     # legacy: generated definitions used to not correctly
     # create typed objects and would use dict instead (from JSON)
     # so we emulate some dict methods.
-    def get(self, key, default=None):
+    def get(self, key: str, default: Any = None) -> Any:
         try:
             attr = self._toPy[key]
         except KeyError:
@@ -500,7 +504,8 @@ class Param:
             return Param(name=name, kind='ref', data=get_reference_name(property['$ref']), array=True, mapping=mapping)
         kind = property.get("type")
         if kind and kind == "array":
-            items = property['items']
+            assert 'items' in property  # TODO: declare structure of property when 'type' is 'array'
+            items = typing.cast(PropertyDict, property['items'])
             return cls.array_param(name=name, property=items, mapping=mapping)
         return Param(name=name, kind='basic', data=property['type'], array=True, mapping=mapping)
 
@@ -623,9 +628,6 @@ def write_facades(captures: Dict[int, Dict[str, List[str]]], options: Options) -
                 f.write('\n'.join(captures[version][key]))
                 f.write('\n')
 
-    # Return the last (most recent) version for use in other routines.
-    return version
-
 
 def write_definitions(captures: Dict[str, List[str]], options: Options) -> None:
     """
@@ -744,7 +746,7 @@ def setup() -> Options:
     parser.add_argument("-s", "--schema", default="juju/client/schemas-juju-*.json")
     parser.add_argument("-o", "--output_dir", default="juju/client")
     options = parser.parse_args()
-    return options
+    return typing.cast(Options, options)
 
 
 def main() -> None:
