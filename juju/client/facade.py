@@ -171,7 +171,6 @@ PatternPropertyDict = typing.TypedDict('PatternPropertyDict', {'.*': PropertyDic
 
 def get_definitions(schema: Schema) -> Dict[str, List[str]]:
     definitions: Dict[str, List[str]] = {}
-    INDENT = "    "
     for name, params in sorted(schema.registry.items()):
         if not name:
             # when running on juju 3.1.0 client-only schemas, we get a seemingly empty entry with no name
@@ -196,14 +195,14 @@ def get_definitions(schema: Schema) -> Dict[str, List[str]]:
             for param in params:
                 lines.append(param.to_alias_assignment(indent_level=2))
             lines.append('')
-            lines.append(f'{INDENT * 2}# Validate arguments against known Juju API types.')
+            lines.append('        # Validate arguments against known Juju API types.')
             for param in params:
                 validation = param.to_validation(indent_level=2, alias=True)
                 if validation is not None:
                     lines.append(validation)
             for param in params:
-                lines.append(f'{INDENT * 2}self.{param.to_arg_name()} = {param.to_arg_name(alias=True)}')
-        lines.append(f'{INDENT * 2}self.unknown_fields = unknown_fields')
+                lines.append(f'        self.{param.to_arg_name()} = {param.to_arg_name(alias=True)}')
+        lines.append('        self.unknown_fields = unknown_fields')
         lines.append('')
         lines.append('')
         definitions[name] = lines
