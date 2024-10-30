@@ -262,36 +262,35 @@ def get_method_definition(schema: Schema, name: str) -> str:
     )
 
     lines = [
-        f'',
-        f'',
+        '',
+        '',
+        f'async def {name}(',
         (
-            f'async def {name}(self{", " if params else ""}{", ".join(f"{param.to_arg_name()}=None" for param in params)})'
-            f' -> {result if result is not None else "JSONObject"}:'
+            '    self'
+            + (', ' if params else '')
+            + ', '.join(f'{param.to_arg_name()}=None' for param in params)
         ),
-        f'    """',
+        f') -> {result if result is not None else "JSONObject"}:',
+        '    """',
         textwrap.indent(doc_string, '    '),
         f'    Returns -> {result}',
-        f'    """',
-        '\n'.join(s for s in (param.to_validation(indent_level=1) for param in params) if s is not None),
-        f'    # map input types to rpc msg',
-        f'    _params = {{}}',
-        f'    msg = {{',
+        '    """',
+        '\n'.join(Param.list_to_validations(params, indent_level=1)),
+        '    # map input types to rpc msg',
+        '    _params = {}',
+        '    msg = {',
         f"        'type': '{schema.name}',",
         f"        'request': '{name}',",
         f"        'version': {schema.version},",
         f"        'params': _params,",
-        f'    }}',
+        '    }',
         '\n'.join(
             f"    _params['{param.name}'] = {param.to_arg_name()}"
             for param in params
         ),
-        f'    reply = await self.rpc(msg)',
-        (
-            f"    return {result}.from_json(reply['response'])"
-            if result is not None
-            else f'    return reply'
-        ),
-        f'',
+        '    reply = await self.rpc(msg)',
+        '    return ' + ('reply' if result is None else f"{result}.from_json(reply['response'])"),
+        '',
     ]
 
     schema.validate_code(lines)
@@ -564,6 +563,15 @@ class Param:
             f'{self.data}.from_json({self.to_arg_name()}) '
             f'if {self.to_arg_name()} else None'
         )
+
+    @classmethod
+    def list_to_validations(cls, params: list[Param], indent_level: int = 0, alias: bool = False) -> list[str]:
+        validations: list[str] = []
+        for param in params:
+            validation = param.to_validation(indent_level=indent_level, alias=alias)
+            if validation is not None:
+                validations.append(validation)
+        return validations
 
     def to_validation(self, indent_level: int = 0, alias: bool = False) -> str | None:
         types = self.to_types()
