@@ -618,7 +618,7 @@ def write_definitions(captures: Dict[str, List[str]], options: Options) -> None:
 
 
 def write_client(
-    captures: Dict[int, Dict[str, List[str]]],
+    versions: List[int],
     factories: Iterable[str],
     options: Options,
 ) -> None:
@@ -626,6 +626,7 @@ def write_client(
     Write the TypeFactory classes to _client.py, along with some
     imports and tables so that we can look up versioned Facades.
     """
+    versions.sort()
     with open(f'{options.output_dir}/_client.py', 'w') as f:
         f.write(get_file_header())
         f.write('from __future__ import annotations\n')
@@ -633,7 +634,7 @@ def write_client(
         f.write('\n')
         f.write("from juju.client._definitions import *\n")
         f.write('from juju.client import (\n')
-        for version in sorted(captures):
+        for version in versions:
             f.write(f'    _client{version},\n')
         f.write(')\n')
         f.write('\n')
@@ -643,7 +644,7 @@ def write_client(
         f.write('\n')
         f.write('\n')
         f.write('CLIENTS = {\n')
-        for version in sorted(captures):
+        for version in versions:
             f.write(f"    '{version}': _client{version},\n")
         f.write('}\n')
         f.write('\n')
@@ -728,12 +729,12 @@ def main() -> None:
     # juju/client/_definitions.py
     write_definitions(definitions, options)
     # facades and factories
-    captures = generate_facades(schemas)
+    facades_by_version = generate_facades(schemas)
     factories = generate_factories(schemas)
     # juju/client/_client.py
-    write_client(captures=captures, factories=factories, options=options)
+    write_client(versions=list(facades_by_version), factories=factories, options=options)
     # juju/client/_client{N}.py
-    write_facades(captures, options)
+    write_facades(facades_by_version, options)
 
 
 if __name__ == '__main__':
