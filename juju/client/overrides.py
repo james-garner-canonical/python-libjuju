@@ -94,7 +94,7 @@ class ResourcesFacade(Type):
         _params['resources'] = resources
         _params['charm-origin'] = charm_origin
         reply = await self.rpc(msg)
-        return _client.AddPendingResourcesResult.from_json(reply['result'])
+        return _client.AddPendingResourcesResult.from_json(reply['response'])
 
 
 class AllWatcherFacade(Type):
