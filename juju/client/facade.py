@@ -393,9 +393,6 @@ class Type:
         return getattr(self, attr, default)
 
 
-Struct = List[Tuple[str, Any]]
-
-
 class RawDict(typing.TypedDict):
     Name: str
     Version: int
