@@ -210,6 +210,7 @@ def get_definitions(schema: Schema) -> Dict[str, List[str]]:
 
 RPCFunc = typing.Callable[[JSONObject], typing.Awaitable[JSONObject]]
 
+
 def makeRPCFunc(schema: Schema) -> Tuple[RPCFunc, str]:
     source = """
 
@@ -226,8 +227,7 @@ async def rpc(self, msg):
     return reply
 
 """
-    namespace = get_namespace(schema)
-    exec(source, namespace)
+    namespace = schema.validate([source])
     func = namespace["rpc"]
     return func, source
 
