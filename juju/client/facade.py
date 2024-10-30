@@ -250,7 +250,6 @@ def _buildMethod(schema: Schema, name: str):
                 result = get_type(spec['$ref'])
             else:
                 result = SCHEMA_TO_PYTHON[spec['type']]
-    INDENT = "    "
     if params_name is not None:
         params = schema.registry[get_reference_name(params_name)]
     else:
@@ -268,7 +267,7 @@ def _buildMethod(schema: Schema, name: str):
             f' -> {result.__name__ if result is not None else "JSONObject"}:'
         ),
         f'    """',
-        textwrap.indent(doc_string, INDENT),
+        textwrap.indent(doc_string, '    '),
         f'    Returns -> {res}',
         f'    """',
         '\n'.join(s for s in (param.to_validation(indent_level=1) for param in params) if s is not None),
@@ -281,7 +280,7 @@ def _buildMethod(schema: Schema, name: str):
         f"        'params': _params,",
         f'    }}',
         '\n'.join(
-            f"{INDENT}_params['{param.name}'] = {name_to_py(param.name)}"
+            f"    _params['{param.name}'] = {name_to_py(param.name)}"
             for param in params
         ),
         f'    reply = await self.rpc(msg)',
