@@ -169,14 +169,6 @@ PropertyDict = typing.TypedDict(
 PatternPropertyDict = typing.TypedDict('PatternPropertyDict', {'.*': PropertyDict})
 
 
-def name_to_py(name: str) -> str:
-    result = name.replace("-", "_")
-    result = result.lower()
-    if keyword.iskeyword(result) or result in dir(builtins):
-        result += "_"
-    return result
-
-
 def get_definitions(schema: Schema) -> Dict[str, List[str]]:
     definitions: Dict[str, List[str]] = {}
     INDENT = "    "
@@ -265,7 +257,7 @@ def get_method_definition(schema: Schema, name: str) -> str:
     # doc_string
     description = method.get('description', '')
     doc_string = (description + '\n\n' if description else '') + '\n'.join(
-        f'{name_to_py(param.name)} : {param.to_annotation(nodiff=True)}'
+        f'{param.to_arg_name()} : {param.to_annotation(nodiff=True)}'
         for param in params
     )
 
@@ -273,7 +265,7 @@ def get_method_definition(schema: Schema, name: str) -> str:
         f'',
         f'',
         (
-            f'async def {name}(self{", " if params else ""}{", ".join(f"{name_to_py(param.name)}=None" for param in params)})'
+            f'async def {name}(self{", " if params else ""}{", ".join(f"{param.to_arg_name()}=None" for param in params)})'
             f' -> {result if result is not None else "JSONObject"}:'
         ),
         f'    """',
@@ -290,7 +282,7 @@ def get_method_definition(schema: Schema, name: str) -> str:
         f"        'params': _params,",
         f'    }}',
         '\n'.join(
-            f"    _params['{param.name}'] = {name_to_py(param.name)}"
+            f"    _params['{param.name}'] = {param.to_arg_name()}"
             for param in params
         ),
         f'    reply = await self.rpc(msg)',
@@ -491,7 +483,12 @@ class Param:
         return Param(name=name, kind='basic', data=property['type'], array=True, mapping=mapping)
 
     def to_arg_name(self, alias: bool = False) -> str:
-        return name_to_py(self.name) + ("_" if alias else "")
+        arg_name = self.name.replace('-', '_').lower()
+        if keyword.iskeyword(arg_name) or arg_name in dir(builtins):
+            arg_name += '_'
+        if alias:
+            arg_name += '_'
+        return arg_name
 
     def to_annotation(self, nodiff: bool = False) -> str:
         template = '{}'
