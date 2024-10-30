@@ -131,22 +131,7 @@ class Options(Protocol):
     output_dir: str
 
 
-def booler(v):
-    if isinstance(v, str):
-        if v == "false":
-            return False
-    return bool(v)
-
-
 basic_types = [str, bool, int, float]
-
-
-type_mapping = {
-    'str': '(bytes, str)',
-    'Sequence': '(bytes, str, list)',
-    'Union': 'dict',
-    'Mapping': 'dict',
-}
 
 
 def name_to_py(name: str) -> str:
@@ -155,10 +140,6 @@ def name_to_py(name: str) -> str:
     if keyword.iskeyword(result) or result in dir(builtins):
         result += "_"
     return result
-
-
-def var_type_to_py(kind):
-    return 'None'
 
 
 def strcast(kind):
