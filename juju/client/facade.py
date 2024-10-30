@@ -250,7 +250,6 @@ def _buildMethod(schema: Schema, name: str):
                 result = get_type(spec['$ref'])
             else:
                 result = SCHEMA_TO_PYTHON[spec['type']]
-    _async = True
     INDENT = "    "
     if params_name is not None:
         params = schema.registry[get_reference_name(params_name)]
@@ -269,8 +268,7 @@ def _buildMethod(schema: Schema, name: str):
         f'',
         f'',
         (
-            f'{"async " if _async else ""}'
-            f'def {name}(self{", " if params else ""}{", ".join(f"{name_to_py(param.name)}=None" for param in params)})'
+            f'async def {name}(self{", " if params else ""}{", ".join(f"{name_to_py(param.name)}=None" for param in params)})'
             f' -> {result.__name__ if result is not None else "JSONObject"}:'
         ),
         f'    """',
@@ -287,7 +285,7 @@ def _buildMethod(schema: Schema, name: str):
         f"        'params': _params,",
         f'    }}',
         '\n'.join(assignments),
-        f'    reply = {"await " if _async else ""}self.rpc(msg)',
+        f'    reply = await self.rpc(msg)',
         (
             f"    return {result.__name__}.from_json(reply['response'])"
             if result is not None
