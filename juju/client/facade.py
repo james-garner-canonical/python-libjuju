@@ -421,7 +421,11 @@ class Schema:
         """Compile and execute generated lines of code in schema namespace."""
         try:
             co = compile('\n'.join(lines), __name__, 'exec')
-            namespace = get_namespace(self)
+            namespace: Dict[str, Any] = {
+                'Type': Type,
+                'typing': typing,
+                **self.registry,
+            }
             exec(co, namespace)
             return namespace
         except Exception:
@@ -600,14 +604,6 @@ def get_reference_name(ref: str) -> str:
     if ref.startswith("#/definitions/"):
         _, _, ref = ref.rpartition("/")
     return ref
-
-
-def get_namespace(schema: Schema) -> Dict[str, Any]:
-    return {
-        'Type': Type,
-        'typing': typing,
-        **schema.registry,
-    }
 
 
 def write_facades(captures: Dict[int, Dict[str, List[str]]], options: Options) -> None:
