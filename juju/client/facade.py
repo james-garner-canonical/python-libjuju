@@ -128,9 +128,46 @@ JSONData = typing.Union[
 ]
 
 
+C = TypeVar("C")
+
+
 class Options(Protocol):
     schema: str
     output_dir: str
+
+
+class RawDict(typing.TypedDict):
+    Name: str
+    Version: int
+    Schema: SchemaDict
+
+
+class SchemaDict(typing.TypedDict):
+    type: JSONObject
+    properties: Dict[str, PropertyDict]
+    definitions: NotRequired[Dict[str, DefinitionDict]]
+
+
+class DefinitionDict(typing.TypedDict):
+    properties: NotRequired[Dict[str, PropertyDict]]
+    patternProperties: NotRequired[PatternPropertyDict]
+    additionalProperties: NotRequired[Any]
+
+
+PropertyDict = typing.TypedDict(
+    'PropertyDict',
+    {
+        '$ref': NotRequired[str],
+        'description': NotRequired[str],
+        'properties': NotRequired['PropertyDict'],
+        'type': typing.Literal['array', 'object', 'string', 'integer', 'float', 'number', 'boolean', 'object'],
+        'Params': NotRequired['PropertyDict'],
+        'Result': NotRequired['PropertyDict'],
+    }
+)
+
+
+PatternPropertyDict = typing.TypedDict('PatternPropertyDict', {'.*': PropertyDict})
 
 
 def name_to_py(name: str) -> str:
@@ -297,8 +334,6 @@ class TypeEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, o)
 
 
-C = TypeVar("C")
-
 class Type:
     _toSchema: Dict[str, str]
     _toPy: Dict[str, str]
@@ -393,18 +428,6 @@ class Type:
         return getattr(self, attr, default)
 
 
-class RawDict(typing.TypedDict):
-    Name: str
-    Version: int
-    Schema: SchemaDict
-
-
-class SchemaDict(typing.TypedDict):
-    type: JSONObject
-    properties: Dict[str, PropertyDict]
-    definitions: NotRequired[Dict[str, DefinitionDict]]
-
-
 class Schema:
     def __init__(self, raw: RawDict):
         self.name: str = raw['Name']
@@ -431,28 +454,6 @@ class Schema:
         except Exception:
             print('\n'.join(lines))
             raise
-
-
-class DefinitionDict(typing.TypedDict):
-    properties: NotRequired[Dict[str, PropertyDict]]
-    patternProperties: NotRequired[PatternPropertyDict]
-    additionalProperties: NotRequired[Any]
-
-
-PropertyDict = typing.TypedDict(
-    'PropertyDict',
-    {
-        '$ref': NotRequired[str],
-        'description': NotRequired[str],
-        'properties': NotRequired['PropertyDict'],
-        'type': typing.Literal['array', 'object', 'string', 'integer', 'float', 'number', 'boolean', 'object'],
-        'Params': NotRequired['PropertyDict'],
-        'Result': NotRequired['PropertyDict'],
-    }
-)
-
-
-PatternPropertyDict = typing.TypedDict('PatternPropertyDict', {'.*': PropertyDict})
 
 
 @dataclasses.dataclass
