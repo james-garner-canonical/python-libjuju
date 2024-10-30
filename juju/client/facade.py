@@ -139,15 +139,6 @@ def name_to_py(name: str) -> str:
     return result
 
 
-def buildValidation(name, instance_type, instance_sub_type, ident=None) -> str:
-    if ident is None:
-        ident = '    '
-    return (
-        f"{ident}if {name} is not None and not isinstance({name}, {instance_sub_type}):\n"
-        f"{ident}    raise TypeError(f'Expected {name} to be a {instance_type}, received: {{type({name})}}')\n"
-    )
-
-
 def get_definitions(schema: Schema) -> Dict[str, List[str]]:
     definitions: Dict[str, List[str]] = {}
     INDENT = "    "
@@ -592,15 +583,15 @@ class Param:
         )
 
     def to_validation(self, indent_level: int = 0, alias: bool = False) -> str | None:
-        indent = " " * 4 * indent_level
         types = self.to_types()
-        if types is not None:
-            return buildValidation(
-                self.to_arg_name(alias=alias),
-                self.to_unparametrized_annotation(),
-                types,
-                ident=indent,
-            )
+        if types is None:
+            return None
+        indent = " " * 4 * indent_level
+        name = self.to_arg_name(alias=alias)
+        return (
+            f"{indent}if {name} is not None and not isinstance({name}, {types}):\n"
+            f"{indent}    raise TypeError(f'Expected {name} to be a {self.to_unparametrized_annotation()}, received: {{type({name})}}')\n"
+        )
 
 
 def get_reference_name(ref: str) -> str:
