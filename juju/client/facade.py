@@ -446,8 +446,8 @@ class RawDict(typing.TypedDict):
 
 class SchemaDict(typing.TypedDict):
     type: JSONObject
-    properties: Dict[str, JSONObject]
-    definitions: NotRequired[Dict[str, JSONObject]]
+    properties: Dict[str, PropertyDict]
+    definitions: NotRequired[Dict[str, DefinitionDict]]
 
 
 class Schema:
@@ -455,8 +455,8 @@ class Schema:
         self.name: str = raw['Name']
         self.version: int = raw['Version']
         self.schema: SchemaDict = raw['Schema']
-        self.properties: Dict[str, JSONObject] = self.schema['properties']
-        self.definitions: Dict[str, JSONObject] = self.schema.get('definitions', {})
+        self.properties = self.schema['properties']
+        self.definitions = self.schema.get('definitions', {})
         self.registry: Dict[str, List[Param]] = {
             get_reference_name(name): Param.list_from_definition(get_reference_name(name), definition)
             for name, definition in self.definitions.items()
