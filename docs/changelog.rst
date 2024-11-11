@@ -1,6 +1,15 @@
 Changelog
 ---------
 
+3.5.2.1
+^^^^^^^
+
+Monday 11th November 2024
+
+## What's Changed
+
+* restrict ``websockets`` to less than 14, as ``websockets==14.0`` dropped support for Python 3.8 and broke the ``_ws.open`` code path in this library
+
 3.5.2.0
 ^^^^^^^
 
