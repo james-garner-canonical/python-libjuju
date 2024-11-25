@@ -156,100 +156,20 @@ class TestAddApplicationChangeRun:
         assert result == "application"
 
         model._deploy.assert_called_once()
-        model._deploy.assert_called_with(charm_url="ch:charm1",
-                                         application="application",
-                                         series="series",
-                                         config="options",
-                                         constraints="constraints",
-                                         endpoint_bindings="endpoint_bindings",
-                                         resources=["resource1"],
-                                         storage={storage_label: constraints.parse_storage_constraint(storage_constraint)},
-                                         devices="devices",
-                                         channel="channel",
-                                         charm_origin=ANY,
-                                         num_units="num_units")
-
-    async def test_run_with_storage_variations(self):
-        """Test that various valid storage constraints are parsed as expected before model._deploy is called.
-
-        Uses the mock call logic from test_run_with_charmhub_charm, which will run before this test.
-        """
-        storage_arg_pairs: List[Tuple[Dict[str, str], Dict[str, constraints.StorageConstraintDict]]] = [
-            # (storage_arg_for_change, storage_arg_for_deploy)
-            ({'some-label': 'ebs,100G,1'}, {'some-label': {'count': 1, 'pool': 'ebs', 'size': 102400}}),
-            ({'some-label': 'ebs,2.1G,3'}, {'some-label': {'count': 3, 'pool': 'ebs', 'size': 2150}}),
-            ({'some-label': 'ebs,100G'}, {'some-label': {'count': 1, 'pool': 'ebs', 'size': 102400}}),
-            ({'some-label': 'ebs,2'}, {'some-label': {'count': 2, 'pool': 'ebs'}}),
-            ({'some-label': '200G,7'}, {'some-label': {'count': 7, 'size': 204800}}),
-            ({'some-label': 'ebs'}, {'some-label': {'count': 1, 'pool': 'ebs'}}),
-            ({'some-label': '10YB'}, {'some-label': {'count': 1, 'size': 11529215046068469760}}),
-            ({'some-label': '1'}, {'some-label': {'count': 1}}),
-            ({'some-label': '-1'}, {'some-label': {'count': 1}}),
-            ({'some-label': ''}, {'some-label': {'count': 1}}),
-            (
-                {
-                    'some-label': '2.1G,3',
-                    'data': '1MiB,70',
-                    'logs': 'ebs,-1',
-                },
-                {
-                    'some-label': {'count': 3, 'size': 2150},
-                    'data': {'count': 70, 'size': 1},
-                    'logs': {'count': 1, 'pool': 'ebs'}
-                },
-            ),
-        ]
-        for storage_arg_for_change, storage_arg_for_deploy in storage_arg_pairs:
-            change = AddApplicationChange(
-                1,
-                [],
-                params={
-                    "charm": "charm",
-                    "series": "series",
-                    "application": "application",
-                    "options": "options",
-                    "constraints": "constraints",
-                    "storage": storage_arg_for_change,
-                    "endpoint-bindings": "endpoint_bindings",
-                    "resources": "resources",
-                    "devices": "devices",
-                    "num-units": "num_units",
-                    "channel": "channel",
-                },
-            )
-            # mock model
-            model = Mock()
-            model._deploy = mock.AsyncMock(return_value=None)
-            model._add_charmhub_resources = mock.AsyncMock(return_value=["resource1"])
-            model.applications = {}
-            # mock context
-            context = Mock()
-            context.resolve.return_value = "ch:charm1"
-            context.origins = {"ch:charm1": Mock()}
-            context.trusted = False
-            context.model = model
-            # mock info_func
-            info_func = mock.AsyncMock(return_value=["12345", "name"])
-            # patch and call
-            with patch.object(charmhub.CharmHub, 'get_charm_id', info_func):
-                result = await change.run(context)
-            assert result == "application"
-            # asserts
-            model._deploy.assert_called_once()
-            model._deploy.assert_called_with(
-                charm_url="ch:charm1",
-                application="application",
-                series="series",
-                config="options",
-                constraints="constraints",
-                endpoint_bindings="endpoint_bindings",
-                resources=["resource1"],
-                storage=storage_arg_for_deploy,  # we're testing this
-                devices="devices",
-                channel="channel",
-                charm_origin=ANY,
-                num_units="num_units",
-            )
+        model._deploy.assert_called_with(
+            charm_url="ch:charm1",
+            application="application",
+            series="series",
+            config="options",
+            constraints="constraints",
+            endpoint_bindings="endpoint_bindings",
+            resources=["resource1"],
+            storage={storage_label: storage_constraint},
+            devices="devices",
+            channel="channel",
+            charm_origin=ANY,
+            num_units="num_units",
+        )
 
     async def test_run_with_charmhub_charm_no_channel(self):
         """Test to verify if when the given channel is None, the channel defaults to "local/stable", which
@@ -288,18 +208,20 @@ class TestAddApplicationChangeRun:
         assert result == "application"
 
         model._deploy.assert_called_once()
-        model._deploy.assert_called_with(charm_url="ch:charm1",
-                                         application="application",
-                                         series="series",
-                                         config="options",
-                                         constraints="constraints",
-                                         endpoint_bindings="endpoint_bindings",
-                                         resources=["resource1"],
-                                         storage={storage_label: constraints.parse_storage_constraint(storage_constraint)},
-                                         devices="devices",
-                                         channel="latest/stable",
-                                         charm_origin=ANY,
-                                         num_units="num_units")
+        model._deploy.assert_called_with(
+            charm_url="ch:charm1",
+            application="application",
+            series="series",
+            config="options",
+            constraints="constraints",
+            endpoint_bindings="endpoint_bindings",
+            resources=["resource1"],
+            storage={storage_label: storage_constraint},
+            devices="devices",
+            channel="latest/stable",
+            charm_origin=ANY,
+            num_units="num_units",
+        )
 
     async def test_run_local(self):
         storage_label = "some-label"
@@ -328,18 +250,20 @@ class TestAddApplicationChangeRun:
         assert result == "application"
 
         model._deploy.assert_called_once()
-        model._deploy.assert_called_with(charm_url="local:charm1",
-                                         application="application",
-                                         series="series",
-                                         config="options",
-                                         constraints="constraints",
-                                         endpoint_bindings="endpoint_bindings",
-                                         resources={},
-                                         storage={storage_label: constraints.parse_storage_constraint(storage_constraint)},
-                                         devices="devices",
-                                         num_units="num_units",
-                                         channel="",
-                                         charm_origin=ANY)
+        model._deploy.assert_called_with(
+            charm_url="local:charm1",
+            application="application",
+            series="series",
+            config="options",
+            constraints="constraints",
+            endpoint_bindings="endpoint_bindings",
+            resources={},
+            storage={storage_label: storage_constraint},
+            devices="devices",
+            num_units="num_units",
+            channel="",
+            charm_origin=ANY,
+        )
 
     async def test_run_no_series(self):
         storage_label = "some-label"
@@ -373,18 +297,20 @@ class TestAddApplicationChangeRun:
         model._add_charmhub_resources.assert_called_once()
 
         model._deploy.assert_called_once()
-        model._deploy.assert_called_with(charm_url="ch:charm1",
-                                         application="application",
-                                         series=None,
-                                         config="options",
-                                         constraints="constraints",
-                                         endpoint_bindings="endpoint_bindings",
-                                         resources=["resource1"],
-                                         storage={storage_label: constraints.parse_storage_constraint(storage_constraint)},
-                                         devices="devices",
-                                         channel="channel",
-                                         charm_origin=ANY,
-                                         num_units="num_units")
+        model._deploy.assert_called_with(
+            charm_url="ch:charm1",
+            application="application",
+            series=None,
+            config="options",
+            constraints="constraints",
+            endpoint_bindings="endpoint_bindings",
+            resources=["resource1"],
+            storage={storage_label: storage_constraint},
+            devices="devices",
+            channel="channel",
+            charm_origin=ANY,
+            num_units="num_units",
+        )
 
         # confirm that it's idempotent
         model.applications = {"application": None}

@@ -37,6 +37,42 @@ async def test_model_name():
 
 
 @base.bootstrapped
+async def test_deploy_with_storage_unparsed():
+    async with base.CleanModel() as model:
+        await model.deploy(
+            "postgresql",
+            storage={"pgdata": "1G"},
+        )
+        await model.wait_for_idle(status="active")
+        storages = await model.list_storage()
+        assert len(storages) == 1
+        [storage] = storages
+        # size information isn't exposed, so can't assert on that
+        assert storage["owner-tag"].startswith(tag.unit("postgresql"))
+        assert storage["storage-tag"].startswith(tag.storage("pgdata"))
+        assert storage["life"] == "alive"
+        assert storage["status"].status == "attached"
+
+
+@base.bootstrapped
+async def test_deploy_with_storage_preparsed():
+    async with base.CleanModel() as model:
+        await model.deploy(
+            "postgresql",
+            storage={"pgdata": {"size": 1024, "count": 1}},
+        )
+        await model.wait_for_idle(status="active")
+        storages = await model.list_storage()
+        assert len(storages) == 1
+        [storage] = storages
+        # size information isn't exposed, so can't assert on that
+        assert storage["owner-tag"].startswith(tag.unit("postgresql"))
+        assert storage["storage-tag"].startswith(tag.storage("pgdata"))
+        assert storage["life"] == "alive"
+        assert storage["status"].status == "attached"
+
+
+@base.bootstrapped
 @pytest.mark.bundle
 async def test_deploy_local_bundle_dir():
     bundle_path = TESTS_DIR / 'bundle'

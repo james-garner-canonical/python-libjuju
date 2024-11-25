@@ -4,6 +4,7 @@
 #
 # Test our constraints parser
 #
+from __future__ import annotations
 
 import unittest
 
@@ -109,6 +110,57 @@ class TestConstraints(unittest.TestCase):
             {"count": 3,
              "size": 512 * 1024 ** 1}
         )
+
+    def test_parse_storage_constraints(self):
+        """Test that various valid storage constraints are parsed as expected."""
+        storage_arg_pairs: list[
+            tuple[dict[str, str], dict[str, constraints.StorageConstraintDict]]
+        ] = [
+            # (storage_arg, parsed_storage_arg)
+            (
+                {"some-label": "ebs,100G,1"},
+                {"some-label": {"count": 1, "pool": "ebs", "size": 102400}},
+            ),
+            (
+                {"some-label": "ebs,2.1G,3"},
+                {"some-label": {"count": 3, "pool": "ebs", "size": 2150}},
+            ),
+            (
+                {"some-label": "ebs,100G"},
+                {"some-label": {"count": 1, "pool": "ebs", "size": 102400}},
+            ),
+            ({"some-label": "ebs,2"}, {"some-label": {"count": 2, "pool": "ebs"}}),
+            ({"some-label": "200G,7"}, {"some-label": {"count": 7, "size": 204800}}),
+            ({"some-label": "ebs"}, {"some-label": {"count": 1, "pool": "ebs"}}),
+            (
+                {"some-label": "10YB"},
+                {"some-label": {"count": 1, "size": 11529215046068469760}},
+            ),
+            ({"some-label": "1"}, {"some-label": {"count": 1}}),
+            ({"some-label": "-1"}, {"some-label": {"count": 1}}),
+            ({"some-label": ""}, {"some-label": {"count": 1}}),
+            (
+                {
+                    "some-label": "2.1G,3",
+                    "data": "1MiB,70",
+                    "logs": "ebs,-1",
+                },
+                {
+                    "some-label": {"count": 3, "size": 2150},
+                    "data": {"count": 70, "size": 1},
+                    "logs": {"count": 1, "pool": "ebs"},
+                },
+            ),
+        ]
+        for storage_arg, parsed_storage_constraint in storage_arg_pairs:
+            self.assertEqual(
+                constraints.parse_storage_constraints(storage_arg),
+                parsed_storage_constraint,
+            )
+            self.assertEqual(
+                constraints.parse_storage_constraints(parsed_storage_constraint),
+                parsed_storage_constraint,
+            )
 
     def test_parse_device_constraint(self):
         _ = constraints.parse_device_constraint
