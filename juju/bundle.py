@@ -1,5 +1,6 @@
 # Copyright 2023 Canonical Ltd.
 # Licensed under the Apache V2, see LICENCE file for details.
+from __future__ import annotations
 
 import logging
 import io
@@ -9,7 +10,7 @@ import requests
 import base64
 from contextlib import closing
 from pathlib import Path
-from typing import Dict, Optional
+from typing import TYPE_CHECKING, Mapping, cast
 
 import yaml
 
@@ -17,12 +18,15 @@ from toposort import toposort_flatten
 
 from .client import client
 from .constraints import parse as parse_constraints
-from .constraints import parse_storage_constraint
 from .errors import JujuError
 from . import utils, jasyncio
 from .origin import Channel, Source
 from .url import Schema, URL
 from .utils import get_base_from_origin_or_channel
+
+if TYPE_CHECKING:
+    from .constraints import StorageConstraintDict
+    from .model import Model
 
 log = logging.getLogger(__name__)
 
@@ -557,7 +561,8 @@ class AddApplicationChange(ChangeInfo):
     :options: holds application options.
     :constraints: optional application constraints.
     :storage: optional storage constraints, in the form of `{label: constraint}`.
-        The label is a string specified by the charm, while the constraint is a string following
+        The label is a string specified by the charm, while the constraint is
+        either a constraints.StorageConstraintDict, or a string following
         `the juju storage constraint directive format <https://juju.is/docs/juju/storage-constraint>`_,
         specifying the storage pool, number of volumes, and size of each volume.
     :devices: optional devices constraints.
@@ -568,7 +573,7 @@ class AddApplicationChange(ChangeInfo):
         application's charm.
     """
 
-    storage: Optional[Dict[str, str]]
+    storage: Mapping[str, str | StorageConstraintDict] | None = None
 
     @staticmethod
     def method():
@@ -586,8 +591,9 @@ class AddApplicationChange(ChangeInfo):
         # NB: this should really be handled by the controller when generating the
         # bundle change plan, and this short-term workaround may be missing some
         # aspects of the logic which the CLI client contains to handle edge cases.
-        if self.application in context.model.applications:
-            log.debug('Skipping %s; already in model', self.application)
+        model = cast("Model", context.model)  # pyright: ignore[reportUnknownMemberType]
+        if self.application in model.applications:
+            log.debug("Skipping %s; already in model", self.application)
             return self.application
 
         # resolve indirect references
@@ -596,8 +602,10 @@ class AddApplicationChange(ChangeInfo):
         if self.options is not None:
             options = self.options
         if context.trusted:
-            if context.model.info.agent_version < client.Number.from_json('2.4.0'):
-                raise NotImplementedError("trusted is not supported on model version {}".format(context.model.info.agent_version))
+            if model.info.agent_version < client.Number.from_json("2.4.0"):
+                raise NotImplementedError(
+                    f"trusted is not supported on model version {model.info.agent_version}"
+                )
             options["trust"] = "true"
 
         url = URL.parse(str(charm))
@@ -627,10 +635,11 @@ class AddApplicationChange(ChangeInfo):
 
         resources = context.bundle.get("applications", {}).get(self.application, {}).get("resources", {})
         if Schema.CHARM_HUB.matches(url.schema):
-            resources = await context.model._add_charmhub_resources(
-                self.application, charm, origin, overrides=self.resources)
+            resources = await model._add_charmhub_resources(
+                self.application, charm, origin, overrides=self.resources
+            )
 
-        await context.model._deploy(
+        await model._deploy(
             charm_url=charm,
             application=self.application,
             series=self.series,
@@ -638,11 +647,7 @@ class AddApplicationChange(ChangeInfo):
             constraints=self.constraints,
             endpoint_bindings=self.endpoint_bindings,
             resources=resources,
-            storage={
-                label: parse_storage_constraint(constraint)
-                for label, constraint
-                in (self.storage or {}).items()
-            },
+            storage=self.storage,
             channel=self.channel,
             devices=self.devices,
             num_units=self.num_units,

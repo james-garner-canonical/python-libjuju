@@ -19,7 +19,7 @@
 #
 
 import re
-from typing import Dict, List, Optional, TypedDict, Union
+from typing import Dict, List, Mapping, Optional, TypedDict, Union
 from typing_extensions import Required, NotRequired
 
 
@@ -191,6 +191,25 @@ def parse_storage_constraint(constraint: str) -> StorageConstraintDict:
         if size:
             storage['size'] = int(float(size) * FACTORS[m.group('size_exp')])
     return storage
+
+
+def parse_storage_constraints(
+    constraints: Optional[Mapping[str, Union[str, StorageConstraintDict]]] = None,
+) -> Dict[str, StorageConstraintDict]:
+    if constraints is None:
+        return {}
+    parsed: dict[str, StorageConstraintDict] = {}
+    for label, storage_constraint in constraints.items():
+        if isinstance(storage_constraint, str):
+            parsed[label] = parse_storage_constraint(storage_constraint)
+        elif isinstance(storage_constraint, dict):  # pyright: ignore[reportUnnecessaryIsInstance]
+            parsed[label] = storage_constraint
+        else:
+            raise ValueError(
+                f"Unexpected constraint {storage_constraint!r}"
+                f" for label {label!r} in {constraints}"
+            )
+    return parsed
 
 
 DEVICE = re.compile(

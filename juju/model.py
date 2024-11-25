@@ -29,7 +29,8 @@ from .charmhub import CharmHub
 from .client import client, connector
 from .client.overrides import Caveat, Macaroon
 from .constraints import parse as parse_constraints
-from .controller import Controller, ConnectedController
+from .constraints import parse_storage_constraints
+from .controller import ConnectedController, Controller
 from .delta import get_entity_class, get_entity_delta
 from .errors import JujuAPIError, JujuError, JujuModelConfigError, JujuBackupError
 from .errors import JujuModelError, JujuAppError, JujuUnitError, JujuAgentError, JujuMachineError, PylibjujuError, JujuNotSupportedError
@@ -43,6 +44,15 @@ from .secrets import create_secret_data, read_secret_data
 from .tag import application as application_tag
 from .url import URL, Schema
 from .version import DEFAULT_ARCHITECTURE
+
+if TYPE_CHECKING:
+    from .application import Application
+    from .client._definitions import FullStatus
+    from .constraints import StorageConstraintDict
+    from .machine import Machine
+    from .relation import Relation
+    from .remoteapplication import ApplicationOffer, RemoteApplication
+    from .unit import Unit
 
 log = logging.getLogger(__name__)
 
@@ -1666,10 +1676,26 @@ class Model:
         await self.connect(debug_log_conn=target, debug_log_params=params)
 
     async def deploy(
-            self, entity_url, application_name=None, bind=None,
-            channel=None, config=None, constraints=None, force=False,
-            num_units=1, overlays=[], base=None, resources=None, series=None, revision=None,
-            storage=None, to=None, devices=None, trust=False, attach_storage=[]):
+        self,
+        entity_url,
+        application_name=None,
+        bind=None,
+        channel=None,
+        config=None,
+        constraints=None,
+        force=False,
+        num_units=1,
+        overlays=[],
+        base=None,
+        resources=None,
+        series=None,
+        revision=None,
+        storage: Mapping[str, str | StorageConstraintDict] | None = None,
+        to=None,
+        devices=None,
+        trust=False,
+        attach_storage=[],
+    ):
         """Deploy a new service or bundle.
 
         :param str entity_url: Charm or bundle to deploy. Charm url or file path
@@ -1689,7 +1715,11 @@ class Model:
         :param str series: Series on which to deploy DEPRECATED: use --base (with Juju 3.1)
         :param int revision: specifying a revision requires a channel for future upgrades for charms.
             For bundles, revision and channel are mutually exclusive.
-        :param dict storage: Storage constraints TODO how do these look?
+        :param dict storage: optional storage constraints, in the form of `{label: constraint}`.
+            The label is a string specified by the charm, while the constraint is
+            a constraints.StorageConstraintsDict, or a string following
+            `the juju storage constraint directive format <https://juju.is/docs/juju/storage-constraint>`_,
+            specifying the storage pool, number of volumes, and size of each volume.
         :param to: Placement directive as a string. For example:
 
             '23' - place on machine 23
@@ -1705,14 +1735,10 @@ class Model:
         :param str[] attach_storage: Existing storage to attach to the deployed unit
             (not available on k8s models)
         """
-
-        if storage:
-            storage = {
-                k: client.Constraints(**v)
-                for k, v in storage.items()
-            }
-        if trust and (self.info.agent_version < client.Number.from_json('2.4.0')):
-            raise NotImplementedError("trusted is not supported on model version {}".format(self.info.agent_version))
+        if trust and (self.info.agent_version < client.Number.from_json("2.4.0")):
+            raise NotImplementedError(
+                f"trusted is not supported on model version {self.info.agent_version}"
+            )
 
         if not all([isinstance(st, str) for st in attach_storage]):
             raise JujuError("Expected attach_storage to be a list of strings, given {}".format(attach_storage))
@@ -2087,16 +2113,38 @@ class Model:
         if not response.status == 200:
             raise JujuError(result)
 
-    async def _deploy(self, charm_url, application, series, config,
-                      constraints, endpoint_bindings, resources, storage,
-                      channel=None, num_units=None, placement=None,
-                      devices=None, charm_origin=None, attach_storage=[],
-                      force=False, server_side_deploy=False):
+    async def _deploy(
+        self,
+        charm_url,
+        application,
+        series,
+        config,
+        constraints,
+        endpoint_bindings,
+        resources,
+        storage: Mapping[str, str | StorageConstraintDict] | None,
+        channel=None,
+        num_units=None,
+        placement=None,
+        devices=None,
+        charm_origin=None,
+        attach_storage=[],
+        force=False,
+        server_side_deploy=False,
+    ):
         """Logic shared between `Model.deploy` and `BundleHandler.deploy`.
-        """
-        log.info('Deploying %s', charm_url)
 
-        trust = config.get('trust', False)
+        :param dict storage: optional storage constraints, in the form of `{label: constraint}`.
+            The label is a string specified by the charm, while the constraint is
+            either a constraints.StorageConstraintDict, or a string following
+            `the juju storage constraint directive format <https://juju.is/docs/juju/storage-constraint>`_,
+            specifying the storage pool, number of volumes, and size of each volume.
+        """
+        log.info("Deploying %s", charm_url)
+
+        storage = parse_storage_constraints(storage)
+
+        trust = config.get("trust", False)
         # stringify all config values for API, and convert to YAML
         config = {k: str(v) for k, v in config.items()}
         config = yaml.dump({application: config},
