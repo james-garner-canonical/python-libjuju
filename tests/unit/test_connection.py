@@ -26,7 +26,7 @@ class WebsocketMock:
     async def recv(self):
         if not self.responses:
             await asyncio.sleep(1)  # delay to give test time to finish
-            raise ConnectionClosed(0, "ran out of responses")
+            raise ConnectionClosed(None, "ran out of responses")
         return json.dumps(self.responses.popleft())
 
     async def close(self):
