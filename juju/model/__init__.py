@@ -1169,7 +1169,7 @@ class Model:
 
         await utils.block_until(done, timeout=timeout, wait_period=wait_period)
         if _disconnected():
-            raise websockets.ConnectionClosed(1006, "no reason")
+            raise websockets.ConnectionClosed()
 
     @property
     def tag(self):
