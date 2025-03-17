@@ -1158,7 +1158,7 @@ class Model:
     async def block_until(self, *conditions, timeout=None, wait_period=0.5):
         """Return only after all conditions are true.
 
-        Raises `websockets.ConnectionClosed` if disconnected.
+        Raises `websockets.ConnectionClosedError` if disconnected.
         """
 
         def _disconnected():
@@ -1169,7 +1169,7 @@ class Model:
 
         await utils.block_until(done, timeout=timeout, wait_period=wait_period)
         if _disconnected():
-            raise websockets.ConnectionClosed()
+            raise websockets.ConnectionClosedError(rcvd=None, sent=None)
 
     @property
     def tag(self):

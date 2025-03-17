@@ -368,7 +368,7 @@ class Connection:
                 await asyncio.gather(*tasks_need_to_be_gathered)
             except asyncio.CancelledError:
                 pass
-            except websockets.exceptions.ConnectionClosed:
+            except websockets.ConnectionClosed:
                 pass
 
         self._pinger_task = None
@@ -380,7 +380,7 @@ class Connection:
 
     async def _recv(self, request_id: int) -> dict[str, Any]:
         if not self.is_open:
-            raise websockets.exceptions.ConnectionClosedOK(None, None)
+            raise websockets.ConnectionClosedOK(rcvd=None, sent=None)
         try:
             return await self.messages.get(request_id)
         except GeneratorExit:
@@ -463,7 +463,7 @@ class Connection:
         except asyncio.CancelledError:
             asyncio.create_task(self.close(), name="Task_Close")  # noqa: RUF006
             raise
-        except websockets.exceptions.ConnectionClosed:
+        except websockets.ConnectionClosed:
             log.warning("Debug Logger: Connection closed, reconnecting")
             # the reconnect has to be done as a task because the receiver will
             # be cancelled by the reconnect and we don't want the reconnect
@@ -489,7 +489,7 @@ class Connection:
         except asyncio.CancelledError:
             log.debug("Receiver: Cancelled")
             pass
-        except websockets.exceptions.ConnectionClosed as e:
+        except websockets.ConnectionClosed as e:
             log.warning("Receiver: Connection closed, reconnecting")
             await self.messages.put_all(e)
             # the reconnect has to be done as a task because the receiver will
@@ -530,7 +530,7 @@ class Connection:
         except asyncio.CancelledError:
             log.debug("Pinger: Cancelled")
             pass
-        except websockets.exceptions.ConnectionClosed:
+        except websockets.ConnectionClosed:
             # The connection has closed - we can't do anything
             # more until the connection is restarted.
             log.debug("ping failed because of closed connection")
@@ -568,11 +568,8 @@ class Connection:
         for attempt in range(3):
             if self.monitor.status == Monitor.DISCONNECTED:
                 # closed cleanly; shouldn't try to reconnect
-                raise websockets.exceptions.ConnectionClosed(
-                    websockets.frames.Close(
-                        websockets.frames.CloseCode.NORMAL_CLOSURE, "websocket closed"
-                    )
-                )
+                # we're trying to use a reference to a monitor that was cleanly closed earlier
+                raise websockets.ConnectionClosedOK(rcvd=None, sent=None)
             try:
                 await self._ws.send(outgoing)
                 break
