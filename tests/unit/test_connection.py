@@ -8,7 +8,6 @@ from unittest import mock
 
 import pytest
 import websockets
-from websockets.exceptions import ConnectionClosed
 
 from juju.client.connection import Connection
 from juju.errors import JujuRedirectException
@@ -26,7 +25,7 @@ class WebsocketMock:
     async def recv(self):
         if not self.responses:
             await asyncio.sleep(1)  # delay to give test time to finish
-            raise ConnectionClosed(0, "ran out of responses")
+            raise websockets.ConnectionClosedOK(rvcd=None, sent=None)
         return json.dumps(self.responses.popleft())
 
     async def close(self):
