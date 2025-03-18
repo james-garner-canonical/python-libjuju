@@ -1,6 +1,19 @@
 Changelog
 ---------
 
+3.6.1.1
+^^^^^^^
+
+Wednesday 19th Mar 2025
+
+## What's Changed
+
+* chore: fix changelog format by @dimaqq in https://github.com/juju/python-libjuju/pull/1248
+* docs: move docs from juju.is by @tmihoc in https://github.com/juju/python-libjuju/pull/1244
+* chore: type hint improvements from the helper thread branch by @dimaqq in https://github.com/juju/python-libjuju/pull/1250
+* chore: remove pyrfc3339 and change to datetime.datetime.fromisoformat… by @EdmilsonRodrigues in https://github.com/juju/python-libjuju/pull/1247
+* fix: create websockets ConnectionClosed error correctly by @james-garner-canonical in https://github.com/juju/python-libjuju/pull/1255
+
 3.6.1.0
 ^^^^^^^
 
