@@ -227,7 +227,7 @@ class Machine(model.ModelEntity):
         return stdout.decode()
 
     @property
-    def addresses(self) -> typing.List[str]:
+    def addresses(self) -> typing.List[dict]:
         """Returns the machine addresses."""
         return self.safe_data["addresses"] or []
 
