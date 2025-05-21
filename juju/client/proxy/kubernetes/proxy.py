@@ -39,7 +39,7 @@ class KubernetesProxy(Proxy):
             raise ValueError(f"Invalid port number: {remote_port}")
 
         if ca_cert:
-            with tempfile.NamedTemporaryFile(delete=True) as f:
+            with tempfile.NamedTemporaryFile(delete=False) as f:
                 f.write(bytes(ca_cert, "utf-8"))
             self.temp_ca_file = config.ssl_ca_cert = f.name
 
