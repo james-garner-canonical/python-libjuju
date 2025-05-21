@@ -30,7 +30,7 @@ class KubernetesProxy(Proxy):
         self.namespace = namespace
         self.remote_port = remote_port
         self.service = service
-        self.temp_ca_file = None
+        self.temp_ca_path = None
         self.port_forwarder = None
 
         try:
@@ -41,7 +41,8 @@ class KubernetesProxy(Proxy):
         if ca_cert:
             with tempfile.NamedTemporaryFile(delete=False) as f:
                 f.write(bytes(ca_cert, "utf-8"))
-            self.temp_ca_file = config.ssl_ca_cert = f.name
+            self.temp_ca_path = f.name
+            config.ssl_ca_cert = f.name
 
         self.api_client = client.ApiClient(config)
 
@@ -65,18 +66,13 @@ class KubernetesProxy(Proxy):
 
     def __del__(self):
         self.close()
-        try:
-            if self.temp_ca_file:
-                os.unlink(self.temp_ca_file)
-        except FileNotFoundError:
-            log.debug(f"file {self.temp_ca_file} not found")
+        if self.temp_ca_path:
+            os.unlink(self.temp_ca_path)
 
     def close(self):
-        try:
-            if self.port_forwarder:
-                self.port_forwarder.close()
-        except AttributeError:
-            pass
+        if self.port_forwarder:
+            self.port_forwarder.close()
+            self.port_forwarder = None
 
     def socket(self):
         if self.port_forwarder is not None:
