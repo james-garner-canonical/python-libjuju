@@ -1,6 +1,7 @@
 # Copyright 2023 Canonical Ltd.
 # Licensed under the Apache V2, see LICENCE file for details.
 import logging
+import os
 import tempfile
 
 from kubernetes import client
@@ -29,21 +30,19 @@ class KubernetesProxy(Proxy):
         self.namespace = namespace
         self.remote_port = remote_port
         self.service = service
+        self.temp_ca_path = None
+        self.port_forwarder = None
 
         try:
             self.remote_port = int(remote_port)
         except ValueError:
             raise ValueError(f"Invalid port number: {remote_port}")
 
-        self.port_forwarder = None
-
         if ca_cert:
-            self.temp_ca_file = tempfile.NamedTemporaryFile()  # noqa: SIM115
-            self.temp_ca_file.write(bytes(ca_cert, "utf-8"))
-            self.temp_ca_file.flush()
-            config.ssl_ca_cert = self.temp_ca_file.name
-        else:
-            self.temp_ca_file = None
+            with tempfile.NamedTemporaryFile(delete=False) as f:
+                f.write(bytes(ca_cert, "utf-8"))
+            self.temp_ca_path = f.name
+            config.ssl_ca_cert = f.name
 
         self.api_client = client.ApiClient(config)
 
@@ -67,15 +66,13 @@ class KubernetesProxy(Proxy):
 
     def __del__(self):
         self.close()
+        if self.temp_ca_path:
+            os.unlink(self.temp_ca_path)
 
     def close(self):
-        try:
-            if self.port_forwarder:
-                self.port_forwarder.close()
-            if self.temp_ca_file:
-                self.temp_ca_file.close()
-        except AttributeError:
-            pass
+        if self.port_forwarder:
+            self.port_forwarder.close()
+            self.port_forwarder = None
 
     def socket(self):
         if self.port_forwarder is not None:
