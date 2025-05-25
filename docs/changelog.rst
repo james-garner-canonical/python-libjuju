@@ -1,6 +1,17 @@
 Changelog
 ---------
 
+3.6.1.2
+^^^^^^^
+
+Monday 26th May 2025
+
+## What's Changed
+
+* chore: hint machine addresses as list of dicts by @gboutry in https://github.com/juju/python-libjuju/pull/1258
+* ci: disable test that fails on all Juju versions by @dimaqq in https://github.com/juju/python-libjuju/pull/1268
+* fix: creating offer when connecting to existing model, fixes #1264 by @dimaqq in https://github.com/juju/python-libjuju/pull/1265
+
 3.6.1.1
 ^^^^^^^
 
