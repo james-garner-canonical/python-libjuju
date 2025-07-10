@@ -11,18 +11,29 @@ import pytest
 from juju.secrets import create_secret_data, read_secret_data
 
 
-class TestCreateSecretData(unittest.TestCase):
-    def test_bad_key(self):
+class TestCreateSecretData:
+    @pytest.mark.parametrize("keyval", ["foo", "=bar", "baz=", "f=bar", "fo=bar", "foo_bar=baz"])
+    def test_bad_key(self, keyval: str):
         with pytest.raises(ValueError):
-            create_secret_data(["foo"])
-        with pytest.raises(ValueError):
-            create_secret_data(["=bar"])
+            create_secret_data([keyval])
 
-    def test_good_key_values(self):
-        self.assertDictEqual(
-            create_secret_data(["foo=bar", "hello=world", "goodbye#base64=world"]),
-            {"foo": "YmFy", "hello": "d29ybGQ=", "goodbye": "world"},
-        )
+
+    @pytest.mark.parametrize(
+        "keyval,expected_key,expected_val",
+        [
+            ("foo=bar", "foo", "YmFy"),
+            ("hello=world", "hello", "d29ybGQ="),
+            ("goodbye#base64=world", "goodbye", "world"),
+            ("equalsign==", "equalsign", "PQ=="),
+            ("equalsign#base64=PQ==", "equalsign", "PQ=="),
+            ("pq-identity-theorem=P===Q", "pq-identity-theorem", "UD09PVE="),
+        ]
+    )
+    def test_goo_key_values(self, keyval: str, expected_key: str, expected_val: str):
+        actual = create_secret_data([keyval])
+        expected = {expected_key: expected_val}
+        assert actual == expected
+
 
     def test_key_content_too_large(self):
         with pytest.raises(ValueError):
@@ -50,15 +61,12 @@ class TestCreateSecretData(unittest.TestCase):
 
             data = create_secret_data(["key1=value1", f"key2#file={file_path}"])
 
-            self.assertDictEqual(
-                data,
-                {
-                    "key1": "dmFsdWUx",
-                    "key2": (
-                        "ICAgICAgICAgIC0tLS0tQkVHSU4gQ0VSVElGSUNBVEUtLS0tLQogICAgICAgICAgTUlJRllqQ0NBMHFnQXdJQkFnSVFLYVBORDlZZ2dJRzYrak9jZ21wazNEQU5CZ2txaGtpRzl3MEJBUXNGQURBegogICAgICAgICAgTVJ3d0dnWURWUVFLRXhOc2FXNTFlR052Ym5SaGFXNWxjbk11YjNKbk1STXdFUVlEVlFRRERBcDBhVzFBWld4MwogICAgICAgICAgLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQ=="
-                    ),
-                },
-            )
+            assert data == {
+                "key1": "dmFsdWUx",
+                "key2": (
+                    "ICAgICAgICAgIC0tLS0tQkVHSU4gQ0VSVElGSUNBVEUtLS0tLQogICAgICAgICAgTUlJRllqQ0NBMHFnQXdJQkFnSVFLYVBORDlZZ2dJRzYrak9jZ21wazNEQU5CZ2txaGtpRzl3MEJBUXNGQURBegogICAgICAgICAgTVJ3d0dnWURWUVFLRXhOc2FXNTFlR052Ym5SaGFXNWxjbk11YjNKbk1STXdFUVlEVlFRRERBcDBhVzFBWld4MwogICAgICAgICAgLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQ=="
+                ),
+            }
 
 
 class TestReadSecretData(unittest.TestCase):
