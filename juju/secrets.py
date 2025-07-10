@@ -27,7 +27,7 @@ def create_secret_data(args):
     """
     data = {}
     for val in args:
-        key, _, value = val.partition('=')
+        key, _, value = val.partition("=")
         if not key or not value:
             raise ValueError(f"Invalid key value {val}")
 

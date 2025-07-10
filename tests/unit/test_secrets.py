@@ -12,11 +12,12 @@ from juju.secrets import create_secret_data, read_secret_data
 
 
 class TestCreateSecretData:
-    @pytest.mark.parametrize("keyval", ["foo", "=bar", "baz=", "f=bar", "fo=bar", "foo_bar=baz"])
+    @pytest.mark.parametrize(
+        "keyval", ["foo", "=bar", "baz=", "f=bar", "ff=bar", "foo_bar=baz"]
+    )
     def test_bad_key(self, keyval: str):
         with pytest.raises(ValueError):
             create_secret_data([keyval])
-
 
     @pytest.mark.parametrize(
         "keyval,expected_key,expected_val",
@@ -27,13 +28,12 @@ class TestCreateSecretData:
             ("equalsign==", "equalsign", "PQ=="),
             ("equalsign#base64=PQ==", "equalsign", "PQ=="),
             ("pq-identity-theorem=P===Q", "pq-identity-theorem", "UD09PVE="),
-        ]
+        ],
     )
     def test_goo_key_values(self, keyval: str, expected_key: str, expected_val: str):
         actual = create_secret_data([keyval])
         expected = {expected_key: expected_val}
         assert actual == expected
-
 
     def test_key_content_too_large(self):
         with pytest.raises(ValueError):
