@@ -1,12 +1,17 @@
 Changelog
 ---------
 
+3.6.1.3
+^^^^^^^
+
+Friday 11th Jul 2025
+
+* fix: don't strip valid characters from secret data by @james-garner-canonical in https://github.com/juju/python-libjuju/pull/1276
+
 3.6.1.2
 ^^^^^^^
 
 Monday 26th May 2025
-
-## What's Changed
 
 * chore: hint machine addresses as list of dicts by @gboutry in https://github.com/juju/python-libjuju/pull/1258
 * ci: disable test that fails on all Juju versions by @dimaqq in https://github.com/juju/python-libjuju/pull/1268
@@ -16,8 +21,6 @@ Monday 26th May 2025
 ^^^^^^^
 
 Wednesday 19th Mar 2025
-
-## What's Changed
 
 * chore: fix changelog format by @dimaqq in https://github.com/juju/python-libjuju/pull/1248
 * docs: move docs from juju.is by @tmihoc in https://github.com/juju/python-libjuju/pull/1244
@@ -30,8 +33,6 @@ Wednesday 19th Mar 2025
 
 Friday 20th Dec 2024
 
-## What's Changed
-
 * add 3.5.5 schema and update SCHEMAS.md by @james-garner-canonical in https://github.com/juju/python-libjuju/pull/1223
 * feat: larger default websockets frame size by @dimaqq in https://github.com/juju/python-libjuju/pull/1239
 * deprecate juju.jasyncio by @EdmilsonRodrigues in https://github.com/juju/python-libjuju/pull/1221
@@ -43,8 +44,6 @@ Friday 20th Dec 2024
 
 Thursday 28th Nov 2024
 
-## What's Changed
-
 * correct parsing of storage constraints, can be specified as strings or dicts
 * enable attachment of binary files as charm resources
 * allow newest websockets dependency
@@ -55,8 +54,6 @@ Thursday 28th Nov 2024
 ^^^^^^^
 
 Thursday 11th July 2024
-
-## What's Changed
 
 * fix parsing of storage constraints by @luissimas in https://github.com/juju/python-libjuju/pull/1053
 * Add setuptools to tox.ini by @Aflynn50 in https://github.com/juju/python-libjuju/pull/1058
